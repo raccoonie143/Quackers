@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday, My Love! ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Global Reset & Base Styles */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+            background-color: #fcebeb; /* Soft, warm background */
+            line-height: 1.6;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Ensure it takes full viewport height */
+            position: relative; /* For overlays */
+        }
+
+        /* --- Animation Screen Specific Styles --- */
+        #intro-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffefff; /* Light, celebratory background for intro */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 1.5s ease-out; /* For fading out */
+            opacity: 1; /* Ensure it starts visible */
+            pointer-events: auto; /* Allow clicks on elements inside */
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        #intro-screen.fade-out {
+            opacity: 0;
+            pointer-events: none; /* Disable clicks once fading out */
+        }
+
+        .cake-container {
+            position: relative;
+            transform: translateY(-50px); /* Lift cake slightly */
+            display: flex; /* For centering the cake elements */
+            flex-direction: column;
+            align-items: center;
+            perspective: 1000px; /* For 3D effects on cake */
+        }
+
+        /* --- Beautiful Cake Styling --- */
+        .cake {
+            position: relative;
+            width: 320px; /* Larger cake */
+            height: 200px;
+            background: linear-gradient(to bottom, #d2691e, #8b4513); /* Richer brown gradient */
+            border-radius: 0 0 160px 160px / 0 0 80px 80px; /* More rounded, softer base */
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4), inset 0 -5px 15px rgba(0,0,0,0.2); /* Deeper shadow */
+            z-index: 1;
+            transform: rotateX(5deg); /* Slight 3D tilt */
+        }
+
+        .frosting {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 70px; /* Thicker, luscious frosting */
+            background: linear-gradient(to bottom, #ffc0cb, #ff8fa3); /* Soft pink to slightly deeper pink */
+            border-radius: 50%;
+            transform: translateY(-35px); /* Lift frosting higher */
+            box-shadow: inset 0 -10px 20px rgba(0,0,0,0.2), 0 5px 15px rgba(0,0,0,0.1);
+            z-index: 2;
+            border: 2px solid rgba(255,255,255,0.8); /* Slight white edge */
+        }
+
+        .candle-holder {
+            position: absolute;
+            top: -60px; /* Position above frosting */
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            padding: 0 30px; /* More space for candles */
+            box-sizing: border-box;
+            z-index: 3;
+        }
+
+        .candle {
+            width: 20px;
+            height: 65px;
+            background: linear-gradient(to bottom, #f0f0f0, #e0e0e0); /* Subtle white gradient */
+            border-radius: 5px;
+            position: relative;
+            box-shadow: inset 0 4px 10px rgba(0,0,0,0.25), 0 2px 5px rgba(0,0,0,0.1);
+            margin: 0 8px; /* More space between candles */
+            cursor: pointer; /* Indicates clickable */
+            transition: transform 0.1s ease-out;
+        }
+
+        .candle:active {
+            transform: scale(0.95); /* Little squash on click */
+        }
+
+        .candle::before { /* Wick */
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 10px;
+            background-color: #333;
+            border-radius: 2px;
+        }
+
+        /* Beautiful Flame Styling */
+        .flame {
+            position: absolute;
+            top: -30px; /* Position above wick */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0; /* Start unlit */
+            height: 0; /* Start unlit */
+            opacity: 0; /* Start unlit */
+            background: radial-gradient(circle at 50% 50%, #fffacd, #ffeb3b, #ff9800, transparent 70%); /* More nuanced color */
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            box-shadow: 0 0 0px 0px rgba(255,165,0,0); /* Start no glow */
+            transition: all 0.3s ease-in-out; /* For lighting/blowing out */
+        }
+
+        .flame.lit {
+            width: 18px; /* Larger flame */
+            height: 35px;
+            opacity: 1;
+            box-shadow: 0 0 20px 10px rgba(255,165,0,0.8), 0 0 30px 15px rgba(255,165,0,0.5); /* Stronger, softer glow */
+            animation: flicker 0.3s infinite alternate; /* Slightly faster flicker */
+        }
+
+        @keyframes flicker {
+            0% { transform: translateX(-50%) scale(1) rotate(0deg); opacity: 1; }
+            50% { transform: translateX(-50%) scale(0.98) rotate(1deg); opacity: 0.95; }
+            100% { transform: translateX(-50%) scale(1.02) rotate(-1deg); opacity: 1; }
+        }
+
+        /* Matchbox Styling */
+        .match-box {
+            position: absolute;
+            bottom: -60px; /* Position below the cake */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90px; /* Larger matchbox */
+            height: 110px;
+            background-color: #e57373; /* Softer red for matches */
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            z-index: 4;
+            border: 3px solid #b71c1c; /* Deeper red border */
+        }
+
+        .match-box:hover {
+            transform: translateX(-50%) translateY(-8px) scale(1.05);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.4);
+        }
+
+        .match-box span {
+            color: #fff;
+            font-size: 0.85em;
+            font-weight: bold;
+            letter-spacing: 0.8px;
+            margin-top: 5px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .match-icon {
+            width: 35px;
+            height: 70px;
+            background-color: #f7e7c9; /* Wood color for match stick */
+            border-radius: 4px;
+            position: relative;
+            transform: rotate(-15deg); /* More dynamic angle */
+            box-shadow: inset 0 0 8px rgba(0,0,0,0.25);
+            margin-bottom: 5px;
+        }
+
+        .match-icon::after {
+            content: '';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 18px;
+            height: 18px;
+            background-color: #d32f2f; /* Darker red for match head */
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(0,0,0,0.4);
+        }
+
+        /* Messages & Instructions */
+        .intro-message, .instruction-message {
+            margin-top: 80px; /* More space from cake */
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.8em; /* Larger, more impactful */
+            font-weight: 700;
+            color: #880000;
+            text-shadow: 3px 3px 5px rgba(0,0,0,0.25);
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out, transform 1.5s ease-in-out;
+            text-align: center;
+            line-height: 1.2;
+            position: absolute; /* Position relative to intro-screen */
+            bottom: 50%;
+            left: 50%;
+            transform: translate(-50%, 50px); /* Initial state for fade-in */
+            width: 90%;
+            box-sizing: border-box;
+        }
+        .intro-message.fade-in, .instruction-message.fade-in {
+            opacity: 1;
+            transform: translate(-50%, 0);
+        }
+
+        .name-placeholder {
+            font-size: 0.7em; /* Smaller for the name */
+            display: block;
+            margin-top: 15px;
+            color: #a0522d;
+        }
+
+        .instruction-message {
+            font-size: 2.5em; /* Smaller than initial message */
+            margin-top: 40px;
+            color: #a0522d;
+            font-family: 'Poppins', sans-serif; /* Different font for instructions */
+            font-weight: 600;
+            text-shadow: none; /* No shadow */
+        }
+
+        #blow-out-message {
+            position: absolute;
+            bottom: 50px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.8em;
+            color: #6a0532;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            pointer-events: none;
+            z-index: 1001;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 15px 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            animation: bounce 1.8s infinite alternate ease-in-out; /* Slower, smoother bounce */
+        }
+
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-15px); }
+        }
+
+        /* --- Main Content Styling --- */
+        #main-content {
+            opacity: 0; /* For smooth fade-in */
+            transition: opacity 1.5s ease-in;
+            padding: 20px;
+            max-width: 900px; /* Max width for content */
+            margin: 0 auto; /* Center content */
+            box-sizing: border-box;
+            overflow-y: auto; /* Enable scrolling for main content */
+            min-height: 100vh; /* Take full height */
+            padding-top: 60px; /* Space from top */
+            position: relative; /* Ensure z-index works */
+            z-index: 999; /* Below intro screen */
+        }
+
+        #main-content.show {
+            opacity: 1;
+        }
+
+        .hero-section {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, #ffd1dc, #ffccf9); /* Soft gradient */
+            border-radius: 15px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .hero-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 4em; /* Larger, more elegant */
+            color: #d11d51; /* Deeper pink */
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .hero-subtitle {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.6em;
+            color: #555;
+            max-width: 650px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        .content-card {
+            background-color: #fff;
+            padding: 35px;
+            border-radius: 18px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+            margin-bottom: 35px;
+        }
+
+        .content-card h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3em; /* Larger headings */
+            color: #d11d51;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .message-section p {
+            font-size: 1.2em;
+            line-height: 1.8;
+            text-align: justify;
+            color: #444;
+        }
+
+        .signature {
+            text-align: right;
+            margin-top: 30px;
+            font-style: italic;
+            font-weight: bold;
+            color: #a0522d;
+            font-size: 1.1em;
+        }
+
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Slightly larger items */
+            gap: 25px;
+            margin-top: 25px;
+        }
+
+        .gallery-item {
+            background-color: #f9f9f9;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 220px; /* Slightly taller images */
+            object-fit: cover;
+            display: block;
+            border-bottom: 1px solid #eee;
+        }
+
+        .gallery-item span {
+            display: block;
+            padding: 12px;
+            font-size: 1em;
+            color: #555;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .gallery-tip {
+            font-size: 0.95em;
+            color: #777;
+            margin-top: 35px;
+            padding: 18px;
+            background-color: #ffe8d6;
+            border-left: 6px solid #ffaa00;
+            border-radius: 8px;
+            line-height: 1.4;
+        }
+
+        .love-list-section ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .love-list-section li {
+            background-color: #fdf5f8;
+            margin-bottom: 12px;
+            padding: 18px 25px;
+            border-left: 5px solid #ff69b4; /* Hot pink accent */
+            border-radius: 10px;
+            font-size: 1.15em;
+            color: #555;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+        }
+
+        .love-list-section li:hover {
+            background-color: #ffe0f0;
+            transform: translateX(5px);
+        }
+
+        .footer-section {
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 50px;
+            background-color: #f2d4d4;
+            color: #777;
+            border-radius: 15px;
+            font-size: 0.95em;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.05);
+        }
+
+        /* Confetti Container */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1002; /* Above intro-screen */
+            pointer-events: none; /* Allows clicks to pass through */
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .cake {
+                width: 260px;
+                height: 160px;
+            }
+            .frosting {
+                height: 55px;
+                transform: translateY(-25px);
+            }
+            .candle {
+                width: 18px;
+                height: 55px;
+            }
+            .flame {
+                width: 15px;
+                height: 30px;
+                top: -25px;
+            }
+            .intro-message {
+                font-size: 3em;
+            }
+            .instruction-message {
+                font-size: 2em;
+            }
+            .match-box {
+                width: 80px;
+                height: 100px;
+                bottom: -50px;
+            }
+            #blow-out-message {
+                font-size: 1.5em;
+                bottom: 60px;
+            }
+            .hero-title {
+                font-size: 3em;
+            }
+            .hero-subtitle {
+                font-size: 1.3em;
+            }
+            .content-card {
+                padding: 25px;
+            }
+            .content-card h2 {
+                font-size: 2.5em;
+            }
+            .gallery-item img {
+                height: 180px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .cake {
+                width: 220px;
+                height: 140px;
+            }
+            .frosting {
+                height: 45px;
+                transform: translateY(-20px);
+            }
+            .candle {
+                width: 15px;
+                height: 45px;
+            }
+            .flame {
+                width: 12px;
+                height: 25px;
+                top: -20px;
+            }
+            .intro-message {
+                font-size: 2.5em;
+                margin-top: 60px;
+            }
+            .instruction-message {
+                font-size: 1.8em;
+                margin-top: 30px;
+            }
+            .match-box {
+                width: 70px;
+                height: 90px;
+                bottom: -40px;
+            }
+            #blow-out-message {
+                font-size: 1.2em;
+                padding: 10px 20px;
+                bottom: 40px;
+            }
+            .hero-title {
+                font-size: 2.5em;
+            }
+            .hero-subtitle {
+                font-size: 1.1em;
+            }
+            .content-card {
+                padding: 20px;
+            }
+            .content-card h2 {
+                font-size: 2em;
+            }
+            .gallery-item img {
+                height: 150px;
+            }
+            .photo-gallery {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="intro-screen">
+        <div class="cake-container">
+            <div class="cake">
+                <div class="candle-holder">
+                    <div class="candle c1"><div class="flame"></div></div>
+                    <div class="candle c2"><div class="flame"></div></div>
+                    <div class="candle c3"><div class="flame"></div></div>
+                    <div class="candle c4"><div class="flame"></div></div>
+                    <div class="candle c5"><div class="flame"></div></div>
+                </div>
+                <div class="frosting"></div>
+                <div class="base"></div>
+            </div>
+            <div class="match-box" id="matchBox">
+                <div class="match-icon"></div>
+                <span>Click to Light!</span>
+            </div>
+            <div class="intro-message" id="initialMessage">
+                <p>Happy Birthday!</p>
+                <p class="name-placeholder">My Dearest YOUR_GIRLFRIEND_NAME!</p>
+            </div>
+            <div class="instruction-message" id="instructionMessage">
+                <p>Light the Candles!</p>
+            </div>
+        </div>
+        <div id="blow-out-message">Tap the candles to blow them out!</div>
+        <div id="confetti-canvas" class="confetti-container"></div>
+    </div>
+
+    <main id="main-content">
+        <section class="hero-section">
+            <h1 class="hero-title">Happy Birthday, My Beautiful YOUR_GIRLFRIEND_NAME!</h1>
+            <p class="hero-subtitle">Welcome to your special day, celebrated just for you.</p>
+        </section>
+
+        <section class="message-section content-card">
+            <h2>A Message From My Heart</h2>
+            <p>My dearest YOUR_GIRLFRIEND_NAME, today marks another year of your incredible journey, and I'm so grateful to be by your side. You bring so much joy, laughter, and love into my life every single day. Your kindness, your strength, and your beautiful smile light up my world. I wish you all the happiness, success, and love that you truly deserve. May this year be filled with unforgettable moments and all your dreams come true.</p>
+            <p class="signature">- With all my love, YOUR_NAME</p>
+        </section>
+
+        <section class="gallery-section content-card">
+            <h2>Our Cherished Memories</h2>
+            <div class="photo-gallery">
+                <div class="gallery-item"><img src="images/photo1.jpg" alt="Memory 1"/><span>Our first adventure!</span></div>
+                <div class="gallery-item"><img src="images/photo2.jpg" alt="Memory 2"/><span>That unforgettable trip.</span></div>
+                <div class="gallery-item"><img src="images/photo3.jpg" alt="Memory 3"/><span>Just us, being silly.</span></div>
+                <div class="gallery-item"><img src="images/photo4.jpg" alt="Memory 4"/><span>Your radiant smile.</span></div>
+                </div>
+            <p class="gallery-tip">**Tip:** Create a folder named `images` in the same directory as this HTML file and put your photos there. Rename `photo1.jpg`, `photo2.jpg`, etc., to your actual image filenames.</p>
+        </section>
+
+        <section class="love-list-section content-card">
+            <h2>Reasons Why I Love You</h2>
+            <ul>
+                <li>Your infectious laughter that brightens any day.</li>
+                <li>Your unwavering support and understanding.</li>
+                <li>The way you always inspire me to be better.</li>
+                <li>Your kind heart and compassion for others.</li>
+                <li>Every single moment we spend together.</li>
+                <li>The adventurous spirit you bring to our lives.</li>
+                <li>Your incredible strength and resilience.</li>
+                <li>The comfort and peace I find when I'm with you.</li>
+            </ul>
+        </section>
+
+        <section class="footer-section">
+            <p>&copy; 2025 Created with love for YOUR_GIRLFRIEND_NAME.</p>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const introScreen = document.getElementById('intro-screen');
+            const mainContent = document.getElementById('main-content');
+            const initialMessage = document.getElementById('initialMessage');
+            const instructionMessage = document.getElementById('instructionMessage');
+            const matchBox = document.getElementById('matchBox');
+            const flames = document.querySelectorAll('.flame');
+            const candles = document.querySelectorAll('.candle');
+            const blowOutMessage = document.getElementById('blow-out-message');
+
+            // --- IMPORTANT: Customize these values ---
+            const yourGirlfriendName = "YOUR_GIRLFRIEND_NAME"; // Replace with your girlfriend's actual name!
+            const yourName = "YOUR_NAME"; // Replace with your name!
+            // --- End Customization ---
+
+            // Update names in the HTML
+            document.querySelector('.name-placeholder').textContent = `My Dearest ${yourGirlfriendName}!`;
+            document.querySelector('.hero-title').textContent = `Happy Birthday, My Beautiful ${yourGirlfriendName}!`;
+            document.querySelector('.signature').textContent = `- With all my love, ${yourName}`;
+            document.querySelector('title').textContent = `Happy Birthday, My Love! ❤️`;
+            document.querySelector('.footer-section p').textContent = `© 2025 Created with love for ${yourGirlfriendName}.`;
+
+            let currentStage = 'initial'; // 'initial', 'light_prompt', 'lighting', 'lit', 'make_a_wish', 'blowing_out', 'final_message', 'main_content'
+
+            // Hide instruction and blow-out messages initially
+            instructionMessage.style.opacity = '0';
+            instructionMessage.style.transform = 'translate(-50%, 50px)';
+            blowOutMessage.style.opacity = '0';
+            matchBox.style.pointerEvents = 'none'; // Disable matchbox until prompted
+
+            // --- Stage 1: Initial Message ---
+            setTimeout(() => {
+                initialMessage.classList.add('fade-in');
+            }, 500); // Appear shortly after page load
+
+            // --- Stage 2: Prompt to Light Candles ---
+            setTimeout(() => {
+                initialMessage.classList.remove('fade-in');
+                initialMessage.classList.add('fade-out'); // Assuming a fade-out class if needed, or simply let opacity transition handle it
+
+                initialMessage.addEventListener('transitionend', () => {
+                    initialMessage.style.display = 'none';
+                    instructionMessage.innerHTML = '<p>Click the Matches!</p>';
+                    instructionMessage.classList.add('fade-in');
+                    matchBox.style.pointerEvents = 'auto'; // Enable matchbox clicks
+                    matchBox.classList.add('fade-in'); // Optional: animate matchbox in
+                }, { once: true });
+                currentStage = 'light_prompt';
+            }, 4000); // Initial message visible for 3.5 seconds
+
+            // --- Stage 3: Light Candles on Matchbox Click ---
+            matchBox.addEventListener('click', () => {
+                if (currentStage === 'light_prompt') {
+                    instructionMessage.classList.remove('fade-in');
+                    instructionMessage.style.opacity = '0'; // Hide "Click matches"
+                    matchBox.style.display = 'none'; // Hide matchbox
+                    currentStage = 'lighting';
+
+                    flames.forEach((flame, index) => {
+                        setTimeout(() => {
+                            flame.classList.add('lit');
+                            if (index === flames.length - 1) { // Last candle lit
+                                setTimeout(() => {
+                                    instructionMessage.innerHTML = '<p>Make a Wish!</p>';
+                                    instructionMessage.classList.add('fade-in');
+                                    blowOutMessage.classList.add('fade-in'); // Show blow out instruction
+                                    candles.forEach(candle => candle.style.cursor = 'pointer'); // Make candles clickable
+                                    currentStage = 'make_a_wish';
+                                }, 1000); // Short pause after all candles are lit
+                            }
+                        }, index * 200); // Light each candle with a slight delay
+                    });
+                }
+            });
+
+            // --- Stage 4: Blow Out Candles on Candle Click ---
+            candles.forEach(candle => {
+                candle.addEventListener('click', () => {
+                    if (currentStage === 'make_a_wish' || currentStage === 'lit') {
+                        currentStage = 'blowing_out';
+                        instructionMessage.classList.remove('fade-in');
+                        instructionMessage.style.opacity = '0'; // Hide "Make a wish"
+                        blowOutMessage.classList.remove('fade-in'); // Hide blow out instruction
+
+                        // Blow out all candles
+                        flames.forEach(flame => {
+                            flame.classList.remove('lit');
+                        });
+
+                        // Confetti!
+                        confetti({
+                            particleCount: 150,
+                            spread: 100,
+                            origin: { y: 0.6 }
+                        });
+
+                        // Final message and transition to main content
+                        setTimeout(() => {
+                            instructionMessage.innerHTML = '<p>Happy Birthday!</p><p>Enjoy your special day!</p>';
+                            instructionMessage.classList.add('fade-in');
+                            instructionMessage.style.fontSize = '2.5em';
+                            instructionMessage.style.marginTop = '40px';
+                            currentStage = 'final_message';
+
+                            setTimeout(() => {
+                                introScreen.classList.add('fade-out');
+                                introScreen.addEventListener('transitionend', () => {
+                                    introScreen.style.display = 'none';
+                                    mainContent.style.display = 'block'; // Make main content block
+                                    mainContent.classList.add('show'); // Trigger fade-in for main content
+                                    document.body.style.overflow = 'auto'; // Re-enable scrolling
+                                }, { once: true });
+                            }, 3000); // Stay on final message for 3 seconds before fading out
+                        }, 500); // Short delay after candles are blown out
+                    }
+                });
+            });
+
+            // Initial hide for main content
+            mainContent.style.display = 'none';
+            document.body.style.overflow = 'hidden'; // Hide scroll initially
+        });
+    </script>
+</body>
+</html>
