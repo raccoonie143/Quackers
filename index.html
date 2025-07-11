@@ -6,41 +6,45 @@
     <title>Happy Birthday, Quackers! 💖</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lora:ital,wght@0,400;0,700;1,400&family=Outfit:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            /* Moonlight & Gold Palette */
-            --color-primary: #f0f0f0; /* Soft White */
-            --color-secondary: #c0c0c0; /* Light Gray */
-            --color-background-start: #08081a; /* Deeper Midnight Blue */
-            --color-background-end: #000000; /* Pure Black */
-            --color-text-dark: #333;
-            --color-accent-blue: #5a70e0; /* Soft Lavender Blue */
-            --color-accent-purple: #e07390; /* Muted Rose Pink */
-            --color-gold-light: #fffacd; /* Luminous Gold */
-            --color-gold-glow: #ffcc33; /* Stronger Gold for glow */
-            --color-primary-accent: #e0e0e0; /* Modern metallic */
-            --color-midnight-blue: #1a2a4a; /* Midnight Blue for elements */
-
-            /* Sizes */
-            --border-radius-sm: 10px; /* Slightly increased */
-            --border-radius-md: 15px; /* Slightly increased */
-            --border-radius-lg: 25px; /* Slightly increased */
-
-            /* Animation */
-            --transition-duration-slow: 1.0s; /* Slower for more elegance */
-            --transition-duration-medium: 0.7s;
-            --transition-duration-fast: 0.4s;
-            --stagger-unit: 0.1s; /* Faster staggering for quicker reveals */
-            --typewriter-char-delay: 0.02s; /* Faster character typing */
-
-            /* Dynamic Love Meter Aura Colors */
-            --love-aura-0: rgba(90, 112, 224, 0.4); /* Soft Lavender Blue */
-            --love-aura-25: rgba(90, 112, 224, 0.6);
-            --love-aura-50: rgba(90, 112, 224, 0.8);
-            --love-aura-75: rgba(224, 115, 144, 0.9); /* Shifting to Rose Pink */
-            --love-aura-100: rgba(255, 204, 51, 0.9); /* Gold at full */
+        /* Global Box Sizing for consistent layout */
+        *, *::before, *::after {
+            box-sizing: border-box;
         }
 
-        /* --- General Styles --- */
+        /* --- CSS Variables for Theming and Consistency --- */
+        :root {
+            /* Moonlight & Gold Palette */
+            --color-primary: #f0f0f0; /* Soft White for main text */
+            --color-secondary: #c0c0c0; /* Light Gray for secondary text */
+            --color-background-start: #08081a; /* Deeper Midnight Blue for gradient start */
+            --color-background-end: #000000; /* Pure Black for gradient end */
+            --color-accent-blue: #5a70e0; /* Soft Lavender Blue for accents */
+            --color-accent-purple: #e07390; /* Muted Rose Pink for accents */
+            --color-gold-light: #fffacd; /* Luminous Gold for highlights */
+            --color-gold-glow: #ffcc33; /* Stronger Gold for glow effects */
+            --color-primary-accent: #e0e0e0; /* Modern metallic accent color */
+
+            /* Sizes for consistent spacing and rounding */
+            --border-radius-sm: 8px;
+            --border-radius-md: 12px;
+            --border-radius-lg: 20px; /* Slightly reduced for better responsiveness */
+
+            /* Animation Durations and Delays */
+            --transition-duration-slow: 1.0s;
+            --transition-duration-medium: 0.7s;
+            --transition-duration-fast: 0.4s;
+            --stagger-unit: 0.08s; /* Slightly faster stagger */
+            --typewriter-char-delay: 0.02s; /* Delay between characters in typewriter effect */
+
+            /* Dynamic Love Meter Aura Colors (used in JS for class toggling) */
+            --love-aura-0: rgba(90, 112, 224, 0.4);
+            --love-aura-25: rgba(90, 112, 224, 0.6);
+            --love-aura-50: rgba(90, 112, 224, 0.8);
+            --love-aura-75: rgba(224, 115, 144, 0.9);
+            --love-aura-100: rgba(255, 204, 51, 0.9);
+        }
+
+        /* --- Global Body Styles --- */
         body {
             font-family: 'Lora', serif;
             margin: 0;
@@ -48,7 +52,7 @@
             overflow-x: hidden; /* Prevent horizontal scroll */
             background: linear-gradient(135deg, var(--color-background-start), var(--color-background-end));
             background-size: 200% 200%;
-            animation: cosmicGradient 60s ease infinite alternate; /* Slower, smoother animation */
+            animation: cosmicGradient 60s ease infinite alternate;
             color: var(--color-primary);
             min-height: 100vh;
             display: flex;
@@ -56,7 +60,7 @@
             align-items: center;
             justify-content: flex-start;
             position: relative;
-            cursor: none; /* Hide default cursor */
+            cursor: none; /* Custom cursor */
             transition: background var(--transition-duration-slow) ease-in-out;
             will-change: background-position;
         }
@@ -67,7 +71,7 @@
             position: fixed;
             border-radius: 50%;
             opacity: 0.15;
-            filter: blur(180px); /* Increased blur */
+            filter: blur(150px); /* Slightly less blur for crispness */
             z-index: -1;
             animation: nebulaDrift 80s ease-in-out infinite alternate;
             will-change: transform, opacity;
@@ -75,25 +79,26 @@
 
         body::before {
             background: radial-gradient(circle at 70% 30%, var(--color-accent-blue), transparent);
-            width: 1300px; /* Larger */
-            height: 1300px;
-            top: -250px; /* Shifted */
-            left: -350px; /* Shifted */
+            width: clamp(800px, 100vw, 1300px); /* Responsive sizing */
+            height: clamp(800px, 100vw, 1300px);
+            top: -25%; /* Use percentage for responsive positioning */
+            left: -25%;
             animation-delay: 0s;
         }
 
         body::after {
             background: radial-gradient(circle at 30% 70%, var(--color-accent-purple), transparent);
-            width: 1100px; /* Larger */
-            height: 1100px;
-            bottom: -250px; /* Shifted */
-            right: -350px; /* Shifted */
+            width: clamp(700px, 90vw, 1100px);
+            height: clamp(700px, 90vw, 1100px);
+            bottom: -25%;
+            right: -25%;
             animation-delay: 5s;
         }
 
+        /* Keyframe Animations */
         @keyframes nebulaDrift {
             0% { transform: translate(0, 0) scale(1); opacity: 0.15; }
-            50% { transform: translate(120px, 60px) scale(1.06); opacity: 0.2; } /* Slightly more movement */
+            50% { transform: translate(120px, 60px) scale(1.06); opacity: 0.2; }
             100% { transform: translate(0, 0) scale(1); opacity: 0.15; }
         }
 
@@ -102,12 +107,13 @@
             100% { background-position: 100% 100%; }
         }
 
+        /* --- Text Styles --- */
         h1, h2 {
             font-family: 'Playfair Display', serif;
             color: var(--color-gold-light);
             text-align: center;
             margin-bottom: 1.5rem;
-            text-shadow: 0 0 12px var(--color-gold-glow), 0 0 25px rgba(255, 204, 51, 0.5); /* Stronger glow */
+            text-shadow: 0 0 12px var(--color-gold-glow), 0 0 25px rgba(255, 204, 51, 0.5);
         }
 
         p {
@@ -116,12 +122,12 @@
             color: var(--color-secondary);
         }
 
-        /* Utility classes for hidden/active states */
+        /* --- Utility Classes for Visibility and Transitions --- */
         .hidden {
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
-            transform: translateY(30px); /* More pronounced translateY */
+            transform: translateY(30px);
             transition: opacity var(--transition-duration-slow) ease-out, transform var(--transition-duration-slow) ease-out, visibility var(--transition-duration-slow) ease-out;
         }
 
@@ -132,9 +138,9 @@
             transform: translateY(0);
         }
 
+        /* Main Content Container */
         .content {
-            padding: 2rem;
-            box-sizing: border-box;
+            padding: clamp(1rem, 5vw, 2.5rem); /* Responsive padding */
             width: 100%;
             max-width: 900px;
             margin: 0 auto;
@@ -143,9 +149,10 @@
             transition: opacity var(--transition-duration-slow) ease-out, transform var(--transition-duration-slow) ease-out;
         }
 
+        /* Individual Content Blocks (e.g., messages, GIFs, love meter) */
         .content-block {
-            margin-bottom: 1.8rem;
-            filter: blur(8px); /* Initial blur for reveal */
+            margin-bottom: clamp(1.5rem, 4vw, 2.5rem); /* Responsive margin */
+            filter: blur(8px);
             transition: opacity var(--transition-duration-slow) ease-out, transform var(--transition-duration-slow) ease-out, filter var(--transition-duration-slow) ease-out;
         }
 
@@ -153,17 +160,18 @@
             filter: blur(0);
         }
 
+        /* GIF Container Styling */
         .gif-inline-container {
             display: flex;
             justify-content: center;
-            margin: 2.2rem 0; /* Slightly more margin */
+            margin: clamp(1.5rem, 4vw, 2.5rem) 0; /* Responsive margin */
         }
 
         .gif-inline-container img {
             max-width: 100%;
             height: auto;
             border-radius: var(--border-radius-md);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5), 0 0 40px var(--color-accent-blue); /* Stronger, softer shadow */
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5), 0 0 40px var(--color-accent-blue);
             transition: transform var(--transition-duration-fast) ease, box-shadow var(--transition-duration-fast) ease;
         }
 
@@ -172,79 +180,92 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 50px var(--color-accent-blue);
         }
 
+        /* Message Box Styling (for main story and wish confirmation) */
         .message {
-            background: linear-gradient(135deg, rgba(10, 20, 50, 0.45), rgba(0, 0, 0, 0.35)); /* Gradient background */
-            padding: 2rem; /* Increased padding */
+            background: linear-gradient(135deg, rgba(10, 20, 50, 0.45), rgba(0, 0, 0, 0.35));
+            padding: clamp(1.5rem, 5vw, 2rem); /* Responsive padding */
             border-radius: var(--border-radius-lg);
-            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.7), 0 0 45px rgba(106, 130, 251, 0.4); /* Stronger, softer shadow */
-            border: 1px solid rgba(106, 130, 251, 0.4); /* Softer border */
-            max-width: 750px; /* Slightly wider */
-            margin: 2.5rem auto; /* More margin */
-            font-size: clamp(0.95rem, 2.5vw, 1.15rem); /* Adjusted font size */
-            color: var(--color-secondary);
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.7), 0 0 45px rgba(106, 130, 251, 0.4);
+            border: 1px solid rgba(106, 130, 251, 0.4);
+            width: 100%;
+            max-width: 750px;
+            margin: clamp(1.8rem, 5vw, 2.5rem) auto; /* Responsive margin */
+            font-size: clamp(0.95rem, 2.5vw, 1.15rem);
+            color: var(--color-primary);
             text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(6px); /* Increased blur */
+            backdrop-filter: blur(6px);
             -webkit-backdrop-filter: blur(6px);
             position: relative;
-            overflow: hidden; /* Crucial for typewriter effect */
-            /* Removed initial visibility: hidden here. Managed by .hidden/.active classes on content-block parent. */
-            white-space: pre-wrap; /* Ensure newlines are preserved */
+            overflow: hidden;
+            white-space: pre-line;
+            word-break: break-word;
+            overflow-wrap: break-word;
             text-align: center;
-            min-height: 150px; /* Ensure message block has space even if empty */
-            display: flex; /* To vertically center typed text if needed */
-            align-items: center; /* Vertically center */
-            justify-content: center; /* Horizontally center */
-        }
-
-        /* Cosmic Calligraphy: Text glow on reveal */
-        .message span {
+            min-height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             opacity: 0;
-            animation: textFadeInGlow 0.9s forwards; /* Slower animation */
-            animation-timing-function: cubic-bezier(0.2, 0.8, 0.4, 1.2);
-            display: inline-block; /* Essential for span animation */
-            text-shadow: none; /* Reset default text-shadow */
-            white-space: pre-wrap; /* Preserve spaces and line breaks for proper typing */
-            color: var(--color-primary); /* Ensure text color is primary */
-            font-weight: 400; /* Normal weight for body text */
+            transform: translateY(30px);
+            transition: opacity var(--transition-duration-slow) ease-out, transform var(--transition-duration-slow) ease-out;
         }
 
-        @keyframes textFadeInGlow {
-            0% { opacity: 0; transform: translateY(8px); text-shadow: 0 0 0px var(--color-gold-glow); }
-            50% { opacity: 1; transform: translateY(0); text-shadow: 0 0 10px var(--color-gold-glow); }
-            100% { opacity: 1; text-shadow: 0 0 0px var(--color-gold-glow); }
+        /* --- New Styling for messageBlock1 (Main Story Message) --- */
+        #messageBlock1.message {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
+            color: transparent;
+            background-clip: text;
+            -webkit-background-clip: text;
+            background-image: linear-gradient(120deg, #fffae0, #ffcc33, #fffacd);
+            text-shadow: 0 0 15px rgba(255, 204, 51, 0.8), 0 0 30px rgba(255, 204, 51, 0.5);
+            line-height: 1.6;
+            letter-spacing: 0.02em;
+            animation: messagePopOut 1.5s ease-out forwards;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: opacity 1.2s ease-out, transform 1.2s ease-out, box-shadow 0.4s ease;
+        }
+
+        @keyframes messagePopOut {
+            0% { opacity: 0; transform: scale(0.9) translateY(20px); }
+            60% { opacity: 1; transform: scale(1.02) translateY(-5px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
         }
 
         /* Hover aura for message/text elements */
         .message:hover, h1:hover {
-            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.7), 0 0 50px var(--color-accent-blue), 0 0 70px var(--color-accent-purple); /* Stronger glow */
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.7), 0 0 50px var(--color-accent-blue), 0 0 70px var(--color-accent-purple);
             transition: box-shadow var(--transition-duration-fast) ease;
         }
 
+        /* Button Group Container */
         .button-group {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 25px; /* Increased gap */
-            padding: 2rem 0; /* Increased padding */
-            margin-top: 2.5rem; /* Increased margin */
-            transition: opacity var(--transition-duration-slow) ease-out;
+            gap: clamp(15px, 3vw, 25px); /* Responsive gap */
+            padding: clamp(1.5rem, 4vw, 2rem) 0; /* Responsive padding */
+            margin-top: clamp(1.8rem, 5vw, 2.5rem); /* Responsive margin */
+            transition: opacity var(--transition-duration-slow) ease-out, transform var(--transition-duration-slow) ease-out;
         }
 
+        /* Button Styling */
         .btn {
             background: linear-gradient(45deg, var(--color-accent-blue), var(--color-accent-purple));
             color: var(--color-primary);
             border: none;
             border-radius: var(--border-radius-lg);
-            padding: 1.1rem 2.2rem; /* Slightly more padding */
+            padding: clamp(0.9rem, 3vw, 1.1rem) clamp(1.8rem, 5vw, 2.2rem); /* Responsive padding */
             font-family: 'Outfit', sans-serif;
-            font-size: clamp(0.95rem, 2.5vw, 1.15rem); /* Adjusted font size */
+            font-size: clamp(0.95rem, 2.5vw, 1.15rem);
             font-weight: 700;
             cursor: pointer;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5), 0 0 30px var(--color-accent-blue); /* Stronger shadow */
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5), 0 0 30px var(--color-accent-blue);
             transition: all var(--transition-duration-fast) ease, opacity var(--transition-duration-medium) ease;
             flex-grow: 1;
-            min-width: 220px; /* Slightly wider */
-            max-width: 300px; /* Slightly wider */
+            min-width: clamp(180px, 50vw, 220px); /* Responsive min-width */
+            max-width: 300px;
             text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
             letter-spacing: 0.05em;
             position: relative;
@@ -252,19 +273,19 @@
         }
 
         .btn.disabled {
-            opacity: 0.4; /* Slightly more transparent */
+            opacity: 0.4;
             cursor: not-allowed;
             pointer-events: none;
             box-shadow: 0 3px 12px rgba(0,0,0,0.3);
             filter: grayscale(80%);
         }
 
-        /* Starlight Pulse: Button border glow */
+        /* Starlight Pulse: Button border glow on hover */
         .btn:not(.disabled):hover {
-            transform: translateY(-5px) scale(1.03); /* More pronounced lift */
-            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.7), 0 0 40px var(--color-accent-blue), inset 0 0 20px var(--color-gold-glow); /* Inset glow */
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.7), 0 0 40px var(--color-accent-blue), inset 0 0 20px var(--color-gold-glow);
             background: linear-gradient(45deg, #7b92ff, #ff6a8b);
-            animation: starlightPulse 1.8s infinite alternate ease-in-out; /* Slower pulse */
+            animation: starlightPulse 1.8s infinite alternate ease-in-out;
         }
         @keyframes starlightPulse {
             0% { box-shadow: 0 10px 35px rgba(0, 0, 0, 0.7), 0 0 40px var(--color-accent-blue), inset 0 0 8px var(--color-gold-glow); }
@@ -272,7 +293,7 @@
         }
 
         .btn:not(.disabled):active {
-            transform: translateY(0) scale(0.97); /* More pronounced press */
+            transform: translateY(0) scale(0.97);
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
         }
 
@@ -280,55 +301,55 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px; /* Slightly more gap */
+            gap: 10px;
             position: relative;
             z-index: 1;
         }
 
-        /* Subtle Inner Aura (On Click) */
+        /* Subtle Inner Aura (On Click) for buttons */
         .btn::after {
             content: '';
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 8px; /* Larger initial size */
+            width: 8px;
             height: 8px;
-            background: rgba(255, 204, 51, 0.4); /* Gold-toned ripple */
+            background: rgba(255, 204, 51, 0.4);
             border-radius: 50%;
             opacity: 0;
             transform: translate(-50%, -50%);
-            transition: all 0.6s ease; /* Slower transition */
+            transition: all 0.6s ease;
         }
         .btn:active::after {
-            width: 250px; /* Larger ripple */
+            width: 250px;
             height: 250px;
             opacity: 1;
             transition: 0s;
         }
 
+        /* Footer Styling */
         footer {
-            margin-top: 3rem; /* More space */
-            padding: 2.5rem; /* More padding */
+            margin-top: clamp(2rem, 5vw, 3rem);
+            padding: clamp(1.5rem, 5vw, 2.5rem);
             color: var(--color-secondary);
             font-family: 'Lora', serif;
-            font-size: 0.95em;
+            font-size: clamp(0.85em, 2.5vw, 0.95em);
             text-align: center;
             opacity: 0.8;
             z-index: 5;
             position: relative;
         }
 
-        /* --- Content Sections (Initially Hidden) --- */
+        /* --- Specific Content Sections (e.g., Hug GIF, Compliment Message) --- */
         .content-section {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            margin-top: 1.8rem; /* Adjusted for closer proximity to buttons/text */
-            margin-bottom: 2rem; /* Ensure space below */
-            padding: 0 1.2rem;
-            box-sizing: border-box;
-            max-width: 900px; /* Constrain width */
+            margin-top: clamp(1.5rem, 4vw, 1.8rem);
+            margin-bottom: clamp(1.5rem, 4vw, 2rem);
+            padding: 0 clamp(0.5rem, 3vw, 1.2rem); /* Added horizontal padding */
+            max-width: 900px;
             margin-left: auto;
             margin-right: auto;
             transition: opacity var(--transition-duration-medium) ease-out, transform var(--transition-duration-medium) ease-out, visibility var(--transition-duration-medium) ease-out;
@@ -339,87 +360,91 @@
             height: auto;
             border-radius: var(--border-radius-md);
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5), 0 0 40px var(--color-accent-purple);
-            margin-bottom: 0.8rem; /* Closer to text if any below */
+            margin-bottom: 0.8rem;
         }
 
+        /* Message Display for Compliments and Wish Confirmation */
         .message-display {
-            background: linear-gradient(135deg, rgba(10, 20, 50, 0.55), rgba(0, 0, 0, 0.45)); /* Gradient background */
-            padding: 1.8rem; /* Increased padding */
+            background: linear-gradient(135deg, rgba(10, 20, 50, 0.55), rgba(0, 0, 0, 0.45));
+            padding: clamp(1.2rem, 4vw, 1.8rem); /* Responsive padding */
             border-radius: var(--border-radius-lg);
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), 0 0 35px var(--color-accent-purple);
             font-style: italic;
-            font-size: clamp(1.05rem, 3vw, 1.25rem); /* Adjusted font size */
+            font-size: clamp(1.05rem, 3vw, 1.25rem); /* Adjusted font size for better fit */
             color: var(--color-primary);
             text-shadow: 0 0 5px rgba(0,0,0,0.3);
             backdrop-filter: blur(6px);
             -webkit-backdrop-filter: blur(6px);
-            overflow: hidden; /* Crucial for typewriter effect */
-            /* Removed initial visibility: hidden here. Managed by .hidden/.active classes on content-block parent. */
-            white-space: pre-wrap; /* Ensure newlines are preserved */
+            overflow: hidden;
+            white-space: normal; /* Allow text to wrap */
+            word-break: break-word; /* Break long words */
+            overflow-wrap: break-word; /* Modern equivalent */
             text-align: center;
-            min-height: 100px; /* Ensure it has space */
+            min-height: 100px;
             display: flex;
             align-items: center;
             justify-content: center;
+            /* No need for padding here, it's already in the main rule */
         }
         .message-display span {
             opacity: 0;
-            animation: textFadeInGlow 0.9s forwards; /* Slower animation */
+            animation: textFadeInGlow 0.9s forwards;
             animation-timing-function: cubic-bezier(0.2, 0.8, 0.4, 1.2);
             display: inline-block;
             text-shadow: none;
-            white-space: pre-wrap;
-            color: var(--color-primary); /* Ensure text color is primary */
+            color: var(--color-primary);
         }
-
+        @keyframes textFadeInGlow {
+            0% { opacity: 0; transform: translateY(8px); text-shadow: 0 0 0px var(--color-gold-glow); }
+            30% { opacity: 1; transform: translateY(0); text-shadow: 0 0 5px var(--color-gold-glow); }
+            100% { opacity: 1; text-shadow: 0 0 0px var(--color-gold-glow); }
+        }
 
         /* --- Love Meter (Golden Thread of Light) --- */
         #loveMeter {
-            background: linear-gradient(135deg, rgba(20, 30, 60, 0.65), rgba(0, 0, 0, 0.55)); /* Gradient background */
+            background: linear-gradient(135deg, rgba(20, 30, 60, 0.65), rgba(0, 0, 0, 0.55));
             border-radius: var(--border-radius-lg);
-            padding: 2rem; /* Increased padding */
-            margin-top: 2.5rem; /* More margin */
-            box-shadow: 0 12px 45px rgba(0, 0, 0, 0.8), 0 0 40px var(--color-accent-blue); /* Stronger, softer shadow */
+            padding: clamp(1.5rem, 5vw, 2rem); /* Responsive padding */
+            margin-top: clamp(1.8rem, 5vw, 2.5rem);
+            box-shadow: 0 12px 45px rgba(0, 0, 0, 0.8), 0 0 40px var(--color-accent-blue);
             text-align: center;
             transition: box-shadow var(--transition-duration-medium) ease-in-out, opacity var(--transition-duration-slow) ease-out, transform var(--transition-duration-slow) ease-out;
-            backdrop-filter: blur(8px); /* Increased blur */
+            backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             position: relative;
         }
 
         #loveMeter.love-meter-pulsing {
-            animation: lovePulse 1.8s infinite alternate ease-in-out; /* Slower pulse */
+            animation: lovePulse 1.8s infinite alternate ease-in-out;
         }
 
         @keyframes lovePulse {
             0% { transform: scale(1); }
-            100% { transform: scale(1.015); } /* Slightly more noticeable pulse */
+            100% { transform: scale(1.015); }
         }
 
         /* Love Meter Aura based on fill percentage (Dynamic in JS) */
-        #loveMeter.aura-level-1 { box-shadow: 0 12px 45px rgba(0, 0, 0, 0.8), 0 0 45px var(--love-aura-25); } /* Increased glow */
+        #loveMeter.aura-level-1 { box-shadow: 0 12px 45px rgba(0, 0, 0, 0.8), 0 0 45px var(--love-aura-25); }
         #loveMeter.aura-level-2 { box-shadow: 0 12px 45px rgba(0, 0, 0, 0.8), 0 0 55px var(--love-aura-50); }
         #loveMeter.aura-level-3 { box-shadow: 0 12px 45px rgba(0, 0, 0, 0.8), 0 0 65px var(--love-aura-75); }
-        #loveMeter.aura-level-4 { box-shadow: 0 12px 45px rgba(0, 0, 0, 0.8), 0 0 75px var(--love-aura-100), 0 0 100px var(--love-aura-100); } /* Strongest glow */
-
+        #loveMeter.aura-level-4 { box-shadow: 0 12px 45px rgba(0, 0, 0, 0.8), 0 0 75px var(--love-aura-100), 0 0 100px var(--love-aura-100); }
 
         .love-meter-title {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(1.5rem, 3.5vw, 2.1rem); /* Adjusted font size */
+            font-size: clamp(1.5rem, 3.5vw, 2.1rem);
             color: var(--color-gold-light);
             margin-bottom: 1.2rem;
             text-shadow: 0 0 12px var(--color-gold-glow);
         }
 
         .ribbon-container {
-            width: 85%; /* Slightly wider */
-            max-width: 550px;
-            height: 22px; /* Slightly taller */
+            width: clamp(80%, 70vw, 550px); /* Responsive width */
+            height: clamp(18px, 2.5vw, 22px); /* Responsive height */
             background-color: #3a3a5a;
-            border-radius: 12px; /* Smoother corners */
+            border-radius: 12px;
             overflow: hidden;
-            margin: 1.2rem auto;
-            box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.6); /* Deeper inset shadow */
+            margin: clamp(0.8rem, 2vw, 1.2rem) auto;
+            box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.6);
             position: relative;
         }
 
@@ -430,13 +455,13 @@
             background-size: 200% 100%;
             border-radius: 12px;
             transition: width var(--transition-duration-medium) ease-out;
-            box-shadow: 0 0 18px rgba(255, 215, 0, 0.9); /* Stronger shimmer glow */
+            box-shadow: 0 0 18px rgba(255, 215, 0, 0.9);
             position: relative;
-            z-index: 1; /* Above nodes */
+            z-index: 1;
         }
 
         .shimmering-ribbon.active-shimmer {
-            animation: shimmerEffect 2.5s linear infinite; /* Slower shimmer */
+            animation: shimmerEffect 2.5s linear infinite;
         }
 
         @keyframes shimmerEffect {
@@ -449,37 +474,34 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            width: 14px; /* Larger nodes */
-            height: 14px;
-            background-color: #555; /* Unlit color */
+            width: clamp(10px, 1.5vw, 14px); /* Responsive size */
+            height: clamp(10px, 1.5vw, 14px);
+            background-color: #555;
             border-radius: 50%;
             box-shadow: inset 0 0 4px rgba(0,0,0,0.6);
-            z-index: 0; /* Below ribbon */
+            z-index: 0;
             transition: background-color var(--transition-duration-medium) ease, box-shadow var(--transition-duration-medium) ease;
         }
         .love-star-node.lit {
             background-color: var(--color-gold-light);
-            box-shadow: 0 0 12px var(--color-gold-glow), 0 0 25px rgba(255, 204, 51, 0.6); /* Stronger glow */
-            animation: nodePulse 1.8s infinite alternate; /* Slower pulse */
+            box-shadow: 0 0 12px var(--color-gold-glow), 0 0 25px rgba(255, 204, 51, 0.6);
+            animation: nodePulse 1.8s infinite alternate;
         }
         @keyframes nodePulse {
             0% { transform: translateY(-50%) scale(1); }
-            100% { transform: translateY(-50%) scale(1.15); } /* Slightly more pronounced pulse */
+            100% { transform: translateY(-50%) scale(1.15); }
         }
 
         .love-status-message {
-            font-size: clamp(1.05rem, 2.5vw, 1.15rem); /* Adjusted font size */
+            font-size: clamp(1.05rem, 2.5vw, 1.15rem);
             color: var(--color-secondary);
-            margin-top: 1.2rem;
+            margin-top: clamp(0.8rem, 2vw, 1.2rem);
         }
 
-        /* --- Confetti --- */
+        /* --- Confetti Effect --- */
         #confettiLayer {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            inset: 0;
             pointer-events: none;
             overflow: hidden;
             z-index: 999;
@@ -487,13 +509,13 @@
 
         .confetti-piece {
             position: absolute;
-            width: 10px; /* Slightly larger */
-            height: 10px;
-            background-color: #f00; /* Default, will be overridden by JS */
+            width: clamp(8px, 1.5vw, 10px);
+            height: clamp(8px, 1.5vw, 10px);
+            background-color: #f00; /* Default, overridden by JS */
             opacity: 0;
-            animation: fallAndTwist 3.5s ease-out forwards; /* Slower fall */
-            border-radius: 3px; /* Slightly more rounded */
-            filter: blur(0.7px); /* Slightly more blur */
+            animation: fallAndTwist 3.5s ease-out forwards;
+            border-radius: 3px;
+            filter: blur(0.7px);
         }
 
         @keyframes fallAndTwist {
@@ -505,9 +527,9 @@
         /* --- Floating Stars for Hug Button --- */
         .floating-star-hug {
             position: fixed;
-            font-size: 2.8em; /* Larger stars */
+            font-size: clamp(2em, 5vw, 2.8em);
             opacity: 0;
-            animation: floatUp 5.5s ease-out forwards; /* Slower float */
+            animation: floatUp 5.5s ease-out forwards;
             pointer-events: none;
             z-index: 10;
         }
@@ -516,55 +538,55 @@
             0% { transform: translateY(0); opacity: 0; }
             20% { opacity: 1; }
             80% { opacity: 1; }
-            100% { transform: translateY(-180px); opacity: 0; } /* Floats higher */
+            100% { transform: translateY(-180px); opacity: 0; }
         }
 
-        /* --- Background Blobs (Parallax) --- */
+        /* --- Background Blobs (Parallax Effect) --- */
         .background-blob {
             position: fixed;
             border-radius: 50%;
             opacity: 0.6;
-            filter: blur(120px); /* Increased blur */
-            z-index: 0; /* Behind everything */
+            filter: blur(100px); /* Slightly less blur for performance */
+            z-index: 0;
             transition: transform var(--transition-duration-fast) linear;
             pointer-events: none;
             will-change: transform;
         }
 
         .layer-1 {
-            background-color: rgba(90, 112, 224, 0.25); /* Slightly more opaque */
-            width: 650px; /* Larger */
-            height: 650px;
-            top: -120px;
-            left: -120px;
+            background-color: rgba(90, 112, 224, 0.25);
+            width: clamp(500px, 80vw, 650px);
+            height: clamp(500px, 80vw, 650px);
+            top: -10%;
+            left: -10%;
         }
 
         .layer-2 {
             background-color: rgba(224, 115, 144, 0.25);
-            width: 850px;
-            height: 850px;
-            bottom: -220px;
-            right: -220px;
+            width: clamp(650px, 90vw, 850px);
+            height: clamp(650px, 90vw, 850px);
+            bottom: -15%;
+            right: -15%;
         }
 
         .layer-3 {
-            background-color: rgba(255, 204, 51, 0.2); /* Slightly more opaque */
-            width: 450px;
-            height: 450px;
+            background-color: rgba(255, 204, 51, 0.2);
+            width: clamp(350px, 60vw, 450px);
+            height: clamp(350px, 60vw, 450px);
             top: 50%;
-            left: 12%; /* Shifted */
+            left: 12%;
             transform: translateY(-50%);
         }
         .layer-4 {
             background-color: rgba(90, 112, 224, 0.2);
-            width: 550px;
-            height: 550px;
-            bottom: 12%; /* Shifted */
-            left: 22%; /* Shifted */
+            width: clamp(450px, 70vw, 550px);
+            height: clamp(450px, 70vw, 550px);
+            bottom: 12%;
+            left: 22%;
             transform: translateX(-50%);
         }
 
-        /* --- Particle Overlay (Stardust) --- */
+        /* --- Particle Overlay (Stardust Effect) --- */
         #particle-overlay {
             position: fixed;
             inset: 0;
@@ -575,29 +597,29 @@
 
         .particle-overlay-item {
             position: absolute;
-            background-color: rgba(255, 255, 255, 0.9); /* Brighter */
+            background-color: rgba(255, 255, 255, 0.9);
             border-radius: 50%;
             opacity: 0;
-            animation: twinkle 12s infinite ease-in-out; /* Slower twinkle */
-            box-shadow: 0 0 6px rgba(255, 255, 255, 0.6); /* Stronger glow */
+            animation: twinkle 12s infinite ease-in-out;
+            box-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
         }
 
         @keyframes twinkle {
             0%, 100% { opacity: 0; transform: scale(0.6); }
-            50% { opacity: 0.9; transform: scale(1.1); } /* More pronounced twinkle */
+            50% { opacity: 0.9; transform: scale(1.1); }
         }
 
-        /* --- Comet Cursor --- */
+        /* --- Comet Cursor Trail --- */
         .comet-cursor {
             position: fixed;
-            width: 35px; /* Larger */
+            width: 35px;
             height: 35px;
             background: radial-gradient(circle, #ffe17b 0%, #ffcc33 50%, transparent 80%);
             border-radius: 50%;
             pointer-events: none;
             transform: translate(-50%, -50%);
-            z-index: 1000;
-            filter: drop-shadow(0 0 18px rgba(255, 204, 51, 0.9)); /* Stronger glow */
+            z-index: 1000; /* Ensure high z-index */
+            filter: drop-shadow(0 0 18px rgba(255, 204, 51, 0.9));
             opacity: 0;
             transition: opacity var(--transition-duration-medium) ease;
         }
@@ -611,56 +633,56 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 3px; /* Wider tail */
-            height: 90px; /* Longer tail */
+            width: 3px;
+            height: 90px;
             background: linear-gradient(to bottom, #fffae0, #ffcc33, transparent);
             transform: translate(-50%, 0) rotate(45deg);
             transform-origin: top;
-            filter: blur(12px); /* More blur */
+            filter: blur(12px);
         }
 
-        /* --- Popup Styles --- */
+        /* --- Popup Styles (for intro and final message) --- */
         .popup {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.85); /* Slightly darker overlay */
+            background: rgba(0, 0, 0, 0.85);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 1000;
-            backdrop-filter: blur(12px); /* Increased blur */
+            backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             transition: opacity var(--transition-duration-medium) ease-out, visibility var(--transition-duration-medium) ease-out;
         }
 
         .popup-card {
-            background: linear-gradient(135deg, rgba(20, 30, 60, 0.98), rgba(0, 0, 0, 0.95)); /* Darker, more prominent gradient */
+            background: linear-gradient(135deg, rgba(20, 30, 60, 0.98), rgba(0, 0, 0, 0.95));
             border-radius: var(--border-radius-lg);
-            padding: 2.8rem; /* Increased padding */
-            max-width: 550px; /* Wider */
-            width: 92%; /* Wider on smaller screens */
+            padding: clamp(2rem, 6vw, 2.8rem); /* Responsive padding */
+            max-width: 550px;
+            width: 92%;
             text-align: center;
-            box-shadow: 0 12px 45px rgba(0, 0, 0, 0.9), 0 0 60px rgba(106, 130, 251, 0.8); /* Stronger, more diffused shadow */
+            box-shadow: 0 12px 45px rgba(0, 0, 0, 0.9), 0 0 60px rgba(106, 130, 251, 0.8);
             position: relative;
-            animation: popupEnter 0.9s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards; /* Slower, bouncier entry */
+            animation: popupEnter 0.9s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
             cursor: pointer;
-            border: 2px solid rgba(106, 130, 251, 0.7); /* Stronger border */
+            border: 2px solid rgba(106, 130, 251, 0.7);
             transition: transform var(--transition-duration-fast) ease, box-shadow var(--transition-duration-fast) ease;
         }
 
         @keyframes popupEnter {
-            0% { transform: scale(0.4); opacity: 0; } /* Starts smaller */
+            0% { transform: scale(0.4); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
         }
 
         .popup-card:hover {
-            transform: scale(1.03); /* More pronounced hover */
-            box-shadow: 0 15px 55px rgba(0, 0, 0, 0.95), 0 0 70px rgba(106, 130, 251, 0.9); /* Stronger hover glow */
+            transform: scale(1.03);
+            box-shadow: 0 15px 55px rgba(0, 0, 0, 0.95), 0 0 70px rgba(106, 130, 251, 0.9);
         }
 
         .popup-card h2 {
             color: var(--color-gold-light);
-            font-size: clamp(1.6rem, 4vw, 2.1rem); /* Adjusted font size */
+            font-size: clamp(1.6rem, 4vw, 2.1rem);
             margin-top: 1.2rem;
             line-height: 1.3;
             text-shadow: 0 0 12px var(--color-gold-glow);
@@ -668,29 +690,29 @@
 
         .popup-card .gif-top {
             position: absolute;
-            top: -25px; /* Slightly higher */
+            top: -25px;
             left: 50%;
             transform: translateX(-50%);
-            width: 110px; /* Larger */
+            width: clamp(90px, 18vw, 110px); /* Responsive width */
             height: auto;
             border-radius: var(--border-radius-sm);
-            box-shadow: 0 0 18px rgba(255, 204, 51, 0.9); /* Stronger glow */
-            border: 4px solid rgba(255, 204, 51, 0.7); /* Thicker border */
-            animation: floatPop 3.5s ease-in-out infinite alternate; /* Slower float */
+            box-shadow: 0 0 18px rgba(255, 204, 51, 0.9);
+            border: 4px solid rgba(255, 204, 51, 0.7);
+            animation: floatPop 3.5s ease-in-out infinite alternate;
         }
 
         @keyframes floatPop {
             0% { transform: translateX(-50%) translateY(0); }
-            50% { transform: translateX(-50%) translateY(-12px); } /* More vertical movement */
+            50% { transform: translateX(-50%) translateY(-12px); }
             100% { transform: translateX(-50%) translateY(0); }
         }
 
         .popup-card .gif-main {
-            max-width: 95%; /* Wider */
+            max-width: 95%;
             height: auto;
             border-radius: var(--border-radius-md);
             margin-top: 1.2rem;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7), 0 0 50px rgba(255, 204, 51, 0.8); /* Stronger, softer shadow */
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7), 0 0 50px rgba(255, 204, 51, 0.8);
         }
 
         /* --- Sparkles (After Intro) --- */
@@ -699,33 +721,34 @@
             background-color: var(--color-gold-light);
             border-radius: 50%;
             opacity: 0;
-            animation: sparkleTwinkle 10s infinite ease-in-out; /* Slower twinkle */
+            animation: sparkleTwinkle 10s infinite ease-in-out;
             pointer-events: none;
             z-index: 2;
-            box-shadow: 0 0 12px var(--color-gold-glow); /* Stronger glow */
-            width: 5px; /* Larger */
-            height: 5px;
+            box-shadow: 0 0 12px var(--color-gold-glow);
+            width: clamp(3px, 0.8vw, 5px);
+            height: clamp(3px, 0.8vw, 5px);
         }
 
         @keyframes sparkleTwinkle {
             0%, 100% { opacity: 0; transform: scale(0.6); }
-            20%, 60% { opacity: 0.95; transform: scale(1.1); } /* More pronounced sparkle */
+            20%, 60% { opacity: 0.95; transform: scale(1.1); }
+            100% { opacity: 0; transform: scale(0.6); }
         }
 
         /* Screen shake effect for meteor shower */
         body.screen-shaking {
-            animation: shake 0.6s ease-out forwards; /* Slower shake */
+            animation: shake 0.6s ease-out forwards;
             animation-iteration-count: 2;
         }
 
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-8px); } /* More intense shake */
+            25% { transform: translateX(-8px); }
             50% { transform: translateX(8px); }
             75% { transform: translateX(-8px); }
         }
 
-        /* --- New Loading Overlay (Twinkling Star & Storytelling) --- */
+        /* --- Loading Overlay (Twinkling Star & Storytelling) --- */
         #loadingOverlay {
             position: fixed;
             inset: 0;
@@ -735,14 +758,14 @@
             align-items: center;
             justify-content: center;
             z-index: 1001;
-            transition: opacity 1.2s ease-out, visibility 1.2s ease-out; /* Slower transition */
+            transition: opacity 1.2s ease-out, visibility 1.2s ease-out;
         }
 
         .loading-star-container {
-            width: 170px; /* Larger */
-            height: 170px;
+            width: clamp(120px, 25vw, 170px);
+            height: clamp(120px, 25vw, 170px);
             position: relative;
-            margin-bottom: 45px;
+            margin-bottom: clamp(20px, 5vw, 45px);
         }
 
         .loading-star {
@@ -752,32 +775,33 @@
             position: absolute;
             clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
             opacity: 0;
-            animation: starTwinkle 3.2s ease-out forwards infinite; /* Slower twinkle */
+            animation: starTwinkle 3.2s ease-out forwards infinite;
             transform-origin: center;
-            box-shadow: 0 0 45px var(--color-gold-glow); /* Stronger glow */
+            box-shadow: 0 0 45px var(--color-gold-glow);
         }
 
         @keyframes starTwinkle {
             0% { transform: scale(0) rotate(0deg); opacity: 0; }
-            40% { transform: scale(1.3) rotate(20deg); opacity: 1; } /* More pronounced scale and rotate */
+            40% { transform: scale(1.3) rotate(20deg); opacity: 1; }
             80% { transform: scale(1.2) rotate(0deg); opacity: 0.9; }
             100% { transform: scale(0) rotate(-20deg); opacity: 0; }
         }
 
         .loading-text {
             font-family: 'Playfair Display', serif;
-            font-size: clamp(1.9rem, 4vw, 2.6rem); /* Adjusted font size */
+            font-size: clamp(1.6rem, 4vw, 2.6rem);
             color: var(--color-gold-light);
             opacity: 0;
-            position: absolute; /* To overlap */
+            position: absolute;
             transform: translateY(35px);
-            animation: none; /* Controlled by JS */
-            letter-spacing: 0.06em; /* Slightly more letter spacing */
+            animation: none;
+            letter-spacing: 0.06em;
             text-align: center;
             text-shadow: 0 0 15px var(--color-gold-glow);
+            padding: 0 1rem; /* Added padding to prevent text overflow */
         }
-        .loading-text.active-text { /* Renamed to avoid conflict */
-            animation: fadeInOutLoadingText 4.5s ease-in-out forwards; /* Slower fade */
+        .loading-text.active-text {
+            animation: fadeInOutLoadingText 4.5s ease-in-out forwards;
         }
 
         @keyframes fadeInOutLoadingText {
@@ -791,31 +815,31 @@
             background: linear-gradient(45deg, #ffe9a3, #ffd700, #c9b037);
             border-radius: 50%;
             transform: rotate(45deg);
-            filter: drop-shadow(0 0 18px #ffe17b); /* Stronger glow */
+            filter: drop-shadow(0 0 18px #ffe17b);
             opacity: 0.95;
             z-index: 3;
-            width: 8px; /* Slightly larger base */
+            width: clamp(6px, 1.2vw, 8px);
         }
 
         .meteor::after {
             content: '';
             position: absolute;
-            width: 14px; /* Larger tail head */
-            height: 14px;
+            width: clamp(10px, 1.8vw, 14px);
+            height: clamp(10px, 1.8vw, 14px);
             border-radius: 50%;
             top: 90%;
             left: -7px;
             background: radial-gradient(circle, #fffacd 0%, transparent 70%);
-            box-shadow: 0 0 25px 10px rgba(255, 235, 150, 0.7); /* Stronger glow */
+            box-shadow: 0 0 25px 10px rgba(255, 235, 150, 0.7);
         }
 
         @keyframes fall {
             0% {
                 transform: translate(var(--start-x), var(--start-y)) rotate(45deg);
-                opacity: 0; /* Start invisible */
+                opacity: 0;
             }
             10% {
-                opacity: 1; /* Fade in quickly */
+                opacity: 1;
             }
             100% {
                 transform: translate(var(--end-x), var(--end-y)) rotate(45deg);
@@ -823,47 +847,46 @@
             }
         }
 
-        /* --- Wish Text --- */
+        /* --- Wish Text Prompt --- */
         .wish-text-prompt {
             position: fixed;
             top: 15%;
             left: 50%;
             transform: translateX(-50%);
             color: var(--color-gold-light);
-            font-size: clamp(2em, 4vw, 2.8em); /* Larger font */
-            text-shadow: 0 0 18px var(--color-gold-glow), 0 0 30px var(--color-primary-accent); /* Stronger glow */
-            animation: floatText 5.5s ease-in-out infinite; /* Slower float */
+            font-size: clamp(1.8em, 4.5vw, 2.8em);
+            text-shadow: 0 0 18px var(--color-gold-glow), 0 0 30px var(--color-primary-accent);
+            animation: floatText 5.5s ease-in-out infinite;
             z-index: 10;
             transition: opacity var(--transition-duration-medium) ease-in-out;
             font-family: 'Outfit', sans-serif;
-            letter-spacing: 0.06em; /* Slightly more letter spacing */
+            letter-spacing: 0.06em;
             text-align: center;
             white-space: normal;
-            padding: 0 1.2rem;
-            box-sizing: border-box;
+            padding: 0 clamp(0.8rem, 4vw, 1.2rem);
         }
 
         @keyframes floatText {
             0%, 100% { transform: translateX(-50%) translateY(0); }
-            50% { transform: translateX(-50%) translateY(-18px); } /* More vertical movement */
+            50% { transform: translateX(-50%) translateY(-18px); }
         }
 
         /* Particle burst for meteor impact */
         .burst-particle {
             position: absolute;
-            width: 8px; /* Larger */
-            height: 8px;
+            width: clamp(6px, 1.2vw, 8px);
+            height: clamp(6px, 1.2vw, 8px);
             border-radius: 50%;
             background: #fffae0;
-            box-shadow: 0 0 12px 3px #ffe99b; /* Stronger glow */
+            box-shadow: 0 0 12px 3px #ffe99b;
             opacity: 1;
-            animation: burst 1.2s ease-out forwards; /* Slower burst */
+            animation: burst 1.2s ease-out forwards;
             z-index: 5;
         }
 
         @keyframes burst {
             0% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(3); opacity: 0; } /* Larger scale */
+            100% { transform: scale(3); opacity: 0; }
         }
 
         /* Wishing Dust Collection */
@@ -872,27 +895,26 @@
             background-color: var(--color-gold-light);
             border-radius: 50%;
             opacity: 0;
-            animation: wishingDustCollect 2.5s ease-out forwards; /* Slower collection */
+            animation: wishingDustCollect 2.5s ease-out forwards;
             box-shadow: 0 0 6px var(--color-gold-glow);
             z-index: 4;
         }
         @keyframes wishingDustCollect {
-            0% { transform: translate(0, 0) scale(0.6); opacity: 0.9; } /* Starts larger, more opaque */
+            0% { transform: translate(0, 0) scale(0.6); opacity: 0.9; }
             50% { transform: translate(var(--target-x), var(--target-y)) scale(1.1); opacity: 1; }
             100% { transform: translate(var(--target-x), var(--target-y)) scale(0.3); opacity: 0; }
         }
 
-
         /* --- Starlight Particles for "Whispers of Starlight" --- */
         .whisper-starlight-particle {
             position: fixed;
-            width: 4px; /* Larger */
-            height: 4px;
+            width: clamp(3px, 0.8vw, 4px);
+            height: clamp(3px, 0.8vw, 4px);
             background-color: var(--color-gold-light);
             border-radius: 50%;
             opacity: 0;
-            box-shadow: 0 0 10px var(--color-gold-glow); /* Stronger glow */
-            animation: fallWhisperStarlight 3s ease-out forwards; /* Slower fall */
+            box-shadow: 0 0 10px var(--color-gold-glow);
+            animation: fallWhisperStarlight 3s ease-out forwards;
             z-index: 100;
             pointer-events: none;
         }
@@ -900,41 +922,42 @@
         @keyframes fallWhisperStarlight {
             0% { transform: translateY(-60px) translateX(0); opacity: 0; }
             20% { opacity: 1; }
-            100% { transform: translateY(110vh) translateX(var(--end-x-offset, 0)); opacity: 0; } /* Falls further */
+            100% { transform: translateY(110vh) translateX(var(--end-x-offset, 0)); opacity: 0; }
         }
 
         /* --- Message Bubbles for "Whispers of Starlight" --- */
         .whisper-message-bubble {
             position: fixed;
-            bottom: -60px; /* Starts lower */
+            bottom: -60px;
             left: 50%;
             transform: translateX(-50%);
-            background-color: rgba(255, 204, 51, 0.15); /* Slightly more opaque */
-            border: 1px solid rgba(255, 204, 51, 0.5); /* Stronger border */
+            background-color: rgba(255, 204, 51, 0.15);
+            border: 1px solid rgba(255, 204, 51, 0.5);
             color: var(--color-primary-accent);
-            padding: 15px 25px; /* More padding */
+            padding: clamp(10px, 3vw, 15px) clamp(18px, 4vw, 25px); /* Responsive padding */
             border-radius: var(--border-radius-lg);
-            box-shadow: 0 0 18px rgba(255, 204, 51, 0.7); /* Stronger glow */
+            box-shadow: 0 0 18px rgba(255, 204, 51, 0.7);
             font-family: 'Lora', serif;
             font-style: italic;
-            font-size: 1.2em; /* Larger font */
+            font-size: clamp(1em, 2.5vw, 1.2em);
             text-align: center;
-            white-space: nowrap;
-            animation: floatUpAndFade 4.5s ease-out forwards; /* Slower float */
+            white-space: nowrap; /* Allow wrapping on smaller screens */
+            animation: floatUpAndFade 4.5s ease-out forwards;
             z-index: 101;
             pointer-events: none;
-            position: relative; /* For aura */
+            position: relative;
+            max-width: 90%; /* Ensure it doesn't overflow */
         }
 
         /* Ephemeral Aura for Whisper Bubbles */
         .whisper-message-bubble::after {
             content: '';
             position: absolute;
-            inset: -7px; /* Larger inset */
+            inset: -7px;
             border-radius: var(--border-radius-lg);
-            border: 3px solid rgba(224, 115, 144, 0.5); /* Thicker, more opaque aura */
+            border: 3px solid rgba(224, 115, 144, 0.5);
             opacity: 0;
-            animation: auraExpandFade 2.5s ease-out forwards; /* Slower aura expand */
+            animation: auraExpandFade 2.5s ease-out forwards;
             pointer-events: none;
             z-index: -1;
         }
@@ -948,76 +971,81 @@
             0% { transform: translateX(-50%) translateY(0); opacity: 0; }
             10% { opacity: 0.95; }
             80% { opacity: 0.95; }
-            100% { transform: translateX(-50%) translateY(-220px); opacity: 0; } /* Floats higher */
+            100% { transform: translateX(-50%) translateY(-220px); opacity: 0; }
         }
 
         /* --- Glowing Aura for "Whispers of Starlight" --- */
         body.magic-aura-active {
-            animation: magicAura 3s ease-in-out forwards; /* Slower aura */
+            animation: magicAura 3s ease-in-out forwards;
         }
 
         @keyframes magicAura {
             0% { box-shadow: inset 0 0 0px rgba(255, 204, 51, 0); }
-            50% { box-shadow: inset 0 0 90px rgba(255, 204, 51, 0.4), inset 0 0 160px rgba(255, 204, 51, 0.2); } /* Stronger aura */
+            50% { box-shadow: inset 0 0 90px rgba(255, 204, 51, 0.4), inset 0 0 160px rgba(255, 204, 51, 0.2); }
             100% { box-shadow: inset 0 0 0px rgba(255, 204, 51, 0); }
         }
 
-        /* --- Hover Sparkle Particles (New) --- */
+        /* --- Hover Sparkle Particles --- */
         .hover-sparkle {
             position: absolute;
             background-color: #fffacd;
             border-radius: 50%;
             opacity: 0;
-            animation: hoverSparkleFade 1.2s ease-out forwards; /* Slower fade */
+            animation: hoverSparkleFade 1.2s ease-out forwards;
             pointer-events: none;
             z-index: 10;
-            box-shadow: 0 0 10px #ffcc33; /* Stronger glow */
+            box-shadow: 0 0 10px #ffcc33;
         }
 
         @keyframes hoverSparkleFade {
             0% { transform: scale(0) translateY(0); opacity: 0; }
-            20% { transform: scale(1.1) translateY(-12px); opacity: 0.9; } /* More pronounced scale */
+            20% { transform: scale(1.1) translateY(-12px); opacity: 0.9; }
             100% { transform: scale(0.3) translateY(-35px); opacity: 0; }
         }
 
         /* --- Wish Orb --- */
         .wish-orb {
             position: fixed;
-            bottom: 12%; /* Slightly higher */
+            bottom: 12%;
             left: 50%;
             transform: translateX(-50%);
-            width: 90px; /* Larger */
-            height: 90px;
+            width: clamp(70px, 15vw, 90px);
+            height: clamp(70px, 15vw, 90px);
             border-radius: 50%;
             background: radial-gradient(circle at 70% 30%, #fffacd, #ffcc33);
-            box-shadow: 0 0 35px #ffcc33, 0 0 60px rgba(255, 204, 51, 0.8); /* Stronger glow */
+            box-shadow: 0 0 35px #ffcc33, 0 0 60px rgba(255, 204, 51, 0.8);
             opacity: 0;
-            animation: wishOrbAppear 3.5s ease-out forwards; /* Slower appear */
+            animation: wishOrbAppear 3.5s ease-out forwards;
             z-index: 10;
             pointer-events: none;
         }
 
         @keyframes wishOrbAppear {
-            0% { opacity: 0; transform: translateX(-50%) translateY(60px) scale(0.6); } /* Starts lower, larger */
-            20% { opacity: 1; transform: translateX(-50%) translateY(0) scale(1.1); } /* More pronounced scale */
+            0% { opacity: 0; transform: translateX(-50%) translateY(60px) scale(0.6); }
+            20% { opacity: 1; transform: translateX(-50%) translateY(0) scale(1.1); }
             80% { opacity: 1; transform: translateX(-50%) translateY(-60px) scale(1.15); animation-timing-function: ease-in-out; }
             100% { opacity: 0; transform: translateX(-50%) translateY(-170px) scale(0.9); }
         }
 
-        /* --- Final Message Overlay --- */
+        /* --- Final Message Overlay - REDESIGNED & FIXED SCROLLING --- */
         #finalMessageOverlay {
-            position: fixed; /* Ensures it covers the whole screen */
+            position: fixed;
             inset: 0;
-            background: linear-gradient(135deg, rgba(15, 25, 55, 0.98), rgba(0, 0, 0, 0.95)); /* Darker, richer gradient */
+            background: radial-gradient(circle at center, #0a0a20 0%, #000000 100%); /* Softer, ethereal background */
             display: flex;
-            align-items: center;
-            justify-content: center;
+            flex-direction: column; /* Changed to column */
+            align-items: center; /* Center horizontally */
+            justify-content: flex-start; /* Align to top to allow scrolling */
             z-index: 2000;
-            backdrop-filter: blur(10px); /* Increased blur */
-            -webkit-backdrop-filter: blur(10px);
-            opacity: 0; /* Initially hidden */
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            opacity: 0;
             visibility: hidden;
             transition: opacity var(--transition-duration-slow) ease-out, visibility var(--transition-duration-slow) ease-out;
+            cursor: none;
+            overflow-y: auto; /* IMPORTANT: Enable vertical scrolling for the overlay itself */
+            padding-top: clamp(2rem, 5vw, 4rem); /* Add top padding for spacing on scroll */
+            padding-bottom: clamp(2rem, 5vw, 4rem); /* Add bottom padding for spacing on scroll */
         }
 
         #finalMessageOverlay.active {
@@ -1025,68 +1053,122 @@
             visibility: visible;
         }
 
-        #finalMessageOverlay > div {
-            background: linear-gradient(135deg, rgba(20, 30, 60, 0.85), rgba(0, 0, 0, 0.75)); /* Gradient background */
-            padding: 2.5rem; /* More padding */
+        #finalMessageOverlay .final-message-card { /* New class for the card */
+            background: linear-gradient(135deg, rgba(25, 35, 70, 0.6), rgba(0, 0, 0, 0.5));
             border-radius: var(--border-radius-lg);
-            box-shadow: 0 0 60px var(--color-accent-blue), 0 0 90px var(--color-accent-purple); /* Stronger, more diffused glow */
-            backdrop-filter: blur(10px); /* Increased blur */
-            -webkit-backdrop-filter: blur(10px);
+            padding: clamp(2rem, 5vw, 3.5rem); /* Generous padding */
+            max-width: 700px; /* Max width for readability */
+            width: 90%;
             text-align: center;
-            max-width: 800px;
-            width: 90%; /* Responsive width */
-            box-sizing: border-box; /* Include padding in width */
-            margin: auto; /* Center it */
-            animation: popupEnter 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards; /* Use popup entry animation */
+            box-shadow: 0 0 50px rgba(106, 130, 251, 0.5), 0 0 80px rgba(224, 115, 144, 0.3);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            margin-left: auto; /* Center horizontally */
+            margin-right: auto; /* Center horizontally */
+            /* Removed margin: auto; that centered vertically and prevented scroll */
+            animation: popupEnter 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 1px solid rgba(106, 130, 251, 0.3);
+            position: relative;
+            overflow: hidden;
+            min-height: fit-content; /* Ensure it's not squashed */
+            max-height: 90vh; /* Allow internal scrolling if content is super long */
+        }
+
+        /* Inner particles for the final message card */
+        .final-message-card::before, .final-message-card::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, #fffacd 0%, transparent 70%);
+            opacity: 0.1;
+            filter: blur(20px);
+            pointer-events: none;
+            animation: floatAndFade 20s infinite ease-in-out alternate;
+        }
+        .final-message-card::before {
+            width: 150px; height: 150px;
+            top: 10%; left: 10%;
+            animation-delay: 0s;
+        }
+        .final-message-card::after {
+            width: 180px; height: 180px;
+            bottom: 15%; right: 10%;
+            animation-delay: 5s;
+        }
+        @keyframes floatAndFade {
+            0% { transform: translate(0, 0) scale(1); opacity: 0.1; }
+            50% { transform: translate(20px, 15px) scale(1.05); opacity: 0.15; }
+            100% { transform: translate(0, 0) scale(1); opacity: 0.1; }
         }
 
         #finalMessageOverlay h2 {
-            font-size: clamp(2.2rem, 5.5vw, 3.2rem); /* Larger font */
-            text-shadow: 0 0 25px var(--color-gold-glow); /* Stronger glow */
-            margin-bottom: 1.5rem; /* More space below heading */
+            font-size: clamp(2.5rem, 5vw, 3.8rem); /* Larger, more impactful heading */
+            color: var(--color-gold-light);
+            text-shadow: 0 0 20px var(--color-gold-glow), 0 0 40px rgba(255, 204, 51, 0.6);
+            margin-bottom: clamp(1rem, 2.5vw, 1.5rem);
+            line-height: 1.2;
+            letter-spacing: 0.03em; /* Slightly more space for elegance */
         }
 
         #finalMessageOverlay p {
-            font-size: clamp(1.2rem, 3.2vw, 1.5rem); /* Larger font */
-            margin-top: 1.8rem;
-            line-height: 1.9; /* More spacious line height */
-            color: var(--color-primary); /* Ensure consistent text color */
+            font-family: 'Lora', serif; /* Use Lora for body text for elegance */
+            font-size: clamp(1.15rem, 2.5vw, 1.4rem); /* Refined font size for main text */
+            margin-top: clamp(1.5rem, 3vw, 2rem);
+            line-height: 1.9; /* More generous line height for readability */
+            color: var(--color-primary);
+            max-width: 600px; /* Control line length */
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            text-shadow: 0 0 5px rgba(0,0,0,0.3); /* Subtle text shadow */
+            word-wrap: break-word; /* Ensure text wraps within paragraph */
+            overflow-wrap: break-word; /* Modern equivalent */
+            hyphens: auto; /* Allow hyphenation for better word breaking */
+        }
+
+        #finalMessageOverlay .btn { /* Restyle the button for the final page */
+            background: linear-gradient(45deg, #7b92ff, #ff6a8b); /* Softer, blended gradient */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), 0 0 25px rgba(255, 204, 51, 0.5); /* Softer glow */
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            padding: clamp(1rem, 3vw, 1.2rem) clamp(2rem, 5vw, 2.5rem);
+            min-width: unset; /* Remove min-width to allow content to dictate size */
+            margin-top: clamp(2rem, 4vw, 3rem); /* More space above button */
+        }
+        #finalMessageOverlay .btn:hover {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 40px rgba(255, 204, 51, 0.7), inset 0 0 15px var(--color-gold-light);
+            background: linear-gradient(45deg, #8ba0ff, #ff899b); /* Slightly brighter on hover */
+            transform: translateY(-3px) scale(1.02);
         }
 
 
-        /* --- Responsive Adjustments --- */
-        @media (max-width: 768px) {
-            h1 { font-size: clamp(2.2rem, 5.5vw, 2.8rem); }
-            .message { font-size: clamp(0.95rem, 2.8vw, 1.05rem); padding: 1.5rem; }
-            .btn { padding: 0.9rem 1.8rem; font-size: clamp(0.95rem, 2.8vw, 1.05rem); min-width: 180px; }
-            .popup-card h2 { font-size: clamp(1.5rem, 4.5vw, 1.8rem); }
-            .popup-card .gif-top { width: 100px; top: -20px; }
-            .wish-text-prompt { font-size: clamp(1.5em, 3.8vw, 1.8em); top: 12%; }
-            .love-meter-title { font-size: clamp(1.3rem, 3.2vw, 1.6rem); }
-            .love-status-message { font-size: clamp(0.95rem, 2.2vw, 1.05rem); }
-        }
-
-        @media (max-width: 480px) {
-            #mainContent { padding: 1.2rem; }
-            h1 { font-size: clamp(2rem, 6.5vw, 2.2rem); }
-            p { font-size: clamp(0.88rem, 2.8vw, 0.95rem); }
-            .btn { width: calc(100% - 1.5rem); margin: 0.8rem auto; max-width: unset; }
-            .popup-card h2 { font-size: clamp(1.3rem, 5vw, 1.5rem); }
-            .popup-card .gif-main { width: 95%; }
-            .wish-text-prompt { font-size: clamp(1.2em, 4.5vw, 1.3em); top: 10%; white-space: normal; }
-            .whisper-message-bubble {
-                font-size: 1em;
-                padding: 10px 18px;
-                white-space: normal;
-                max-width: 95%;
-                left: 50%;
-                transform: translateX(-50%);
-            }
-            .background-blob { filter: blur(60px); }
+        /* Music hint text */
+        .music-hint {
+            font-family: 'Lora', serif;
+            font-size: clamp(0.8em, 2vw, 0.9em); /* Responsive font size */
+            color: var(--color-secondary);
+            opacity: 0.7;
+            margin-top: -1.2rem;
+            margin-bottom: clamp(1.2rem, 3vw, 1.8rem);
+            text-align: center;
+            transition: opacity 0.5s ease-out;
+            pointer-events: none;
+            padding: 0 0.8rem; /* Add padding to prevent overflow on very small screens */
         }
     </style>
 </head>
 <body>
+
+    <audio id="introMusic" loop>
+        <source src="music1.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    <audio id="mainMusic" loop>
+        <source src="music2.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
 
     <div id="loadingOverlay" class="active">
         <div class="loading-star-container">
@@ -1095,7 +1177,6 @@
         <p class="loading-text" id="loadingText1">🌌 Glimpsing distant constellations...</p>
         <p class="loading-text" id="loadingText2">💫 Stirring ancient magic...</p>
         <p class="loading-text" id="loadingText3">💖 Crafting a universe just for you...</p>
-        <audio id="loadingSound" src="https://assets.mixkit.co/sfx/preview/mixkit-magic-chimes-melody-1135.mp3" preload="auto" loop></audio>
     </div>
 
     <div id="particle-overlay"></div>
@@ -1118,13 +1199,14 @@
 
     <main class="content hidden" id="mainContent">
         <h1 class="content-block hidden" id="mainTitle">Happy Birthday, my cherished Quackers! <span aria-hidden="true">💖</span></h1>
+        <p class="music-hint hidden" id="musicHint">🎶 Listen closely, this melody is just for you... 💖</p>
+
 
         <div class="gif-inline-container content-block hidden" id="gifBlock1">
             <img src="https://media.tenor.com/kDB-vGnoBmUAAAAj/bubu-dudu-excited.gif" alt="Bubu Dudu Excited GIF" loading="lazy" />
         </div>
 
-        <p class="message content-block hidden" id="messageBlock1">
-            </p>
+        <p class="message content-block hidden" id="messageBlock1"></p>
 
         <div class="button-group content-block hidden" id="chapter1ButtonGroup">
             <button id="startJourneyBtn" class="btn hidden"><span>Begin Our Journey 💖</span></button>
@@ -1171,10 +1253,9 @@
              <button id="whispersOfStarlightBtn" class="btn hidden"><span>Whispers of Starlight 💫</span></button>
         </div>
 
-         <div class="button-group content-block hidden" id="finalChapterButtonGroup">
+        <div class="button-group content-block hidden" id="finalChapterButtonGroup">
             <button id="finalMessageBtn" class="btn hidden disabled"><span>Unveil My Heart's True Message ❤️</span></button>
         </div>
-
 
         <footer>Always your devoted Doofy 🐾💖</footer>
     </main>
@@ -1185,7 +1266,7 @@
     <div id="whispersContainer" style="position: fixed; inset: 0; pointer-events: none; z-index: 100;"></div>
 
     <div id="finalMessageOverlay" class="hidden">
-        <div>
+        <div class="final-message-card">
             <h2>🌙 You're Someone I’m Grateful to Know</h2>
             <p>
                 Quackers, today’s about you — and I just want to say thank you. <br><br>
@@ -1195,24 +1276,14 @@
                 Happy Birthday 💛<br>
                 — Doofy 🐾
             </p>
+            <button id="nextRealmBtn" class="btn"><span>Let's Go to the Next Realm ✨</span></button>
         </div>
     </div>
 
-
-    <audio id="clickSound" src="https://assets.mixkit.co/sfx/preview/mixkit-software-interface-button-2575.mp3" preload="auto"></audio>
-    <audio id="revealSound" src="https://assets.mixkit.co/sfx/preview/mixkit-magic-sparkle-tinny-901.mp3" preload="auto"></audio>
-    <audio id="confettiSound" src="https://assets.mixkit.co/sfx/preview/mixkit-firework-burst-1234.mp3" preload="auto"></audio>
-    <audio id="celebrateSound" src="https://assets.mixkit.co/sfx/preview/mixkit-melodic-chime-bf-123.mp3" preload="auto"></audio>
-    <audio id="meteorSound" src="https://assets.mixkit.co/sfx/preview/mixkit-sci-fi-sweep-2598.mp3" preload="auto"></audio>
-    <audio id="explosionSound" src="https://assets.mixkit.co/sfx/preview/mixkit-explosion-arcade-game-2520.mp3" preload="auto"></audio>
-    <audio id="heartbeatSound" src="https://assets.mixkit.co/sfx/preview/mixkit-fast-heartbeat-1090.mp3" preload="auto"></audio>
-    <audio id="levelUpSound" src="https://assets.mixkit.co/sfx/preview/mixkit-video-game-treasure-2067.mp3" preload="auto"></audio>
-    <audio id="typewriterSound" src="https://assets.mixkit.co/sfx/preview/mixkit-typewriter-text-edit-2541.mp3" preload="auto"></audio>
-
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // --- DOM Element References ---
             const loadingOverlay = document.getElementById('loadingOverlay');
-            const loadingSound = document.getElementById('loadingSound');
             const loadingTexts = [
                 document.getElementById('loadingText1'),
                 document.getElementById('loadingText2'),
@@ -1223,10 +1294,11 @@
             const introPopup = document.getElementById('introPopup');
             const popupClickArea = document.getElementById('popupClickArea');
             const mainContent = document.getElementById('mainContent');
+            const musicHint = document.getElementById('musicHint');
 
             const mainTitle = document.getElementById('mainTitle');
             const gifBlock1 = document.getElementById('gifBlock1');
-            const messageBlock1 = document.getElementById('messageBlock1');
+            const messageBlock1 = document.getElementById('messageBlock1'); // Main story message
             const gifBlock2 = document.getElementById('gifBlock2');
 
             const startJourneyBtn = document.getElementById('startJourneyBtn');
@@ -1235,6 +1307,7 @@
             const makeAWishBtn = document.getElementById('makeAWishBtn');
             const whispersOfStarlightBtn = document.getElementById('whispersOfStarlightBtn');
             const finalMessageBtn = document.getElementById('finalMessageBtn');
+            const nextRealmBtn = document.getElementById('nextRealmBtn'); // New button
 
             const chapter1ButtonGroup = document.getElementById('chapter1ButtonGroup');
             const chapter2ButtonGroup = document.getElementById('chapter2ButtonGroup');
@@ -1263,17 +1336,10 @@
 
             const cometCursor = document.getElementById('cometCursor');
 
-            const clickSound = document.getElementById('clickSound');
-            const revealSound = document.getElementById('revealSound');
-            const confettiSound = document.getElementById('confettiSound');
-            const celebrateSound = document.getElementById('celebrateSound');
-            const meteorSound = document.getElementById('meteorSound');
-            const explosionSound = document.getElementById('explosionSound');
-            const heartbeatSound = document.getElementById('heartbeatSound');
-            const levelUpSound = document.getElementById('levelUpSound');
-            const typewriterSound = document.getElementById('typewriterSound');
+            const introMusic = document.getElementById('introMusic');
+            const mainMusic = document.getElementById('mainMusic');
 
-
+            // --- Data for Gifs, Compliments, and Messages ---
             const hugGifs = [
                 "https://media.tenor.com/ScOwzW70wHIAAAAj/bubu.gif",
                 "https://media.tenor.com/2bw-Zzp-mTMAAAAj/bear-hug.gif",
@@ -1289,12 +1355,12 @@
                 "Your kindness shines brighter than any star. ✨",
                 "The quiet strength you possess is truly inspiring. 💪",
                 "You bring a gentle warmth to every moment. 🔥",
-                "Your presence is a comforting melody. 🎶",
-                "You have a heart of gold, pure and true. 💛",
-                "Simply being yourself makes the world a better place. 🌍",
-                "Your empathy is a rare and beautiful gift. 🎁",
-                "You're as refreshing as a cool breeze on a summer day. 🌬️",
-                "May your day be filled with as much joy as you give to others. 😊"
+                "Your presence is a comforting melody.🎶",
+                "You have a heart of gold, pure and true.💛",
+                "Simply being yourself makes the world a better place.🌍",
+                "Your empathy is a rare and beautiful gift.🎁",
+                "You're as refreshing as a cool breeze on a summer day.🌬️",
+                "May your day be filled with as much joy as you give to others.😊"
             ];
 
             const whisperMessages = [
@@ -1308,8 +1374,9 @@
             ];
 
             const mainStoryMessage = "Hey sweet Quackers! 🦆\n\nYour Doofy here, enveloping you in *gentle* embrace energy and warm smiles!\nJust like these adorable companions, I'm genuinely thrilled to celebrate the wonderful person you are today.\nYou’re the quiet strength in my life, the most comforting presence, and the sweetest reason to cherish every moment.\n\nMay this special day bring gentle laughter, tender solace, and a heart overflowing with quiet joy. 💕";
+            const wishConfirmationMessage = "Your wish has soared into the cosmos, gathering stardust and dreams! ✨ May it manifest into the gentle joys you deserve.";
 
-
+            // --- State Variables ---
             let loveCount = 0;
             const maxLove = 100;
             const loveMessages = {
@@ -1323,7 +1390,7 @@
 
             const confettiColors = ['#E0E0E0', '#B0B9C6', '#6B7280', '#ffcc33'];
 
-            // Track if one-time events/interactions have occurred
+            // Track if one-time events/interactions have occurred to prevent re-triggering love points
             let hugClicked = false;
             let complimentClicked = false;
             let wishMade = false;
@@ -1332,87 +1399,62 @@
 
             // --- Core Functions ---
 
-            function playSound(audioElement) {
-                if (audioElement) {
-                    audioElement.currentTime = 0;
-                    audioElement.play().catch(e => console.warn("Audio play failed:", e));
-                }
-            }
-
-            function stopSound(audioElement) {
-                if (audioElement) {
-                    audioElement.pause();
-                    audioElement.currentTime = 0;
-                }
-            }
-
-            // Cosmic Calligraphy: Text reveal with glowing animation
+            /**
+             * Implements a typewriter effect with glowing characters for specific elements.
+             * Each character is wrapped in a span and animated individually.
+             * This version is used for compliment and wish messages.
+             * @param {HTMLElement} element - The DOM element to type into.
+             * @param {string} text - The text content to type.
+             * @param {number} charDelay - Delay between typing each character (in ms).
+             * @param {function} callback - Function to call after the typing effect completes.
+             */
             function typeWriterEffect(element, text, charDelay = 40, callback = () => {}) {
-                let i = 0;
-                // Clear any existing content
-                element.innerHTML = '';
-                // Ensure the element is ready for typing (its parent content-block should already be active)
-                // We do NOT set visibility:visible here; the CSS classes handle it.
+                element.innerHTML = ''; // Clear existing content
 
-                // Stop any previous typing sound and start new one
-                if (typewriterSound) {
-                    typewriterSound.pause();
-                    typewriterSound.currentTime = 0;
-                    typewriterSound.play();
-                }
+                const chars = text.split('');
+                let totalSpans = 0;
 
-                // Process text to handle newlines and create individual spans
-                const lines = text.split('\n');
-                lines.forEach((line, lineIndex) => {
-                    const chars = line.split('');
-                    chars.forEach(char => {
+                chars.forEach(char => {
+                    if (char === '\n') {
+                        element.appendChild(document.createElement('br')); // Explicit <br> for new lines
+                    } else {
                         const span = document.createElement('span');
                         span.textContent = char === ' ' ? '\u00A0' : char; // Use non-breaking space for spaces
+                        span.style.animation = `textFadeInGlow 0.9s forwards cubic-bezier(0.2, 0.8, 0.4, 1.2)`;
+                        span.style.animationDelay = `${totalSpans * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--typewriter-char-delay'))}s`;
                         element.appendChild(span);
-                    });
-                    if (lineIndex < lines.length - 1) {
-                        element.appendChild(document.createElement('br'));
+                        totalSpans++;
                     }
                 });
 
-                const spans = element.querySelectorAll('span');
+                // Calculate total animation duration for callback timing
+                const actualAnimatedChars = text.replace(/\n/g, '').length;
+                const totalAnimationDuration = (actualAnimatedChars * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--typewriter-char-delay')) * 1000) + 900;
 
-                function typeChar() {
-                    if (i < spans.length) {
-                        // Crucial fix: Only set animation delay, let CSS handle opacity change
-                        spans[i].style.animationDelay = `${i * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--typewriter-char-delay'))}s`;
-                        // Removed: spans[i].style.opacity = 1; (This was causing the issue)
-                        i++;
-                        // Use requestAnimationFrame for smoother timing
-                        requestAnimationFrame(() => setTimeout(typeChar, charDelay));
-                    } else {
-                        if (typewriterSound) typewriterSound.pause();
-                        setTimeout(() => {
-                            callback();
-                        }, (spans.length * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--typewriter-char-delay')) * 1000) + 900); // Wait for last char animation to finish
-                    }
-                }
-                typeChar();
+                setTimeout(() => {
+                    callback();
+                }, totalAnimationDuration);
             }
 
-
+            /**
+             * Updates the love meter progress bar and message.
+             * Also triggers visual effects like aura and node lighting.
+             * @param {number} amount - The amount to add to the love count.
+             */
             function updateLoveMeter(amount) {
-                const prevLoveCount = loveCount;
                 loveCount = Math.min(maxLove, loveCount + amount);
                 loveCountSpan.textContent = loveCount;
                 loveProgressBar.style.width = `${loveCount}%`;
 
-                // Love Meter Aura effect and pulsing
+                // Update aura class based on love progress
                 loveMeterElement.classList.remove('aura-level-1', 'aura-level-2', 'aura-level-3', 'aura-level-4');
                 let auraClass = '';
                 if (loveCount >= 25 && loveCount < 50) {
                     auraClass = 'aura-level-1';
                 } else if (loveCount >= 50 && loveCount < 75) {
                     auraClass = 'aura-level-2';
-                    if (prevLoveCount < 50) playSound(levelUpSound); // Milestone sound
                 } else if (loveCount >= 75 && loveCount < 100) {
                     auraClass = 'aura-level-3';
-                    if (prevLoveCount < 75) playSound(levelUpSound); // Milestone sound
                 } else if (loveCount === 100) {
                     auraClass = 'aura-level-4';
                 }
@@ -1420,8 +1462,7 @@
                      loveMeterElement.classList.add(auraClass);
                 }
 
-
-                // Golden Thread: Light up star nodes
+                // Light up love star nodes based on progress
                 loveStarNodes.forEach(node => {
                     const level = parseInt(node.dataset.level);
                     if (loveCount >= level) {
@@ -1431,20 +1472,22 @@
                     }
                 });
 
-
+                // Add shimmering effect to ribbon when love is increasing but not yet full
                 if (amount > 0 && loveCount < 100) {
                     loveProgressBar.classList.add('active-shimmer');
-                    createLoveDustSparkles(loveMeterElement); // Trigger love dust from love meter
+                    createLoveDustSparkles(loveMeterElement);
                 } else {
                     loveProgressBar.classList.remove('active-shimmer');
                 }
 
-                if (loveCount > 0 && loveCount < 100) { // Pulse only when not full
+                // Add pulsing effect to love meter when not full
+                if (loveCount > 0 && loveCount < 100) {
                     loveMeterElement.classList.add('love-meter-pulsing');
                 } else {
                     loveMeterElement.classList.remove('love-meter-pulsing');
                 }
 
+                // Update love status message
                 let currentMessage = loveMessages[0];
                 const sortedThresholds = Object.keys(loveMessages).map(Number).sort((a, b) => a - b);
                 for (const threshold of sortedThresholds) {
@@ -1456,26 +1499,26 @@
 
                 if (loveCount > 0 && loveCount < 100 && amount > 0) triggerConfetti(15);
                 
-                // NEW: Unlock buttons based on love meter progress
                 if (loveCount >= 25 && chapter3ButtonGroup.classList.contains('hidden')) {
                     revealSection(chapter3ButtonGroup, 'button-group');
-                    playSound(levelUpSound);
                 }
                 if (loveCount >= 50 && chapter4ButtonGroup.classList.contains('hidden')) {
                     revealSection(chapter4ButtonGroup, 'button-group');
-                    playSound(levelUpSound);
                 }
 
-                checkFinalMessageUnlock(); // Check for final message unlock after each love update
+                checkFinalMessageUnlock();
             }
 
-
+            /**
+             * Creates small, temporary sparkle particles around a source element.
+             * @param {HTMLElement} sourceElement - The element from which sparkles originate.
+             */
             function createLoveDustSparkles(sourceElement) {
                 const rect = sourceElement.getBoundingClientRect();
                 const sparkleCount = 5;
                 for (let i = 0; i < sparkleCount; i++) {
                     const sparkle = document.createElement('div');
-                    sparkle.className = 'hover-sparkle'; // Re-use sparkle class, adjust color
+                    sparkle.className = 'hover-sparkle';
                     sparkle.style.left = `${rect.left + rect.width / 2}px`;
                     sparkle.style.top = `${rect.top + rect.height / 2}px`;
                     sparkle.style.animationDelay = `${Math.random() * 0.1}s`;
@@ -1489,9 +1532,11 @@
                 }
             }
 
-
+            /**
+             * Triggers a burst of confetti animation.
+             * @param {number} count - Number of confetti pieces to generate.
+             */
             function triggerConfetti(count = 30) {
-                playSound(confettiSound);
                 for (let i = 0; i < count; i++) {
                     const confetti = document.createElement('div');
                     confetti.className = 'confetti-piece';
@@ -1507,6 +1552,9 @@
                 }
             }
 
+            /**
+             * Creates a single floating star animation.
+             */
             function createFloatingStar() {
                 const star = document.createElement('div');
                 star.className = 'floating-star-hug';
@@ -1518,13 +1566,15 @@
                 star.addEventListener('animationend', () => star.remove());
             }
 
-            // --- New: Whispers of Starlight Effects ---
-
+            /**
+             * Triggers the "Whispers of Starlight" visual effects.
+             * @param {string} message - The message to display in the bubble.
+             */
             function triggerWhispersOfStarlight(message) {
                 document.body.classList.add('magic-aura-active');
                 setTimeout(() => {
                     document.body.classList.remove('magic-aura-active');
-                }, 3000); // Increased duration to match longer aura
+                }, 3000);
 
                 const particleCount = 40;
                 for (let i = 0; i < particleCount; i++) {
@@ -1534,9 +1584,9 @@
                     particle.style.width = `${size}px`;
                     particle.style.height = `${size}px`;
                     particle.style.left = `${Math.random() * 100}vw`;
-                    particle.style.animationDelay = `${Math.random() * 1.8}s`; // Slower delay
-                    particle.style.animationDuration = `${Math.random() * 1.8 + 2.5}s`; // Slower duration
-                    particle.style.setProperty('--end-x-offset', `${(Math.random() - 0.5) * 60}px`); // Wider spread
+                    particle.style.animationDelay = `${Math.random() * 1.8}s`;
+                    particle.style.animationDuration = `${Math.random() * 1.8 + 2.5}s`;
+                    particle.style.setProperty('--end-x-offset', `${(Math.random() - 0.5) * 60}px`);
                     whispersContainer.appendChild(particle);
                     particle.addEventListener('animationend', () => particle.remove());
                 }
@@ -1546,19 +1596,18 @@
                 messageBubble.textContent = message;
                 whispersContainer.appendChild(messageBubble);
                 messageBubble.addEventListener('animationend', () => messageBubble.remove());
-
-                playSound(revealSound);
             }
 
-            // --- Function to hide all interactive content sections ---
+            /**
+             * Hides all currently active content sections that are displayed by buttons.
+             */
             function hideAllButtonContent() {
                 document.querySelectorAll('.content-section').forEach(wrapper => {
                     if (wrapper.classList.contains('active')) {
                         wrapper.classList.remove('active');
                         wrapper.classList.add('hidden');
-                        // Clear content for reuse
                         if (wrapper.id === 'complimentContentWrapper') {
-                            wrapper.querySelector('.message-display').innerHTML = ''; // Clear text content
+                            wrapper.querySelector('.message-display').innerHTML = '';
                         } else if (wrapper.id === 'hugContentWrapper') {
                             wrapper.querySelector('#hugGifDisplay').src = '';
                         } else if (wrapper.id === 'makeAWishContentWrapper') {
@@ -1568,11 +1617,13 @@
                 });
             }
 
-            // --- Meteor Shower Animation Function (with Wishing Dust & Wish Orb) ---
+            /**
+             * Triggers a meteor shower animation with screen shake, particle bursts, and wishing dust.
+             * @param {number} count - Number of meteors to generate.
+             * @param {number} duration - Total duration of the meteor shower in milliseconds.
+             */
             function triggerMeteorShower(count = 70, duration = 6000) {
-                playSound(meteorSound);
                 document.body.classList.add('screen-shaking');
-
                 wishPrompt.classList.remove('hidden');
 
                 for (let i = 0; i < count; i++) {
@@ -1581,11 +1632,10 @@
 
                     const startX = window.innerWidth * (0.8 + Math.random() * 0.4);
                     const startY = -window.innerHeight * (0.1 + Math.random() * 0.2);
-
                     const endX = -window.innerWidth * (0.2 + Math.random() * 0.4);
                     const endY = window.innerHeight * (1.1 + Math.random() * 0.2);
 
-                    const size = Math.random() * 4 + 4; // Larger meteors
+                    const size = Math.random() * 4 + 4;
                     meteor.style.width = `${size}px`;
                     meteor.style.height = `${size * 40}px`;
 
@@ -1596,18 +1646,15 @@
 
                     const animDuration = 4 + Math.random() * 3;
                     meteor.style.animation = `fall ${animDuration}s cubic-bezier(0.4, 0, 0.6, 1) forwards`;
-
                     meteor.style.animationDelay = `${Math.random() * (duration / 1000) * 0.8}s`;
 
                     meteorShowerContainer.appendChild(meteor);
 
-                    // Attach event listener for the end of the meteor's animation
                     meteor.addEventListener('animationend', () => {
                         const meteorRect = meteor.getBoundingClientRect();
-                        // Only create burst and dust if meteor is still within reasonable bounds
                         if (meteorRect.right > -50 && meteorRect.bottom > -50 && meteorRect.left < window.innerWidth + 50 && meteorRect.top < window.innerHeight + 50) {
                              createBurst(meteorRect.right, meteorRect.bottom);
-                             createWishingDust(meteorRect.right, meteorRect.bottom); // Wishing Dust
+                             createWishingDust(meteorRect.right, meteorRect.bottom);
                         }
                         meteor.remove();
                     }, { once: true });
@@ -1616,12 +1663,17 @@
                 setTimeout(() => {
                     document.body.classList.remove('screen-shaking');
                     wishPrompt.classList.add('hidden');
-                    createWishOrb(); // Wish Orb appears after shower
+                    createWishOrb();
+                    typeWriterEffect(makeAWishMessage, wishConfirmationMessage, 40); // Still using typewriter for wish confirmation
                 }, duration + 1000);
             }
 
+            /**
+             * Creates a burst of particles at a given location.
+             * @param {number} x - X coordinate for the burst.
+             * @param {number} y - Y coordinate for the burst.
+             */
             function createBurst(x, y) {
-                playSound(explosionSound);
                 for (let i = 0; i < 12; i++) {
                     const particle = document.createElement('div');
                     particle.className = 'burst-particle';
@@ -1636,10 +1688,15 @@
                 }
             }
 
-            // Wishing Dust Collection
+            /**
+             * Creates wishing dust particles that converge to a central point.
+             * @param {number} x - X coordinate where dust originates.
+             * @param {number} y - Y coordinate where dust originates.
+             * @param {number} count - Number of dust particles.
+             */
             function createWishingDust(x, y, count = 8) {
                 const targetX = window.innerWidth / 2;
-                const targetY = window.innerHeight * 0.8; // Lower center of screen for collection
+                const targetY = window.innerHeight * 0.8;
                 for (let i = 0; i < count; i++) {
                     const dust = document.createElement('div');
                     dust.className = 'wishing-dust';
@@ -1656,7 +1713,9 @@
                 }
             }
 
-            // Wish Orb Formation
+            /**
+             * Creates a temporary wish orb animation.
+             */
             function createWishOrb() {
                 const orb = document.createElement('div');
                 orb.className = 'wish-orb';
@@ -1664,7 +1723,9 @@
                 orb.addEventListener('animationend', () => orb.remove());
             }
 
-            // --- Dynamic Background & Parallax (Blobs) ---
+            /**
+             * Sets up the parallax effect for background blobs based on scroll position.
+             */
             function setupParallax() {
                 const parallaxLayers = document.querySelectorAll('.background-blob');
                 window.addEventListener('scroll', () => {
@@ -1677,7 +1738,10 @@
                 });
             }
 
-            // --- Animated Particles Overlay (Stardust) ---
+            /**
+             * Creates a specified number of twinkling background particles (stardust).
+             * @param {number} count - Number of particles to create.
+             */
             function createParticles(count) {
                 for (let i = 0; i < count; i++) {
                     const particle = document.createElement('div');
@@ -1692,16 +1756,22 @@
                 }
             }
 
-            // --- Comet Cursor Trail ---
+            /**
+             * Updates the position of the custom comet cursor to follow the mouse.
+             */
             document.addEventListener("mousemove", (e) => {
                 cometCursor.style.left = `${e.clientX}px`;
                 cometCursor.style.top = `${e.clientY}px`;
+                // Always ensure the comet cursor class is on the body for visibility
                 if (!document.body.classList.contains('comet-active')) {
                     document.body.classList.add('comet-active');
                 }
             });
 
-            // --- Hover Sparkle Effect Function (New) ---
+            /**
+             * Creates small sparkle particles around an element on hover.
+             * @param {Event} event - The mouseenter event.
+             */
             function createHoverSparkles(event) {
                 const target = event.currentTarget;
                 const rect = target.getBoundingClientRect();
@@ -1719,14 +1789,18 @@
                 }
             }
 
-            // --- Unified Section Revealer (Gentle Gliding) ---
+            /**
+             * Reveals a section of content with a smooth transition.
+             * @param {HTMLElement} element - The DOM element to reveal.
+             * @param {string} type - Type of element ('content-block' or 'button-group') for specific handling.
+             * @param {number} delay - Delay before revealing the element (in ms).
+             */
             function revealSection(element, type = 'content-block', delay = 0) {
                 setTimeout(() => {
                     element.classList.remove('hidden');
-                    element.classList.add('active'); // Apply active class for transitions
+                    element.classList.add('active');
 
                     if (type === 'button-group') {
-                        // Stagger buttons within the group
                         element.querySelectorAll('.btn').forEach((btn, btnIndex) => {
                             setTimeout(() => {
                                 btn.classList.remove('hidden');
@@ -1734,42 +1808,77 @@
                             }, btnIndex * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--stagger-unit')) * 1000);
                         });
                     }
-                    
-                    // Smoothly scroll to the revealed element, but only if it's not the final message overlay
-                    // and not the initial content blocks which are handled by main flow
-                    if (element.id !== 'finalMessageOverlay' && !element.classList.contains('content-block') && element.id !== 'messageBlock1') {
-                         element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }
-
-
                 }, delay);
             }
 
-            // --- Final Message Unlock Logic ---
+            /**
+             * Hides a section of content with a smooth transition.
+             * @param {HTMLElement} element - The DOM element to hide.
+             */
+            function hideSection(element) {
+                element.classList.remove('active');
+                element.classList.add('hidden');
+            }
+
+            /**
+             * Hides relevant elements before a major effect and shows them after.
+             * @param {function} effectFn - The function that triggers the main effect.
+             * @param {number} effectDuration - Expected duration of the effect in ms.
+             * @param {function} callbackAfterEffect - Function to run immediately after the effectFn finishes its animations.
+             */
+            function manageContentVisibilityForEffect(effectFn, effectDuration, callbackAfterEffect = () => {}) {
+                // Elements to temporarily hide
+                const elementsToHide = [
+                    chapter2ButtonGroup,
+                    loveMeterElement,
+                    gifBlock2,
+                    hugContentWrapper,
+                    complimentContentWrapper,
+                    makeAWishContentWrapper, // Hide if it was already showing confirmation
+                    musicHint // Temporarily hide music hint
+                ];
+
+                elementsToHide.forEach(el => hideSection(el));
+
+                // Wait for hide transitions to complete (adjust delay if needed)
+                setTimeout(() => {
+                    effectFn(); // Trigger the main effect
+                    
+                    // After the effect duration, reveal elements and call callback
+                    setTimeout(() => {
+                        elementsToHide.forEach(el => revealSection(el));
+                        if (makeAWishMessage.textContent.trim() !== "") { // If wish confirmation was shown, reveal its wrapper
+                            revealSection(makeAWishContentWrapper, 'content-section');
+                        }
+                        callbackAfterEffect();
+                    }, effectDuration); // Wait for the effect to finish
+                }, 700); // Allow time for hide transition
+            }
+
+
+            /**
+             * Checks if all conditions are met to unlock the final message button.
+             */
             function checkFinalMessageUnlock() {
                 if (hugClicked && complimentClicked && wishMade && starlightWhispered) {
                     if (loveCount < 100) {
-                        loveCount = 100; // Force love to 100% to ensure final stage
-                        updateLoveMeter(0); // Update visuals for 100%
+                        loveCount = 100;
+                        updateLoveMeter(0); // Update to 100% if not already
                     }
 
-                    // Ensure final button is not disabled and is active
                     if (finalMessageBtn.classList.contains('disabled')) {
                         finalMessageBtn.classList.remove('disabled');
-                        // Reveal final button group if it's hidden
                         if (finalChapterButtonGroup.classList.contains('hidden')) {
                             revealSection(finalChapterButtonGroup, 'button-group');
-                            playSound(levelUpSound); // Play a sound for unlocking
                         }
                     }
                 }
             }
 
-
-            // --- Loading Screen Storytelling ---
+            /**
+             * Manages the loading screen's storytelling text sequence.
+             */
             function startLoadingStorytelling() {
-                loadingSound.play().catch(e => console.warn("Loading audio play failed:", e));
-
                 function showNextLoadingText() {
                     if (currentLoadingTextIndex < loadingTexts.length) {
                         const currentText = loadingTexts[currentLoadingTextIndex];
@@ -1778,18 +1887,17 @@
                             currentText.classList.remove('active-text');
                             currentLoadingTextIndex++;
                             showNextLoadingText();
-                        }, { once: true });
+                        }, { once : true });
                     } else {
-                        // All texts shown, proceed to popup
                         setTimeout(() => {
                             loadingOverlay.classList.remove('active');
-                            loadingOverlay.classList.add('hidden'); // Transition out
+                            loadingOverlay.classList.add('hidden');
                             loadingOverlay.addEventListener('transitionend', () => {
                                 loadingOverlay.remove();
-                                stopSound(loadingSound);
                             }, { once: true });
                             revealSection(introPopup, 'popup');
-                        }, 500); // Small delay after last text fades
+                            introMusic.play().catch(e => console.log("Intro music playback prevented:", e));
+                        }, 500);
                     }
                 }
                 showNextLoadingText();
@@ -1798,33 +1906,38 @@
 
             // --- Event Listeners ---
 
+            // Start loading storytelling once the window is fully loaded
             window.addEventListener('load', () => {
                 startLoadingStorytelling();
             });
 
+            // Handle click on the intro popup to reveal main content
             popupClickArea.addEventListener('click', () => {
                 introPopup.classList.remove('active');
                 introPopup.classList.add('hidden');
-                playSound(clickSound);
+                introMusic.pause();
+                introMusic.currentTime = 0; // Reset to start
+
+                mainMusic.play().catch(e => console.log("Main music playback prevented:", e));
+
+
                 introPopup.addEventListener('transitionend', () => {
-                    introPopup.style.display = 'none'; // Fully hide after transition
+                    introPopup.style.display = 'none';
 
-                    // Reveal main content elements sequentially
+                    // Set the main story message text directly
+                    messageBlock1.textContent = mainStoryMessage;
+
+                    // Reveal main content elements sequentially with delays
                     revealSection(mainContent, 'content');
-                    revealSection(mainTitle, 'content-block', 300); // Delay after main content container
-                    revealSection(gifBlock1, 'content-block', 600);
-                    
+                    revealSection(mainTitle, 'content-block', 300);
+                    revealSection(musicHint, 'content-block', 600); // Reveal music hint
+                    revealSection(gifBlock1, 'content-block', 900);
+                    revealSection(messageBlock1.closest('.content-block'), 'content-block', 1200); // Reveal with pop-out effect
                     setTimeout(() => {
-                        // Reveal messageBlock1 (its content-block parent)
-                        revealSection(messageBlock1.closest('.content-block'), 'content-block', 0); // Make its parent content-block active
-                        // Then, start typing within it
-                        typeWriterEffect(messageBlock1, mainStoryMessage, 40, () => {
-                            revealSection(chapter1ButtonGroup, 'button-group');
-                            playSound(revealSound);
-                        });
-                    }, 900); // Adjusted delay for typing to start after elements are in place
+                        revealSection(chapter1ButtonGroup, 'button-group');
+                    }, 1800); // Delay button group appearance slightly after message
 
-                    // Start background sparkles
+                    // Start background sparkles after a delay
                     setTimeout(() => {
                         for(let i = 0; i < 40; i++) {
                             const s = document.createElement('div');
@@ -1835,21 +1948,19 @@
                             document.body.appendChild(s);
                         }
                     }, 1000);
-                }, { once: true });
+                }, { once : true }); // Ensure this only runs once
             });
 
+            // Handle "Begin Our Journey" button click
             startJourneyBtn.addEventListener('click', () => {
-                playSound(clickSound);
-                // Hide startJourneyBtn and its group
                 startJourneyBtn.classList.remove('active');
                 startJourneyBtn.classList.add('hidden');
                 chapter1ButtonGroup.classList.remove('active');
                 chapter1ButtonGroup.classList.add('hidden');
 
-                // Reveal Love Meter, gifBlock2, and chapter2ButtonGroup
                 setTimeout(() => {
                     revealSection(loveMeterElement, 'content-block');
-                }, 500); // Delay for start button to fade out
+                }, 500);
 
                 setTimeout(() => {
                     revealSection(gifBlock2, 'content-block');
@@ -1857,19 +1968,17 @@
 
                 setTimeout(() => {
                     revealSection(chapter2ButtonGroup, 'button-group');
-                    playSound(revealSound);
                 }, 1500);
             });
 
+            // Handle "Send a Gentle Embrace" button click
             hugBtn.addEventListener('click', () => {
-                playSound(clickSound);
-                hideAllButtonContent(); // Hide any currently displayed content
+                hideAllButtonContent(); 
                 
                 const randomGif = hugGifs[Math.floor(Math.random() * hugGifs.length)];
                 hugGifDisplay.src = randomGif;
                 revealSection(hugContentWrapper, 'content-section');
                 
-                playSound(revealSound);
                 if (!hugClicked) {
                     hugClicked = true;
                     updateLoveMeter(10);
@@ -1877,15 +1986,14 @@
                 for(let i = 0; i < 5; i++) createFloatingStar();
             });
 
+            // Handle "Offer a Thoughtful Compliment" button click
             complimentsBtn.addEventListener('click', () => {
-                playSound(clickSound);
-                hideAllButtonContent(); // Hide any currently displayed content
+                hideAllButtonContent();
                 
                 revealSection(complimentContentWrapper, 'content-section');
 
                 const randomCompliment = compliments[Math.floor(Math.random() * compliments.length)];
                 typeWriterEffect(complimentMessageDisplay, randomCompliment, 40, () => {
-                    playSound(revealSound);
                     if (!complimentClicked) {
                         complimentClicked = true;
                         updateLoveMeter(15);
@@ -1893,67 +2001,79 @@
                 });
             });
 
+            // Handle "Make a Wish!" button click
             makeAWishBtn.addEventListener('click', () => {
                 if (wishMade) {
                     console.log("Wish already made!");
                     return;
                 }
-                playSound(clickSound);
-                hideAllButtonContent(); // Hide any currently displayed content
-                revealSection(makeAWishContentWrapper, 'content-section');
                 
-                // Crucial fix: Small delay to ensure layout settles before scrolling
-                setTimeout(() => {
-                    messageBlock1.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }, 100); 
+                // Scroll to messageBlock1 immediately
+                messageBlock1.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-                playSound(celebrateSound);
-
-                triggerMeteorShower(70, 5000);
-                wishMade = true;
-                makeAWishBtn.classList.add('disabled');
-                updateLoveMeter(25); // Update love meter after wish is made
-                
+                manageContentVisibilityForEffect(
+                    () => { // Function to execute the effect
+                        triggerMeteorShower(70, 5000); // Meteor shower duration is 5000ms + 1000ms for text = 6000ms total before callback.
+                    },
+                    6500, // Total duration including the message typing
+                    () => { // Callback after effect
+                        revealSection(makeAWishContentWrapper, 'content-section'); // Reveal the wish confirmation message
+                        wishMade = true;
+                        makeAWishBtn.classList.add('disabled');
+                        updateLoveMeter(25);
+                    }
+                );
             });
 
+            // Handle "Whispers of Starlight" button click
             whispersOfStarlightBtn.addEventListener('click', () => {
                 if (starlightWhispered) {
                     console.log("Starlight already whispered!");
                     return;
                 }
-                playSound(clickSound);
-                hideAllButtonContent(); // Hide any currently displayed content
                 
-                // Crucial fix: Small delay to ensure layout settles before scrolling
-                setTimeout(() => {
-                    messageBlock1.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }, 100); 
+                // Scroll to messageBlock1 immediately
+                messageBlock1.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-                const randomMessage = whisperMessages[Math.floor(Math.random() * whisperMessages.length)];
-                triggerWhispersOfStarlight(randomMessage);
-                starlightWhispered = true;
-                whispersOfStarlightBtn.classList.add('disabled');
-                triggerConfetti(30);
-                updateLoveMeter(30); // Update love meter after starlight is whispered
+                manageContentVisibilityForEffect(
+                    () => { // Function to execute the effect
+                        const randomMessage = whisperMessages[Math.floor(Math.random() * whisperMessages.length)];
+                        triggerWhispersOfStarlight(randomMessage);
+                    },
+                    4500, // Duration of the whisper message bubble animation
+                    () => { // Callback after effect
+                        starlightWhispered = true;
+                        whispersOfStarlightBtn.classList.add('disabled');
+                        triggerConfetti(30);
+                        updateLoveMeter(30);
+                    }
+                );
             });
 
+            // Handle "Unveil My Heart's True Message" button click
             finalMessageBtn.addEventListener('click', () => {
-                playSound(clickSound);
-                // Hide all main content and show final message overlay
                 mainContent.classList.remove('active');
                 mainContent.classList.add('hidden');
                 
-                // Ensure the body is scrolled to the top when the final message appears
+                // Ensure scroll is at the top when transitioning to final overlay
                 window.scrollTo({
                     top: 0,
-                    behavior: 'smooth'
+                    behavior: 'instant' // Use 'instant' to avoid a jarring scroll *before* the overlay appears
                 });
 
                 mainContent.addEventListener('transitionend', () => {
                     finalMessageOverlay.classList.remove('hidden');
-                    finalMessageOverlay.classList.add('active'); // Activate overlay
-                    playSound(heartbeatSound);
+                    finalMessageOverlay.classList.add('active');
+                    mainMusic.pause(); // Pause main music on final page
+                    mainMusic.currentTime = 0;
+                    // Ensure the comet cursor remains active on the final overlay
+                    document.body.classList.add('comet-active'); // Keep comet active on final page
                 }, { once: true });
+            });
+
+            // Handle "Let's Go to the Next Realm" button click
+            nextRealmBtn.addEventListener('click', () => {
+                window.location.href = 'netflix.html'; // Redirect to netflix.html
             });
 
 
@@ -1967,10 +2087,10 @@
             });
 
 
-            // Initial setup calls
+            // --- Initial Setup Calls ---
             setupParallax();
             createParticles(60);
-            updateLoveMeter(0); // Initialize love meter (sets initial styles for 0%)
+            updateLoveMeter(0); // Initialize love meter
         });
     </script>
 </body>
