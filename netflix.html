@@ -1,208 +1,622 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Quackers • Birthday Special</title>
-  <style>
-    * {
-      margin: 0; padding: 0; box-sizing: border-box;
-      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    }
-    body {
-      background-color: #141414;
-      color: #fff;
-    }
-
-    /* Header */
-    header {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(20, 20, 20, 0.85);
-      z-index: 100;
-    }
-    .logo {
-      color: #e50914;
-      font-size: 1.6rem;
-      font-weight: bold;
-      letter-spacing: 1px;
-    }
-    .nav a {
-      margin-left: 1.5rem;
-      font-size: 0.95rem;
-      color: #fff;
-      opacity: 0.9;
-      text-decoration: none;
-      transition: opacity 0.3s;
-    }
-    .nav a:hover {
-      opacity: 1;
-    }
-
-    /* Hero */
-    .hero {
-      margin-top: 64px;
-      position: relative;
-      height: 80vh;
-      background: url('https://i.imgur.com/Zg1ETsR.jpg') center/cover no-repeat;
-      display: flex;
-      align-items: flex-end;
-      padding: 2rem;
-    }
-    .overlay {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 50%;
-      background: linear-gradient(to top, rgba(20,20,20,0.8), transparent);
-    }
-    .content {
-      position: relative;
-      max-width: 600px;
-      z-index: 10;
-    }
-    .title {
-      font-size: 2.6rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-    }
-    .meta {
-      font-size: 0.9rem;
-      color: #ccc;
-      margin-bottom: 1rem;
-    }
-    .description {
-      font-size: 1rem;
-      line-height: 1.5;
-      color: #ddd;
-      margin-bottom: 1.5rem;
-    }
-
-    /* Buttons */
-    .buttons {
-      display: flex;
-      gap: 0.8rem;
-      flex-wrap: wrap;
-    }
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      font-size: 0.95rem;
-      padding: 0.6rem 1.2rem;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    .btn.play {
-      background-color: #fff;
-      color: #000;
-    }
-    .btn.play:hover {
-      background-color: #e6e6e6;
-    }
-    .btn.secondary {
-      background-color: rgba(109, 109, 110, 0.7);
-      color: #fff;
-    }
-    .btn.secondary:hover {
-      background-color: rgba(109, 109, 110, 0.5);
-    }
-
-    /* Cast Section */
-    .cast-section {
-      padding: 2rem;
-      margin-top: 1rem;
-    }
-    .cast-section h2 {
-      font-size: 1.4rem;
-      margin-bottom: 1rem;
-    }
-    .cast-list {
-      display: flex;
-      gap: 1.5rem;
-      overflow-x: auto;
-      padding-bottom: 1rem;
-    }
-    .cast-item {
-      width: 120px;
-      text-align: center;
-    }
-    .cast-item img {
-      width: 100%;
-      border-radius: 0.3rem;
-    }
-    .cast-name {
-      margin-top: 0.5rem;
-      font-size: 0.9rem;
-    }
-
-    /* Footer */
-    footer {
-      padding: 2rem;
-      font-size: 0.8rem;
-      color: #777;
-      text-align: center;
-    }
-
-    @media (max-width: 768px) {
-      .title { font-size: 2rem; }
-      .description { font-size: 0.95rem; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflix Clone</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: "Inter", sans-serif;
+        }
+        .bg-netflix {
+            background-color: #141414;
+        }
+        .bg-netflix-secondary {
+            background-color: #181818;
+        }
+        .text-netflix-red {
+            color: #e50914;
+        }
+        .bg-netflix-red {
+            background-color: #e50914;
+        }
+        .player-gradient {
+            /* This gradient is purely for visual effect and does not block clicks on the iframe */
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 60%, rgba(0,0,0,0.9) 100%);
+        }
+        .scroll-hidden::-webkit-scrollbar {
+            display: none;
+        }
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        .profile-item {
+            transition: all 0.2s ease-out;
+        }
+        .profile-item:hover {
+            transform: scale(1.05);
+        }
+        .profile-item:hover img {
+            transform: scale(1.1);
+        }
+    </style>
 </head>
-<body>
+<body class="bg-netflix text-white font-sans">
+    <!-- Profile Selection Page -->
+    <div id="profile-selection" class="fixed inset-0 z-50 bg-netflix flex flex-col items-center justify-center">
+        <h1 class="text-5xl font-medium mb-16 text-center">Who's watching?</h1>
+        <div class="flex flex-wrap justify-center gap-6 max-w-4xl">
+            <!-- Doofy Profile -->
+            <div class="profile-item cursor-pointer group" data-profile="doofy">
+                <div class="w-40 h-40 rounded-md group-hover:border-4 group-hover:border-white mb-3 overflow-hidden transition-all duration-200">
+                    <img src="https://media1.tenor.com/m/TDY3rDhJ6MMAAAAC/racoon.gif" alt="Doofy" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='https://placehold.co/160x160/FFD700/000000?text=Doofy'">
+                </div>
+                <p class="text-xl text-center text-gray-400 group-hover:text-white transition-colors">Doofy</p>
+            </div>
+            
+            <!-- Quackers Profile -->
+            <div class="profile-item cursor-pointer group" data-profile="quackers">
+                <div class="w-40 h-40 rounded-md group-hover:border-4 group-hover:border-white mb-3 overflow-hidden transition-all duration-200">
+                    <img src="https://media1.tenor.com/m/8QLefcQNJqwAAAAd/knife-chick-little-chick.gif" alt="Quackers" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='https://placehold.co/160x160/87CEEB/000000?text=Quackers'">
+                </div>
+                <p class="text-xl text-center text-gray-400 group-hover:text-white transition-colors">Quackers</p>
+            </div>
+            
+            <!-- Birthday Blast Profile -->
+            <div class="profile-item cursor-pointer group" data-profile="birthday-blast">
+                <div class="w-40 h-40 rounded-md group-hover:border-4 group-hover:border-white mb-3 overflow-hidden transition-all duration-200">
+                    <img src="https://community.atlassian.com/forums/image/serverpage/image-id/195619iEDCE02AB7B26104C?v=v2" alt="Birthday Blast" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='https://placehold.co/160x160/FF69B4/FFFFFF?text=Birthday'">
+                </div>
+                <p class="text-xl text-center text-gray-400 group-hover:text-white transition-colors">Birthday Blast</p>
+            </div>
+            
+            <!-- Add Profile -->
+            <div class="profile-item cursor-pointer group" data-profile="new">
+                <div class="w-40 h-40 rounded-md group-hover:border-4 group-hover:border-white mb-3 overflow-hidden bg-gray-800 flex items-center justify-center transition-all duration-200">
+                    <i class="fas fa-plus text-5xl text-gray-400 group-hover:text-white transition-colors"></i>
+                </div>
+                <p class="text-xl text-center text-gray-400 group-hover:text-white transition-colors">Add Profile</p>
+            </div>
+        </div>
+        
+        <!-- Manage Profiles Button -->
+        <button class="mt-16 border border-gray-500 text-gray-400 px-8 py-2 text-lg hover:text-white hover:border-white transition-colors duration-200">
+            Manage Profiles
+        </button>
+    </div>
 
-  <header>
-    <div class="logo">NETFLIX</div>
-    <nav class="nav">
-      <a href="#">Home</a>
-      <a href="#">Series</a>
-      <a href="#">Movies</a>
-      <a href="#">My List</a>
+    <!-- Main Content (initially hidden) -->
+    <div id="main-content" class="hidden">
+        <!-- Navigation Bar -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-gradient-to-b from-black to-transparent transition-all duration-300">
+        <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center">
+                <a href="#" class="text-netflix-red font-bold text-3xl mr-10">QuackFlix</a>
+                <div class="hidden md:flex space-x-6">
+                    <a href="#" class="hover:text-gray-300">Home</a>
+                    <a href="#" class="hover:text-gray-300">TV Shows</a>
+                    <a href="#" class="hover:text-gray-300">Movies</a>
+                    <a href="#" class="hover:text-gray-300">New & Popular</a>
+                    <a href="#" class="hover:text-gray-300">My List</a>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4">
+                <div class="relative">
+                    <button class="text-white hover:text-gray-300">
+                        <i class="fas fa-search text-xl"></i>
+                    </button>
+                </div>
+                <div class="hidden md:block">
+                    <a href="#" class="text-white hover:text-gray-300">Kids</a>
+                </div>
+                <div class="hidden md:block">
+                    <a href="#" class="text-white hover:text-gray-300">
+                        <i class="fas fa-bell text-xl"></i>
+                    </a>
+                </div>
+                <div class="dropdown relative">
+                    <button class="flex items-center space-x-2">
+                        <img src="https://ih1.redbubble.net/image.4647903358.7567/flat,750x,075,f-pad,750x1000,f8f8f8.jpg" alt="Account Profile" class="w-8 h-8 rounded">
+                        <i class="fas fa-caret-down text-gray-300"></i>
+                    </button>
+                    <div class="dropdown-menu absolute right-0 mt-2 w-48 bg-black bg-opacity-90 rounded shadow-lg hidden">
+                        <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-800">Account</a>
+                        <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-800">Help Center</a>
+                        <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-800">Sign out of Netflix</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </nav>
-  </header>
 
-  <section class="hero">
-    <div class="overlay"></div>
-    <div class="content">
-      <div class="title">Quackers: A Birthday Special</div>
-      <div class="meta">2025 • 1h 40m • Romance • Doofy Originals</div>
-      <div class="description">
-        On her birthday, a heartfelt tribute unfolds. A cinematic love letter crafted by Doofy — for the one who made his world magical. A celebration of laughter, late-night cuddles, and an unbreakable bond.
-      </div>
-      <div class="buttons">
-        <button class="btn play">▶ Play</button>
-        <button class="btn secondary">Read Letter</button>
-        <button class="btn secondary">Add to My List</button>
-      </div>
+    <!-- Mobile Navigation -->
+    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-black bg-opacity-90 z-40">
+        <div class="flex justify-around py-3">
+            <a href="#" class="text-gray-400 hover:text-white">
+                <i class="fas fa-home text-xl"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white">
+                <i class="fas fa-search text-xl"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white">
+                <i class="fas fa-plus text-xl"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white">
+                <i class="fas fa-download text-xl"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white">
+                <i class="fas fa-user text-xl"></i>
+            </a>
+        </div>
     </div>
-  </section>
 
-  <section class="cast-section">
-    <h2>Starring</h2>
-    <div class="cast-list">
-      <div class="cast-item">
-        <img src="https://i.imgur.com/uWgm67D.jpg" alt="Quackers" />
-        <div class="cast-name">Quackers (Birthday Girl)</div>
-      </div>
-      <div class="cast-item">
-        <img src="https://i.imgur.com/3i4G0Qv.jpg" alt="Doofy" />
-        <div class="cast-name">Doofy (Writer & Director)</div>
-      </div>
-    </div>
-  </section>
+    <!-- Main Content -->
+    <main class="pt-16 pb-20 md:pb-0">
+        <!-- Video Player Section -->
+        <section class="relative w-full h-screen">
+            <!-- YouTube Video Player Placeholder -->
+            <div id="youtube-player-container" class="absolute inset-0 w-full h-full">
+                <!-- YouTube iframe will be inserted here by the API -->
+            </div>
+            
+            <!-- Player Controls Overlay (now purely visual and does not block iframe) -->
+            <div class="player-gradient absolute inset-0 flex flex-col justify-between z-10 opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                <!-- Top Controls -->
+                <div class="flex justify-between items-center px-4 pt-4">
+                    <div class="flex items-center space-x-4">
+                        <button class="text-white hover:text-gray-300 pointer-events-auto">
+                            <i class="fas fa-arrow-left text-xl"></i>
+                        </button>
+                        <span class="text-xl font-semibold pointer-events-auto">A Quack-Sized Slice of Joy</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Buttons that appear when video ends -->
+            <div id="video-end-buttons" class="absolute inset-0 bg-black flex flex-col items-center justify-center space-y-4 z-20 hidden">
+                <button class="bg-white text-black px-6 py-2 rounded-full text-lg font-semibold hover:bg-opacity-80 transition-colors" onclick="replayVideo()">
+                    <i class="fas fa-redo-alt mr-2"></i> Replay
+                </button>
+                <button class="bg-netflix-red text-white px-6 py-2 rounded-full text-lg font-semibold hover:bg-opacity-80 transition-colors" onclick="window.location.href='cooked.html'">
+                    Let's Explore Another Realm
+                </button>
+            </div>
+        </section>
 
-  <footer>
-    © 2025 Doofy Studios · A Netflix-Inspired Tribute · All love reserved.
-  </footer>
+        <!-- Movie Details Section -->
+        <section class="bg-netflix-secondary py-8 px-4 md:px-8">
+            <div class="max-w-4xl mx-auto">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-bold">A Quack-Sized Slice of Joy</h2>
+                    <div class="flex items-center space-x-4">
+                        <span class="text-sm">2016</span>
+                        <span class="text-sm">TV Shows</span>
+                        <span class="text-sm">Wholesome/ Based on True Feelings</span>
+                    </div>
+                </div>
+                <p class="text-gray-300 mb-6">
+                    Just a little something I put together 🎬✨<br>
+                    It’s made of small moments, big feelings, and all the smiles you’ve given me 😊💛<br>
+                    Nothing fancy — just love, memories, and a few goofy bits (because... I your Doofy 😅)<br>
+                    I hope it makes your heart feel warm and your cheeks do that cute little smile thing 🥹🐥<br>
+                    Happy Birthday, Quackers 🎂🌙💫
+                </p>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                    <div>
+                        <p class="text-gray-400">Cast:</p>
+                        <p class="text-gray-300">Quackers (The Star 💫), Doofy (Director 🦝)</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-400">Creator:</p>
+                        <p class="text-gray-300">A Doofy Original<br>Created for Quackers</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-400">Maturity Rating:</p>
+                        <p class="text-gray-300">Warning: May cause happy tears.</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-400">Audio:</p>
+                        <p class="text-gray-300">English<br>Audio: Doofy (Original)<br>Language: Love / Subtitles: None Needed</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
+        <!-- Episodes Section -->
+        <section class="py-8 px-4 md:px-8">
+            <div class="max-w-4xl mx-auto">
+                <h3 class="text-xl font-bold mb-4">Episodes</h3>
+                <div class="mb-6">
+                    <h4 class="text-lg font-semibold mb-2">Season Love</h4>
+                    <div class="flex items-center space-x-4 text-sm text-gray-400 mb-4">
+                        <span>2019</span>
+                        <span>143 Episodes</span>
+                    </div>
+                    <div class="bg-netflix-secondary rounded overflow-hidden">
+                        <div class="p-4 border-b border-gray-800 flex items-start">
+                            <div class="w-1/3 relative">
+                                <img src="nS1.png" alt="Episode 1" class="w-full rounded" onerror="this.onerror=null;this.src='https://via.placeholder.com/500x281?text=Episode+1'">
+                                <div class="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 bg-black bg-opacity-50 transition-opacity">
+                                    <button class="bg-white text-black rounded-full p-2">
+                                        <i class="fas fa-play"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="w-2/3 pl-4">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h5 class="font-semibold">Mission: Make Quackers Smile</h5>
+                                        <p class="text-sm text-gray-400">45m</p>
+                                    </div>
+                                    <button class="text-gray-400 hover:text-white">
+                                        <i class="far fa-plus-square"></i>
+                                    </button>
+                                </div>
+                                <p class="text-sm mt-2 text-gray-300">
+                                    The mission is simple: make her smile 😊<br>
+                                    Armed with quiet love, soft memories, and a heart that beats a little faster around her 💛<br>
+                                    Doofy begins his birthday tribute — not loud, not flashy, just real.<br>
+                                    Because for Quackers, even the smallest moments deserve to shine ✨
+                                </p>
+                            </div>
+                        </div>
+                        <!-- More episodes would go here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- More Like This Section -->
+        <section class="py-8 px-4 md:px-8">
+            <div class="max-w-6xl mx-auto">
+                <h3 class="text-xl font-bold mb-6">More Like This</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                    <!-- Movie Card 1 -->
+                    <div class="group relative">
+                        <img src="nM1.png" alt="Movie 1" class="w-full rounded transition-transform group-hover:scale-110" onerror="this.onerror=null;this.src='https://via.placeholder.co/500x750?text=Movie+1'">
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-all duration-300 flex flex-col justify-end p-2 opacity-0 group-hover:opacity-100">
+                            <div class="flex justify-between items-center mb-2">
+                                <div class="flex space-x-2">
+                                    <button class="bg-white text-black rounded-full p-1 hover:bg-opacity-80">
+                                        <i class="fas fa-play text-xs"></i>
+                                    </button>
+                                    <button class="border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
+                                        <i class="fas fa-plus text-xs"></i>
+                                    </button>
+                                    <button class="border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
+                                        <i class="far fa-thumbs-up text-xs"></i>
+                                    </button>
+                                </div>
+                                <button class="border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
+                                    <i class="fas fa-chevron-down text-xs"></i>
+                                </button>
+                            </div>
+                            <div class="flex items-center space-x-2 text-xs">
+                                <span class="text-green-500 font-semibold">97% Match</span>
+                                <div class="border border-gray-500 px-1">16+</div>
+                                <span>1 Season</span>
+                            </div>
+                            <div class="text-xs mt-1">
+                                <span>Sci-Fi & Fantasy</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Movie Card 2 -->
+                    <div class="group relative">
+                        <img src="nM2.png" alt="Movie 2" class="w-full rounded transition-transform group-hover:scale-110" onerror="this.onerror=null;this.src='https://via.placeholder.co/500x750?text=Movie+2'">
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-all duration-300 flex flex-col justify-end p-2 opacity-0 group-hover:opacity-100">
+                            <div class="flex justify-between items-center mb-2">
+                                <div class="flex space-x-2">
+                                    <button class="bg-white text-black rounded-full p-1 hover:bg-opacity-80">
+                                        <i class="fas fa-play text-xs"></i>
+                                    </button>
+                                    <button class="border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
+                                        <i class="fas fa-plus text-xs"></i>
+                                    </button>
+                                    <button class="border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
+                                        <i class="far fa-thumbs-up text-xs"></i>
+                                    </button>
+                                </div>
+                                <button class="border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
+                                    <i class="fas fa-chevron-down text-xs"></i>
+                                </button>
+                            </div>
+                            <div class="flex items-center space-x-2 text-xs">
+                                <span class="text-green-500 font-semibold">95% Match</span>
+                                <div class="border border-gray-500 px-1">16+</div>
+                                <span>3 Seasons</span>
+                            </div>
+                            <div class="text-xs mt-1">
+                                <span>Sci-Fi & Fantasy</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Movie Card 3 -->
+                    <div class="group relative">
+                        <img src="nM3.png" alt="Movie 3" class="w-full rounded transition-transform group-hover:scale-110" onerror="this.onerror=null;this.src='https://via.placeholder.co/500x750?text=Movie+3'">
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-all duration-300 flex flex-col justify-end p-2 opacity-0 group-hover:opacity-100">
+                            <div class="flex justify-between items-center mb-2">
+                                <div class="flex space-x-2">
+                                    <button class="bg-white text-black rounded-full p-1 hover:bg-opacity-80">
+                                        <i class="fas fa-play text-xs"></i>
+                                    </button>
+                                    <button class="border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
+                                        <i class="fas fa-plus text-xs"></i>
+                                    </button>
+                                    <button class="border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
+                                        <i class="far fa-thumbs-up text-xs"></i>
+                                    </button>
+                                </div>
+                                <button class="border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
+                                    <i class="fas fa-chevron-down text-xs"></i>
+                                </button>
+                            </div>
+                            <div class="flex items-center space-x-2 text-xs">
+                                <span class="text-green-500 font-semibold">96% Match</span>
+                                <div class="border border-gray-500 px-1">18+</div>
+                                <span>Movie</span>
+                            </div>
+                            <div class="text-xs mt-1">
+                                <span>Drama</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Movie Card 4 -->
+                    <div class="group relative">
+                        <img src="nM4.png" alt="Movie 4" class="w-full rounded transition-transform group-hover:scale-110" onerror="this.onerror=null;this.src='https://via.placeholder.co/500x750?text=Movie+4'">
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-all duration-300 flex flex-col justify-end p-2 opacity-0 group-hover:opacity-100">
+                            <div class="flex justify-between items-center mb-2">
+                                <div class="flex space-x-2">
+                                    <button class="bg-white text-black rounded-full p-1 hover:bg-opacity-80">
+                                        <i class="fas fa-play text-xs"></i>
+                                    </button>
+                                    <button class="border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
+                                        <i class="fas fa-plus text-xs"></i>
+                                    </button>
+                                    <button class="border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
+                                        <i class="far fa-thumbs-up text-xs"></i>
+                                    </button>
+                                </div>
+                                <button class="border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
+                                    <i class="fas fa-chevron-down text-xs"></i>
+                                </button>
+                            </div>
+                            <div class="flex items-center space-x-2 text-xs">
+                                <span class="text-green-500 font-semibold">98% Match</span>
+                                <div class="border border-gray-500 px-1">16+</div>
+                                <span>Movie</span>
+                            </div>
+                            <div class="text-xs mt-1">
+                                <span>Drama, Thriller</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Movie Card 5 -->
+                    <div class="group relative">
+                        <img src="nM5.png" alt="Movie 5" class="w-full rounded transition-transform group-hover:scale-110" onerror="this.onerror=null;this.src='https://via.placeholder.co/500x750?text=Movie+5'">
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-all duration-300 flex flex-col justify-end p-2 opacity-0 group-hover:opacity-100">
+                            <div class="flex justify-between items-center mb-2">
+                                <div class="flex space-x-2">
+                                    <button class="bg-white text-black rounded-full p-1 hover:bg-opacity-80">
+                                        <i class="fas fa-play text-xs"></i>
+                                    </button>
+                                    <button class="border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
+                                        <i class="fas fa-plus text-xs"></i>
+                                    </button>
+                                    <button class="border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
+                                        <i class="far fa-thumbs-up text-xs"></i>
+                                    </button>
+                                </div>
+                                <button class="border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
+                                    <i class="fas fa-chevron-down text-xs"></i>
+                                </button>
+                            </div>
+                            <div class="flex items-center space-x-2 text-xs">
+                                <span class="text-green-500 font-semibold">97% Match</span>
+                                <div class="border border-gray-500 px-1">16+</div>
+                                <span>Limited Series</span>
+                            </div>
+                            <div class="text-xs mt-1">
+                                <span>Drama</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Movie Card 6 -->
+                    <div class="group relative">
+                        <img src="nM6.png" alt="Movie 6" class="w-full rounded transition-transform group-hover:scale-110" onerror="this.onerror=null;this.src='https://via.placeholder.co/500x750?text=Movie+6'">
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-all duration-300 flex flex-col justify-end p-2 opacity-0 group-hover:opacity-100">
+                            <div class="flex justify-between items-center mb-2">
+                                <div class="flex space-x-2">
+                                    <button class="bg-white text-black rounded-full p-1 hover:bg-opacity-80">
+                                        <i class="fas fa-play text-xs"></i>
+                                    </button>
+                                    <button class="border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
+                                        <i class="fas fa-plus text-xs"></i>
+                                    </button>
+                                    <button class="border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
+                                        <i class="far fa-thumbs-up text-xs"></i>
+                                    </button>
+                                </div>
+                                <button class="border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
+                                    <i class="fas fa-chevron-down text-xs"></i>
+                                </button>
+                            </div>
+                            <div class="flex items-center space-x-2 text-xs">
+                                <span class="text-green-500 font-semibold">94% Match</span>
+                                <div class="border border-gray-500 px-1">16+</div>
+                                <span>5 Seasons</span>
+                            </div>
+                            <div class="text-xs mt-1">
+                                <span>Crime, Drama</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-black py-8 px-4 md:px-8 text-gray-400">
+            <div class="max-w-6xl mx-auto">
+                <div class="flex items-center space-x-4 mb-6">
+                    <a href="#" class="hover:text-white">
+                        <i class="fab fa-facebook-square text-2xl"></i>
+                    </a>
+                    <a href="#" class="hover:text-white">
+                        <i class="fab fa-instagram text-2xl"></i>
+                    </a>
+                    <a href="#" class="hover:text-white">
+                        <i class="fab fa-twitter text-2xl"></i>
+                    </a>
+                    <a href="#" class="hover:text-white">
+                        <i class="fab fa-youtube text-2xl"></i>
+                    </a>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm mb-6">
+                    <div>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="hover:text-white">Audio Description</a></li>
+                            <li><a href="#" class="hover:text-white">Investor Relations</a></li>
+                            <li><a href="#" class="hover:text-white">Legal Notices</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="hover:text-white">Help Center</a></li>
+                            <li><a href="#" class="hover:text-white">Jobs</a></li>
+                            <li><a href="#" class="hover:text-white">Cookie Preferences</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="hover:text-white">Gift Cards</a></li>
+                            <li><a href="#" class="hover:text-white">Terms of Use</a></li>
+                            <li><a href="#" class="hover:text-white">Corporate Information</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="hover:text-white">Media Center</a></li>
+                            <li><a href="#" class="hover:text-white">Privacy</a></li>
+                            <li><a href="#" class="hover:text-white">Contact Us</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <button class="border border-gray-400 px-2 py-1 text-sm mb-6 hover:text-white">
+                    Service Code
+                </button>
+                <p class="text-xs">
+                    © 2023 Netflix Clone, Inc.
+                </p>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        // Profile Selection
+        document.addEventListener('DOMContentLoaded', () => {
+            const profileSelection = document.getElementById('profile-selection');
+            const mainContent = document.getElementById('main-content');
+            const profileItems = document.querySelectorAll('.profile-item');
+            
+            profileItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    const profile = e.currentTarget.dataset.profile;
+                    // For demo purposes, we'll just show the main content regardless of profile selection
+                    // In a real app, you might store the selected profile and show different content
+                    
+                    // Add animation to hide profile selection
+                    profileSelection.classList.add('opacity-0', 'transition-opacity', 'duration-300');
+                    
+                    // Show main content after animation completes
+                    setTimeout(() => {
+                        profileSelection.classList.add('hidden');
+                        mainContent.classList.remove('hidden');
+                    }, 300);
+                });
+            });
+        });
+
+        // Global player variable
+        var player;
+
+        // 2. This code loads the IFrame Player API code asynchronously.
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        // 3. This function creates an <iframe> (and YouTube player)
+        //    after the API code downloads.
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('youtube-player-container', {
+                videoId: 'aL1A7voC608', // The YouTube video ID
+                playerVars: {
+                    'controls': 1,       // Show YouTube's own controls
+                    'modestbranding': 1, // Hide YouTube logo
+                    'rel': 0,            // Do not show related videos
+                    'autoplay': 1        // Autoplay when ready
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        // 4. The API will call this function when the video player is ready.
+        function onPlayerReady(event) {
+            // Ensure the video end buttons are hidden initially
+            document.getElementById('video-end-buttons').classList.add('hidden');
+        }
+
+        // 5. The API calls this function when the player's state changes.
+        function onPlayerStateChange(event) {
+            const youtubePlayerContainer = document.getElementById('youtube-player-container');
+            const videoEndButtons = document.getElementById('video-end-buttons');
+
+            if (event.data == YT.PlayerState.ENDED) {
+                // Hide the video player
+                youtubePlayerContainer.classList.add('hidden');
+                // Show the new end buttons
+                videoEndButtons.classList.remove('hidden');
+            } else {
+                // Ensure player is visible if not ended
+                youtubePlayerContainer.classList.remove('hidden');
+                videoEndButtons.classList.add('hidden');
+            }
+        }
+
+        // Function to replay the video
+        function replayVideo() {
+            const youtubePlayerContainer = document.getElementById('youtube-player-container');
+            const videoEndButtons = document.getElementById('video-end-buttons');
+
+            // Hide end buttons, show player, then play
+            videoEndButtons.classList.add('hidden');
+            youtubePlayerContainer.classList.remove('hidden');
+            
+            if (player) {
+                player.seekTo(0); // Go to the beginning
+                player.playVideo();
+            }
+        }
+
+        // Dropdown menu
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.dropdown')) {
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    menu.classList.add('hidden');
+                });
+            }
+        });
+    </script>
 </body>
 </html>
