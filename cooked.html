@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Overcooked 2 - Kitchen Chaos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Poppins:wght@400;600;700&display=swap');
+        
+        :root {
+            --primary: #FF6B6B;
+            --secondary: #4ECDC4;
+            --accent: #FFE66D;
+            --dark: #292F36;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #FFF5F5;
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+        
+        .title-font {
+            font-family: 'Luckiest Guy', cursive;
+            text-shadow: 3px 3px 0 rgba(0,0,0,0.1);
+            letter-spacing: 1px;
+        }
+        
+        .chef-hat {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .flame {
+            animation: flicker 2s ease-in-out infinite alternate;
+        }
+        
+        .pan-tilt {
+            animation: tilt 5s ease-in-out infinite alternate;
+        }
+        
+        .ingredient {
+            transition: all 0.3s ease;
+        }
+        
+        .ingredient:hover {
+            transform: translateY(-10px) rotate(5deg);
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        @keyframes flicker {
+            0% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+            100% { opacity: 0.8; transform: scale(1); }
+        }
+        
+        @keyframes tilt {
+            0% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+            100% { transform: rotate(-5deg); }
+        }
+        
+        .kitchen-bg {
+            background-image: url('https://images.unsplash.com/photo-1600566752227-9688b1151923?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
+            background-size: cover;
+            background-position: center;
+            background-blend-mode: multiply;
+        }
+        
+        .order-card {
+            transition: all 0.3s ease;
+            transform-style: preserve-3d;
+        }
+        
+        .order-card:hover {
+            transform: perspective(1000px) rotateY(10deg) translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+        }
+        
+        .chaos-meter {
+            transition: width 0.5s ease;
+        }
+        
+        .character-select {
+            transition: all 0.3s ease;
+        }
+        
+        .character-select:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.2));
+        }
+        
+        .character-select.active {
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 10px var(--accent));
+        }
+
+        /* Custom Slider Styles */
+        input[type="range"] {
+            -webkit-appearance: none; /* Hides the slider track and thumb */
+            width: 100%; /* Full-width */
+            height: 16px; /* Thicker track */
+            background: #4A5568; /* Darker background for the track */
+            border-radius: 8px; /* Rounded corners for the track */
+            outline: none; /* Remove outline */
+            transition: opacity .2s; /* Smooth transition for opacity */
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2); /* Inner shadow for depth */
+        }
+
+        input[type="range"]:hover {
+            opacity: 1; /* Fully opaque on hover */
+        }
+
+        /* Thumb styles for Webkit (Chrome, Safari, Edge) */
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none; /* Hides the thumb */
+            appearance: none;
+            width: 28px; /* Size of the thumb */
+            height: 28px; /* Size of the thumb */
+            border-radius: 50%; /* Circular thumb */
+            background: var(--accent); /* Yellow color for the thumb */
+            cursor: grab; /* Grab cursor */
+            border: 3px solid #fff; /* White border */
+            box-shadow: 0 0 0 2px var(--primary), 0 4px 8px rgba(0,0,0,0.3); /* Outer shadow for pop */
+            margin-top: -6px; /* Adjust thumb position to center vertically */
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            background: #FFD700; /* Slightly darker yellow on hover */
+            transform: scale(1.1); /* Slightly larger on hover */
+            cursor: grabbing;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:active {
+            transform: scale(1.05); /* Slightly larger when active */
+            cursor: grabbing;
+        }
+
+        /* Thumb styles for Firefox */
+        input[type="range"]::-moz-range-thumb {
+            width: 28px; /* Size of the thumb */
+            height: 28px; /* Size of the thumb */
+            border-radius: 50%; /* Circular thumb */
+            background: var(--accent); /* Yellow color for the thumb */
+            cursor: grab; /* Grab cursor */
+            border: 3px solid #fff; /* White border */
+            box-shadow: 0 0 0 2px var(--primary), 0 4px 8px rgba(0,0,0,0.3); /* Outer shadow for pop */
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        input[type="range"]::-moz-range-thumb:hover {
+            background: #FFD700; /* Slightly darker yellow on hover */
+            transform: scale(1.1); /* Slightly larger on hover */
+            cursor: grabbing;
+        }
+
+        input[type="range"]::-moz-range-thumb:active {
+            transform: scale(1.05); /* Slightly larger when active */
+            cursor: grabbing;
+        }
+
+        /* Track styles for Firefox */
+        input[type="range"]::-moz-range-track {
+            height: 16px;
+            background: #4A5568;
+            border-radius: 8px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* Fill the track before the thumb (Webkit) */
+        input[type="range"]::-webkit-slider-runnable-track {
+            background: linear-gradient(to right, var(--accent), var(--primary)); /* Gradient fill */
+            background-size: var(--range-fill-width, 0%) 100%; /* Dynamic width */
+            background-repeat: no-repeat;
+            height: 16px;
+            border-radius: 8px;
+        }
+        
+        /* Fill the track before the thumb (Firefox) */
+        input[type="range"]::-moz-range-progress {
+            background: linear-gradient(to right, var(--accent), var(--primary)); /* Gradient fill */
+            height: 16px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Music -->
+    <audio id="background-music" src="over.mp3" autoplay loop></audio>
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <!-- Overcooked 2 Logo -->
+                        <img class="h-12 w-auto" src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/af7dfb2d-8cc1-45ab-9bab-6b0d0c655e58/dk29y4s-233dab02-e160-4c69-9eb0-fb3cc639429e.png/v1/fill/w_894,h_894/overcooked_2_transparent_png_by_wallpaper_background_dk29y4s-pre.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MjE2MCIsInBhdGgiOiJcL2ZcL2FmN2RmYjJkLThjYzEtNDVhYi05YmFiLTZiMGQwYzY1NWU1OFwvZGsyOXk0cy0yMzNkYWIwMi1lMTYwLTRjNjktOWViMC1mYjNjYzYzOTQyOWUucG5nIiwid2lkdGgiOiI8PTIxNjAifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.x5PlKqS3rlgx2PLgi1-Bh3danNIjSMfu0nIOn0-fVcE" alt="Overcooked 2 Logo">
+                        <span class="ml-3 title-font text-2xl text-red-500">Overcooked 2</span>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-center space-x-4">
+                        <a href="#home" class="px-3 py-2 rounded-md text-sm font-medium text-red-500 hover:bg-red-50">Home</a>
+                        <a href="#features" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100">Features</a>
+                        <a href="#characters" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100">Characters</a>
+                        <a href="#recipes" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100">Recipes</a>
+                        <a href="#order" class="px-3 py-2 rounded-md text-sm font-medium bg-red-500 text-white hover:bg-red-600">Order Chaos</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-red-500 focus:outline-none">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#home" class="block px-3 py-2 rounded-md text-base font-medium text-red-500 hover:bg-red-50">Home</a>
+                <a href="#features" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Features</a>
+                <a href="#characters" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Characters</a>
+                <a href="#recipes" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Recipes</a>
+                <a href="#order" class="block px-3 py-2 rounded-md text-base font-medium bg-red-500 text-white hover:bg-red-600">Order Chaos</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative overflow-hidden kitchen-bg bg-red-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32 relative z-10">
+            <div class="md:flex items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <h1 class="title-font text-4xl md:text-6xl text-white mb-6">Team Quack Is Back in the Kitchen!</h1>
+                    <p class="text-lg text-white mb-8">Grab your aprons and your favorite person — it’s time for another round of adorable chaos! Join Doofy & Quackers as they scream over burning rice, miss every plate toss, and somehow still win — together 💛</p>
+                    <div class="flex space-x-4">
+                        <button class="px-8 py-3 bg-yellow-400 text-gray-900 font-bold rounded-full hover:bg-yellow-300 transition duration-300 transform hover:scale-105 shadow-lg">
+                            <i class="fas fa-gamepad mr-2"></i> Play Now
+                        </button>
+                        <button class="px-8 py-3 bg-white text-red-500 font-bold rounded-full hover:bg-gray-100 transition duration-300 transform hover:scale-105 shadow-lg">
+                            <i class="fas fa-trailer mr-2"></i> Watch Trailer
+                        </button>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center relative">
+                    <img src="CD8.png" alt="Overcooked 2 Characters" class="rounded-lg shadow-2xl max-w-md w-full border-4 border-white">
+                    <div class="absolute -bottom-5 -right-5 bg-yellow-400 p-4 rounded-full shadow-xl">
+                        <i class="fas fa-fire-alt text-3xl text-red-500 flame"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="absolute inset-0 bg-black opacity-40"></div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="title-font text-3xl md:text-4xl text-red-500 mb-4">QUACKERS & DOOFY’S COOKING CLASSICS</h2>
+                <p class="max-w-2xl mx-auto text-gray-600">Quackers plans. Doofy panics. Somehow… dinner happens.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-10">
+                <!-- Feature 1: Quackmaster Plans Everything -->
+                <div class="bg-gray-50 p-8 rounded-xl shadow-md hover:shadow-xl transition duration-300">
+                    <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-6 mx-auto">
+                        <i class="fas fa-brain text-2xl text-red-500"></i> <!-- Updated icon -->
+                    </div>
+                    <h3 class="text-xl font-bold text-center mb-3">🧠 Quackmaster Plans Everything</h3>
+                    <p class="text-gray-600 text-center">Quackers doesn’t just play — she orchestrates. Every onion, every toss, every perfectly-timed plate is part of her master plan. If it has three stars, she made it happen.</p>
+                    <p class="text-sm text-gray-500 mt-2 text-center">🪄 Tags: Strategy · Precision · Boss Energy</p> <!-- New tags -->
+                </div>
+                
+                <!-- Feature 2: Rice? Washed. Dishes? Done. Vibes? Immaculate. -->
+                <div class="bg-gray-50 p-8 rounded-xl shadow-md hover:shadow-xl transition duration-300">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-6 mx-auto">
+                        <i class="fas fa-basket-shopping text-2xl text-green-500"></i> <!-- Updated icon -->
+                    </div>
+                    <h3 class="text-xl font-bold text-center mb-3">🍚 Rice? Washed. Dishes? Done. Vibes? Immaculate.</h3>
+                    <p class="text-gray-600 text-center">While Quackers runs the kitchen like a five-star general, Doofy keeps the ship afloat — one pot of rice and clean plate at a time. Also: morale-boosting cuteness level = 100%.</p>
+                    <p class="text-sm text-gray-500 mt-2 text-center">🫧 Tags: Support Chef · Cuteness · Very Good Listener</p> <!-- New tags -->
+                </div>
+                
+                <!-- Feature 3: Three Stars or Nothing -->
+                <div class="bg-gray-50 p-8 rounded-xl shadow-md hover:shadow-xl transition duration-300">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6 mx-auto">
+                        <i class="fas fa-star text-2xl text-blue-500"></i> <!-- Updated icon -->
+                    </div>
+                    <h3 class="text-xl font-bold text-center mb-3">🔥 Three Stars or Nothing</h3>
+                    <p class="text-gray-600 text-center">We never moved on till we nailed it. Failed orders? Restart. One star? Restart. Kitchen on fire? Still... restart. Because chaos is temporary, but three stars? Eternal.</p>
+                    <p class="text-sm text-gray-500 mt-2 text-center">⭐ Tags: Commitment · Perfectionists · Chaos with Standards</p> <!-- New tags -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Characters Section -->
+    <section id="characters" class="py-20 bg-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="title-font text-3xl md:text-4xl text-red-500 mb-4">Meet the Chefs</h2>
+                <p class="max-w-2xl mx-auto text-gray-600">Choose your culinary avatar and get cooking!</p>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <!-- Character 1: Doofy -->
+                <div class="character-select" data-character="doofy">
+                    <div class="bg-white p-4 rounded-lg shadow-md text-center">
+                        <div class="w-32 h-32 mx-auto mb-4 overflow-hidden rounded-full border-4 border-red-300">
+                            <img src="CD7.png" alt="Doofy" class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="font-bold text-lg">👨‍🍳 Doofy</h3>
+                        <p class="text-sm text-gray-500">The Enthusiastic Rookie</p>
+                    </div>
+                </div>
+                
+                <!-- Character 2: Quackers -->
+                <div class="character-select" data-character="quackers">
+                    <div class="bg-white p-4 rounded-lg shadow-md text-center">
+                        <div class="w-32 h-32 mx-auto mb-4 overflow-hidden rounded-full border-4 border-green-300">
+                            <img src="CD6.png" alt="Quackers" class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="font-bold text-lg">👩‍🍳 Quackers</h3>
+                        <p class="text-sm text-gray-500">The Strategy Queen</p>
+                    </div>
+                </div>
+                
+                <!-- Character 3: Ducky -->
+                <div class="character-select" data-character="ducky">
+                    <div class="bg-white p-4 rounded-lg shadow-md text-center">
+                        <div class="w-32 h-32 mx-auto mb-4 overflow-hidden rounded-full border-4 border-blue-300">
+                            <img src="CD4.png" alt="Ducky" class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="font-bold text-lg">🐤 Ducky</h3>
+                        <p class="text-sm text-gray-500">The Small But Speedy Sidekick</p>
+                    </div>
+                </div>
+                
+                <!-- Character 4: Racconie -->
+                <div class="character-select" data-character="racconie">
+                    <div class="bg-white p-4 rounded-lg shadow-md text-center">
+                        <div class="w-32 h-32 mx-auto mb-4 overflow-hidden rounded-full border-4 border-yellow-300">
+                            <img src="CD5.png" alt="Racconie" class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="font-bold text-lg">🦝 Racconie</h3>
+                        <p class="text-sm text-gray-500">The Wheelie Legend</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="character-detail" class="mt-12 bg-white rounded-xl shadow-lg overflow-hidden md:flex max-w-4xl mx-auto hidden">
+                <div class="md:w-1/3">
+                    <img id="detail-image" src="CD7.png" alt="Selected Character" class="w-full h-full object-cover">
+                </div>
+                <div class="p-8 md:w-2/3">
+                    <h3 id="detail-name" class="title-font text-2xl text-red-500 mb-2">Doofy</h3>
+                    <p id="detail-title" class="text-gray-500 font-medium mb-4">The Enthusiastic Rookie</p>
+                    <p id="detail-bio" class="text-gray-700 mb-6">Doofy is always excited to cook, even if he forgets the rice while doing a victory dance. He may drop a plate or two, but his heart’s always in it — and his smile never leaves.</p>
+                    <div class="flex items-center">
+                        <div class="mr-6">
+                            <p class="text-sm text-gray-500">Special Ability</p>
+                            <p id="detail-ability" class="font-medium">✨ Morale Boost (and accidental chaos)</p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">Favorite Dish</p>
+                            <p id="detail-dish" class="font-medium">🍚 Rice (especially when it's not burning)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recipes Section -->
+    <section id="recipes" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="title-font text-3xl md:text-4xl text-red-500 mb-4">Chaotic Recipes</h2>
+                <p class="max-w-2xl mx-auto text-gray-600">Some of the crazy dishes you'll prepare in Overcooked 2</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Recipe 1: The Onion Sacrifice -->
+                <div class="order-card bg-white rounded-xl shadow-md overflow-hidden border-2 border-gray-100">
+                    <div class="h-48 overflow-hidden flex items-center justify-center bg-gray-50">
+                        <img src="CD3.png" alt="The Onion Sacrifice" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-bold text-xl">🧅 Dish 1: “The Onion Sacrifice”</h3>
+                            <span class="bg-red-100 text-red-600 text-xs font-medium px-2.5 py-0.5 rounded">🔥 Difficulty: Strategically Emotional</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">The dish where Quackers told Doofy to toss the onions — and he launched them into the abyss. Twice. Still, no restart because… the vibes were right.</p>
+                        <p class="text-sm text-gray-500 mt-2">👩‍🍳 Chef’s Note: "Onions are temporary. Her patience? Legendary."</p>
+                        <div class="flex flex-wrap gap-2 mt-4">
+                            <span class="bg-gray-100 px-2 py-1 text-xs rounded-full flex items-center">
+                                <i class="fas fa-tags text-gray-500 mr-1"></i> Emotional
+                            </span>
+                            <span class="bg-gray-100 px-2 py-1 text-xs rounded-full flex items-center">
+                                <i class="fas fa-tags text-gray-500 mr-1"></i> Unpredictable
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recipe 2: Rice Under Pressure -->
+                <div class="order-card bg-white rounded-xl shadow-md overflow-hidden border-2 border-gray-100">
+                    <div class="h-48 overflow-hidden flex items-center justify-center bg-gray-50">
+                        <img src="CD2.png" alt="Rice Under Pressure" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-bold text-xl">🍣 Dish 2: “Rice Under Pressure”</h3>
+                            <span class="bg-yellow-100 text-yellow-600 text-xs font-medium px-2.5 py-0.5 rounded">🔥 Difficulty: Morale-Dependent</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">Quackers was calmly assembling sushi like a goddess. Doofy? Juggling rice, dishes, and internal panic. Did the rice burn? Probably. Did we still win? You bet.</p>
+                        <p class="text-sm text-gray-500 mt-2">💬 Fun Fact: Doofy was voted “Best Rice Rescuer 2024”.</p>
+                        <div class="flex flex-wrap gap-2 mt-4">
+                            <span class="bg-gray-100 px-2 py-1 text-xs rounded-full flex items-center">
+                                <i class="fas fa-tags text-gray-500 mr-1"></i> Teamwork
+                            </span>
+                            <span class="bg-gray-100 px-2 py-1 text-xs rounded-full flex items-center">
+                                <i class="fas fa-tags text-gray-500 mr-1"></i> High Stakes
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recipe 3: The Triple-Star Sandwich -->
+                <div class="order-card bg-white rounded-xl shadow-md overflow-hidden border-2 border-gray-100">
+                    <div class="h-48 overflow-hidden flex items-center justify-center bg-gray-50">
+                        <img src="CD1.png" alt="The Triple-Star Sandwich" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-bold text-xl">🥪 Dish 3: “The Triple-Star Sandwich”</h3>
+                            <span class="bg-purple-100 text-purple-600 text-xs font-medium px-2.5 py-0.5 rounded">🔥 Difficulty: Perfection or Bust</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">We didn’t just complete this level. We dominated it. Plates flew, dishes sparkled, Quackers calculated, and Doofy ran like a caffeinated duck. 3 stars or we restart — always.</p>
+                        <p class="text-sm text-gray-500 mt-2">🏆 Achievement Unlocked: "Kitchen Royalty with Side of Chaos"</p>
+                        <div class="flex flex-wrap gap-2 mt-4">
+                            <span class="bg-gray-100 px-2 py-1 text-xs rounded-full flex items-center">
+                                <i class="fas fa-tags text-gray-500 mr-1"></i> Mastery
+                            </span>
+                            <span class="bg-gray-100 px-2 py-1 text-xs rounded-full flex items-center">
+                                <i class="fas fa-tags text-gray-500 mr-1"></i> Relentless
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chaos Meter Section -->
+    <section class="py-16 bg-gray-900 text-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="title-font text-3xl mb-6">HOW MUCH CHAOS CAN QUACKERS HANDLE?</h2>
+            <p class="mb-8 text-gray-300">Adjust the chaos meter to see what kind of kitchen madness you're signing up for!</p>
+            
+            <div class="mb-8">
+                <div class="flex justify-between mb-2">
+                    <span id="chaos-start-label">🔈 Calm Before the Quackstorm</span>
+                    <span id="chaos-end-label">🌪️ THE QUACKPOCALYPSE</span>
+                </div>
+                <input type="range" min="0" max="100" value="50" class="w-full h-3 bg-gray-700 rounded-lg appearance-none cursor-pointer" id="chaos-meter">
+            </div>
+            
+            <div class="bg-gray-800 rounded-lg p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <span id="chaos-level" class="font-bold text-lg">Mild Panic, Maximum Cute</span>
+                    <span id="chaos-score" class="bg-red-500 text-white px-3 py-1 rounded-full text-sm">50%</span>
+                </div>
+                <div class="h-4 bg-gray-700 rounded-full overflow-hidden">
+                    <div id="chaos-bar" class="h-full bg-gradient-to-r from-yellow-400 to-red-500 rounded-full chaos-meter" style="width: 50%"></div>
+                </div>
+                <p id="chaos-description" class="mt-4 text-gray-300">Rice might be burning. Doofy’s yelling. Quackers is fixing it with grace (and judgmental stares).</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Order Section -->
+    <section id="order" class="py-20 bg-red-50">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-white rounded-xl shadow-xl overflow-hidden">
+                <div class="md:flex">
+                    <div class="md:w-1/2 bg-red-500 text-white p-10 flex flex-col justify-center">
+                        <h2 class="title-font text-3xl mb-4">Ready to Join the Kitchen Chaos?</h2>
+                        <p class="mb-6">Available now on all love-powered platforms.</p>
+                        
+                        <h4 class="font-bold text-xl mb-3">Platforms:</h4>
+                        <ul class="list-none space-y-2 mb-6">
+                            <li class="flex items-center"><i class="fas fa-check-circle text-yellow-300 mr-2"></i> Nintendo Switch (where we screamed at each other lovingly)</li>
+                            <li class="flex items-center"><i class="fas fa-check-circle text-yellow-300 mr-2"></i> Couch Co-Op (preferably in PJs)</li>
+                            <li class="flex items-center"><i class="fas fa-check-circle text-yellow-300 mr-2"></i> Kitchen Floor (post-level snack recovery zone)</li>
+                            <li class="flex items-center"><i class="fas fa-check-circle text-yellow-300 mr-2"></i> Doofy’s Heart (runs warm, slightly flustered)</li>
+                        </ul>
+
+                        <h4 class="font-bold text-xl mb-3">Editions:</h4>
+                        <ul class="list-none space-y-2">
+                            <li><span class="font-bold">Standard Edition</span> – Includes: hugs, rice, and mild panic</li>
+                            <li><span class="font-bold">Quackers Edition</span> – Comes with extra strategy, sass, and 3-star perfection</li>
+                            <li><span class="font-bold">Doofy Deluxe</span> – Dishwashing DLC + bonus compliments unlocked</li>
+                        </ul>
+                    </div>
+                    <div class="md:w-1/2 p-10">
+                        <h3 class="text-2xl font-bold mb-6">Order Now</h3>
+                        <form>
+                            <div class="mb-6">
+                                <label class="block text-gray-700 mb-2" for="email">Want more updates from Team QuackQuack™? Subscribe to future memories, chaos recaps, or just to see if Doofy ever gets promoted.</label>
+                                <input type="email" id="email" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" placeholder="[Enter Your Email]">
+                            </div>
+                            <button type="submit" class="w-full bg-red-500 text-white py-3 px-4 rounded-lg font-bold hover:bg-red-600 transition duration-300 flex items-center justify-center">
+                                <i class="fas fa-paper-plane mr-2"></i> Subscribe
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- New button for next adventure -->
+            <div class="text-center mt-12">
+                <button id="next-adventure-button" class="px-8 py-4 bg-yellow-400 text-gray-900 font-bold rounded-full hover:bg-yellow-300 transition duration-300 transform hover:scale-105 shadow-lg text-lg">
+                    Ready for next adventure?
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="title-font text-xl mb-4">Overcooked 2</h3>
+                    <p class="text-gray-400">Burnt meals. Big laughs. Better memories.</p>
+                    <div class="flex space-x-4 mt-6">
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-discord"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Game Info</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Features</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Characters</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Recipes</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">DLCs</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Support</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">FAQs</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Help Center</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Contact Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Feedback</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Newsletter</h4>
+                    <p class="text-gray-400 mb-4">Subscribe for recipes, tips, and special offers!</p>
+                    <form class="flex">
+                        <input type="email" placeholder="Your email" class="px-4 py-2 rounded-l-lg focus:outline-none text-gray-900 w-full">
+                        <button type="submit" class="bg-red-500 px-4 py-2 rounded-r-lg hover:bg-red-600">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
+                <p>Made with ❤️ by Doofy & Quackers — and maybe a fire extinguisher.</p>
+                <p>⭐⭐⭐ or we restart. Always.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Chef Hat -->
+    <div class="fixed bottom-6 right-6 z-50">
+        <div class="bg-red-500 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-xl cursor-pointer hover:bg-red-600 transition duration-300 chef-hat">
+            <i class="fas fa-hat-chef text-2xl"></i>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Character selection
+        const characters = {
+            doofy: { 
+                name: "Doofy",
+                title: "The Enthusiastic Rookie",
+                bio: "Doofy is always excited to cook, even if he forgets the rice while doing a victory dance. He may drop a plate or two, but his heart’s always in it — and his smile never leaves.",
+                ability: "✨ Morale Boost (and accidental chaos)",
+                dish: "🍚 Rice (especially when it's not burning)",
+                image: "CD7.png" // Updated local image
+            },
+            quackers: { 
+                name: "Quackers",
+                title: "The Strategy Queen",
+                bio: "Quackers doesn’t just cook — she commands. With flawless timing and genius-level planning, she leads the kitchen like a pro. She's the brain behind every 3-star win (and the reason Doofy survives).",
+                ability: "🧠 Instant Kitchen Plan Deployment™",
+                dish: "🍣 Sushi (perfectly plated, obviously)",
+                image: "CD6.png" // Updated local image
+            },
+            ducky: { 
+                name: "Ducky",
+                title: "The Small But Speedy Sidekick",
+                bio: "Tiny, fast, and dangerously cute. Ducky zooms around the kitchen carrying ingredients twice their size and still finds time to squeak encouragements. Small flippers, big energy.",
+                ability: "💨 Super Speed (and bonus “aww” factor)",
+                dish: "🥗 Salad — easy to toss, fun to fling",
+                image: "CD4.png" // Updated local image
+            },
+            racconie: { 
+                name: "Racconie",
+                title: "The Wheelie Legend",
+                bio: "Don’t underestimate this raccoon — Racconie rolls into chaos like a pro. Always one step ahead, usually holding a tomato, and occasionally stealing snacks off the counter.",
+                ability: "🧯 Controlled Mayhem (with bonus sass)",
+                dish: "🍕 Pizza (but only if it's slightly on fire)",
+                image: "CD5.png" // Updated local image
+            }
+        };
+
+        document.querySelectorAll('.character-select').forEach(item => {
+            item.addEventListener('click', function() {
+                // Remove active class from all
+                document.querySelectorAll('.character-select').forEach(el => {
+                    el.classList.remove('active');
+                });
+                
+                // Add active class to clicked
+                this.classList.add('active');
+                
+                // Get character data
+                const charName = this.getAttribute('data-character');
+                const charData = characters[charName];
+                
+                // Update detail panel
+                document.getElementById('detail-image').src = charData.image;
+                document.getElementById('detail-name').textContent = charData.name;
+                document.getElementById('detail-title').textContent = charData.title;
+                document.getElementById('detail-bio').textContent = charData.bio;
+                document.getElementById('detail-ability').textContent = charData.ability;
+                document.getElementById('detail-dish').textContent = charData.dish;
+                
+                // Show detail panel if hidden (mobile)
+                document.getElementById('character-detail').classList.remove('hidden');
+            });
+        });
+
+        // Chaos meter
+        const chaosMeter = document.getElementById('chaos-meter');
+        const chaosBar = document.getElementById('chaos-bar');
+        const chaosScore = document.getElementById('chaos-score');
+        const chaosLevel = document.getElementById('chaos-level');
+        const chaosDescription = document.getElementById('chaos-description');
+        
+        chaosMeter.addEventListener('input', function() {
+            const value = parseInt(this.value); // Ensure value is an integer
+            chaosBar.style.width = value + '%';
+            chaosScore.textContent = value + '%';
+            
+            // Update the CSS variable for the track fill
+            chaosMeter.style.setProperty('--range-fill-width', value + '%');
+
+            if (value <= 10) {
+                chaosLevel.textContent = "🔈 Calm Before the Quackstorm";
+                chaosDescription.textContent = "Everything’s under control. Quackers is humming. Doofy hasn’t dropped anything... yet.";
+            } else if (value <= 30) {
+                chaosLevel.textContent = "🧺 Slightly Toasty";
+                chaosDescription.textContent = "Doofy's spinning. Quackers is calmly doing everything else.";
+            } else if (value <= 50) {
+                chaosLevel.textContent = "🥴 Mild Panic, Maximum Cute";
+                chaosDescription.textContent = "Rice might be burning. Doofy’s yelling. Quackers is fixing it with grace (and judgmental stares).";
+            } else if (value <= 70) {
+                chaosLevel.textContent = "🔥 This Is Fine™";
+                chaosDescription.textContent = "Two orders behind, one fire on the stove, and somehow... they’re still laughing.";
+            } else if (value <= 90) {
+                chaosLevel.textContent = "🚨 Full Chaos, Full Love";
+                chaosDescription.textContent = "Doofy just tried to plate the fire extinguisher. Quackers is speedrunning the entire kitchen. Hugs are postponed.";
+            } else {
+                chaosLevel.textContent = "🌪️ THE QUACKPOCALYPSE";
+                chaosDescription.textContent = "Plates flying. Onions crying. Screaming, fire, and—WAIT DID WE WIN?!";
+            }
+        });
+
+        // Initialize chaos meter on load to display the correct initial state
+        chaosMeter.dispatchEvent(new Event('input'));
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    const mobileMenu = document.getElementById('mobile-menu');
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                }
+            });
+        });
+
+        // Animate ingredients on recipe cards
+        document.querySelectorAll('.order-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                const ingredients = this.querySelectorAll('.ingredient');
+                ingredients.forEach((ing, index) => {
+                    setTimeout(() => {
+                        ing.classList.add('animate-bounce');
+                    }, index * 100);
+                });
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                const ingredients = this.querySelectorAll('.ingredient');
+                ingredients.forEach(ing => {
+                    ing.classList.remove('animate-bounce');
+                });
+            });
+        });
+
+        // Next adventure button functionality
+        document.getElementById('next-adventure-button').addEventListener('click', function() {
+            window.location.href = 'star.html'; // Redirect to star.html
+        });
+    </script>
+</body>
+</html>
