@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOOFYTALE - The game where mercy, mischief, and falling in love with chaos... is kinda the point.</title>
+    <!-- Tailwind CSS CDN for utility-first styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts import for 'Press Start 2P' (pixel art) -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles for Pixel Art Theme */
+        body {
+            font-family: 'Press Start 2P', cursive;
+            background-color: #0a0a0a; /* Slightly softer black */
+            color: #ffffff; /* Pure white for text */
+            /* Ensure pixelated rendering for images where supported */
+            image-rendering: optimizeSpeed;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: pixelated;
+            -ms-interpolation-mode: nearest-neighbor;
+            line-height: 1.5; /* Improved readability for pixel font */
+        }
+
+        /* Basic text shadow for readability on pixel fonts */
+        .text-shadow-pixel {
+            text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Heart shape CSS for the player's soul and decorative elements */
+        .heart {
+            width: 32px; /* Slightly larger, more prominent */
+            height: 32px;
+            background-color: #ff0000; /* Vibrant red */
+            transform: rotate(45deg);
+            position: relative;
+            animation: pulse-pixel 1.2s infinite steps(2); /* Stepped pulse for pixel feel */
+            box-shadow: 0 0 0 2px #000000, 0 0 0 5px #ff0000; /* Enhanced pixelated glow effect */
+        }
+        
+        .heart:before, .heart:after {
+            content: "";
+            width: 32px;
+            height: 32px;
+            background-color: #ff0000;
+            border-radius: 0; /* Remove rounding for pixel feel */
+            position: absolute;
+            box-shadow: 0 0 0 2px #000000; /* Pixelated border for heart parts */
+        }
+        
+        .heart:before {
+            top: -16px;
+            left: 0;
+        }
+        
+        .heart:after {
+            top: 0;
+            left: -16px;
+        }
+        
+        /* Keyframes for the pixelated heart pulse animation */
+        @keyframes pulse-pixel {
+            0% { transform: rotate(45deg) scale(1); }
+            50% { transform: rotate(45deg) scale(1.1); }
+            100% { transform: rotate(45deg) scale(1); }
+        }
+        
+        /* Soul animation for floating effect */
+        .soul-animation {
+            animation: float-pixel 2.5s ease-in-out infinite steps(2); /* Stepped float */
+        }
+        
+        /* Keyframes for the pixelated floating animation */
+        @keyframes float-pixel {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); } /* Slightly larger vertical movement */
+            100% { transform: translateY(0px); }
+        }
+        
+        /* Styling for game UI boxes - very blocky and high contrast */
+        .game-box {
+            border: 4px solid #ffffff; /* Thick, pixelated border */
+            box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.8); /* Strong, offset pixel shadow */
+            background-color: #000000; /* Pure black */
+            border-radius: 0; /* Sharp corners */
+            padding: 1.5rem; /* Consistent padding */
+        }
+        
+        /* Styling for dialogue boxes */
+        .dialogue-box {
+            border: 2px solid #ffffff;
+            background-color: rgba(0,0,0,0.95); /* Slightly less transparent black */
+            padding: 1.5rem;
+            border-radius: 0;
+            box-shadow: 4px 4px 0px rgba(255,255,255,0.2);
+        }
+        
+        /* Button styling for a retro, clickable feel */
+        .game-button {
+            background-color: #000000;
+            color: #ffffff;
+            border: 2px solid #ffffff;
+            box-shadow: 4px 4px 0px #888888; /* Softer gray for raised effect */
+            transition: all 0.05s linear; /* Instant transition for pixel feel */
+            border-radius: 0;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path fill="white" d="M0 0h16v16H0z"/><path fill="red" d="M2 2h2v2H2zM4 4h2v2H4zM6 6h2v2H6zM8 8h2v2H8zM10 10h2v2h-2zM12 12h2v2h-2z"/></svg>') 8 8, auto; /* Pixelated cursor */
+            text-transform: uppercase; /* All caps for buttons */
+            padding: 0.75rem 1.5rem; /* Consistent button padding */
+        }
+
+        .game-button:hover {
+            background-color: #ffffff; /* Invert colors on hover */
+            color: #000000;
+            box-shadow: 2px 2px 0px #000000; /* Pressed pixel button effect */
+            transform: translate(2px, 2px); /* Simulate press */
+        }
+
+        .game-button:active {
+            background-color: #444444; /* Darker when active */
+            box-shadow: 0 0 0px #000000;
+            transform: translate(4px, 4px); /* Further press */
+        }
+        
+        /* Typing effect for dialogue */
+        .typing-effect-pixel {
+            overflow: hidden;
+            border-right: 2px solid #ffffff; /* Pixelated blinking caret */
+            white-space: nowrap;
+            animation: 
+                typing-pixel 3.5s steps(40, end),
+                blink-caret-pixel .75s step-end infinite;
+        }
+        
+        /* Keyframes for pixelated typing */
+        @keyframes typing-pixel {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        /* Keyframes for pixelated blinking caret */
+        @keyframes blink-caret-pixel {
+            from, to { border-color: transparent }
+            50% { border-color: #ffffff; }
+        }
+
+        /* Character and Merch Card Styling */
+        .card-base {
+            background-color: #000000;
+            border-radius: 0;
+            border: 2px solid #ffffff;
+            box-shadow: 6px 6px 0px #888888; /* Strong offset shadow */
+            transition: transform 0.05s linear, box-shadow 0.05s linear;
+        }
+        .card-base:hover {
+            transform: translate(-2px, -2px); /* Lift effect */
+            box-shadow: 8px 8px 0px #ffffff; /* Brighter shadow on hover */
+        }
+
+        .card-image-container {
+            width: 100%;
+            height: 200px; /* Fixed height for image area */
+            overflow: hidden;
+            border-bottom: 2px solid #ffffff; /* Pixelated border */
+            background-color: #1a1a1a; /* Darker background for image area */
+        }
+        .card-image-placeholder {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            image-rendering: pixelated;
+        }
+
+        /* Specific background colors for character cards - internal visual distinction */
+        .char-sans { background-color: #111111; } 
+        .char-papyrus { background-color: #222222; } 
+        .char-doofy { background-color: #333333; } 
+        .char-quackers { background-color: #444444; } 
+
+        /* Specific background colors for merch cards - similar pixelated distinction */
+        .merch-item-1 { background-color: #111111; } 
+        .merch-item-2 { background-color: #222222; } 
+        .merch-item-3 { background-color: #333333; } 
+
+        /* Music Player Image Styling */
+        .track-image-container {
+            width: 140px; /* Slightly larger image container */
+            height: 140px;
+            overflow: hidden;
+            border-radius: 0;
+            border: 2px solid #ffffff;
+            box-shadow: 4px 4px 0px #888888;
+        }
+        .track-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            image-rendering: pixelated;
+        }
+
+        /* Progress bar for music player */
+        #progress-bar {
+            height: 6px; /* Thicker progress bar */
+            background-color: #ff0000; /* Vibrant red progress */
+            border-radius: 0;
+            transition: width 0.1s linear;
+        }
+        .progress-bar-bg {
+            height: 6px; /* Thicker background bar */
+            background-color: #ffffff; /* White background */
+            border-radius: 0;
+        }
+
+        /* Adjust button sizes for music player controls */
+        #toggle-play-pause, #prev-track-button, #next-track-button {
+            font-size: 3rem; /* Even larger icons */
+            color: #ffffff; /* Ensure white color */
+        }
+        #toggle-play-pause:hover, #prev-track-button:hover, #next-track-button:hover {
+            color: #ff0000; /* Red on hover for controls */
+        }
+
+        /* Footer specific styling */
+        .footer-link:hover {
+            color: #ff0000; /* Red on hover for footer links */
+            transition: color 0.05s linear;
+        }
+
+        /* Responsive adjustments - Mobile First */
+        /* Default styles are for mobile */
+        .text-5xl { font-size: 2.5rem; } /* Hero title */
+        .text-7xl { font-size: 3.5rem; } /* Character icons */
+        .text-8xl { font-size: 4rem; } /* Hero title on larger mobile */
+        .text-xl { font-size: 1rem; } /* General headings/larger text */
+        .text-lg { font-size: 0.875rem; } /* Body text */
+        .text-base { font-size: 0.75rem; } /* Smaller body text */
+        .text-sm { font-size: 0.625rem; } /* Smallest text */
+        .text-xs { font-size: 0.5rem; } /* Very small text */
+
+        .heart { width: 24px; height: 24px; }
+        .heart:before, .heart:after { width: 24px; height: 24px; top: -12px; left: -12px; }
+        .track-image-container { width: 100px; height: 100px; }
+        #toggle-play-pause, #prev-track-button, #next-track-button { font-size: 2rem; }
+
+        .game-box {
+            padding: 1rem; /* Less padding on smaller screens */
+        }
+
+        /* Small devices (sm) - 640px and up */
+        @media (min-width: 640px) {
+            .text-5xl { font-size: 3rem; }
+            .text-7xl { font-size: 4rem; }
+            .text-8xl { font-size: 5rem; }
+            .text-xl { font-size: 1.125rem; }
+            .text-lg { font-size: 1rem; }
+            .text-base { font-size: 0.875rem; }
+            .text-sm { font-size: 0.75rem; }
+            .text-xs { font-size: 0.625rem; }
+            .heart { width: 28px; height: 28px; }
+            .heart:before, .heart:after { width: 28px; height: 28px; top: -14px; left: -14px; }
+            .track-image-container { width: 120px; height: 120px; }
+            #toggle-play-pause, #prev-track-button, #next-track-button { font-size: 2.5rem; }
+        }
+
+        /* Medium devices (md) - 768px and up */
+        @media (min-width: 768px) {
+            .game-box {
+                padding: 2rem; /* More padding on larger screens */
+            }
+            .text-5xl { font-size: 3.5rem; }
+            .text-7xl { font-size: 5rem; }
+            .text-8xl { font-size: 6rem; }
+            .text-xl { font-size: 1.25rem; }
+            .text-lg { font-size: 1.125rem; }
+            .text-base { font-size: 1rem; }
+            .text-sm { font-size: 0.875rem; }
+            .text-xs { font-size: 0.75rem; }
+            .heart { width: 32px; height: 32px; }
+            .heart:before, .heart:after { width: 32px; height: 32px; top: -16px; left: -16px; }
+            .track-image-container { width: 140px; height: 140px; }
+            #toggle-play-pause, #prev-track-button, #next-track-button { font-size: 3rem; }
+        }
+
+        /* Large devices (lg) - 1024px and up */
+        @media (min-width: 1024px) {
+            .text-5xl { font-size: 4rem; }
+            .text-7xl { font-size: 6rem; }
+            .text-8xl { font-size: 7rem; }
+            .text-xl { font-size: 1.5rem; }
+            .text-lg { font-size: 1.25rem; }
+            .text-base { font-size: 1.125rem; }
+            .text-sm { font-size: 1rem; }
+            .text-xs { font-size: 0.875rem; }
+        }
+
+        /* Extra large devices (xl) - 1280px and up */
+        @media (min-width: 1280px) {
+            .text-5xl { font-size: 5rem; }
+            .text-7xl { font-size: 7rem; }
+            .text-8xl { font-size: 8rem; }
+        }
+
+    </style>
+</head>
+<body class="bg-black text-white min-h-screen">
+    <!-- Navigation Bar -->
+    <nav class="game-box py-4 px-6 flex justify-between items-center sticky top-0 z-50">
+        <!-- Site Title -->
+        <div class="text-white text-xl md:text-2xl text-shadow-pixel">
+            <span class="text-white">DOOFY</span><span class="text-gray-400">TALE</span>
+        </div>
+        <!-- Desktop Navigation Links -->
+        <div class="hidden md:flex space-x-6">
+            <a href="#about" class="game-button px-4 py-2 text-shadow-pixel">ABOUT</a>
+            <a href="#characters" class="game-button px-4 py-2 text-shadow-pixel">CHARACTERS</a>
+            <a href="#soundtrack" class="game-button px-4 py-2 text-shadow-pixel">SOUNDTRACK</a>
+            <a href="#merch" class="game-button px-4 py-2 text-shadow-pixel">MERCH</a>
+        </div>
+        <!-- Mobile Menu Button -->
+        <button id="mobile-menu-button" class="md:hidden text-white focus:outline-none game-button p-2">
+            <i class="fas fa-bars text-2xl"></i>
+        </button>
+        <!-- Mobile Navigation Menu (hidden by default) -->
+        <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full game-box shadow-lg">
+            <a href="#about" class="block px-6 py-3 text-white hover:bg-white hover:text-black transition-none text-shadow-pixel">ABOUT</a>
+            <a href="#characters" class="block px-6 py-3 text-white hover:bg-white hover:text-black transition-none text-shadow-pixel">CHARACTERS</a>
+            <a href="#soundtrack" class="block px-6 py-3 text-white hover:bg-white hover:text-black transition-none text-shadow-pixel">SOUNDTRACK</a>
+            <a href="#merch" class="block px-6 py-3 text-white hover:bg-white hover:text-black transition-none text-shadow-pixel">MERCH</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative h-screen flex items-center justify-center bg-black overflow-hidden">
+        <!-- Background decorative elements (simple pixel noise or subtle pattern) -->
+        <div class="absolute inset-0 opacity-10" style="background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"4\" height=\"4\"><rect width=\"2\" height=\"2\" fill=\"white\" opacity=\"0.1\"/><rect x=\"2\" y=\"2\" width=\"2\" height=\"2\" fill=\"white\" opacity=\"0.1\"/></svg>'); background-size: 4px 4px; image-rendering: pixelated;"></div>
+        <!-- Hero content -->
+        <div class="text-center z-10 px-4 py-8">
+            <h1 class="text-5xl md:text-7xl lg:text-8xl mb-6 typing-effect-pixel text-shadow-pixel">
+                <span class="text-white">DOOFY</span><span class="text-gray-400">TALE</span>
+            </h1>
+            <p class="mb-4 text-lg md:text-xl max-w-2xl mx-auto text-gray-200 text-shadow-pixel">THE GAME WHERE MERCY, MISCHIEF, AND FALLING IN LOVE WITH CHAOS... IS KINDA THE POINT.</p>
+            <p class="text-base md:text-lg text-gray-500 mb-10 text-shadow-pixel">A SPECIAL ADVENTURE FOR QUACKERS! HAPPY BIRTHDAY!</p>
+            <div class="flex flex-col md:flex-row justify-center gap-6">
+                <button id="play-now-button" class="game-button px-10 py-5 text-lg text-shadow-pixel">
+                    PLAY NOW
+                </button>
+                <button class="game-button px-10 py-5 text-lg text-shadow-pixel">
+                    WATCH TRAILER
+                </button>
+            </div>
+        </div>
+        <!-- Animated heart at the bottom -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 soul-animation">
+            <div class="heart"></div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 px-6 bg-black border-t-4 border-white">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-4xl md:text-5xl mb-16 text-center text-white text-shadow-pixel">ABOUT THE GAME</h2>
+            <div class="grid md:grid-cols-2 gap-16 items-center">
+                <!-- Game description -->
+                <div class="game-box">
+                    <p class="mb-6 text-lg leading-relaxed text-gray-300 text-shadow-pixel">THIS ISN’T JUST UNDERTALE. IT’S DOOFY’S VERY QUESTIONABLE BIRTHDAY GIFT.</p>
+                    <p class="mb-6 text-lg leading-relaxed text-gray-300 text-shadow-pixel">UNDERTALE IS AN RPG FULL OF MONSTERS, SPAGHETTI, AND DRAMATIC LIFE CHOICES — WHICH HONESTLY FELT KIND OF FAMILIAR. SO, DOOFY MADE THIS TRIBUTE FOR QUACKERS, BECAUSE WHY NOT CELEBRATE HER BIRTHDAY WITH A MAGICAL UNDERGROUND FULL OF CHAOS, GOATS, AND EMOTIONAL SKELETONS?</p>
+                    <p class="mb-6 text-lg leading-relaxed text-gray-300 text-shadow-pixel">IN THIS VERSION, QUACKERS IS CLEARLY THE ONE WHO’D SPARE EVERYONE. DOOFY? ACCIDENTALLY PRESSES FIGHT WHILE TRYING TO HUG SOMEONE. CLASSIC.</p>
+                    <p class="mb-6 text-lg leading-relaxed text-gray-300 text-shadow-pixel">TOGETHER, THEY WOULD ABSOLUTELY SURVIVE A BULLET-HELL BOSS FIGHT, ARGUE OVER WHO GETS TO TALK TO PAPYRUS, AND LAUGH THROUGH EVERY RANDOM DOG THAT EXPlODES FOR NO REASON.</p>
+                    <p class="text-lg leading-relaxed text-gray-300 text-shadow-pixel">THIS PAGE? IT’S NOT FANCY. BUT IT’S FILLED WITH SAVE POINTS, BAD DECISIONS, GOOD VIBES, AND ONE QUACKERS-APPROVED LEVEL OF WHOLESOME CHAOS.</p>
+                    <p class="text-xl leading-relaxed mt-10 text-center text-gray-500 text-shadow-pixel">WELCOME TO DOOFYTALE. PLEASE PROCEED WITH CAUTION 🧡</p>
+                </div>
+                <!-- Poster Placeholder -->
+                <div class="relative flex justify-center items-center h-full min-h-[400px] p-4"> 
+                    <div class="game-box w-full h-full flex items-center justify-center text-gray-400 text-center text-xl text-shadow-pixel">
+                        <img src="UT1.png" alt="About Game Poster" class="card-image-placeholder">
+                    </div>
+                    <!-- Animated soul outside the box -->
+                    <div class="absolute -bottom-8 -right-8 w-28 h-28 soul-animation hidden md:block">
+                        <div class="heart"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Characters Section -->
+    <section id="characters" class="py-24 px-6 bg-black border-t-4 border-white">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-4xl md:text-5xl mb-16 text-center text-white text-shadow-pixel">MEET THE CHARACTERS</h2>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Character Card: Sans -->
+                <div class="card-base">
+                    <div class="h-48 char-sans flex items-center justify-center border-b-2 border-white">
+                        <img src="UT2.png" alt="Sans Character Image" class="card-image-placeholder">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl mb-3 text-white text-shadow-pixel">SANS</h3>
+                        <p class="text-gray-300 text-base leading-relaxed text-shadow-pixel">
+                            TITLE: THE PUN-LOVING SHORTCUT SKELETON<br>
+                            BIO:<br>
+                            MASTER OF BAD JOKES AND SUSPICIOUS NAPS. SANS IS LAZY, CLEVER, AND POSSIBLY THE STRONGEST BEING IN THE UNDERGROUND — BUT MOSTLY JUST VIBES. KNOWN TO TELEPORT, WINK MID-FIGHT, AND CONFUSE YOU WITH METAPHYSICS AND KETCHUP.<br>
+                            SPECIAL MOVE: JUDGMENTAL EYE GLOW<br>
+                            LIKES: NAPPING, HOT DOGS, QUANTUM PHYSICS<br>
+                            DISLIKES: SERIOUS CONVERSATIONS, STAIRS
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Character Card: Papyrus -->
+                <div class="card-base">
+                    <div class="h-48 char-papyrus flex items-center justify-center border-b-2 border-white">
+                        <img src="UT3.png" alt="Papyrus Character Image" class="card-image-placeholder">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl mb-3 text-white text-shadow-pixel">PAPYRUS</h3>
+                        <p class="text-gray-300 text-base leading-relaxed text-shadow-pixel">
+                            TITLE: THE LOUDEST PUZZLE PRINCE<br>
+                            BIO:<br>
+                            A TALL SKELETON WITH AN EVEN TALLER EGO — BUT A HEART OF SOLID SPAGHETTI. PAPYRUS DREAMS OF JOINING THE ROYAL GUARD AND CAPTURING A HUMAN... ONCE HE FINISHES REARRANGING HIS SOCK DRAWER.<br>
+                            SPECIAL MOVE: ANNOYING BLUE ATTACKS!!!<br>
+                            LIKES: SPAGHETTI, PUZZLES, HIMSELF<br>
+                            DISLIKES: BEING IGNORED, SANS
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Character Card: Doofy -->
+                <div class="card-base">
+                    <div class="h-48 char-doofy flex items-center justify-center border-b-2 border-white">
+                        <img src="UT4.png" alt="Doofy Character Image" class="card-image-placeholder">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl mb-3 text-white text-shadow-pixel">DOOFY</h3>
+                        <p class="text-gray-300 text-base leading-relaxed text-shadow-pixel">
+                            TITLE: THE LAGGY SOUL WITH BIG HEART<br>
+                            BIO:<br>
+                            SWEET, DRAMATIC, PROBABLY PRESSING THE WRONG BUTTON — DOOFY TRIES HIS BEST. KNOWN FOR HEROIC DISH-WASHING, TERRIBLE PLATFORMING, AND GIVING 110% EMOTIONAL SUPPORT (AND CHAOS).<br>
+                            SPECIAL MOVE: PANIC HUG & BUTTON MASH COMBO<br>
+                            LIKES: QUACKERS, RICE, MORAL VICTORIES<br>
+                            DISLIKES: JUMP PUZZLES, BEING PLAYER 1
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Character Card: Quackers -->
+                <div class="card-base">
+                    <div class="h-48 char-quackers flex items-center justify-center border-b-2 border-white">
+                        <img src="UT5.png" alt="Quackers Character Image" class="card-image-placeholder">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl mb-3 text-white text-shadow-pixel">QUACKERS</h3>
+                        <p class="text-gray-300 text-base leading-relaxed text-shadow-pixel">
+                            TITLE: THE STRATEGIC DUCK OF DESTINY<br>
+                            BIO:<br>
+                            BRAINS OF THE OPERATION, QUEEN OF PATIENCE, AND CERTIFIED 3-STAR STRATEGIST. QUACKERS CARRIES THE TEAM EFFORTLESSLY, USUALLY WHILE SMILING AND PLANNING FIVE MOVES AHEAD.<br>
+                            SPECIAL MOVE: TACTICAL QUACK & INSTANT CLUTCH<br>
+                            LIKES: WINNING GRACEFULLY, OVERCOOKED RICE, CALM CHAOS<br>
+                            DISLIKES: BURNT ONIONS, LAG, MISSING STARS
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Soundtrack Section -->
+    <section id="soundtrack" class="py-24 px-6 bg-black border-t-4 border-white">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-4xl md:text-5xl mb-16 text-center text-white text-shadow-pixel">SOUNDTRACK</h2>
+            <div class="grid md:grid-cols-2 gap-16 items-center">
+                <!-- Soundtrack description and top tracks list -->
+                <div class="game-box">
+                    <p class="mb-8 text-lg leading-relaxed text-gray-300 text-shadow-pixel">DOOFY MADE THESE SONGS JUST FOR QUACKERS, LITTLE LOVE LETTERS WRAPPED IN CHIPTUNE AND CHARM. INSPIRED BY THE HEART AND HUMOUR OF UNDERTALE, EACH MELODY TELLS THEIR STORY: THE GIGGLES, THE TEAMWORK, THE BOSS BATTLES AND ALL THE SWEET MOMENTS IN BETWEEN. IT'S MUSIC FOR PLAYER ONE, FROM PLAYER TWO.</p>
+                    <div class="game-box p-6">
+                        <h3 class="text-xl mb-4 text-white text-shadow-pixel">TOP TRACKS</h3>
+                        <ul class="space-y-4">
+                            <li class="flex items-center justify-between border-b-2 border-gray-700 pb-3">
+                                <span class="text-lg text-gray-300 text-shadow-pixel">1. ONE SOUL, ONE CAKE</span>
+                                <button class="play-track-button game-button px-5 py-2 text-sm" data-track-index="0">PLAY</button>
+                            </li>
+                            <li class="flex items-center justify-between border-b-2 border-gray-700 pb-3">
+                                <span class="text-lg text-gray-300 text-shadow-pixel">2. QUACKSTEP WALTZ</span>
+                                <button class="play-track-button game-button px-5 py-2 text-sm" data-track-index="1">PLAY</button>
+                            </li>
+                            <li class="flex items-center justify-between border-b-2 border-gray-700 pb-3">
+                                <span class="text-lg text-gray-300 text-shadow-pixel">3. DISH DUTY HERO</span>
+                                <button class="play-track-button game-button px-5 py-2 text-sm" data-track-index="2">PLAY</button>
+                            </li>
+                            <li class="flex items-center justify-between border-b-2 border-gray-700 pb-3">
+                                <span class="text-lg text-gray-300 text-shadow-pixel">4. FEATHER VS FLUFF</span>
+                                <button class="play-track-button game-button px-5 py-2 text-sm" data-track-index="3">PLAY</button>
+                            </li>
+                            <li class="flex items-center justify-between pt-1">
+                                <span class="text-lg text-gray-300 text-shadow-pixel">5. DUAL SOUL MODE</span>
+                                <button class="play-track-button game-button px-5 py-2 text-sm" data-track-index="4">PLAY</button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Mock Music Player -->
+                <div class="flex items-center justify-center">
+                    <div class="relative w-full max-w-md">
+                        <div class="absolute inset-0 bg-white opacity-10 blur-sm animate-pulse" style="border-radius: 0;"></div>
+                        <div class="relative game-box p-10">
+                            <div class="flex justify-center mb-8">
+                                <!-- Image for the current track -->
+                                <div class="track-image-container">
+                                    <img id="track-image" src="https://placehold.co/120x120/000/FFF?text=TRACK" alt="Current Track Image" class="track-image">
+                                </div>
+                            </div>
+                            <h3 id="now-playing-title" class="text-center text-2xl mb-3 text-white text-shadow-pixel">NOW PLAYING</h3>
+                            <p id="now-playing-track-name" class="text-center text-gray-300 text-xl mb-8 text-shadow-pixel">SELECT A TRACK TO PLAY</p>
+                            <div class="mb-6">
+                                <div class="progress-bar-bg mb-1">
+                                    <div id="progress-bar" class="h-full w-0 shadow-sm transition-none"></div>
+                                </div>
+                                <div class="flex justify-between text-xs text-gray-500 text-shadow-pixel">
+                                    <span id="current-time">0:00</span>
+                                    <span id="total-time">0:00</span>
+                                </div>
+                            </div>
+                            <div class="flex justify-center space-x-10">
+                                <button id="prev-track-button" class="text-4xl text-gray-400 hover:text-white transition-none"><i class="fas fa-step-backward"></i></button>
+                                <button id="toggle-play-pause" class="text-5xl text-white hover:text-gray-300 transition-none"><i class="fas fa-play"></i></button>
+                                <button id="next-track-button" class="text-4xl text-gray-400 hover:text-white transition-none"><i class="fas fa-step-forward"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Merch Section -->
+    <section id="merch" class="py-24 px-6 bg-black border-t-4 border-white">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-4xl md:text-5xl mb-6 text-center text-white text-shadow-pixel">SANS SAYS: TAKE A BREAK, KID.</h2>
+            <p class="text-center text-lg text-gray-400 mb-16 text-shadow-pixel">HERE’S SOME COOL STUFF I FOUND LYING AROUND. MIGHT BE WEIRD. MIGHT BE WONDERFUL. DEFINITELY NOT MERCH.</p>
+            
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-10">
+                <!-- Item 1: The Birthday Buff -->
+                <div class="card-base">
+                    <div class="card-image-container">
+                        <img src="UT6.png" alt="The Birthday Buff" class="card-image-placeholder">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl mb-3 text-white text-shadow-pixel">THE BIRTHDAY BUFF</h3>
+                        <p class="text-gray-300 text-base leading-relaxed mb-4 text-shadow-pixel">
+                            “HEALS 99HP. AND YOUR SOUL, PROBABLY.”<br>
+                            QUACKERS LEVELED UP TODAY. GOT WISDOM, CHARM, AND STILL MORE STARS THAN DOOFY IN ANY CO-OP GAME EVER.<br>
+                            EFFECT: +100% SMILE RATE<br>
+                            RARITY: UNRESETTABLE
+                        </p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-xl text-white text-shadow-pixel">FREE!</span>
+                            <button class="game-button px-6 py-3 text-base">CLAIM NOW</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Item 2: The Laggy Soul -->
+                <div class="card-base">
+                    <div class="card-image-container">
+                        <img src="UT7.png" alt="The Laggy Soul" class="card-image-placeholder">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl mb-3 text-white text-shadow-pixel">THE LAGGY SOUL</h3>
+                        <p class="text-gray-300 text-base leading-relaxed mb-4 text-shadow-pixel">
+                            “HE TRIES. AND HONESTLY? THAT’S KINDA THE WHOLE POINT.”<br>
+                            DOOFY’S SOUL MAY STUTTER, BUT HIS HUGS ARE HIGH-ACCURACY. PROUDLY POWERED BY PANIC AND LOVE.<br>
+                            BONUS: CAUSES UNSKIPPABLE CUTENESS
+                        </p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-xl text-white text-shadow-pixel">PRICELESS</span>
+                            <button class="game-button px-6 py-3 text-base">OBSERVE</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Item 3: Tactical Duck Energy -->
+                <div class="card-base">
+                    <div class="card-image-container">
+                        <img src="UT8.png" alt="Tactical Duck Energy" class="card-image-placeholder">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl mb-3 text-white text-shadow-pixel">TACTICAL DUCK ENERGY</h3>
+                        <p class="text-gray-300 text-base leading-relaxed mb-4 text-shadow-pixel">
+                            “QUACK ONCE TO WIN. QUACK TWICE TO CARRY THE TEAM.”<br>
+                            QUACKERS HAS UNLOCKED ALL THE HIDDEN BOSS MECHANICS. AND PATIENCE. AND STRATEGY. BASICALLY A FINAL FORM.<br>
+                            WARNING: CAUSES OVERACHIEVEMENT
+                        </p>
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-xl text-white text-shadow-pixel">LEGENDARY</span>
+                            <button class="game-button px-6 py-3 text-base">ACQUIRE</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="game-box py-16 px-6">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid md:grid-cols-3 gap-12 text-center md:text-left">
+                <!-- Site branding and tagline -->
+                <div>
+                    <h3 class="text-2xl md:text-3xl mb-5 text-white text-shadow-pixel">
+                        <span class="text-white">DOOFY</span><span class="text-gray-400">TALE</span>
+                    </h3>
+                    <p class="text-gray-500 text-base leading-relaxed text-shadow-pixel">THE GAME WHERE MERCY, MISCHIEF, AND FALLING IN LOVE WITH CHAOS... IS KINDA THE POINT.</p>
+                </div>
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-xl mb-5 text-white text-shadow-pixel">QUICK LINKS</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-red-500 transition-none text-shadow-pixel footer-link">OFFICIAL WEBSITE</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-red-500 transition-none text-shadow-pixel footer-link">TOBY FOX</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-red-500 transition-none text-shadow-pixel footer-link">STEAM PAGE</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-red-500 transition-none text-shadow-pixel footer-link">WIKI</a></li>
+                    </ul>
+                </div>
+                <!-- Social Media Links -->
+                <div>
+                    <h3 class="text-xl mb-5 text-white text-shadow-pixel">FOLLOW US</h3>
+                    <div class="flex justify-center md:justify-start space-x-6">
+                        <a href="#" class="text-gray-400 hover:text-red-500 text-3xl transition-none"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-red-500 text-3xl transition-none"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-red-500 text-3xl transition-none"><i class="fab fa-twitch"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-red-500 text-3xl transition-none"><i class="fab fa-discord"></i></a>
+                    </div>
+                </div>
+            </div>
+            <!-- Copyright information -->
+            <div class="border-t-2 border-gray-800 mt-16 pt-8 text-center text-gray-600 text-sm text-shadow-pixel">
+                <p>© 2023 UNDERTALE FAN SITE. HAPPY BIRTHDAY QUACKERS! THIS IS A FAN-MADE WEBSITE AND IS NOT AFFILIATED WITH TOBY FOX OR UNDERTALE.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- Mobile Menu Toggle ---
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', function() {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // --- Hero Section Play Button Logic ---
+        const playButton = document.getElementById('play-now-button');
+        playButton.addEventListener('click', function() {
+            alert("THE GAME FUNCTIONALITY HAS BEEN REMOVED. HAPPY BIRTHDAY QUACKERS!");
+        });
+        
+        // --- Music Player Logic ---
+        const nowPlayingTrackName = document.getElementById('now-playing-track-name');
+        const trackImage = document.getElementById('track-image');
+        const progressBar = document.getElementById('progress-bar');
+        const currentTimeDisplay = document.getElementById('current-time');
+        const totalTimeDisplay = document.getElementById('total-time');
+        const togglePlayPauseButton = document.getElementById('toggle-play-pause');
+        const prevTrackButton = document.getElementById('prev-track-button');
+        const nextTrackButton = document.getElementById('next-track-button');
+        const playTrackButtons = document.querySelectorAll('.play-track-button');
+
+        // Define tracks (name, image URL, and audio URL)
+        const tracks = [
+            { name: "ONE SOUL, ONE CAKE", imageUrl: "UT13.png", audioUrl: "UM1.mp3" },
+            { name: "QUACKSTEP WALTZ", imageUrl: "UT12.png", audioUrl: "UM2.mp3" },
+            { name: "DISH DUTY HERO", imageUrl: "UT11.png", audioUrl: "UM3.mp3" },
+            { name: "FEATHER VS FLUFF", imageUrl: "UT10.png", audioUrl: "UM4.mp3" },
+            { name: "DUAL SOUL MODE", imageUrl: "UT9.png", audioUrl: "UM5.mp3" }
+        ];
+
+        let currentTrackIndex = -1;
+        let isPlaying = false;
+        let audio = new Audio(); // Create a single Audio object
+        let intervalId; // To store the interval for progress bar updates
+
+        // Event listener for when the audio ends
+        audio.addEventListener('ended', () => {
+            isPlaying = false;
+            updateMusicPlayerUI();
+            playNextTrack(); // Automatically play the next track
+        });
+
+        // Event listener for when audio metadata is loaded (to get duration)
+        audio.addEventListener('loadedmetadata', () => {
+            updateMusicPlayerUI();
+        });
+
+        // Event listener for audio time updates (for progress bar)
+        audio.addEventListener('timeupdate', () => {
+            updateMusicPlayerUI();
+        });
+
+        /**
+         * Formats seconds into MM:SS string.
+         * @param {number} seconds - The total seconds.
+         * @returns {string} Formatted time string.
+         */
+        function formatTime(seconds) {
+            if (isNaN(seconds) || seconds < 0) return '0:00'; // Handle invalid time
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = Math.floor(seconds % 60);
+            return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${Math.floor(remainingSeconds)}`;
+        }
+
+        /**
+         * Updates the music player UI based on the current track and audio state.
+         */
+        function updateMusicPlayerUI() {
+            if (currentTrackIndex === -1 || !tracks[currentTrackIndex]) {
+                nowPlayingTrackName.textContent = "SELECT A TRACK TO PLAY";
+                trackImage.src = "https://placehold.co/120x120/000/FFF?text=TRACK"; // Default image
+                trackImage.alt = "DEFAULT TRACK IMAGE";
+                progressBar.style.width = '0%';
+                currentTimeDisplay.textContent = '0:00';
+                totalTimeDisplay.textContent = '0:00';
+                togglePlayPauseButton.innerHTML = '<i class="fas fa-play"></i>';
+                return;
+            }
+
+            const currentTrack = tracks[currentTrackIndex];
+            nowPlayingTrackName.textContent = currentTrack.name;
+            trackImage.src = currentTrack.imageUrl;
+            trackImage.alt = currentTrack.name + " IMAGE";
+            
+            currentTimeDisplay.textContent = formatTime(audio.currentTime);
+            totalTimeDisplay.textContent = formatTime(audio.duration);
+
+            const progressPercentage = (audio.currentTime / audio.duration) * 100;
+            progressBar.style.width = `${progressPercentage || 0}%`; // Handle NaN for duration
+
+            if (isPlaying) {
+                togglePlayPauseButton.innerHTML = '<i class="fas fa-pause"></i>';
+            } else {
+                togglePlayPauseButton.innerHTML = '<i class="fas fa-play"></i>';
+            }
+        }
+
+        /**
+         * Plays the specified track.
+         * @param {number} index - The index of the track to play.
+         */
+        function playTrack(index) {
+            if (index < 0 || index >= tracks.length) {
+                console.error("INVALID TRACK INDEX:", index);
+                return;
+            }
+
+            // If a track is currently playing, pause it before changing
+            if (isPlaying) {
+                audio.pause();
+            }
+
+            currentTrackIndex = index;
+            audio.src = tracks[currentTrackIndex].audioUrl;
+            audio.load(); // Load the new audio source
+            audio.play().then(() => {
+                isPlaying = true;
+                updateMusicPlayerUI();
+            }).catch(error => {
+                console.error("ERROR PLAYING AUDIO:", error);
+                isPlaying = false;
+                updateMusicPlayerUI();
+                alert("COULD NOT PLAY AUDIO. PLEASE CHECK THE FILE PATH."); // User-friendly message
+            });
+        }
+
+        /**
+         * Toggles play/pause state.
+         */
+        function togglePlayPause() {
+            if (currentTrackIndex === -1) {
+                // If no track selected, play the first one
+                playTrack(0);
+                return;
+            }
+
+            if (isPlaying) {
+                audio.pause();
+            } else {
+                audio.play().then(() => {
+                    // Successfully played
+                }).catch(error => {
+                    console.error("ERROR RESUMING AUDIO:", error);
+                    alert("COULD NOT RESUME AUDIO. PLEASE CHECK THE FILE PATH.");
+                });
+            }
+            isPlaying = !isPlaying;
+            updateMusicPlayerUI();
+        }
+
+        /**
+         * Plays the next track in the list.
+         */
+        function playNextTrack() {
+            let nextIndex = currentTrackIndex + 1;
+            if (nextIndex >= tracks.length) {
+                nextIndex = 0; // Loop back to the first track
+            }
+            playTrack(nextIndex);
+        }
+
+        /**
+         * Plays the previous track in the list.
+         */
+        function playPreviousTrack() {
+            let prevIndex = currentTrackIndex - 1;
+            if (prevIndex < 0) {
+                prevIndex = tracks.length - 1; // Loop to the last track
+            }
+            playTrack(prevIndex);
+        }
+
+        // Add event listeners to "Play" buttons in the track list
+        playTrackButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const trackIndex = parseInt(this.dataset.trackIndex);
+                playTrack(trackIndex);
+            });
+        });
+
+        // Add event listeners to music player controls
+        togglePlayPauseButton.addEventListener('click', togglePlayPause);
+        prevTrackButton.addEventListener('click', playPreviousTrack);
+        nextTrackButton.addEventListener('click', playNextTrack);
+
+        // Initial UI update
+        updateMusicPlayerUI();
+
+        // --- Typewriter effect for hero section title ---
+        const heroTextElement = document.querySelector('.typing-effect-pixel');
+        if (heroTextElement) {
+            let fullText = heroTextElement.textContent;
+            heroTextElement.textContent = ''; // Clear text initially
+            let i = 0;
+            const speed = 70; // Typing speed in milliseconds per character
+
+            function typeWriter() {
+                if (i < fullText.length) {
+                    heroTextElement.textContent += fullText.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, speed);
+                } else {
+                    heroTextElement.style.borderRight = 'none'; // Stop blinking caret after typing
+                }
+            }
+            typeWriter();
+        }
+    </script>
+</body>
+</html>
