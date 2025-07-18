@@ -567,7 +567,7 @@
                     </div>
                     <div class="p-6">
                         <h3 class="text-2xl mb-3 text-white text-shadow-pixel">THE LAGGY SOUL</h3>
-                        <p class="text-gray-300 text-base leading-relaxed mb-4 text-shadow-pixel">
+                        <p class="text-gray-300 text-base leading-relaxed text-shadow-pixel">
                             “HE TRIES. AND HONESTLY? THAT’S KINDA THE WHOLE POINT.”<br>
                             DOOFY’S SOUL MAY STUTTER, BUT HIS HUGS ARE HIGH-ACCURACY. PROUDLY POWERED BY PANIC AND LOVE.<br>
                             BONUS: CAUSES UNSKIPPABLE CUTENESS
@@ -599,6 +599,13 @@
                 </div>
             </div>
         </div>
+    </section>
+
+    <!-- Next Adventure Button Section -->
+    <section class="py-16 px-6 bg-black border-t-4 border-white text-center">
+        <button id="next-adventure-button" class="game-button px-10 py-5 text-lg text-shadow-pixel">
+            NEXT ADVENTURE?
+        </button>
     </section>
 
     <!-- Footer -->
@@ -829,6 +836,12 @@
         togglePlayPauseButton.addEventListener('click', togglePlayPause);
         prevTrackButton.addEventListener('click', playPreviousTrack);
         nextTrackButton.addEventListener('click', playNextTrack);
+
+        // --- Next Adventure Button Logic ---
+        const nextAdventureButton = document.getElementById('next-adventure-button');
+        nextAdventureButton.addEventListener('click', function() {
+            window.location.href = 'valley.html'; // Redirect to valley.html
+        });
 
         // Initial UI update
         updateMusicPlayerUI();
