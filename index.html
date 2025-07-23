@@ -11,6 +11,10 @@
             box-sizing: border-box;
         }
 
+        html, body {
+            height: 100%; /* Ensure html and body take full height for vh units to work correctly */
+        }
+
         :root {
             /* Refined Soothing Celestial Dreamscape Palette */
             --color-background-start: #080818; /* Deeper, richer indigo-purple */
@@ -43,8 +47,8 @@
             font-family: 'Lora', serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', 'Segoe UI Symbol', 'Android Emoji', 'EmojiSymbols';
             margin: 0;
             padding: 0;
-            overflow-x: hidden;
-            overflow-y: auto;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+            overflow-y: auto; /* Allow vertical scroll for main content */
             background: linear-gradient(165deg, var(--color-background-start), var(--color-background-end));
             background-size: 350% 350%;
             animation: cosmicGradient 180s ease infinite alternate;
@@ -593,14 +597,19 @@
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
             transition: opacity var(--transition-duration-medium) ease-out, visibility var(--transition-duration-medium) ease-out;
+            padding: clamp(1rem, 3vw, 2rem); /* Overall padding for the popup container */
+            overflow-y: auto; /* Allow the entire popup overlay to scroll if its content is too tall */
+            overflow-x: hidden;
         }
 
         .popup-card {
             background: linear-gradient(135deg, rgba(8, 8, 24, 0.92), rgba(3, 3, 10, 0.88));
             border-radius: var(--border-radius-lg);
-            padding: clamp(3.5rem, 9vw, 5rem); /* Adjusted padding */
-            max-width: 600px;
-            width: 95%;
+            /* Increased padding to give more space around content */
+            padding: clamp(2.5rem, 7vw, 4rem);
+            /* Make the card wider and responsive, covering most of the screen */
+            max-width: 95vw; /* Even wider */
+            width: clamp(300px, 95vw, 800px); /* Responsive width, allowing it to be quite wide */
             text-align: center;
             box-shadow: 0 15px 50px rgba(0, 0, 0, 0.8), 0 0 70px rgba(58, 96, 160, 0.7);
             position: relative;
@@ -608,6 +617,14 @@
             cursor: pointer;
             border: 2px solid rgba(58, 96, 160, 0.6);
             transition: transform var(--transition-duration-fast) ease, box-shadow var(--transition-duration-fast) ease;
+            /* Crucial: Constrain card height and enable internal scrolling */
+            max-height: 95vh; /* Allow card to take up most of viewport height */
+            overflow-y: auto; /* Allow content inside the card to scroll if it exceeds max-height */
+            display: flex; /* Use flexbox for internal content alignment */
+            flex-direction: column;
+            align-items: center; /* Center items horizontally */
+            justify-content: flex-start; /* Align content to the top */
+            gap: clamp(1.5rem, 4vw, 2.5rem); /* Consistent spacing between elements */
         }
 
         @keyframes popupEnter {
@@ -620,50 +637,57 @@
             box-shadow: 0 18px 60px rgba(0, 0, 0, 0.85), 0 0 80px rgba(58, 96, 160, 0.8);
         }
 
-        .popup-card h2 {
-            color: var(--color-gold-light);
-            font-size: clamp(2.0rem, 4.5vw, 2.8rem);
-            margin-top: 1.5rem;
-            line-height: 1.5;
-            text-shadow: 0 0 18px var(--color-gold-glow);
-            word-break: break-word;
-            overflow-wrap: break-word;
-            margin-bottom: 2rem; /* Adjusted margin */
-        }
-
         .popup-card .gif-top {
-            position: absolute;
-            top: -30px;
-            left: 50%;
-            transform: translateX(-50%);
+            /* No absolute positioning here, it's part of the normal flow */
             width: clamp(90px, 18vw, 110px);
             height: auto;
             border-radius: var(--border-radius-md);
             box-shadow: 0 0 20px rgba(232, 208, 128, 0.7);
             border: 5px solid rgba(232, 208, 128, 0.7);
             animation: floatPop 4s ease-in-out infinite alternate;
+            z-index: 1;
+            /* Use negative margin to pull it up and overlap the top border */
+            margin-top: calc(clamp(90px, 18vw, 110px) / -2); /* Half of its height pulled up */
+            /* No margin-bottom here, gap property on popup-card handles spacing */
         }
 
         @keyframes floatPop {
-            0% { transform: translateX(-50%) translateY(0); }
-            50% { transform: translateX(-50%) translateY(-15px); }
-            100% { transform: translateX(-50%) translateY(0); }
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-15px); } /* Float slightly higher */
+            100% { transform: translateY(0); }
         }
 
         .popup-card .gif-main {
             max-width: 100%;
             height: auto;
             border-radius: var(--border-radius-lg);
-            margin-top: 1.5rem;
+            /* No margin-top here, gap property on popup-card handles spacing */
             box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7), 0 0 60px rgba(232, 208, 128, 0.7);
         }
 
+        .popup-card h2 {
+            color: var(--color-gold-light);
+            font-size: clamp(2.0rem, 4.5vw, 2.8rem);
+            /* No margin-top or margin-bottom here, gap property on popup-card handles spacing */
+            line-height: 1.5;
+            text-shadow: 0 0 18px var(--color-gold-glow);
+            word-break: break-word;
+            overflow-wrap: break-word;
+            flex-shrink: 1; /* Allow text to shrink if necessary */
+        }
+
+        .popup-card p {
+            /* No margin-top or margin-bottom here, gap property on popup-card handles spacing */
+            font-size: clamp(1.0rem, 2.4vw, 1.15rem);
+            flex-shrink: 1; /* Allow text to shrink if necessary */
+        }
+
         .popup-card .hint-text {
+            /* No margin-top or margin-bottom here, gap property on popup-card handles spacing */
             font-size: clamp(0.9rem, 2.2vw, 1.1rem);
-            color: var(--color-secondary);
-            margin-top: 2rem; /* Adjusted margin */
             opacity: 0.7;
             font-style: italic;
+            flex-shrink: 1; /* Allow text to shrink if necessary */
         }
 
         /* --- Sparkles --- */
@@ -1319,17 +1343,22 @@
 
     <div class="popup hidden-element" id="introPopup">
         <div class="popup-card" id="popupClickArea" role="button" aria-label="Click to unwrap birthday surprise">
+            <!-- Dancing GIF positioned to float partially above the card -->
             <img class="gif-top" src="https://media.tenor.com/6yBqtjeP1ekAAAAj/bubu-dudu-sseeyall.gif" alt="Bubu Dudu See Ya!" loading="lazy">
+            <!-- Main Birthday Cake GIF -->
             <img class="gif-main" src="https://media.tenor.com/s5AoXjOy4NsAAAAj/birthday-cake.gif" alt="Birthday Cake GIF" loading="lazy">
+            <!-- Main Heading -->
             <h2>💫 Ready to float into birthday magic, Quackers? Just one tap away!</h2>
+            <!-- Main Paragraph Text -->
             <p>Touch the screen and let the stars part — your dreamy birthday adventure (and Doofy) await! 🌌💫</p>
+            <!-- Hint Text -->
             <p class="hint-text">Turn up the volume and let the melodies guide you... 🎶</p>
         </div>
     </div>
 
     <main class="content hidden-element" id="mainContent">
         <h1 class="content-block hidden-element" id="mainTitle">Happy Birthday, my dazzling duck of delight! <span aria-hidden="true">💖</span></h1>
-        <p class="music-hint hidden-element" id="musicHint">🎶 Trust me — your birthday soundtrack is magical. Just listen.... 🌸🎵</p>
+        <p class="music-hint hidden-element" id="musicHint">🎶 Trust me — your birthday soundtrack is magical. Just listen.... �🎵</p>
 
 
         <div class="gif-inline-container content-block hidden-element" id="gifBlock1">
@@ -1427,6 +1456,7 @@ Happy Birthday, my radiant duck queen 💫<br>
 
             const introPopup = document.getElementById('introPopup');
             const popupClickArea = document.getElementById('popupClickArea');
+
             const mainContent = document.getElementById('mainContent');
             const musicHint = document.getElementById('musicHint');
 
@@ -1520,7 +1550,7 @@ You’re the calm in my chaos, the light in my orbit,
 and the sweetest reason the universe feels warm and kind.
 
 May your birthday be wrapped in stardust giggles, moonbeam cuddles,
-and the quiet kind of joy that lingers like a melody. �`;
+and the quiet kind of joy that lingers like a melody. 💖`;
 
             const wishConfirmationMessage = "Your wish has taken flight on moonbeams and magic, gathering sparkle with every star it touches. 🌠 May it return to you wrapped in wonder and joy, just as you deserve.";
 
@@ -1921,17 +1951,13 @@ and the quiet kind of joy that lingers like a melody. �`;
                             loadingOverlay.addEventListener('transitionend', () => {
                                 loadingOverlay.remove();
                             }, { once: true });
+                            // Reveal intro popup after loading
                             revealElement(introPopup, 'flex');
                         }, 500);
                     }
                 }
                 showNextLoadingText();
             }
-
-            // Initial setup on window load
-            window.addEventListener('load', () => {
-                startLoadingStorytelling();
-            });
 
             // Event listener for intro popup click
             popupClickArea.addEventListener('click', () => {
@@ -1966,6 +1992,11 @@ and the quiet kind of joy that lingers like a melody. �`;
                         }
                     }, 1000);
                 }, { once : true });
+            });
+
+            // Initial setup on window load
+            window.addEventListener('load', () => {
+                startLoadingStorytelling();
             });
 
             // Event listener for Start Journey button
