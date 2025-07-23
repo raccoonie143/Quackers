@@ -1109,13 +1109,7 @@
         }
 
         /* --- Audio Visualizer Canvas --- */
-        #audioVisualizerCanvas {
-            position: fixed;
-            inset: 0;
-            z-index: 2;
-            pointer-events: none;
-            opacity: 0.4;
-        }
+        /* Removed styles for audio visualizer as it's no longer used */
 
         /* Button Group specific adjustments */
         .button-group {
@@ -1319,7 +1313,7 @@
     <div class="background-blob layer-5" data-parallax-speed="0.3"></div>
     <div class="background-blob layer-6" data-parallax-speed="0.1"></div>
 
-    <canvas id="audioVisualizerCanvas"></canvas> <!-- Audio Visualizer Canvas -->
+    <!-- Removed Audio Visualizer Canvas -->
 
     <div class="comet-cursor" id="cometCursor"></div>
 
@@ -1484,15 +1478,6 @@ Happy Birthday, my radiant duck queen 💫<br>
             const introMusic = document.getElementById('introMusic');
             const mainMusic = document.getElementById('mainMusic');
 
-            // Audio Visualizer elements
-            const audioVisualizerCanvas = document.getElementById('audioVisualizerCanvas');
-            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            let analyser;
-            let source;
-            let dataArray;
-            let bufferLength;
-            let canvasCtx = audioVisualizerCanvas.getContext('2d');
-
             const hugGifs = [
                 "https://media.tenor.com/ScOwzW70wHIAAAAj/bubu.gif",
                 "https://media.tenor.com/2bw-Zzp-mTMAAAAj/bear-hug.gif",
@@ -1518,7 +1503,7 @@ Happy Birthday, my radiant duck queen 💫<br>
 
            const whisperMessages = [
   "🌙 Just your presence brings calm to the universe — and to me.",
-  "� A starlit spell of serenity, whispered from Doofy’s heart to yours.",
+  "💫 A starlit spell of serenity, whispered from Doofy’s heart to yours.",
   "✨ Doofy’s magic floats in — soft, sparkly, and full of quiet love.",
   "🌌 You glow brighter than constellations, and the cosmos notices. Always.",
   "✨ Wrapped in a gentle charm: peace, warmth, and a galaxy of affection from me to you.",
@@ -1535,7 +1520,7 @@ You’re the calm in my chaos, the light in my orbit,
 and the sweetest reason the universe feels warm and kind.
 
 May your birthday be wrapped in stardust giggles, moonbeam cuddles,
-and the quiet kind of joy that lingers like a melody. 💖`;
+and the quiet kind of joy that lingers like a melody. �`;
 
             const wishConfirmationMessage = "Your wish has taken flight on moonbeams and magic, gathering sparkle with every star it touches. 🌠 May it return to you wrapped in wonder and joy, just as you deserve.";
 
@@ -1943,51 +1928,6 @@ and the quiet kind of joy that lingers like a melody. 💖`;
                 showNextLoadingText();
             }
 
-            // Audio Visualizer Functions
-            function setupAudioVisualizer() {
-                if (!analyser) { // Only set up once
-                    analyser = audioCtx.createAnalyser();
-                    analyser.fftSize = 256;
-                    bufferLength = analyser.frequencyBinCount;
-                    dataArray = new Uint8Array(bufferLength);
-
-                    source = audioCtx.createMediaElementSource(mainMusic);
-                    source.connect(analyser);
-                    analyser.connect(audioCtx.destination);
-                }
-
-                // Set canvas size
-                audioVisualizerCanvas.width = window.innerWidth;
-                audioVisualizerCanvas.height = window.innerHeight;
-
-                drawVisualizer();
-            }
-
-            function drawVisualizer() {
-                requestAnimationFrame(drawVisualizer);
-
-                analyser.getByteFrequencyData(dataArray);
-
-                canvasCtx.clearRect(0, 0, audioVisualizerCanvas.width, audioVisualizerCanvas.height);
-
-                const barWidth = (audioVisualizerCanvas.width / bufferLength) * 2.5;
-                let x = 0;
-
-                for (let i = 0; i < bufferLength; i++) {
-                    const barHeight = dataArray[i] * 1.8;
-
-                    const r = 43;
-                    const g = 78;
-                    const b = 144;
-                    const alpha = 0.2 + (barHeight / 255) * 0.4;
-
-                    canvasCtx.fillStyle = `rgba(${r},${g},${b},${alpha})`;
-                    canvasCtx.fillRect(x, audioVisualizerCanvas.height - barHeight, barWidth, barHeight);
-
-                    x += barWidth + 1;
-                }
-            }
-
             // Initial setup on window load
             window.addEventListener('load', () => {
                 startLoadingStorytelling();
@@ -1997,19 +1937,11 @@ and the quiet kind of joy that lingers like a melody. 💖`;
             popupClickArea.addEventListener('click', () => {
                 hideElement(introPopup);
 
+                // Pause intro music and play main music
                 introMusic.pause();
                 introMusic.currentTime = 0;
-
-                // Resume audio context and setup visualizer on user gesture
-                if (audioCtx.state === 'suspended') {
-                    audioCtx.resume().then(() => {
-                        mainMusic.play().catch(e => console.log("Main music playback prevented:", e));
-                        setupAudioVisualizer();
-                    });
-                } else {
-                    mainMusic.play().catch(e => console.log("Main music playback prevented:", e));
-                    setupAudioVisualizer();
-                }
+                mainMusic.play().catch(e => console.log("Main music playback prevented:", e));
+                
 
                 introPopup.addEventListener('transitionend', () => {
                     // Directly set the main story message
@@ -2163,14 +2095,6 @@ and the quiet kind of joy that lingers like a melody. 💖`;
             });
             document.querySelectorAll('.btn').forEach(btn => {
                 btn.addEventListener('mouseenter', createHoverSparkles);
-            });
-
-            // Handle window resize for canvas
-            window.addEventListener('resize', () => {
-                if (analyser) {
-                    audioVisualizerCanvas.width = window.innerWidth;
-                    audioVisualizerCanvas.height = window.innerHeight;
-                }
             });
 
             // Initial setup calls
