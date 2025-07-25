@@ -1,1 +1,2103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOOFYTALE - The Game</title>
+    <!-- Tailwind CSS CDN for utility-first styling (for general box styles) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons (still useful for general icons if needed) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts import for 'Press Start 2P' (pixel art - for specific retro elements) -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start 2P&display=swap" rel="stylesheet">
+    <!-- Tone.js for Web Audio API -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.min.js"></script>
+    <style>
+        /* Global Styles for Pixel Art Theme with Modern Touch */
+        body {
+            font-family: 'Press Start 2P', cursive; /* Pixel font for most text */
+            background-color: #0a0a0a; /* Deep black for pixel feel */
+            color: #ffffff; /* Pure white for text */
+            image-rendering: optimizeSpeed;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: pixelated;
+            -ms-interpolation-mode: nearest-neighbor;
+            line-height: 1.5; /* Improved readability for pixel font */
+            overflow: hidden; /* Hide scrollbars */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        /* Text shadow for readability on pixel fonts */
+        .text-shadow-pixel {
+            text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Heart shape for player soul - adjusted for pixelated look */
+        .heart {
+            width: 32px; /* Standard pixel size */
+            height: 32px;
+            background-color: #ff0000; /* Vibrant red */
+            transform: rotate(45deg);
+            position: relative;
+            animation: pulse-pixel 1.2s infinite steps(2); /* Stepped pulse for pixel feel */
+            box-shadow: 0 0 0 2px #000000, 0 0 0 5px #ff0000; /* Enhanced pixelated glow effect */
+            border-radius: 0; /* Sharp corners */
+        }
+        
+        .heart:before, .heart:after {
+            content: "";
+            width: 32px;
+            height: 32px;
+            background-color: #ff0000;
+            border-radius: 0; /* Sharp corners */
+            position: absolute;
+            box-shadow: 0 0 0 2px #000000; /* Pixelated border for heart parts */
+        }
+        
+        .heart:before {
+            top: -16px;
+            left: 0;
+        }
+        
+        .heart:after {
+            top: 0;
+            left: -16px;
+        }
+        
+        /* Keyframes for the pixelated heart pulse animation */
+        @keyframes pulse-pixel {
+            0% { transform: rotate(45deg) scale(1); }
+            50% { transform: rotate(45deg) scale(1.1); }
+            100% { transform: rotate(45deg) scale(1); }
+        }
+        
+        /* Soul animation for floating effect */
+        .soul-animation {
+            animation: float-pixel 2.5s ease-in-out infinite steps(2); /* Stepped float */
+        }
+        
+        /* Keyframes for the pixelated floating animation */
+        @keyframes float-pixel {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); } /* Slightly larger vertical movement */
+            100% { transform: translateY(0px); }
+        }
+        
+        /* Styling for game UI boxes - very blocky and high contrast */
+        .game-box {
+            border: 4px solid #ffffff; /* Thick, pixelated border */
+            box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.8); /* Strong, offset pixel shadow */
+            background-color: #000000; /* Pure black */
+            border-radius: 0; /* Sharp corners */
+            padding: 1.5rem; /* Consistent padding */
+        }
+        
+        /* Styling for dialogue boxes - pixelated with modern blur */
+        .dialogue-box {
+            border: 2px solid #ffffff;
+            background-color: rgba(0,0,0,0.95); /* Slightly less transparent black */
+            padding: 1.5rem;
+            border-radius: 0; /* Sharp corners */
+            box-shadow: 4px 4px 0px rgba(255,255,255,0.2);
+            z-index: 999;
+            backdrop-filter: blur(4px); /* Modern frosted glass effect */
+            -webkit-backdrop-filter: blur(4px); /* For Safari */
+            animation: fadeInUp 0.4s ease-out forwards; /* Dialogue box entry animation */
+        }
+
+        /* Keyframes for dialogue box fade in from bottom */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translate(-50%, 20px); }
+            to { opacity: 1; transform: translate(-50%, 0); }
+        }
+        
+        /* Button styling for a retro, clickable feel with smooth transitions */
+        .game-button {
+            background-color: #000000;
+            color: #ffffff;
+            border: 2px solid #ffffff;
+            box-shadow: 4px 4px 0px #888888; /* Softer gray for raised effect */
+            transition: all 0.15s ease-out; /* Smoother transition */
+            border-radius: 0; /* Sharp corners */
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path fill="white" d="M0 0h16v16H0z"/><path fill="red" d="M2 2h2v2H2zM4 4h2v2H4zM6 6h2v2H6zM8 8h2v2H8zM10 10h2v2h-2zM12 12h2v2h-2z"/></svg>') 8 8, auto; /* Pixelated cursor */
+            text-transform: uppercase; /* All caps for buttons */
+            padding: 0.75rem 1.5rem; /* Consistent button padding */
+            font-family: 'Press Start 2P', cursive; /* Pixel font for buttons */
+        }
+
+        .game-button:hover {
+            background-color: #ffffff; /* Invert colors on hover */
+            color: #000000;
+            box-shadow: 2px 2px 0px #000000; /* Pressed pixel button effect */
+            transform: translate(2px, 2px); /* Simulate press */
+        }
+
+        .game-button:active {
+            background-color: #444444; /* Darker when active */
+            box-shadow: 0 0 0px #000000;
+            transform: translate(4px, 4px);
+        }
+        
+        /* Typing effect for dialogue */
+        .typing-effect-pixel {
+            overflow: hidden;
+            border-right: 2px solid #ffffff; /* Pixelated blinking caret */
+            white-space: nowrap;
+            animation: 
+                typing-pixel 3.5s steps(40, end),
+                blink-caret-pixel .75s step-end infinite;
+        }
+        
+        /* Keyframes for pixelated typing */
+        @keyframes typing-pixel {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        /* Keyframes for pixelated blinking caret */
+        @keyframes blink-caret-pixel {
+            from, to { border-color: transparent }
+            50% { border-color: #ffffff; }
+        }
+
+        /* Responsive adjustments - Mobile First */
+        /* Default styles are for mobile */
+        .text-5xl { font-size: 2.5rem; } /* Hero title */
+        .text-7xl { font-size: 3.5rem; } /* Character icons */
+        .text-8xl { font-size: 4rem; } /* Hero title on larger mobile */
+        .text-xl { font-size: 1rem; } /* General headings/larger text */
+        .text-lg { font-size: 0.875rem; } /* Body text */
+        .text-base { font-size: 0.75rem; } /* Smaller body text */
+        .text-sm { font-size: 0.625rem; } /* Smallest text */
+        .text-xs { font-size: 0.5rem; } /* Very small text */
+
+        /* Heart size for mobile */
+        .heart { width: 24px; height: 24px; }
+        .heart:before, .heart:after { width: 24px; height: 24px; top: -12px; left: -12px; }
+
+        /* Small devices (sm) - 640px and up */
+        @media (min-width: 640px) {
+            .text-5xl { font-size: 3rem; }
+            .text-7xl { font-size: 4rem; }
+            .text-8xl { font-size: 5rem; }
+            .text-xl { font-size: 1.125rem; }
+            .text-lg { font-size: 1rem; }
+            .text-base { font-size: 0.875rem; }
+            .text-sm { font-size: 0.75rem; }
+            .text-xs { font-size: 0.625rem; }
+            .heart { width: 28px; height: 28px; }
+            .heart:before, .heart:after { width: 28px; height: 28px; top: -14px; left: -14px; }
+        }
+
+        /* Medium devices (md) - 768px and up */
+        @media (min-width: 768px) {
+            .text-5xl { font-size: 3.5rem; }
+            .text-7xl { font-size: 5rem; }
+            .text-8xl { font-size: 6rem; }
+            .text-xl { font-size: 1.25rem; }
+            .text-lg { font-size: 1.125rem; }
+            .text-base { font-size: 1rem; }
+            .text-sm { font-size: 0.875rem; }
+            .text-xs { font-size: 0.75rem; }
+            .heart { width: 32px; height: 32px; }
+            .heart:before, .heart:after { width: 32px; height: 32px; top: -16px; left: -16px; }
+        }
+
+        /* Large devices (lg) - 1024px and up */
+        @media (min-width: 1024px) {
+            .text-5xl { font-size: 4rem; }
+            .text-7xl { font-size: 6rem; }
+            .text-8xl { font-size: 7rem; }
+            .text-xl { font-size: 1.5rem; }
+            .text-lg { font-size: 1.25rem; }
+            .text-base { font-size: 1.125rem; }
+            .text-sm { font-size: 1rem; }
+            .text-xs { font-size: 0.875rem; }
+        }
+
+        /* Extra large devices (xl) - 1280px and up */
+        @media (min-width: 1280px) {
+            .text-5xl { font-size: 5rem; }
+            .text-7xl { font-size: 7rem; }
+            .text-8xl { font-size: 8rem; }
+        }
+
+        /* Game specific styles */
+        #game-container {
+            display: flex;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 100;
+            background-color: #0a0a0a; /* Match body background */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #gameCanvas {
+            display: block;
+            margin: 0 auto;
+            background: #000; /* Pure black for canvas */
+            image-rendering: pixelated;
+            border: 4px solid white; /* Thick white pixel border */
+            border-radius: 0; /* Sharp corners */
+            box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.8); /* Strong pixel shadow */
+            overflow: hidden;
+            cursor: none; /* Hide default mouse cursor during gameplay */
+            animation: dodge-box-glow 2s infinite alternate; /* Subtle glow */
+        }
+
+        /* Keyframes for dodge box glow */
+        @keyframes dodge-box-glow {
+            from { box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.8), 0 0 5px rgba(255, 255, 255, 0.2); }
+            to { box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.8), 0 0 15px rgba(255, 255, 255, 0.5); }
+        }
+
+        #dialogueBox {
+            position: absolute;
+            bottom: 30px; /* More space from bottom */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 800px; /* Wider dialogue box */
+            /* Styles defined in .dialogue-box */
+            display: none; /* Handled by JS */
+            box-sizing: border-box;
+        }
+
+        #dialogueText {
+            font-size: 18px; /* Pixel font size for dialogue */
+            margin-bottom: 10px;
+            white-space: pre-line;
+            min-height: 54px; /* Ensure space for 3 lines of text */
+            text-align: left;
+            padding-left: 10px;
+            color: #ffffff;
+            font-family: 'Press Start 2P', cursive;
+        }
+
+        #options {
+            display: flex;
+            justify-content: space-around; /* Distribute space evenly */
+            flex-wrap: wrap;
+            gap: 8px; /* Reduced space between buttons for compact look */
+            width: 100%;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255,255,255,0.2); /* Subtle separator */
+        }
+
+        #options .optionButton {
+            /* Inherits most styles from .game-button */
+            flex-grow: 1; /* Allow buttons to grow */
+            max-width: 150px; /* Max width for buttons */
+            font-size: 14px; /* Smaller font for options */
+            padding: 8px 15px;
+            text-align: center;
+        }
+
+        #options .optionButton:hover {
+            transform: translate(2px, 2px);
+        }
+        #options .optionButton:active {
+            transform: translate(4px, 4px);
+        }
+
+        /* Specific styles for the game's main menu */
+        #game-main-menu {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.95); /* Dark overlay */
+            z-index: 101;
+            /* No animation here, controlled by JS */
+        }
+
+        #game-main-menu h2 {
+            font-family: 'Press Start 2P', cursive; /* Keep pixel font for title */
+            font-size: 5rem; /* Larger title */
+            color: #ffffff; /* White title */
+            margin-bottom: 50px;
+            text-shadow: 5px 5px 0px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 255, 255, 0.7); /* Stronger pixel shadow with glow */
+        }
+
+        #game-main-menu button {
+            margin-bottom: 20px;
+            padding: 15px 30px;
+            font-size: 24px;
+            /* Inherits styles from .game-button */
+        }
+    </style>
+</head>
+<body class="bg-black text-white min-h-screen">
+    <!-- Game Container -->
+    <div id="game-container">
+        <div id="game-main-menu">
+            <h2 class="font-pixel text-shadow-pixel">DOOFYTALE</h2>
+            <button id="menu-play-button" class="game-button">PLAY</button>
+            <button id="menu-options-button" class="game-button">OPTIONS</button>
+            <button id="menu-credits-button" class="game-button">CREDITS</button>
+            <button id="menu-exit-button" class="game-button">EXIT</button>
+        </div>
+
+        <canvas id="gameCanvas"></canvas> <!-- Width/Height set by JS -->
+        <div id="dialogueBox" class="dialogue-box">
+            <div id="dialogueText"></div>
+            <div id="options"></div>
+        </div>
+    </div>
+
+    <script>
+        // --- Custom Message Box (replaces alert) ---
+        function showCustomMessage(message) {
+            const messageBox = document.createElement('div');
+            messageBox.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background-color: rgba(0, 0, 0, 0.98); /* Darker, more opaque */
+                border: 2px solid white;
+                padding: 20px;
+                color: white;
+                font-family: 'Press Start 2P', cursive; /* Pixel font for message box */
+                text-align: center;
+                z-index: 1000;
+                box-shadow: 4px 4px 0px rgba(255,255,255,0.2);
+                border-radius: 0; /* Sharp corners */
+                max-width: 400px;
+                animation: fadeIn 0.3s ease-out;
+            `;
+            messageBox.innerHTML = `
+                <p class="text-lg mb-4">${message}</p>
+                <button class="game-button px-6 py-3 text-base" style="display: inline-block;">OK</button>
+            `;
+            document.body.appendChild(messageBox);
+
+            // Disable and fade menu buttons while message is active
+            const menuButtons = gameMainMenu.querySelectorAll('button');
+            menuButtons.forEach(button => {
+                button.style.pointerEvents = 'none';
+                button.style.opacity = '0.5';
+            });
+
+            // Set up the OK button click handler
+            messageBox.querySelector('button').onclick = () => {
+                messageBox.remove(); // Remove the message box
+
+                // Re-enable and unfade menu buttons
+                menuButtons.forEach(button => {
+                    button.style.pointerEvents = 'auto';
+                    button.style.opacity = '1';
+                });
+            };
+
+            // Simple fade-in animation for message box (already defined in CSS)
+            // No need to re-add style element if already present
+        }
+
+        // --- Game Logic ---
+        const gameContainer = document.getElementById('game-container');
+        const gameMainMenu = document.getElementById('game-main-menu'); 
+        const menuPlayButton = document.getElementById('menu-play-button');
+        const menuOptionsButton = document.getElementById('menu-options-button');
+        const menuCreditsButton = document.getElementById('menu-credits-button');
+        const menuExitButton = document.getElementById('menu-exit-button');
+
+        const gameCanvas = document.getElementById("gameCanvas");
+        const gameCtx = gameCanvas.getContext("2d");
+        const gameDialogueBox = document.getElementById("dialogueBox");
+        const gameDialogueText = document.getElementById("dialogueText");
+        const gameOptions = document.getElementById("options");
+
+        // Constants for Original Canvas Dimensions (for scaling calculations)
+        const ORIGINAL_CANVAS_WIDTH = 1000;
+        const ORIGINAL_CANVAS_HEIGHT = 700;
+        let currentScale = 1; // Will be calculated dynamically
+
+        // Game Area / Dodge Box dimensions and positions (Original values for scaling)
+        const ORIGINAL_DODGE_BOX_WIDTH = 600;
+        const ORIGINAL_DODGE_BOX_HEIGHT = 350;
+        const ORIGINAL_DODGE_BOX_OFFSET_Y = 50; // Space from bottom
+        const ORIGINAL_DODGE_BOX_Y = ORIGINAL_CANVAS_HEIGHT - ORIGINAL_DODGE_BOX_HEIGHT - ORIGINAL_DODGE_BOX_OFFSET_Y;
+        
+        let DODGE_BOX_WIDTH_SCALED;
+        let DODGE_BOX_HEIGHT_SCALED;
+        let DODGE_BOX_X_SCALED;
+        let DODGE_BOX_Y_SCALED;
+
+        // Fight Mini-game variables (Original values for scaling)
+        const ORIGINAL_FIGHT_BAR_WIDTH = 400;
+        const ORIGINAL_FIGHT_BAR_HEIGHT = 40; // Increased height
+        const ORIGINAL_SWEET_SPOT_WIDTH = 80;
+        const ORIGINAL_CRITICAL_SPOT_WIDTH = 20;
+
+        // Dynamic spot size factors (min/max percentage of original size)
+        const MIN_SWEET_SPOT_FACTOR = 0.3; // Sweet spot can shrink to 30% of original
+        const MAX_SWEET_SPOT_FACTOR = 1.0; // Sweet spot is 100% at max HP
+        const MIN_CRITICAL_SPOT_FACTOR = 0.1; // Critical spot can shrink to 10% of original
+        const MAX_CRITICAL_SPOT_FACTOR = 1.0; // Critical spot is 100% at max HP
+
+        // Dynamic marker speed factors (min/max multiplier of original speed)
+        const MIN_HIT_MARKER_SPEED_FACTOR = 0.8; // Marker is 80% of original speed at max HP
+        const MAX_HIT_MARKER_SPEED_FACTOR = 1.5; // Marker is 150% of original speed at low HP
+
+        let FIGHT_BAR_WIDTH_SCALED;
+        let FIGHT_BAR_HEIGHT_SCALED;
+        let FIGHT_BAR_X_SCALED;
+        let FIGHT_BAR_Y_SCALED;
+        let SWEET_SPOT_WIDTH_SCALED;
+        let CRITICAL_SPOT_WIDTH_SCALED;
+
+        // New variables for random spot positions
+        let currentSweetSpotOffset = 0;
+        let currentCriticalSpotOffset = 0;
+
+        let hitMarkerX;
+        let hitMarkerDirection = 1; // 1 for right, -1 for left
+        const HIT_MARKER_SPEED = 5; // Original speed, will be scaled dynamically
+
+        // Player State
+        const player = {
+            x: 0, // Will be set by resizeCanvas
+            y: 0, // Will be set by resizeCanvas
+            originalSize: 16, // Original size for scaling
+            size: 16, // Scaled size
+            color: "red", // Current soul color
+            determination: 0,
+            maxDetermination: 50, // Reduced from 100 to 50
+            isMoving: false, // Track if mouse is moving for Blue/Orange attacks
+            lastMouseX: 0,
+            lastMouseY: 0,
+            movementTimeout: null // For reliable isMoving detection
+        };
+
+        // Global Game State Variables
+        let gameState = "menu"; // Initial state
+        let playerHP = 20;
+        const playerMaxHP = 20;
+        let invincibleFrames = 0;
+        let currentEnemy = null;
+        let enemiesSpared = 0;
+        let enemiesDefeated = 0; // New: Track defeated enemies
+        const totalEnemies = 4; // Updated total enemies
+        let pacifistScore = 0; // For branching endings
+        let screenShakeIntensity = 0;
+        let screenShakeDuration = 0;
+        let particles = []; // Array to hold particles
+        let bullets = []; // Array to hold bullets
+        let cosmicDustParticles = []; // For dynamic background
+        let firstEncounter = true; // Flag to show bullet color hint only once
+        let firstFightMinigame = true; // Flag to show attack bar hint only once
+
+        // Inventory System
+        const inventory = [
+            { name: "Bandage", type: "heal", value: 10, description: "Heals 10 HP. Smells faintly of friendship." },
+            { name: "Doofy's Cookie", type: "heal", value: 5, description: "A slightly burnt cookie. Heals 5 HP." }
+        ];
+
+        // Enemy Data (Updated with Mercy, Check, Attack Combos, Moving, Flavor Text, HP)
+        const enemies = [
+            {
+                name: "Floofy Pup",
+                sprite: "🐶",
+                hp: 10, // Added HP
+                maxHp: 10, // Added Max HP
+                mercyThreshold: 6,
+                currentMercy: 0,
+                dialogue: [
+                    "A fluffy friend appears! It looks like it wants to play. (Hint: Move your MOUSE to dodge its playful barks!)",
+                    "It wags its tail excitedly! (Hint: Stay calm and find the gaps in its wagging tail-whips!)",
+                    "It wants to play! (Hint: Its zoomies are surprisingly dangerous, but predictable!)"
+                ],
+                actResponses: {
+                    "Compliment 💬": ["It blushes! 💕 'WOOF! You're so kind!'", "It barks happily! 🐶 'AWOO! Best human ever!'", "It spins in joy! 🎉 'SQUEAK! More compliments, please!'"],
+                    "Pet gently 👋": ["It leans into your hand. So soft! 'Purrrrr.'", "A happy whimper escapes it. 'So warm...'", "It licks your hand. Aww! 'You're the best petter!'"],
+                    "Offer treat 🦴": ["It happily munches the imaginary treat! 'NOM NOM NOM!'", "Its eyes sparkle with gratitude! 'Thank you, friend!'", "It does a little dance! 'Treat dance! Treat dance!'"]
+                },
+                checkDescription: "FLOOFY PUP - A very good boy/girl. Loves head pats and compliments. Seems a bit clumsy but means well. HP: ?? ATK: ?? DEF: ??",
+                defeatedDialogue: "The Floofy Pup whimpers softly and curls up, defeated. It looks a little sad, but also relieved. 'Woof... good game.'", // Defeated dialogue
+                attackPatterns: [
+                    // Phase 1: Playful Barks (Red - Standard Dodge)
+                    { type: "randomBullets", bulletType: "red", bulletSprite: "�", bulletSpeed: 4, spawnFrequency: 5, duration: 120, flavor: "The pup sends a flurry of happy woofs!" },
+                    { type: "expandingCircle", bulletType: "red", bulletSprite: "🐾", bulletSpeed: 3, spawnFrequency: 30, duration: 150, flavor: "It barks, sending out a shockwave!" },
+                    { type: "targetedBullets", bulletType: "red", bulletSprite: "🍖", bulletSpeed: 5, spawnFrequency: 10, duration: 100, flavor: "A focused bark comes your way!" },
+                    
+                    // Phase 2: Zoomies! (Red - More intense)
+                    { type: "randomBullets", bulletType: "red", bulletSprite: "🦴", bulletSpeed: 6, spawnFrequency: 3, duration: 180, flavor: "Its zoomies are surprisingly chaotic!" },
+                    { type: "expandingCircle", bulletType: "red", bulletSprite: "🐾", bulletSpeed: 4, spawnFrequency: 20, duration: 200, flavor: "A rapid, expanding bark!" },
+                    { type: "lineBullets", bulletType: "red", bulletSprite: "🦴", bulletSpeed: 5, spawnFrequency: 25, duration: 150, flavor: "It runs in lines, sending out barks!" },
+                    
+                    // Phase 3: Overjoyed Barrage (Red - Highest intensity)
+                    { type: "randomBullets", bulletType: "red", bulletSprite: "🦴", bulletSpeed: 7, spawnFrequency: 2, duration: 200, flavor: "An overwhelming wave of happy barks!" },
+                    { type: "spiralBullets", bulletType: "red", bulletSprite: "🐾", bulletSpeed: 5, spawnFrequency: 5, duration: 250, flavor: "It spins in joy, creating a bark spiral!" }
+                ],
+                canMove: false,
+                originalX: ORIGINAL_CANVAS_WIDTH / 2,
+                originalY: ORIGINAL_DODGE_BOX_Y - 100
+            },
+            {
+                name: "Dizzy Duckling",
+                sprite: "🦆",
+                hp: 12, // Added HP
+                maxHp: 12, // Added Max HP
+                mercyThreshold: 8,
+                currentMercy: 0,
+                dialogue: [
+                    "A wobbly duckling quacks into view! It seems a bit disoriented. (Your soul turns BLUE!)",
+                    "It looks a bit lost, trying to find its way. (Your soul turns BLUE!)",
+                    "It's trying to balance on one leg, then the other. (Your soul turns BLUE!)"
+                ],
+                actResponses: {
+                    "Compliment 💬": ["It honks adorably! 🦆 'Quack-tastic compliment!'", "It flaps its wings! 🪽 'You make me feel like I can fly!'", "It winks back! 😉 'You're pretty cool for a human.'"],
+                    "Help balance 🤸": ["It steadies itself with your help! 'Phew, almost fell!'", "It gives a grateful quack! 'Thanks for the assist!'", "You've earned its trust. 'You're a true friend to ducks!'"],
+                    "Tell joke 😂": ["Why did the duck bring soap? It wanted to be a clean-quacker! (The duckling giggles, 'That's a good one!')", "What do you call a magical duck? A Quackgician! (It tries to do a magic trick, and fails adorably)", "Why did Doofy cross the starfield? To reach Quackers! (The duckling nods wisely, 'A noble quest!')"]
+                },
+                checkDescription: "DIZZY DUCKLING - A confused but charming little feathered friend. Easily distracted by shiny objects or good jokes. HP: ?? ATK: ?? DEF: ??",
+                defeatedDialogue: "The Dizzy Duckling spins to a halt, looking dizzy but unharmed. 'Quack... you got me! I need a nap.'", // Defeated dialogue
+                attackPatterns: [
+                    // Phase 1: Wobbly Quacks (Blue - Stop to Dodge)
+                    { type: "waveBullets", bulletType: "blue", bulletSprite: "💧", bulletSpeed: 4, spawnFrequency: 15, duration: 120, flavor: "The duckling wobbles, sending out BLUE waves!" },
+                    { type: "targetedBullets", bulletType: "blue", bulletSprite: "💦", bulletSpeed: 5, spawnFrequency: 12, duration: 100, flavor: "It tries to pinpoint you with BLUE quacks!" },
+                    { type: "randomBullets", bulletType: "blue", bulletSprite: "💧", bulletSpeed: 3, spawnFrequency: 7, duration: 150, flavor: "Confused BLUE pecks everywhere!" },
+
+                    // Phase 2: Confused Flurry (Blue/Red Mix - More dynamic)
+                    { type: "spiralBullets", bulletType: "blue", bulletSprite: "🌀", bulletSpeed: 4, spawnFrequency: 8, duration: 180, flavor: "A dizzying BLUE spiral!" },
+                    { type: "lineBullets", bulletType: "red", bulletSprite: "🌊", bulletSpeed: 6, spawnFrequency: 20, duration: 150, flavor: "Sudden red lines appear!" },
+                    { type: "expandingCircle", bulletType: "blue", bulletSprite: "💧", bulletSpeed: 3, spawnFrequency: 25, duration: 170, flavor: "A wobbly BLUE shockwave!" },
+
+                    // Phase 3: Panic Quacks (Blue/Red - High intensity)
+                    { type: "waveBullets", bulletType: "blue", bulletSprite: "💧", bulletSpeed: 6, spawnFrequency: 10, duration: 200, flavor: "Fast, relentless BLUE waves!" },
+                    { type: "targetedBullets", bulletType: "red", bulletSprite: "💦", bulletSpeed: 7, spawnFrequency: 7, duration: 150, flavor: "Rapid red pecks!" },
+                    { type: "randomBullets", bulletType: "blue", bulletSprite: "💧", bulletSpeed: 5, spawnFrequency: 4, duration: 220, flavor: "A chaotic storm of BLUE!" }
+                ],
+                canMove: true,
+                originalX: ORIGINAL_CANVAS_WIDTH / 2,
+                originalY: ORIGINAL_DODGE_BOX_Y - 100
+            },
+            {
+                name: "Snoozy Sloth",
+                sprite: "🦥",
+                hp: 15, // Added HP
+                maxHp: 15, // Added Max HP
+                mercyThreshold: 7,
+                currentMercy: 0,
+                dialogue: [
+                    "A very, very slow sloth yawns. It looks like it just woke up. (Your soul is RED, but attacks are slow!)",
+                    "It's moving at a glacial pace. Don't let its slowness fool you; its attacks can still sting!",
+                    "Another yawn. It seems more interested in napping than fighting. Maybe you can convince it to rest."
+                ],
+                actResponses: {
+                    "Tell a bedtime story 😴": ["The sloth's eyes droop. 'Zzz... a good story.' (Mercy increases!)", "It snuggles into an imaginary blanket. 'So cozy...'", "It's almost asleep! 'More... slow tales...'"],
+                    "Offer a leaf 🍃": ["It slowly takes the leaf and munches. 'Mmm... fresh.'", "A contented sigh escapes it. 'Delicious.'", "It looks at you with sleepy gratitude. 'You understand.'"],
+                    "Sing a lullaby 🎶": ["The sloth starts to sway gently. 'Soothing... so very soothing.'", "It closes its eyes, a tiny smile on its face. 'Sweet dreams...'", "It's completely relaxed. 'You have a calming voice.'"]
+                },
+                checkDescription: "SNOOZY SLOTH - Moves at a snail's pace, but its attacks are surprisingly precise. Prefers naps over conflict. HP: ?? ATK: ?? DEF: ??",
+                defeatedDialogue: "The Snoozy Sloth collapses into a heap, instantly falling asleep. 'Too... much... effort... Zzzz.'", // Defeated dialogue
+                attackPatterns: [
+                    // Phase 1: Slow Wake-Up (Red - Slow but steady)
+                    { type: "targetedBullets", bulletType: "red", bulletSprite: "🌿", bulletSpeed: 2, spawnFrequency: 30, duration: 150, flavor: "Slow, deliberate leaf darts." },
+                    { type: "randomBullets", bulletType: "red", bulletSprite: "💤", bulletSpeed: 1.5, spawnFrequency: 20, duration: 180, flavor: "Sleepy, drifting z's." },
+                    { type: "expandingCircle", bulletType: "red", bulletSprite: "🐌", bulletSpeed: 2.5, spawnFrequency: 40, duration: 160, flavor: "A slow, expanding yawn." },
+
+                    // Phase 2: Gentle Stretch (Blue/Red mix - slightly faster, requires attention)
+                    { type: "waveBullets", bulletType: "blue", bulletSprite: "☁️", bulletSpeed: 3, spawnFrequency: 25, duration: 170, flavor: "Wobbly cloud-like attacks. Stop moving!" },
+                    { type: "lineBullets", bulletType: "red", bulletSprite: "🍃", bulletSpeed: 3.5, spawnFrequency: 30, duration: 140, flavor: "Straight lines of leaves." },
+                    { type: "spiralBullets", bulletType: "blue", bulletSprite: "🌀", bulletSpeed: 2.5, spawnFrequency: 15, duration: 200, flavor: "A slow, swirling dream." },
+
+                    // Phase 3: Almost Asleep (Orange/Red - mix of slow and sudden)
+                    { type: "targetedBullets", bulletType: "orange", bulletSprite: "😴", bulletSpeed: 4, spawnFrequency: 10, duration: 130, flavor: "Sudden sleepy blinks. Keep moving!" },
+                    { type: "randomBullets", bulletType: "orange", bulletSprite: "💤", bulletSpeed: 3, spawnFrequency: 8, duration: 180, flavor: "Drifting sleep particles." },
+                    { type: "expandingCircle", bulletType: "red", bulletSprite: "🐌", bulletSpeed: 3.5, spawnFrequency: 25, duration: 190, flavor: "A final, big yawn." }
+                ],
+                canMove: true,
+                originalX: ORIGINAL_CANVAS_WIDTH / 2,
+                originalY: ORIGINAL_DODGE_BOX_Y - 100
+            },
+            {
+                name: "Grumpy Golem", // BOSS ENEMY
+                sprite: "🗿",
+                hp: 30, // Added HP for boss
+                maxHp: 30, // Added Max HP for boss
+                mercyThreshold: 12, // Higher mercy threshold for boss
+                currentMercy: 0,
+                dialogue: [
+                    "A stony golem grumbles into existence. It looks... unimpressed. (Your soul turns ORANGE!)",
+                    "It seems to be having a bad day, a very, very bad day. (Your soul turns ORANGE!)",
+                    "It sighs, and dust motes become sharp projectiles. (Your soul turns ORANGE!)",
+                    "THE GOLEM'S RAGE INTENSIFIES! ITS STONY GLARE IS UNYIELDING! (It's getting serious!)" // Boss specific dialogue
+                ],
+                actResponses: {
+                    "Compliment 💬": ["It grumbles, but a tiny smile appears. 'Hmph. Not bad for a human.'", "A faint glow emanates from its eyes. '...Thank you.'", "It actually nods slightly! 'Perhaps not all humans are... loud.'"],
+                    "Tell a pun 🎤": ["Why don't scientists trust atoms? Because they make up everything! (The golem seems to crack a little smile, 'Heh. Solid joke.')", "What do you call a sad strawberry? A blueberry! (It lets out a low rumble of amusement, 'You're... berry funny.')"],
+                    "Offer a flower 🌸": ["It carefully takes the flower, a small rock falls from its face. 'A delicate gesture.'", "The flower seems to brighten its stony demeanor. 'It's smells... less like dust.'", "It places the flower on its head, looking less grumpy. '...This is acceptable.'"]
+                },
+                checkDescription: "GRUMPY GOLEM - A large, stony creature. Appears to be in a perpetual bad mood. Might respond to unexpected kindness or very bad puns. This one is the big boss.",
+                defeatedDialogue: "The Grumpy Golem shudders, cracks appearing across its stony body. It crumples into a pile of harmless pebbles. '...Finally... peace.'", // Defeated dialogue
+                attackPatterns: [
+                    // BOSS PHASE 1: Stony Grumbles (Orange - Move to Dodge, increasing intensity)
+                    { type: "spiralBullets", bulletType: "orange", bulletSprite: "🪨", bulletSpeed: 4, spawnFrequency: 6, duration: 150, flavor: "The golem unleashes an ORANGE stony spiral!" },
+                    { type: "lineBullets", bulletType: "orange", bulletSprite: "🧱", bulletSpeed: 5, spawnFrequency: 20, duration: 120, flavor: "It sends ORANGE rock lines across the box!" },
+                    { type: "targetedBullets", bulletType: "orange", bulletSprite: "🪨", bulletSpeed: 6, spawnFrequency: 8, duration: 100, flavor: "Precise ORANGE pebbles!" },
+                    { type: "expandingCircle", bulletType: "orange", bulletSprite: "💥", bulletSpeed: 4.5, spawnFrequency: 25, duration: 180, flavor: "An ORANGE shockwave from its stomp!" },
+
+                    // BOSS PHASE 2: Boulder Barrage (Orange/Red Mix - More intense, faster)
+                    { type: "randomBullets", bulletType: "red", bulletSprite: "☄️", bulletSpeed: 6, spawnFrequency: 3, duration: 150, flavor: "A shower of red cosmic debris!" },
+                    { type: "lineBullets", bulletType: "orange", bulletSprite: "🧱", bulletSpeed: 7, spawnFrequency: 15, duration: 170, flavor: "Fast, crossing ORANGE lines!" },
+                    { type: "spiralBullets", bulletType: "red", bulletSprite: "🌪️", bulletSpeed: 5.5, spawnFrequency: 4, duration: 200, flavor: "A dizzying red dust devil!" },
+                    { type: "targetedBullets", bulletType: "orange", bulletSprite: "🪨", bulletSpeed: 7.5, spawnFrequency: 6, duration: 130, flavor: "Relentless ORANGE rock throws!" },
+
+                    // BOSS PHASE 3: Earth Shatter (Orange/Red - Highest intensity, rapid combos)
+                    { type: "expandingCircle", bulletType: "red", bulletSprite: "🌋", bulletSpeed: 5, spawnFrequency: 20, duration: 220, flavor: "Massive red ground shakes!" },
+                    { type: "waveBullets", bulletType: "orange", bulletSprite: "⛰️", bulletSpeed: 6.5, spawnFrequency: 10, duration: 180, flavor: "Crushing ORANGE earth waves!" },
+                    { type: "randomBullets", bulletType: "red", bulletSprite: "☄️", bulletSpeed: 8, spawnFrequency: 2, duration: 200, flavor: "A chaotic storm of red meteors!" },
+                    { type: "spiralBullets", bulletType: "orange", bulletSprite: "🌀", bulletSpeed: 7, spawnFrequency: 3, duration: 250, flavor: "Unstoppable ORANGE vortex!" },
+                    { type: "lineBullets", bulletType: "red", bulletSprite: "⚡", bulletSpeed: 8.5, spawnFrequency: 10, duration: 150, flavor: "Lightning-fast red fissures!" }
+                ],
+                canMove: true,
+                originalX: ORIGINAL_CANVAS_WIDTH / 2,
+                originalY: ORIGINAL_DODGE_BOX_Y - 100
+            }
+        ];
+
+        let currentAttackIndex = 0; // Tracks which attack pattern in the combo is active
+        let currentEnemyAttackTimer = 0;
+        let currentAttackDuration = 0;
+        let currentAttackFlavorText = "";
+        let glitchOpacity = 0; // For screen glitch effect
+
+        // --- Mouse Control for Player ---
+        gameCanvas.addEventListener('mousemove', (e) => {
+            if (gameState === "enemy_attack_phase") {
+                const rect = gameCanvas.getBoundingClientRect();
+                // Get mouse coordinates relative to the canvas
+                const mouseX = (e.clientX - rect.left) * (gameCanvas.width / rect.width);
+                const mouseY = (e.clientY - rect.top) * (gameCanvas.height / rect.height);
+
+                // Set player as moving
+                player.isMoving = true;
+                // Clear any existing timeout
+                if (player.movementTimeout) {
+                    clearTimeout(player.movementTimeout);
+                }
+                // Set a new timeout to mark player as not moving if no further mousemove events occur
+                player.movementTimeout = setTimeout(() => {
+                    player.isMoving = false;
+                }, 150); // 150ms of no movement to be considered stationary
+
+                // Clamp player position to the scaled dodge box
+                player.x = Math.max(DODGE_BOX_X_SCALED, Math.min(DODGE_BOX_X_SCALED + DODGE_BOX_WIDTH_SCALED - player.size, mouseX - player.size / 2));
+                player.y = Math.max(DODGE_BOX_Y_SCALED, Math.min(DODGE_BOX_Y_SCALED + DODGE_BOX_HEIGHT_SCALED - player.size, mouseY - player.size / 2));
+
+                player.lastMouseX = mouseX; // Update last known mouse position
+                player.lastMouseY = mouseY;
+            }
+        });
+
+        // --- Game Utility Functions ---
+
+        /**
+         * Draws a rectangle. For pixel art, we avoid rounding.
+         * @param {CanvasRenderingContext2D} ctx - The rendering context.
+         * @param {number} x - The x-coordinate of the upper-left corner of the rectangle.
+         * @param {number} y - The y-coordinate of the upper-left corner of the rectangle.
+         * @param {number} width - The width of the rectangle.
+         * @param {number} height - The height of the rectangle.
+         */
+        function drawRect(ctx, x, y, width, height) {
+            ctx.beginPath();
+            ctx.rect(x, y, width, height);
+            ctx.closePath();
+            // No fill or stroke here, just path creation. Caller will fill/stroke.
+        }
+
+        /**
+         * Draws the player's heart soul.
+         * @param {number} x - X coordinate.
+         * @param {number} y - Y coordinate.
+         * @param {number} size - Size of the heart.
+         * @param {string} color - Color of the heart.
+         */
+        function drawHeart(x, y, size, color) {
+            gameCtx.fillStyle = color;
+            gameCtx.beginPath();
+            const topCurveHeight = size * 0.3;
+            gameCtx.moveTo(x, y + topCurveHeight);
+            gameCtx.bezierCurveTo(x, y, x - size, y, x - size, y + topCurveHeight);
+            gameCtx.bezierCurveTo(x - size, y + size, x, y + size * 1.8, x, y + size * 2);
+            gameCtx.bezierCurveTo(x, y + size * 1.8, x + size, y + size, x + size, y + topCurveHeight);
+            gameCtx.bezierCurveTo(x + size, y, x, y, x, y + topCurveHeight);
+            gameCtx.closePath();
+            gameCtx.fill();
+        }
+
+        /**
+         * Spawns particles for visual effects.
+         * @param {number} x - X coordinate.
+         * @param {number} y - Y coordinate.
+         * @param {string} emoji - Emoji to use for particles.
+         */
+        function spawnParticles(x, y, emoji = "✨") {
+            for (let i = 0; i < 10; i++) {
+                particles.push({
+                    x,
+                    y,
+                    vx: (Math.random() - 0.5) * 3 * currentScale, // Scale particle velocity
+                    vy: (Math.random() - 0.5) * 3 * currentScale,
+                    life: 60,
+                    emoji
+                });
+            }
+        }
+
+        /**
+         * Updates particle positions and removes expired ones.
+         */
+        function updateParticles() {
+            particles = particles.filter(p => p.life > 0);
+            particles.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                p.life--;
+            });
+        }
+
+        /**
+         * Draws all active particles.
+         */
+        function drawParticles() {
+            particles.forEach(p => {
+                gameCtx.font = `${20 * currentScale}px 'Press Start 2P'`; /* Scale particle font */
+                gameCtx.fillText(p.emoji, p.x, p.y);
+            });
+        }
+
+        /**
+         * Spawns a single bullet.
+         * @param {number} x - X coordinate.
+         * @param {number} y - Y coordinate.
+         * @param {number} vx - Velocity X.
+         * @param {number} vy - Velocity Y.
+         * @param {number} size - Size of the bullet.
+         * @param {string} type - Type of bullet ("red", "blue", "orange").
+         * @param {string} sprite - Emoji sprite for the bullet.
+         */
+        function spawnBullet(x, y, vx, vy, size = 12, type = "red", sprite = "◆") {
+            let color;
+            if (type === "blue") {
+                color = "blue";
+            } else if (type === "orange") {
+                color = "orange";
+            } else {
+                color = "gold"; // Default for "red" (normal)
+            }
+            bullets.push({ x, y, vx, vy, size: size * currentScale, color, type, sprite }); // Scale bullet size
+        }
+
+        /**
+         * Updates bullet positions and removes out-of-bounds bullets.
+         */
+        function updateBullets() {
+            bullets = bullets.filter(b => 
+                // Keep bullets within canvas bounds (with a small buffer)
+                b.x > -b.size && b.x < gameCanvas.width + b.size &&
+                b.y > -b.size && b.y < gameCanvas.height + b.size
+            );
+            bullets.forEach(b => {
+                b.x += b.vx;
+                b.y += b.vy;
+            });
+        }
+
+        /**
+         * Draws all active bullets.
+         */
+        function drawBullets() {
+            bullets.forEach(b => {
+                // Draw emoji sprite for the bullet
+                gameCtx.font = `${b.size * 1.5}px 'Press Start 2P'`; /* Keep pixel font for bullets */
+                gameCtx.textAlign = "center";
+                gameCtx.textBaseline = "middle";
+                gameCtx.fillText(b.sprite, b.x + b.size / 2, b.y + b.size / 2);
+            });
+            gameCtx.textAlign = "left"; // Reset
+            gameCtx.textBaseline = "alphabetic"; // Reset
+        }
+
+        /**
+         * Checks for collisions between player and bullets, handling blue/orange types.
+         */
+        function checkCollisions() {
+            if (invincibleFrames > 0) {
+                invincibleFrames--;
+                return; // Player is invincible, no damage taken
+            }
+
+            let hitOccurredInThisFrame = false; // New flag to track if a hit (leading to damage) occurred this frame
+
+            bullets.forEach(b => {
+                // Simple AABB collision detection
+                if (player.x < b.x + b.size &&
+                    player.x + player.size > b.x &&
+                    player.y < b.y + b.size &&
+                    player.y + player.size > b.y) {
+                    
+                    let damage = 1; // Default damage
+                    let hit = true;
+
+                    if (b.type === "blue") {
+                        if (!player.isMoving) {
+                            damage = 0; // No damage if blue and stationary
+                            hit = false;
+                        }
+                    } else if (b.type === "orange") {
+                        if (player.isMoving) {
+                            damage = 0; // No damage if orange and moving
+                            hit = false;
+                        }
+                    }
+
+                    if (hit) {
+                        // Only apply damage and effects if a hit hasn't already occurred this frame
+                        if (!hitOccurredInThisFrame) {
+                            playerHP = Math.max(0, playerHP - damage);
+                            invincibleFrames = 60; // 1 second invincibility (60 frames at 60fps)
+                            flashBorder();
+                            spawnParticles(player.x, player.y, "💥");
+                            screenShake(5, 10); // Small screen shake on hit
+                            playerHitSound.triggerAttackRelease("C3", "8n"); // Play hit sound only once per frame
+                            if (playerHP <= 0) {
+                                setGameState("game_over");
+                                bullets = [];
+                                particles = [];
+                                setTimeout(() => {
+                                    showGameOverScreen();
+                                }, 200);
+                                // No return here, let the loop finish, but the game state change will stop further processing
+                            }
+                            hitOccurredInThisFrame = true; // Mark that a hit leading to damage occurred this frame
+                        }
+                        // If hitOccurredInThisFrame is true, subsequent bullets hitting in the same frame won't cause damage or play sound
+                    } else {
+                        spawnParticles(b.x, b.y, "✨"); // Still show sparkle for dodged bullets
+                    }
+                }
+            });
+        }
+
+        /**
+         * Applies a screen shake effect.
+         * @param {number} intensity - How much the screen shakes.
+         * @param {number} duration - How long the shake lasts (frames).
+         */
+        function screenShake(intensity, duration) {
+            screenShakeIntensity = intensity * currentScale; // Scale shake intensity
+            screenShakeDuration = duration;
+        }
+
+        /**
+         * Draws a glitch effect on the canvas.
+         */
+        function drawGlitch() {
+            if (glitchOpacity > 0) {
+                gameCtx.fillStyle = `rgba(255,255,255,${glitchOpacity})`;
+                gameCtx.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
+                glitchOpacity -= 0.02; // Reduce opacity over time
+            }
+        }
+
+        /**
+         * Triggers a glitch effect.
+         * @param {Function} callback - Function to call after the glitch.
+         */
+        function triggerGlitch(callback) {
+            glitchOpacity = 0.7; // Start with high opacity
+            setTimeout(callback, 400); // Call callback after a short delay
+        }
+
+        /**
+         * Flashes the canvas border on damage.
+         */
+        function flashBorder() {
+            gameCanvas.style.boxShadow = "0 0 20px red";
+            setTimeout(() => gameCanvas.style.boxShadow = "8px 8px 0px rgba(0, 0, 0, 0.8)", 150); // Restore original shadow
+        }
+
+        /**
+         * Implements a typewriter effect for dialogue text.
+         * @param {string} text - The text to type.
+         * @param {Function} callback - Function to call after typing is complete.
+         */
+        function typeText(text, callback) {
+            let i = 0;
+            gameDialogueText.innerHTML = ""; // Clear text before typing new
+            function type() {
+                if (i < text.length) {
+                    gameDialogueText.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, 20); // Typing speed
+                } else if (callback) {
+                    callback();
+                }
+            }
+            type();
+        }
+
+        /**
+         * Displays dialogue box with text and optional buttons.
+         * @param {string} text - Dialogue text.
+         * @param {Array<Object>} buttons - Array of button objects {label, action}.
+         */
+        function showDialogue(text, buttons = []) {
+            gameDialogueBox.style.display = "block";
+            gameOptions.innerHTML = ""; // Clear existing options immediately before adding new ones
+            typeText(text, () => {
+                buttons.forEach(({ label, action }) => {
+                    const btn = document.createElement("button");
+                    btn.className = "optionButton game-button"; /* Apply game-button styles */
+                    btn.innerText = label;
+                    btn.onclick = () => {
+                        buttonClickSound.triggerAttackRelease("C5", "16n"); // Play button click sound
+                        action();
+                    };
+                    gameOptions.appendChild(btn);
+                });
+            });
+        }
+
+        /**
+         * Returns a random element from an array.
+         * @param {Array} arr - The array.
+         * @returns {*} A random element.
+         */
+        function randomFrom(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
+
+        /**
+         * Draws the HP bar, HP text, Mercy bar, and Determination bar.
+         */
+        function drawHUD() {
+            // HP Bar
+            const hpBarX = 20 * currentScale;
+            const hpBarY = 20 * currentScale;
+            const barWidth = 180 * currentScale;
+            const barHeight = 25 * currentScale;
+
+            // Draw HP bar background
+            gameCtx.fillStyle = "#333";
+            drawRect(gameCtx, hpBarX, hpBarY, barWidth, barHeight);
+            gameCtx.fill();
+
+            // Draw HP bar fill with gradient
+            const hpFillWidth = (playerHP / playerMaxHP) * barWidth;
+            const hpGradient = gameCtx.createLinearGradient(hpBarX, hpBarY, hpBarX + hpFillWidth, hpBarY);
+            hpGradient.addColorStop(0, "#ff0000");
+            hpGradient.addColorStop(1, "#ff6666");
+            gameCtx.fillStyle = hpGradient;
+            drawRect(gameCtx, hpBarX, hpBarY, hpFillWidth, barHeight);
+            gameCtx.fill();
+            
+            gameCtx.fillStyle = "white";
+            gameCtx.font = `${20 * currentScale}px 'Press Start 2P'`;
+            gameCtx.textAlign = "left";
+            gameCtx.fillText(`HP: ${playerHP}/${playerMaxHP}`, hpBarX + barWidth + (15 * currentScale), hpBarY + barHeight / 2 + (8 * currentScale));
+
+            const mercyBarX = hpBarX;
+            let mercyBarY = hpBarY + barHeight + (10 * currentScale);
+
+            // Mercy Bar (only if an enemy is present)
+            if (currentEnemy) {
+                gameCtx.fillStyle = "#333";
+                drawRect(gameCtx, mercyBarX, mercyBarY, barWidth, barHeight); 
+                gameCtx.fill();
+
+                const mercyFillWidth = (currentEnemy.currentMercy / currentEnemy.mercyThreshold) * barWidth;
+                const mercyGradient = gameCtx.createLinearGradient(mercyBarX, mercyBarY, mercyBarX + mercyFillWidth, mercyBarY);
+                mercyGradient.addColorStop(0, "#00cc00");
+                mercyGradient.addColorStop(1, "#66ff66");
+                gameCtx.fillStyle = mercyGradient;
+                drawRect(gameCtx, mercyBarX, mercyBarY, mercyFillWidth, barHeight);
+                gameCtx.fill();
+
+                gameCtx.fillStyle = "white";
+                gameCtx.fillText(`MERCY: ${currentEnemy.currentMercy}/${currentEnemy.mercyThreshold}`, mercyBarX + barWidth + (15 * currentScale), mercyBarY + barHeight / 2 + (8 * currentScale));
+            }
+
+            // Determination Bar (always visible)
+            const detBarX = hpBarX; 
+            const detBarY = (currentEnemy ? mercyBarY + barHeight + (10 * currentScale) : hpBarY + barHeight + (10 * currentScale));
+            
+            gameCtx.fillStyle = "#333";
+            drawRect(gameCtx, detBarX, detBarY, barWidth, barHeight);
+            gameCtx.fill();
+
+            const detFillWidth = (player.determination / player.maxDetermination) * barWidth;
+            const detGradient = gameCtx.createLinearGradient(detBarX, detBarY, detBarX + detFillWidth, detBarY);
+            detGradient.addColorStop(0, "#ffcc00");
+            detGradient.addColorStop(1, "#ffff66");
+            gameCtx.fillStyle = detGradient;
+            drawRect(gameCtx, detBarX, detBarY, detFillWidth, barHeight); 
+            gameCtx.fill();
+
+            gameCtx.fillStyle = "white";
+            gameCtx.fillText(`DETER: ${player.determination}/${player.maxDetermination}`, detBarX + barWidth + (15 * currentScale), detBarY + barHeight / 2 + (8 * currentScale));
+
+
+            // Dodge Box
+            gameCtx.strokeStyle = "white";
+            gameCtx.lineWidth = 4 * currentScale; // Scale border thickness
+            gameCtx.strokeRect(DODGE_BOX_X_SCALED, DODGE_BOX_Y_SCALED, DODGE_BOX_WIDTH_SCALED, DODGE_BOX_HEIGHT_SCALED);
+        }
+
+        /**
+         * Draws the current enemy sprite and name.
+         */
+        function drawEnemy() {
+            if (currentEnemy) {
+                gameCtx.fillStyle = "white";
+                gameCtx.font = `${64 * currentScale}px 'Press Start 2P'`;
+                gameCtx.textAlign = "center";
+                const offsetX = screenShakeIntensity > 0 ? (Math.random() - 0.5) * screenShakeIntensity : 0;
+                const offsetY = screenShakeIntensity > 0 ? (Math.random() - 0.5) * screenShakeIntensity : 0;
+
+                const idleOffsetY = Math.sin(Date.now() * 0.005) * 5 * currentScale; // Scale idle animation
+                
+                gameCtx.fillText(currentEnemy.sprite, currentEnemy.x + offsetX, currentEnemy.y + offsetY + idleOffsetY);
+                gameCtx.font = `${32 * currentScale}px 'Press Start 2P'`;
+                gameCtx.fillText(currentEnemy.name, currentEnemy.x + offsetX, currentEnemy.y + (60 * currentScale) + offsetY + idleOffsetY);
+                gameCtx.textAlign = "left";
+
+                gameCtx.fillStyle = "red";
+                gameCtx.font = `${24 * currentScale}px 'Press Start 2P'`;
+                gameCtx.textAlign = "center";
+                gameCtx.fillText(`HP: ${currentEnemy.hp}/${currentEnemy.maxHp}`, currentEnemy.x + offsetX, currentEnemy.y + (100 * currentScale) + offsetY + idleOffsetY);
+                gameCtx.textAlign = "left";
+
+                if (currentEnemy.currentMercy >= currentEnemy.mercyThreshold) {
+                    spawnParticles(currentEnemy.x + offsetX, currentEnemy.y + offsetY + idleOffsetY, "✨");
+                }
+            }
+        }
+
+        // --- Attack Pattern Implementations ---
+        /**
+         * Spawns bullets randomly towards the player's general area.
+         * @param {Object} pattern - The current attack pattern object.
+         */
+        function randomBulletsAttack(pattern) {
+            if (currentEnemyAttackTimer % pattern.spawnFrequency === 0) {
+                const angle = Math.random() * Math.PI * 2;
+                const speed = (pattern.bulletSpeed + (Math.random() * 2 - 1)) * currentScale; // Scale bullet speed
+                const startX = currentEnemy.x + Math.cos(angle) * (100 * currentScale);
+                const startY = currentEnemy.y + Math.sin(angle) * (100 * currentScale);
+                
+                const targetX = DODGE_BOX_X_SCALED + Math.random() * DODGE_BOX_WIDTH_SCALED;
+                const targetY = DODGE_BOX_Y_SCALED + Math.random() * DODGE_BOX_HEIGHT_SCALED;
+
+                const dx = targetX - startX;
+                const dy = targetY - startY;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                spawnBullet(
+                    startX,
+                    startY,
+                    (dx / distance) * speed,
+                    (dy / distance) * speed,
+                    15,
+                    pattern.bulletType,
+                    pattern.bulletSprite
+                );
+            }
+        }
+
+        /**
+         * Spawns bullets in a wave from top to bottom of the dodge box.
+         * @param {Object} pattern - The current attack pattern object.
+         */
+        function waveBulletsAttack(pattern) {
+            if (currentEnemyAttackTimer % pattern.spawnFrequency === 0) {
+                const speed = pattern.bulletSpeed * currentScale; // Scale bullet speed
+                const numBullets = 8;
+                for (let i = 0; i < numBullets; i++) {
+                    const bulletX = DODGE_BOX_X_SCALED + (i / (numBullets - 1)) * DODGE_BOX_WIDTH_SCALED;
+                    spawnBullet(bulletX, DODGE_BOX_Y_SCALED, 0, speed, 15, pattern.bulletType, pattern.bulletSprite);
+                }
+            }
+        }
+
+        /**
+         * Spawns bullets in a spiral pattern originating from the enemy.
+         * @param {Object} pattern - The current attack pattern object.
+         */
+        function spiralBulletsAttack(pattern) {
+            if (currentEnemyAttackTimer % pattern.spawnFrequency === 0) {
+                const angle = (currentEnemyAttackTimer * 0.2) % (Math.PI * 2);
+                const speed = pattern.bulletSpeed * currentScale; // Scale bullet speed
+                const centerX = currentEnemy.x;
+                const centerY = currentEnemy.y;
+                
+                spawnBullet(
+                    centerX + Math.cos(angle) * (currentEnemyAttackTimer * 0.7 * currentScale), // Scale spiral radius
+                    centerY + Math.sin(angle) * (currentEnemyAttackTimer * 0.7 * currentScale),
+                    Math.cos(angle) * speed,
+                    Math.sin(angle) * speed,
+                    12,
+                    pattern.bulletType,
+                    pattern.bulletSprite
+                );
+            }
+        }
+
+        /**
+         * Spawns bullets in an expanding circle from the center of the dodge box.
+         * @param {Object} pattern - The current attack pattern object.
+         */
+        function expandingCircleAttack(pattern) {
+            if (currentEnemyAttackTimer % pattern.spawnFrequency === 0) {
+                const numBullets = 12;
+                const initialRadius = 20 * currentScale; // Scale initial radius
+                const speed = pattern.bulletSpeed * currentScale; // Scale bullet speed
+
+                for (let i = 0; i < numBullets; i++) {
+                    const angle = (i / numBullets) * Math.PI * 2;
+                    const startX = DODGE_BOX_X_SCALED + DODGE_BOX_WIDTH_SCALED / 2 + Math.cos(angle) * initialRadius;
+                    const startY = DODGE_BOX_Y_SCALED + DODGE_BOX_HEIGHT_SCALED / 2 + Math.sin(angle) * initialRadius;
+                    
+                    spawnBullet(
+                        startX,
+                        startY,
+                        Math.cos(angle) * speed,
+                        Math.sin(angle) * speed,
+                        15,
+                        pattern.bulletType,
+                        pattern.bulletSprite
+                    );
+                }
+            }
+        }
+
+        /**
+         * Spawns bullets that target the player's current position.
+         * @param {Object} pattern - The current attack pattern object.
+         */
+        function targetedBulletsAttack(pattern) {
+            if (currentEnemyAttackTimer % pattern.spawnFrequency === 0) {
+                const speed = (pattern.bulletSpeed + Math.random() * 2) * currentScale; // Scale bullet speed
+                const startX = currentEnemy.x;
+                const startY = currentEnemy.y;
+
+                const dx = player.x - startX;
+                const dy = player.y - startY;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                spawnBullet(
+                    startX,
+                    startY,
+                    (dx / distance) * speed,
+                    (dy / distance) * speed,
+                    15,
+                    pattern.bulletType,
+                    pattern.bulletSprite
+                );
+            }
+        }
+
+        /**
+         * Spawns bullets in horizontal or vertical lines.
+         * @param {Object} pattern - The current attack pattern object.
+         */
+        function lineBulletsAttack(pattern) {
+            if (currentEnemyAttackTimer % pattern.spawnFrequency === 0) {
+                const speed = pattern.bulletSpeed * currentScale; // Scale bullet speed
+                const numBullets = 10;
+                const isHorizontal = Math.random() > 0.5;
+
+                if (isHorizontal) {
+                    const startY = DODGE_BOX_Y_SCALED + Math.random() * DODGE_BOX_HEIGHT_SCALED;
+                    for (let i = 0; i < numBullets; i++) {
+                        const bulletX = DODGE_BOX_X_SCALED + (i / (numBullets - 1)) * DODGE_BOX_WIDTH_SCALED;
+                        spawnBullet(bulletX, startY, 0, speed * (Math.random() > 0.5 ? 1 : -1), 15, pattern.bulletType, pattern.bulletSprite);
+                    }
+                } else {
+                    const startX = DODGE_BOX_X_SCALED + Math.random() * DODGE_BOX_WIDTH_SCALED;
+                    for (let i = 0; i < numBullets; i++) {
+                        const bulletY = DODGE_BOX_Y_SCALED + (i / (numBullets - 1)) * DODGE_BOX_HEIGHT_SCALED;
+                        spawnBullet(startX, bulletY, speed * (Math.random() > 0.5 ? 1 : -1), 0, 15, pattern.bulletType, pattern.bulletSprite);
+                    }
+                }
+            }
+        }
+
+
+        // --- Game State Functions ---
+
+        /**
+         * Sets the current game state and logs the transition.
+         * @param {string} newState - The new state to transition to.
+         */
+        function setGameState(newState) {
+            gameState = newState;
+        }
+
+        /**
+         * Displays the main game menu.
+         */
+        function showMainMenu() {
+            setGameState("menu");
+            gameMainMenu.style.display = 'flex'; // Ensure menu is visible
+            gameDialogueBox.style.display = 'none';
+        }
+
+        /**
+         * Hides the main game menu.
+         */
+        function hideMainMenu() {
+            gameMainMenu.style.display = 'none'; 
+        }
+
+        /**
+         * Initializes and starts a new game.
+         */
+        function startGame() {
+            // Ensure audio context is started on user gesture
+            if (!audioContextReady) {
+                Tone.start().then(() => {
+                    audioContextReady = true;
+                    backgroundAmbience.start(); // Start background music loop
+                    initGameDataAndStart();
+                }).catch(e => console.error("Failed to start AudioContext:", e));
+            } else {
+                initGameDataAndStart();
+            }
+        }
+
+        function initGameDataAndStart() {
+            hideMainMenu();
+            playerHP = playerMaxHP;
+            player.determination = 0;
+            enemiesSpared = 0;
+            enemiesDefeated = 0; // Reset defeated count
+            pacifistScore = 0;
+            firstEncounter = true; // Reset for new game
+            firstFightMinigame = true; // Reset for new game
+            setGameState("intro");
+            // Player position reset to center of scaled dodge box
+            player.x = DODGE_BOX_X_SCALED + DODGE_BOX_WIDTH_SCALED / 2 - player.size / 2;
+            player.y = DODGE_BOX_Y_SCALED + DODGE_BOX_HEIGHT_SCALED / 2 - player.size / 2;
+            startIntroSequence();
+        }
+
+        /**
+         * Initiates the game's introductory dialogue sequence.
+         */
+        function startIntroSequence() {
+            showDialogue("YOU WAKE UP AS DOOFY IN A DREAMY STARFIELD... 💫\n\n(Hint: Move your MOUSE to control your soul. Keep it in the white box!)", [
+                { label: "CONTINUE", action: () => {
+                    showDialogue("TODAY IS QUACKERS' BIRTHDAY!\nYOUR QUEST: SPREAD FRIENDSHIP AND JOY. 🎂\n\n(Hint: You can ACT to befriend monsters, or FIGHT if you must, to subdue them!)", [
+                        { label: "START QUEST!", action: () => {
+                            gameDialogueBox.style.display = "none";
+                            startNextEncounter(); // Start the first encounter
+                        }}
+                    ]);
+                }}
+            ]);
+        }
+
+        /**
+         * Displays the player's turn options (ACT, ITEM, CHECK, FIGHT, SPARE, EXIT).
+         */
+        function showPlayerTurnOptions() {
+            setGameState("player_turn_options");
+            gameDialogueBox.style.display = "block";
+            // Reset player soul color to red when not in attack phase
+            player.color = "red"; 
+            const optionsButtons = [
+                { label: "ACT", action: () => showActMenu(currentEnemy) },
+                { label: "ITEM", action: () => showItemMenu() },
+                { label: "CHECK", action: () => showCheckMenu(currentEnemy) },
+                { label: "FIGHT", action: () => startFightMinigame() }, // FIGHT now leads to mini-game
+                { label: "EXIT GAME", action: () => exitGame() }
+            ];
+
+            // Add SPARE option if mercy threshold is met
+            if (currentEnemy && currentEnemy.currentMercy >= currentEnemy.mercyThreshold) {
+                optionsButtons.splice(1, 0, { label: "SPARE", action: () => endEncounter("spared") }); // Insert SPARE after ACT
+            }
+            // Add DEFEAT option if enemy HP is 0
+            if (currentEnemy && currentEnemy.hp <= 0) {
+                optionsButtons.splice(1, 0, { label: "SUBDUE", action: () => endEncounter("defeated") }); // Insert SUBDUE after ACT/SPARE
+            }
+
+
+            showDialogue(`WHAT WILL YOU DO NOW, DOOFY?`, optionsButtons);
+        }
+
+        /**
+         * Starts the enemy's attack phase.
+         */
+        function startEnemyAttackPhase() {
+            setGameState("enemy_attack_phase");
+            gameDialogueBox.style.display = "none"; // Hide dialogue during attack
+            bullets = []; // Clear any residual bullets
+            currentEnemyAttackTimer = 0;
+            currentAttackIndex = 0; // Start with the first attack pattern in the combo
+            
+            // Ensure currentEnemy and its attackPatterns are valid
+            if (currentEnemy && currentEnemy.attackPatterns && currentEnemy.attackPatterns.length > 0) {
+                const firstPattern = currentEnemy.attackPatterns[currentAttackIndex];
+                currentAttackDuration = firstPattern.duration;
+                currentAttackFlavorText = firstPattern.flavor;
+                player.color = firstPattern.bulletType; // Set player soul color based on first attack type
+            } else {
+                // Fallback to player options if no attacks are defined
+                showPlayerTurnOptions();
+                return;
+            }
+
+            // Reset player position to center of scaled dodge box at start of attack phase
+            player.x = DODGE_BOX_X_SCALED + DODGE_BOX_WIDTH_SCALED / 2 - player.size / 2;
+            player.y = DODGE_BOX_Y_SCALED + DODGE_BOX_HEIGHT_SCALED / 2 - player.size / 2;
+        }
+
+        /**
+         * Contains the core logic for starting the fight mini-game.
+         * Separated to allow for pre-fight dialogue.
+         */
+        function proceedToFightMinigameLogic() {
+            setGameState("fight_minigame");
+            gameDialogueBox.style.display = "none";
+            // Randomize sweet spot and critical spot offsets for this fight
+            // These offsets are relative to the start of the fight bar
+            // Ensure sweet spot fits within the bar
+            currentSweetSpotOffset = Math.random() * (FIGHT_BAR_WIDTH_SCALED - SWEET_SPOT_WIDTH_SCALED);
+            // Ensure critical spot fits within the sweet spot
+            currentCriticalSpotOffset = Math.random() * (SWEET_SPOT_WIDTH_SCALED - CRITICAL_SPOT_WIDTH_SCALED);
+
+            // Reset marker position for new game, scaled
+            hitMarkerX = FIGHT_BAR_X_SCALED + FIGHT_BAR_WIDTH_SCALED / 2;
+            hitMarkerDirection = Math.random() > 0.5 ? 1 : -1; // Random initial direction
+            // Add click listener for the mini-game
+            gameCanvas.addEventListener('mousedown', handleFightClick, { once: true });
+        }
+
+        /**
+         * Starts the fight mini-game, with an optional tutorial for the first time.
+         */
+        function startFightMinigame() {
+            if (firstFightMinigame) {
+                showDialogue("TO ATTACK: Click the bar when the YELLOW heart marker is in the MAGENTA 'sweet spot' for a good hit, or the LIME GREEN 'critical spot' for massive damage! Timing is key!", [
+                    { label: "GOT IT!", action: () => {
+                        firstFightMinigame = false; // Set flag to false after first hint
+                        proceedToFightMinigameLogic();
+                    }}
+                ]);
+            } else {
+                proceedToFightMinigameLogic();
+            }
+        }
+
+        /**
+         * Handles click event for the fight mini-game.
+         * @param {MouseEvent} e - The mouse event.
+         */
+        function handleFightClick(e) {
+            if (gameState !== "fight_minigame") return;
+
+            const rect = gameCanvas.getBoundingClientRect();
+            const clickX = (e.clientX - rect.left) * (gameCanvas.width / rect.width);
+
+            // Calculate current sweet spot and critical spot positions based on random offsets
+            const sweetSpotStart = FIGHT_BAR_X_SCALED + currentSweetSpotOffset;
+            const sweetSpotEnd = sweetSpotStart + SWEET_SPOT_WIDTH_SCALED;
+            const criticalSpotStart = sweetSpotStart + currentCriticalSpotOffset;
+            const criticalSpotEnd = criticalSpotStart + CRITICAL_SPOT_WIDTH_SCALED;
+
+            // The position of the center of the moving heart marker
+            // Assuming the '10 * currentScale' was the width of the old marker, now using player.size * 1.5 for heart
+            const heartSizeForCollision = player.size * 1.5; // Use the same size as drawn
+            const heartMarkerLeftEdge = hitMarkerX; // The x position of the heart's left edge
+            const heartMarkerRightEdge = hitMarkerX + heartSizeForCollision;
+
+            let damageDealt = 0;
+            let hitMessage = "";
+
+            // Check for overlap between heart marker and hit zones
+            if (
+                (heartMarkerRightEdge >= criticalSpotStart && heartMarkerLeftEdge <= criticalSpotEnd) || // Marker overlaps critical start
+                (heartMarkerLeftEdge <= criticalSpotEnd && heartMarkerRightEdge >= criticalSpotStart)    // Marker overlaps critical end
+            ) {
+                damageDealt = Math.floor(Math.random() * 2) + 5; // Critical hit: 5 or 6 damage
+                hitMessage = "CRITICAL HIT! 💥";
+                screenShake(10, 15);
+                attackHitSound.triggerAttackRelease("G5", "16n"); // High pitch for critical
+            } else if (
+                (heartMarkerRightEdge >= sweetSpotStart && heartMarkerLeftEdge <= sweetSpotEnd) || // Marker overlaps sweet start
+                (heartMarkerLeftEdge <= sweetSpotEnd && heartMarkerRightEdge >= sweetSpotStart)    // Marker overlaps sweet end
+            ) { 
+                damageDealt = Math.floor(Math.random() * 2) + 3; // Sweet spot hit: 3 or 4 damage
+                hitMessage = "GREAT HIT! ✨";
+                screenShake(7, 12);
+                attackHitSound.triggerAttackRelease("E5", "16n"); // Medium pitch for sweet
+            } else if (
+                (heartMarkerRightEdge >= FIGHT_BAR_X_SCALED && heartMarkerLeftEdge <= FIGHT_BAR_X_SCALED + FIGHT_BAR_WIDTH_SCALED) // Marker within main bar
+            ) {
+                damageDealt = Math.floor(Math.random() * 2) + 1; // Normal hit: 1 or 2 damage
+                hitMessage = "HIT! 👍";
+                screenShake(3, 8);
+                attackHitSound.triggerAttackRelease("C5", "16n"); // Low pitch for normal hit
+            } else {
+                damageDealt = 0; // Miss
+                hitMessage = "MISS! ❌";
+                attackHitSound.triggerAttackRelease("C3", "32n"); // Very low pitch for miss
+            }
+
+            if (currentEnemy) {
+                currentEnemy.hp = Math.max(0, currentEnemy.hp - damageDealt);
+                showCustomMessage(`${hitMessage} You dealt ${damageDealt} damage to ${currentEnemy.name}!`);
+
+                if (currentEnemy.hp <= 0) {
+                    setTimeout(() => {
+                        endEncounter("defeated"); // Directly end encounter if defeated
+                    }, 1000);
+                } else {
+                    setTimeout(() => {
+                        startEnemyAttackPhase(); // Enemy attacks back
+                    }, 1000); // Short delay to show message
+                }
+            }
+        }
+
+        /**
+         * Starts the next enemy encounter or transitions to win screen if all enemies are spared/defeated.
+         */
+        function startNextEncounter() {
+            if (enemiesSpared + enemiesDefeated >= totalEnemies) {
+                setGameState("win");
+                showWinScreen();
+                return;
+            }
+            currentEnemy = enemies[enemiesSpared + enemiesDefeated]; // Get the next enemy based on total cleared
+            // Reset enemy HP and mercy for new encounter
+            currentEnemy.hp = currentEnemy.maxHp;
+            currentEnemy.currentMercy = 0; 
+            bullets = []; // Clear bullets from previous encounter
+            currentEnemyAttackTimer = 0;
+            currentAttackIndex = 0;
+            player.color = "red"; // Ensure player color is red at start of new encounter
+
+            // Set enemy's current position based on scaled original position
+            currentEnemy.x = currentEnemy.originalX * currentScale;
+            currentEnemy.y = currentEnemy.originalY * currentScale;
+
+            // Dialogue before attack phase
+            setGameState("encounter_dialogue");
+
+            // Show bullet color hint for the very first encounter
+            if (firstEncounter) {
+                showDialogue("PAY ATTENTION TO BULLET COLORS:\n\n❤️ RED: Dodge by moving!\n💙 BLUE: Dodge by staying still!\n🧡 ORANGE: Dodge by moving! (These pass through you if you're moving!)", [
+                    { label: "GOT IT!", action: () => {
+                        firstEncounter = false; // Set flag to false after first hint
+                        triggerGlitch(() => {
+                            showDialogue(randomFrom(currentEnemy.dialogue), [
+                                { label: "CONTINUE", action: () => showPlayerTurnOptions() }
+                            ]);
+                        });
+                    }}
+                ]);
+            } else {
+                triggerGlitch(() => {
+                    showDialogue(randomFrom(currentEnemy.dialogue), [
+                        { label: "CONTINUE", action: () => showPlayerTurnOptions() }
+                    ]);
+                });
+            }
+        }
+
+        /**
+         * Displays the ACT menu for the current enemy.
+         * @param {Object} enemy - The current enemy object.
+         */
+        function showActMenu(enemy) {
+            setGameState("act_menu");
+            player.color = "red"; // Soul is red in ACT menu
+            const actButtons = Object.keys(enemy.actResponses).map(label => ({
+                label: label,
+                action: () => {
+                    spawnParticles(player.x, player.y, "💖");
+                    // Increase mercy
+                    enemy.currentMercy = Math.min(enemy.mercyThreshold, enemy.currentMercy + 2);
+                    player.determination = Math.min(player.maxDetermination, player.determination + 5); // Gain determination
+                    
+                    if (enemy.currentMercy >= enemy.mercyThreshold) {
+                        showDialogue(`${enemy.name.toUpperCase()} IS PACIFIED BY YOUR KINDNESS! ❤️\n\n(ANOTHER FRIEND MADE! Press CONTINUE to move on.)`, [
+                            { label: "CONTINUE", action: () => endEncounter("spared") }
+                        ]);
+                    } else {
+                        showDialogue(randomFrom(enemy.actResponses[label]), [
+                            { label: "BACK TO ACTS", action: () => showActMenu(enemy) } // This will re-render the ACT menu
+                        ]);
+                    }
+                }
+            }));
+            actButtons.push({ label: "BACK", action: () => showPlayerTurnOptions() }); // Option to go back to main options
+            showDialogue(`HOW WILL YOU ACT TOWARD ${enemy.name.toUpperCase()}?`, actButtons);
+        }
+
+        /**
+         * Displays the ITEM menu.
+         */
+        function showItemMenu() {
+            setGameState("item_menu");
+            player.color = "red"; // Soul is red in ITEM menu
+            const itemButtons = inventory.map((item, index) => ({
+                label: `${item.name} (${item.type === 'heal' ? item.value + ' HP' : ''})`,
+                action: () => useItem(index)
+            }));
+            itemButtons.push({ label: "BACK", action: () => showPlayerTurnOptions() });
+            showDialogue("WHAT ITEM WILL YOU USE?", itemButtons);
+        }
+
+        /**
+         * Uses an item from the inventory.
+         * @param {number} index - The index of the item to use.
+         */
+        function useItem(index) {
+            const item = inventory[index];
+            if (!item) {
+                showCustomMessage("NO ITEM SELECTED.");
+                showPlayerTurnOptions();
+                return;
+            }
+
+            if (item.type === "heal") {
+                if (playerHP < playerMaxHP) {
+                    playerHP = Math.min(playerMaxHP, playerHP + item.value);
+                    showCustomMessage(`YOU USED ${item.name}! HEALED ${item.value} HP!`);
+                    inventory.splice(index, 1); // Remove item after use
+                } else {
+                    showCustomMessage("YOUR HP IS ALREADY FULL!");
+                }
+            }
+            // Add other item types here (e.g., buff, bullet clear)
+
+            showPlayerTurnOptions(); // Return to main options after using item
+        }
+
+        /**
+         * Displays the CHECK menu for the current enemy.
+         * @param {Object} enemy - The current enemy object.
+         */
+        function showCheckMenu(enemy) {
+            setGameState("check_menu");
+            player.color = "red"; // Soul is red in CHECK menu
+            // Update check description to show actual HP
+            const updatedCheckDescription = enemy.checkDescription.replace("HP: ??", `HP: ${enemy.hp}`).replace("ATK: ??", "ATK: ??").replace("DEF: ??", "DEF: ??");
+            showDialogue(updatedCheckDescription, [
+                { label: "BACK", action: () => showPlayerTurnOptions() }
+            ]);
+        }
+
+        /**
+         * Ends the current encounter, updating scores and preparing for the next.
+         * @param {string} howEnded - "spared" or "defeated".
+         */
+        function endEncounter(howEnded) {
+            gameDialogueBox.style.display = "none";
+            bullets = []; // Clear any remaining bullets
+            player.color = "red"; // Reset soul color to red
+
+            if (howEnded === "spared") {
+                enemiesSpared++;
+                pacifistScore++; // Increment pacifist score
+                mercySound.triggerAttackRelease("C6", "8n"); // Play mercy sound
+                showCustomMessage(`YOU SPARED ${currentEnemy.name}!`);
+            } else if (howEnded === "defeated") {
+                enemiesDefeated++;
+                enemyDefeatSound.triggerAttackRelease("C3", "4n"); // Play defeat sound
+                showCustomMessage(`YOU SUBDUED ${currentEnemy.name}!`);
+                showDialogue(currentEnemy.defeatedDialogue, [
+                    { label: "CONTINUE", action: () => {
+                        currentEnemy = null; // Clear current enemy reference after dialogue
+                        setTimeout(startNextEncounter, 500); // Short delay before next encounter
+                    }}
+                ]);
+                return; // Exit early as dialogue handles next step
+            }
+            
+            currentEnemy = null; // Clear current enemy reference
+            // After encounter, return to dialogue to start next one or win screen
+            // This will trigger startNextEncounter which checks if all enemies are spared/defeated
+            setTimeout(startNextEncounter, 1500);
+        }
+
+        /**
+         * Displays the win screen with branching endings.
+         */
+        function showWinScreen() {
+            gameDialogueBox.style.display = "block";
+            player.color = "red"; // Reset soul color to red
+            let endingMessage = "";
+            if (pacifistScore === totalEnemies) {
+                endingMessage = "🌟 TRUE PACIFIST ENDING! 🌟\nYOU'VE BEFRIENDED EVERYONE! QUACKERS IS SO PROUD! HAPPY BIRTHDAY, FRIENDSHIP HERO! 🎉";
+            } else if (enemiesDefeated === totalEnemies) {
+                endingMessage = "💀 CONQUEROR ENDING! 💀\nYOU'VE SUBDUED EVERYONE! QUACKERS IS A BIT SCARED, BUT THE PARTY IS SAFE... FOR NOW. 🎂";
+            }
+            else {
+                endingMessage = "YOU'VE REACHED QUACKERS! HAPPY BIRTHDAY! 🎉\n\n(YOUR QUEST FOR FRIENDSHIP IS COMPLETE! Some monsters are your pals, others... well, they're fine.)";
+            }
+            showDialogue(endingMessage, [
+                { label: "PLAY AGAIN?", action: () => location.reload() },
+                { label: "EXIT TO WEBSITE", action: () => exitGame() }
+            ]);
+        }
+
+        /**
+         * Displays the game over screen.
+         */
+        function showGameOverScreen() {
+            setGameState("game_over");
+            gameDialogueBox.style.display = "block";
+            player.color = "red"; // Reset soul color to red
+            showDialogue("YOU FAINTED FROM TOO MUCH CUTENESS! 💀💫\n\n(DON'T WORRY, YOU CAN ALWAYS TRY AGAIN! Your determination lives on!)", [
+                { label: "RETRY", action: () => location.reload() },
+                { label: "EXIT TO WEBSITE", action: () => exitGame() }
+            ]);
+        }
+
+        /**
+         * Exits the game and returns to the main website page.
+         */
+        function exitGame() {
+            // Redirect to star.html
+            window.location.href = 'star.html';
+        }
+
+        // --- Main Game Loop ---
+        function gameLoop() {
+            // Apply screen shake offset
+            let shakeX = 0, shakeY = 0;
+            if (screenShakeDuration > 0) {
+                shakeX = (Math.random() - 0.5) * screenShakeIntensity;
+                shakeY = (Math.random() - 0.5) * screenShakeIntensity;
+                screenShakeDuration--;
+            }
+            gameCtx.translate(shakeX, shakeY); // Apply shake transform
+
+            // Clear canvas at the beginning of each frame
+            gameCtx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+
+            // Always draw stars in the background
+            drawStars();
+            updateCosmicDust(); // Update and draw cosmic dust
+            drawCosmicDust();
+
+            // Update game logic and draw game elements based on current state
+            switch (gameState) {
+                case "menu":
+                    // Main menu is active, no game logic update on canvas beyond stars
+                    break;
+                case "intro":
+                case "encounter_dialogue":
+                case "player_turn_options":
+                case "act_menu":
+                case "item_menu":
+                case "check_menu":
+                    // In dialogue/menu states, draw enemy and player (stationary)
+                    drawEnemy();
+                    updateParticles();
+                    drawParticles();
+                    drawHeart(player.x, player.y, player.size, player.color);
+                    drawHUD(); // Ensure HUD is drawn in these states
+                    break;
+                case "enemy_attack_phase":
+                    // Enemy movement (if applicable)
+                    if (currentEnemy && currentEnemy.canMove) {
+                        currentEnemy.x += Math.sin(currentEnemyAttackTimer * 0.05) * 0.5 * currentScale; // Scale movement
+                        currentEnemy.y += Math.cos(currentEnemyAttackTimer * 0.03) * 0.3 * currentScale; // Scale movement
+                        // Clamp enemy position to prevent going off screen
+                        currentEnemy.x = Math.max(100 * currentScale, Math.min(gameCanvas.width - (100 * currentScale), currentEnemy.x));
+                        currentEnemy.y = Math.max(50 * currentScale, Math.min(DODGE_BOX_Y_SCALED - (150 * currentScale), currentEnemy.y));
+                    }
+
+                    drawHeart(player.x, player.y, player.size, player.color);
+                    updateParticles();
+                    drawParticles();
+                    drawEnemy(); // Draw enemy during attack
+                    
+                    // Display flavor text during attack
+                    gameCtx.fillStyle = "white";
+                    gameCtx.font = `${18 * currentScale}px 'Press Start 2P'`; // Scale font
+                    gameCtx.textAlign = "center";
+                    gameCtx.fillText(currentAttackFlavorText, gameCanvas.width / 2, DODGE_BOX_Y_SCALED - (15 * currentScale)); // Above dodge box
+                    gameCtx.textAlign = "left";
+
+                    // Handle enemy attacks
+                    const currentPattern = currentEnemy && currentEnemy.attackPatterns ? currentEnemy.attackPatterns[currentAttackIndex] : null;
+
+                    if (currentPattern && currentEnemyAttackTimer < currentPattern.duration) {
+                        const attackFunctionName = currentPattern.type + 'Attack';
+                        if (typeof window[attackFunctionName] === 'function') {
+                            window[attackFunctionName](currentPattern);
+                        } else {
+                            // Error logging removed as per request
+                        }
+                        
+                        updateBullets();
+                        drawBullets();
+                        checkCollisions();
+                        currentEnemyAttackTimer++;
+                    } else {
+                        currentAttackIndex++;
+                        if (currentEnemy && currentEnemy.attackPatterns && currentAttackIndex < currentEnemy.attackPatterns.length) {
+                            currentEnemyAttackTimer = 0;
+                            const nextPattern = currentEnemy.attackPatterns[currentAttackIndex];
+                            currentAttackDuration = nextPattern.duration;
+                            currentAttackFlavorText = nextPattern.flavor;
+                            player.color = nextPattern.bulletType;
+                            bullets = [];
+                        } else {
+                            setGameState("player_turn_options");
+                            showPlayerTurnOptions();
+                        }
+                    }
+                    drawHUD();
+                    break;
+                case "fight_minigame":
+                    drawEnemy();
+                    drawHUD();
+                    drawFightMinigame();
+                    updateFightMinigame();
+                    gameCtx.fillStyle = "white";
+                    gameCtx.font = `${24 * currentScale}px 'Press Start 2P'`; // Scale font
+                    gameCtx.textAlign = "left";
+                    gameCtx.fillText("FIGHTING!", 40 * currentScale, 100 * currentScale); // Scaled position
+                    break;
+                case "game_over":
+                case "win":
+                    break;
+            }
+
+            if (playerHP <= 0 && gameState !== "game_over") {
+                setGameState("game_over");
+                bullets = [];
+                particles = [];
+                setTimeout(() => {
+                    showGameOverScreen();
+                }, 200);
+                return;
+            }
+            
+            drawGlitch();
+
+            gameCtx.translate(-shakeX, -shakeY);
+            requestAnimationFrame(gameLoop);
+        }
+
+        // === Fight Mini-game Drawing and Updating ===
+        function drawFightMinigame() {
+            // Draw the main bar
+            gameCtx.fillStyle = "#333"; // Darker background for the bar
+            gameCtx.fillRect(FIGHT_BAR_X_SCALED, FIGHT_BAR_Y_SCALED, FIGHT_BAR_WIDTH_SCALED, FIGHT_BAR_HEIGHT_SCALED);
+
+            // Calculate current sweet spot and critical spot positions based on random offsets
+            const sweetSpotX = FIGHT_BAR_X_SCALED + currentSweetSpotOffset;
+            const criticalSpotX = sweetSpotX + currentCriticalSpotOffset;
+
+            // Draw the sweet spot (magenta)
+            gameCtx.fillStyle = "magenta";
+            gameCtx.fillRect(sweetSpotX, FIGHT_BAR_Y_SCALED, SWEET_SPOT_WIDTH_SCALED, FIGHT_BAR_HEIGHT_SCALED);
+            
+            // Draw the critical hit spot (lime green)
+            gameCtx.fillStyle = "lime";
+            gameCtx.fillRect(criticalSpotX, FIGHT_BAR_Y_SCALED, CRITICAL_SPOT_WIDTH_SCALED, FIGHT_BAR_HEIGHT_SCALED);
+
+            // Draw the moving player soul (heart) as the marker
+            // Adjust x and y to center the heart on hitMarkerX
+            const heartSize = player.size * 1.5; // Make the heart slightly larger to be visible
+            const heartX = hitMarkerX; 
+            const heartY = FIGHT_BAR_Y_SCALED + FIGHT_BAR_HEIGHT_SCALED / 2 - (heartSize / 2); // Center vertically
+            drawHeart(heartX, heartY, heartSize, "yellow"); // Draw heart in yellow for the marker
+
+            // Add a pulsating glow effect around the heart marker
+            gameCtx.shadowBlur = Math.sin(Date.now() * 0.01) * 5 + 5; // Pulsating blur
+            gameCtx.shadowColor = "yellow"; // Heart's color
+            // Re-draw the heart with shadow
+            drawHeart(heartX, heartY, heartSize, "yellow");
+            gameCtx.shadowBlur = 0; // Reset shadow
+        }
+
+        function updateFightMinigame() {
+            // Calculate HP ratio for dynamic scaling
+            const hpRatio = currentEnemy.hp / currentEnemy.maxHp;
+
+            // Interpolate sweet spot width based on HP ratio
+            const sweetSpotFactor = MIN_SWEET_SPOT_FACTOR + (MAX_SWEET_SPOT_FACTOR - MIN_SWEET_SPOT_FACTOR) * hpRatio;
+            SWEET_SPOT_WIDTH_SCALED = ORIGINAL_SWEET_SPOT_WIDTH * currentScale * sweetSpotFactor;
+
+            // Interpolate critical spot width based on HP ratio
+            const criticalSpotFactor = MIN_CRITICAL_SPOT_FACTOR + (MAX_CRITICAL_SPOT_FACTOR - MIN_CRITICAL_SPOT_FACTOR) * hpRatio;
+            CRITICAL_SPOT_WIDTH_SCALED = ORIGINAL_CRITICAL_SPOT_WIDTH * currentScale * criticalSpotFactor;
+
+            // Interpolate marker speed based on HP ratio (faster when HP is low)
+            const speedFactor = MIN_HIT_MARKER_SPEED_FACTOR + (MAX_HIT_MARKER_SPEED_FACTOR - MIN_HIT_MARKER_SPEED_FACTOR) * (1 - hpRatio);
+            hitMarkerX += (HIT_MARKER_SPEED * currentScale * speedFactor) * hitMarkerDirection;
+
+            // Reverse direction if hitting boundaries
+            // The heart marker has a width (player.size * 1.5), so adjust boundary check
+            const heartMarkerWidth = player.size * 1.5;
+            if (hitMarkerX + heartMarkerWidth >= FIGHT_BAR_X_SCALED + FIGHT_BAR_WIDTH_SCALED || hitMarkerX <= FIGHT_BAR_X_SCALED) {
+                hitMarkerDirection *= -1;
+            }
+        }
+
+
+        // === Background Animation: Starfield ===
+        let stars = [];
+        function initStars() {
+            stars = Array.from({ length: 150 }, () => ({
+                x: Math.random() * ORIGINAL_CANVAS_WIDTH, // Store original positions
+                y: Math.random() * ORIGINAL_CANVAS_HEIGHT,
+                size: Math.random() * 2 + 1,
+                speed: Math.random() * 0.5 + 0.3
+            }));
+            initCosmicDust();
+        }
+
+        function drawStars() {
+            gameCtx.fillStyle = "#000";
+            gameCtx.fillRect(0, 0, gameCanvas.width, gameCanvas.height); // Use scaled canvas dimensions
+
+            stars.forEach(star => {
+                gameCtx.fillStyle = "white";
+                gameCtx.beginPath();
+                gameCtx.arc(star.x * currentScale, star.y * currentScale, star.size * currentScale, 0, Math.PI * 2); // Scale position and size
+                gameCtx.fill();
+                star.y += star.speed;
+                if (star.y * currentScale > gameCanvas.height) { // Check against scaled height
+                    star.y = 0;
+                    star.x = Math.random() * ORIGINAL_CANVAS_WIDTH; // Reset to original width for new star
+                }
+            });
+        }
+
+        // === Cosmic Dust Background Effect ===
+        function initCosmicDust() {
+            cosmicDustParticles = Array.from({ length: 80 }, () => ({
+                x: Math.random() * ORIGINAL_CANVAS_WIDTH,
+                y: Math.random() * ORIGINAL_CANVAS_HEIGHT,
+                size: Math.random() * 1.5 + 0.5,
+                opacity: Math.random() * 0.6 + 0.2,
+                speed: Math.random() * 0.3 + 0.15
+            }));
+        }
+
+        function updateCosmicDust() {
+            cosmicDustParticles.forEach(p => {
+                p.y += p.speed;
+                if (p.y * currentScale > gameCanvas.height) { // Check against scaled height
+                    p.y = 0;
+                    p.x = Math.random() * ORIGINAL_CANVAS_WIDTH; // Reset to original width
+                }
+            });
+        }
+
+        function drawCosmicDust() {
+            cosmicDustParticles.forEach(p => {
+                gameCtx.fillStyle = `rgba(255, 255, 255, ${p.opacity * (gameState === 'enemy_attack_phase' ? 1.5 : 1)})`;
+                gameCtx.beginPath();
+                gameCtx.arc(p.x * currentScale, p.y * currentScale, p.size * currentScale, 0, Math.PI * 2); // Scale position and size
+                gameCtx.fill();
+            });
+        }
+
+        // --- Tone.js Audio Setup ---
+        let audioContextReady = false;
+
+        // Player hit sound
+        const playerHitSound = new Tone.MembraneSynth({
+            pitchDecay: 0.05,
+            octaves: 8,
+            envelope: {
+                attack: 0.001,
+                decay: 0.4,
+                sustain: 0.01,
+                release: 0.6,
+                attackCurve: "exponential"
+            },
+            oscillator: {
+                type: "sine"
+            },
+            noise: {
+                type: "pink"
+            },
+            volume: -10 // Adjust volume
+        }).toDestination();
+
+        // Button click sound
+        const buttonClickSound = new Tone.Synth({
+            oscillator: {
+                type: "triangle"
+            },
+            envelope: {
+                attack: 0.005,
+                decay: 0.1,
+                sustain: 0.01,
+                release: 0.1
+            },
+            volume: -15
+        }).toDestination();
+
+        // Attack hit sound (fight minigame)
+        const attackHitSound = new Tone.Synth({
+            oscillator: {
+                type: "sine"
+            },
+            envelope: {
+                attack: 0.001,
+                decay: 0.2,
+                sustain: 0.01,
+                release: 0.3
+            },
+            volume: -12
+        }).toDestination();
+
+        // Enemy defeat sound
+        const enemyDefeatSound = new Tone.Synth({
+            oscillator: {
+                type: "square"
+            },
+            envelope: {
+                attack: 0.01,
+                decay: 0.5,
+                sustain: 0.1,
+                release: 1
+            },
+            volume: -8
+        }).toDestination();
+
+        // Mercy/Spare sound
+        const mercySound = new Tone.Synth({
+            oscillator: {
+                type: "triangle"
+            },
+            envelope: {
+                attack: 0.01,
+                decay: 0.3,
+                sustain: 0.05,
+                release: 0.5
+            },
+            volume: -10
+        }).toDestination();
+
+        // Simple background ambience (looping)
+        const backgroundAmbience = new Tone.Loop(time => {
+            // A very low, sustained note for subtle ambiance
+            ambientSynth.triggerAttackRelease("C1", "2n", time);
+        }, "2n").start(0); // Loop every 2 seconds, start immediately
+
+        const ambientSynth = new Tone.Synth({
+            oscillator: {
+                type: "sine"
+            },
+            envelope: {
+                attack: 2,
+                decay: 0.1,
+                sustain: 1,
+                release: 2
+            },
+            volume: -30 // Very low volume
+        }).toDestination();
+
+
+        // --- Canvas Resizing Logic ---
+        function resizeCanvas() {
+            const availableWidth = window.innerWidth;
+            const availableHeight = window.innerHeight;
+
+            // Calculate scale based on the smaller dimension to fit within the screen
+            currentScale = Math.min(availableWidth / ORIGINAL_CANVAS_WIDTH, availableHeight / ORIGINAL_CANVAS_HEIGHT);
+
+            // Apply scale to canvas dimensions
+            gameCanvas.width = ORIGINAL_CANVAS_WIDTH * currentScale;
+            gameCanvas.height = ORIGINAL_CANVAS_HEIGHT * currentScale;
+
+            // Recalculate scaled dodge box dimensions and positions
+            DODGE_BOX_WIDTH_SCALED = ORIGINAL_DODGE_BOX_WIDTH * currentScale;
+            DODGE_BOX_HEIGHT_SCALED = ORIGINAL_DODGE_BOX_HEIGHT * currentScale;
+            DODGE_BOX_X_SCALED = (gameCanvas.width - DODGE_BOX_WIDTH_SCALED) / 2;
+            DODGE_BOX_Y_SCALED = gameCanvas.height - DODGE_BOX_HEIGHT_SCALED - (ORIGINAL_DODGE_BOX_OFFSET_Y * currentScale);
+
+            // Recalculate scaled fight bar dimensions and positions
+            FIGHT_BAR_WIDTH_SCALED = ORIGINAL_FIGHT_BAR_WIDTH * currentScale;
+            FIGHT_BAR_HEIGHT_SCALED = ORIGINAL_FIGHT_BAR_HEIGHT * currentScale;
+            FIGHT_BAR_X_SCALED = DODGE_BOX_X_SCALED + (DODGE_BOX_WIDTH_SCALED - FIGHT_BAR_WIDTH_SCALED) / 2; // Centered horizontally in dodge box
+            FIGHT_BAR_Y_SCALED = DODGE_BOX_Y_SCALED + (DODGE_BOX_HEIGHT_SCALED - FIGHT_BAR_HEIGHT_SCALED) / 2; // Centered vertically in dodge box
+
+            // Sweet and Critical spot widths will be dynamically calculated in updateFightMinigame
+            // Initialize them here to their max values (for when enemy is full HP)
+            SWEET_SPOT_WIDTH_SCALED = ORIGINAL_SWEET_SPOT_WIDTH * currentScale * MAX_SWEET_SPOT_FACTOR;
+            CRITICAL_SPOT_WIDTH_SCALED = ORIGINAL_CRITICAL_SPOT_WIDTH * currentScale * MAX_CRITICAL_SPOT_FACTOR;
+
+            // Adjust player size and position to center of the *scaled* dodge box
+            player.size = player.originalSize * currentScale;
+            player.x = DODGE_BOX_X_SCALED + DODGE_BOX_WIDTH_SCALED / 2 - player.size / 2;
+            player.y = DODGE_BOX_Y_SCALED + DODGE_BOX_HEIGHT_SCALED / 2 - player.size / 2;
+
+            // Adjust enemy positions (if needed, or they can dynamically adjust in drawEnemy)
+            enemies.forEach(enemy => {
+                enemy.x = enemy.originalX * currentScale;
+                enemy.y = enemy.originalY * currentScale;
+            });
+
+            // Adjust hit marker position for fight minigame
+            hitMarkerX = FIGHT_BAR_X_SCALED + FIGHT_BAR_WIDTH_SCALED / 2;
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+
+
+        // --- Event Listeners for Game Menu ---
+        menuPlayButton.addEventListener('click', () => {
+            buttonClickSound.triggerAttackRelease("C5", "16n"); // Play sound on menu button click
+            startGame();
+        });
+        menuOptionsButton.addEventListener('click', () => {
+            buttonClickSound.triggerAttackRelease("C5", "16n");
+            showCustomMessage("OPTIONS ARE NOT YET IMPLEMENTED, BUT YOU'RE ALREADY OPTIMIZED FOR FUN!");
+        });
+        menuCreditsButton.addEventListener('click', () => {
+            buttonClickSound.triggerAttackRelease("C5", "16n");
+            showCustomMessage("CREDITS:\nGAME BY DOOFY FOR QUACKERS!\nINSPIRED BY UNDERTALE BY TOBY FOX.\nTHANK YOU FOR PLAYING!");
+        });
+        menuExitButton.addEventListener('click', () => {
+            buttonClickSound.triggerAttackRelease("C5", "16n");
+            exitGame();
+        });
+
+        // --- Initial Setup on Page Load ---
+        window.onload = function() {
+            resizeCanvas(); // Initial sizing of the canvas and game elements
+            initStars(); // Initialize stars for the menu background
+            showMainMenu(); // Show the game's main menu
+            gameLoop(); // Start the game loop
+        };
+
+    </script>
+</body>
+</html>
