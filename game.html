@@ -524,7 +524,7 @@
                 defeatedDialogue: "The Floofy Pup whimpers softly and curls up, defeated. It looks a little sad, but also relieved. 'Woof... good game.'", 
                 attackPatterns: [
                     // Phase 1: Playful Barks (Red - Standard Dodge)
-                    { type: "randomBullets", bulletType: "red", bulletSprite: "🦴", bulletSpeed: 4, spawnFrequency: 5, duration: 120, flavor: "The pup sends a flurry of happy woofs!" },
+                    { type: "randomBullets", bulletType: "red", bulletSprite: "�", bulletSpeed: 4, spawnFrequency: 5, duration: 120, flavor: "The pup sends a flurry of happy woofs!" },
                     { type: "expandingCircle", bulletType: "red", bulletSprite: "🐾", bulletSpeed: 3, spawnFrequency: 30, duration: 150, flavor: "It barks, sending out a shockwave!" },
                     { type: "targetedBullets", bulletType: "red", bulletSprite: "🍖", bulletSpeed: 5, spawnFrequency: 10, duration: 100, flavor: "A focused bark comes your way!" },
                     
@@ -1288,12 +1288,6 @@
             setGameState("menu");
             gameMainMenu.style.display = 'flex'; // Ensure menu is visible
             gameDialogueBox.style.display = 'none';
-            // Play menu music only if audio context is ready
-            if (audioContextReady) {
-                playMusic(randomFrom(musicTracks.menu));
-            } else {
-                console.log("AudioContext not ready, menu music will not play yet.");
-            }
         }
 
         /**
@@ -1322,12 +1316,6 @@
             player.x = DODGE_BOX_X_SCALED + DODGE_BOX_WIDTH_SCALED / 2 - player.size / 2;
             player.y = DODGE_BOX_Y_SCALED + DODGE_BOX_HEIGHT_SCALED / 2 - player.size / 2;
             
-            // Attempt to play battle music
-            if (audioContextReady) {
-                playMusic(randomFrom(musicTracks.battle)); // Start battle music for gameplay
-            } else {
-                console.warn("AudioContext not ready, battle music will not play.");
-            }
             startIntroSequence();
         }
 
@@ -1541,13 +1529,7 @@
 
             // Dialogue before attack phase
             setGameState("encounter_dialogue");
-            // Play battle music when a new encounter starts
-            if (audioContextReady) {
-                playMusic(randomFrom(musicTracks.battle)); 
-            } else {
-                console.warn("AudioContext not ready, battle music will not play.");
-            }
-
+            
             // Show bullet color hint for the very first encounter
             if (firstEncounter) {
                 showDialogue("PAY ATTENTION TO BULLET COLORS:\n\n❤️ RED: Dodge by moving!\n💙 BLUE: Dodge by staying still!\n🧡 ORANGE: Dodge by moving! (These pass through you if you're moving!)", [
@@ -1790,9 +1772,6 @@
                 { label: "PLAY AGAIN?", action: () => location.reload() },
                 { label: "EXIT TO WEBSITE", action: () => exitGame() }
             ]);
-            if (audioContextReady) {
-                playMusic(randomFrom(musicTracks.menu)); // Play menu music on win screen
-            }
         }
 
         /**
@@ -1806,9 +1785,6 @@
                 { label: "RETRY", action: () => location.reload() },
                 { label: "EXIT TO WEBSITE", action: () => exitGame() }
             ]);
-            if (audioContextReady) {
-                playMusic(randomFrom(musicTracks.menu)); // Play menu music on game over screen
-            }
         }
 
         /**
@@ -2095,17 +2071,7 @@
             });
         }
 
-        // --- Tone.js Audio Setup ---
-        let audioContextReady = false;
-
-        // Define music tracks
-        const musicTracks = {
-            menu: ["UM2.mp3"],
-            battle: ["UM3.mp3", "UM4.mp3", "UM5.mp3"]
-        };
-        let loadedPlayers = {}; // To store Tone.Player instances
-        let currentPlayingMusic = null; // Reference to the currently playing Tone.Player
-
+        // --- Tone.js Audio Setup (only for sound effects) ---
         // Player hit sound
         const playerHitSound = new Tone.MembraneSynth({
             pitchDecay: 0.05,
@@ -2182,66 +2148,6 @@
             volume: -10
         }).toDestination();
 
-        /**
-         * Loads all music tracks defined in `musicTracks`.
-         * @returns {Promise<void>} A promise that resolves when all tracks are loaded.
-         */
-        function loadAllMusic() {
-            console.log("Attempting to load all music tracks...");
-            const allTrackUrls = [...musicTracks.menu, ...musicTracks.battle];
-            const loadPromises = allTrackUrls.map(url => {
-                return new Promise((resolve, reject) => {
-                    // Check if player already exists to avoid re-creating
-                    if (loadedPlayers[url]) {
-                        console.log(`Track already loaded: ${url}`);
-                        resolve();
-                        return;
-                    }
-                    const player = new Tone.Player(url).toDestination();
-                    player.loop = true; // Set looping for all music tracks
-                    player.volume.value = -20; // Start with low volume, will fade in
-                    loadedPlayers[url] = player;
-                    player.load(url).then(() => {
-                        console.log(`Successfully loaded: ${url}`);
-                        resolve();
-                    }).catch(e => {
-                        console.error(`Failed to load music track: ${url}`, e);
-                        // Do not reject the overall Promise.all if one track fails to load.
-                        // Instead, resolve it so the game can still start, but log the error.
-                        resolve(); // Resolve even on error to allow Promise.all to complete
-                    });
-                });
-            });
-
-            return Promise.all(loadPromises);
-        }
-
-        /**
-         * Plays a specific music track, fading out the current one if any.
-         * @param {string} trackUrl - The URL of the track to play.
-         */
-        function playMusic(trackUrl) {
-            console.log(`Attempting to play music: ${trackUrl}`);
-            
-            // Fade out current music if it's playing and a valid Tone.Player
-            if (currentPlayingMusic instanceof Tone.Player && currentPlayingMusic.state === "started") {
-                console.log(`Fading out current music: ${currentPlayingMusic.url}`);
-                currentPlayingMusic.fadeOut(0.5); 
-                currentPlayingMusic.stop("+0.5"); 
-            }
-
-            const playerToPlay = loadedPlayers[trackUrl];
-            if (playerToPlay && playerToPlay.loaded) { // Check if player exists AND its buffer is loaded
-                currentPlayingMusic = playerToPlay;
-                currentPlayingMusic.volume.value = -Infinity; // Start from silence
-                currentPlayingMusic.start();
-                currentPlayingMusic.fadeIn(1); 
-                console.log(`Started playing: ${trackUrl}`);
-            } else {
-                console.warn("Music track not ready or not found:", trackUrl, "Player loaded status:", playerToPlay ? playerToPlay.loaded : 'N/A');
-            }
-        }
-
 
         // --- Canvas Resizing Logic ---
         function resizeCanvas() {
@@ -2294,23 +2200,15 @@
         menuPlayButton.addEventListener('click', () => {
             console.log("Play button clicked.");
             buttonClickSound.triggerAttackRelease("C5", "16n"); // Play sound on menu button click
-
-            // First, attempt to start the AudioContext on user gesture
-            if (!audioContextReady) {
-                Tone.start().then(() => {
-                    audioContextReady = true;
-                    console.log("AudioContext started successfully.");
-                    startGameLogic(); // Proceed with game start logic
-                }).catch(e => {
-                    console.error("Failed to start AudioContext on Play button click:", e);
-                    // Even if audio fails, try to start the game
-                    startGameLogic(); 
-                });
-            } else {
-                // AudioContext already started, proceed directly
-                console.log("AudioContext already ready.");
+            // Start Tone.js AudioContext on user gesture
+            Tone.start().then(() => {
+                console.log("Tone.js AudioContext started successfully.");
+                startGameLogic(); // Proceed with game start logic
+            }).catch(e => {
+                console.error("Failed to start Tone.js AudioContext:", e);
+                // Even if audio fails, try to start the game
                 startGameLogic(); 
-            }
+            });
         });
         menuOptionsButton.addEventListener('click', () => {
             buttonClickSound.triggerAttackRelease("C5", "16n");
@@ -2331,18 +2229,8 @@
             resizeCanvas(); // Initial sizing of the canvas and game elements
             initStars(); // Initialize stars for the menu background
             
-            // Load all music tracks
-            loadAllMusic().then(() => {
-                console.log("All music tracks load process completed (some might have failed).");
-                showMainMenu(); // Show the main menu first
-                gameLoop(); // Start the game loop for rendering
-            }).catch(e => {
-                // This catch block would only be hit if Promise.all itself failed,
-                // but we are resolving individual promises even on error, so it's less likely.
-                console.error("Unexpected error during music loading process:", e);
-                showMainMenu();
-                gameLoop();
-            });
+            showMainMenu(); // Show the main menu first
+            gameLoop(); // Start the game loop for rendering
         };
 
     </script>
