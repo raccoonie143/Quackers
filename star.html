@@ -9,7 +9,7 @@
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts import for 'Press Start 2P' (pixel art) -->
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start 2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
         /* Global Styles for Pixel Art Theme */
         body {
@@ -23,6 +23,7 @@
             image-rendering: pixelated;
             -ms-interpolation-mode: nearest-neighbor;
             line-height: 1.5; /* Improved readability for pixel font */
+            overflow-x: hidden; /* Prevent horizontal scroll on some effects */
         }
 
         /* Basic text shadow for readability on pixel fonts */
@@ -96,6 +97,12 @@
             padding: 1.5rem;
             border-radius: 0;
             box-shadow: 4px 4px 0px rgba(255,255,255,0.2);
+            animation: fadeIn 0.5s ease-out; /* Fade in effect */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         /* Button styling for a retro, clickable feel */
@@ -156,12 +163,16 @@
         }
         .card-base:hover {
             transform: translate(-2px, -2px); /* Lift effect */
-            box-shadow: 8px 8px 0px #ffffff; /* Brighter shadow on hover */
+            box-shadow: 8px 8px 0px #ff0000; /* Brighter red shadow on hover */
+        }
+
+        /* Character image container sizing for bigger pictures */
+        .character-card .card-image-container {
+            height: 288px; /* Bigger image height (h-72 equivalent) */
         }
 
         .card-image-container {
             width: 100%;
-            height: 200px; /* Fixed height for image area */
             overflow: hidden;
             border-bottom: 2px solid #ffffff; /* Pixelated border */
             background-color: #1a1a1a; /* Darker background for image area */
@@ -301,6 +312,238 @@
             .text-7xl { font-size: 7rem; }
             .text-8xl { font-size: 8rem; }
         }
+
+        /* Background pixelated pattern */
+        .pixel-bg {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"8\" height=\"8\"><rect width=\"4\" height=\"4\" fill=\"white\" opacity=\"0.05\"/><rect x=\"4\" y=\"4\" width=\"4\" height=\"4\" fill=\"white\" opacity=\"0.05\"/></svg>');
+            background-size: 8px 8px;
+            image-rendering: pixelated;
+            animation: move-pixel-bg 60s linear infinite; /* Slow, continuous movement */
+        }
+
+        @keyframes move-pixel-bg {
+            from { background-position: 0 0; }
+            to { background-position: 800px 800px; } /* Move a large distance */
+        }
+
+        /* Styles for expandable character cards */
+        .character-card {
+            cursor: pointer; /* Indicate clickability */
+        }
+
+        .character-bio-container {
+            max-height: 120px; /* Initial height for summary */
+            overflow: hidden;
+            transition: max-height 0.3s ease-out; /* Smooth expansion */
+        }
+
+        .character-bio-container.expanded {
+            max-height: 500px; /* Sufficiently large to show all content */
+            /* Using a large fixed height for max-height transition is generally better than 'none' for smooth animation */
+        }
+
+        .toggle-icon {
+            transition: transform 0.3s ease-out;
+        }
+
+        .character-bio-container.expanded .toggle-icon {
+            transform: rotate(180deg); /* Rotate arrow when expanded */
+        }
+
+        /* Soundtrack Player specific styles (Modern, Elegant, Classy) */
+        .modern-player-container {
+            background-color: #0d0d0d; /* Very dark, almost black for elegance */
+            border: 2px solid #a0a0a0; /* Softer white/gray border */
+            box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.6); /* More subtle shadow */
+            border-radius: 0; /* Still pixelated sharp corners */
+            padding: 2.5rem; /* More padding for a premium feel */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: box-shadow 0.2s ease-in-out; /* Subtle hover transition */
+        }
+        .modern-player-container:hover {
+            box-shadow: 6px 6px 0px #ff0000; /* Pop with red on hover */
+        }
+
+        .player-image-wrapper {
+            position: relative;
+            width: 200px; /* Even larger image for elegance */
+            height: 200px;
+            margin-bottom: 2rem;
+            border: 2px solid #ffffff;
+            box-shadow: 4px 4px 0px #444444; /* Muted shadow for image */
+            overflow: hidden;
+            background-color: #000000;
+        }
+
+        .player-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            image-rendering: pixelated;
+        }
+
+        .track-info {
+            margin-bottom: 2rem;
+        }
+
+        .track-title {
+            font-size: 1.8rem; /* Larger, more prominent title */
+            margin-bottom: 0.75rem;
+            color: #ffffff;
+            text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.8);
+        }
+
+        .track-artist {
+            font-size: 1.1rem; /* Slightly larger artist name */
+            color: #888888; /* Softer gray for artist */
+            text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.8);
+        }
+
+        .progress-bar-wrapper {
+            width: 100%;
+            height: 10px; /* Thicker, more substantial progress bar */
+            background-color: #333333; /* Darker, more elegant background for progress bar */
+            border-radius: 0;
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+            border: 1px solid #555555; /* Subtle border */
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background-color: #ff0000;
+            border-radius: 0;
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        .time-display {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            font-size: 0.9rem; /* Slightly larger time display */
+            color: #888888;
+            margin-bottom: 2.5rem;
+        }
+
+        .player-controls {
+            display: flex;
+            align-items: center;
+            gap: 2.5rem; /* More space between controls for elegance */
+            margin-bottom: 2rem;
+        }
+
+        .control-button {
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 2.8rem; /* Large icons */
+            cursor: pointer;
+            transition: color 0.1s linear, transform 0.05s linear;
+            text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.8);
+        }
+        .control-button:hover {
+            color: #ff0000; /* Red on hover */
+            transform: scale(1.08); /* Slightly more pronounced hover */
+        }
+        .control-button:active {
+            transform: scale(0.92);
+        }
+
+        .play-pause-button {
+            font-size: 4.5rem; /* Even larger play/pause */
+        }
+
+        .volume-control-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem; /* More space for volume control */
+            width: 90%; /* Wider volume slider */
+            max-width: 350px;
+        }
+
+        .volume-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 10px; /* Thicker slider */
+            background: #444444;
+            outline: none;
+            opacity: 0.9;
+            transition: opacity .2s;
+            border-radius: 0;
+            cursor: pointer;
+            border: 1px solid #666666; /* Softer pixelated border */
+            box-shadow: 1px 1px 0px rgba(0,0,0,0.5); /* More subtle shadow */
+        }
+
+        .volume-slider:hover {
+            opacity: 1;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px; /* Larger thumb */
+            height: 24px;
+            background: #ff0000; /* Red thumb */
+            cursor: pointer;
+            border-radius: 0;
+            border: 2px solid #ffffff; /* White border for thumb */
+            box-shadow: 2px 2px 0px rgba(0,0,0,0.8);
+        }
+
+        .volume-slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            background: #ff0000;
+            cursor: pointer;
+            border-radius: 0;
+            border: 2px solid #ffffff;
+            box-shadow: 2px 2px 0px rgba(0,0,0,0.8);
+        }
+
+        /* Simple visualizer */
+        .visualizer {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            width: 100%;
+            height: 60px; /* Taller visualizer */
+            gap: 6px; /* More space between bars */
+            margin-top: 2rem;
+            border-top: 2px solid #a0a0a0; /* Softer border */
+            padding-top: 10px;
+        }
+
+        .visualizer-bar {
+            width: 10px; /* Wider bars */
+            background-color: #ff0000;
+            animation: visualize 0.8s ease-in-out infinite alternate;
+            border-radius: 0;
+            box-shadow: 1px 1px 0px rgba(0,0,0,0.5);
+        }
+
+        .visualizer-bar:nth-child(1) { height: 30%; animation-delay: 0s; }
+        .visualizer-bar:nth-child(2) { height: 60%; animation-delay: 0.1s; }
+        .visualizer-bar:nth-child(3) { height: 40%; animation-delay: 0.2s; }
+        .visualizer-bar:nth-child(4) { height: 70%; animation-delay: 0.3s; }
+        .visualizer-bar:nth-child(5) { height: 50%; animation-delay: 0.4s; }
+        .visualizer-bar:nth-child(6) { height: 20%; animation-delay: 0.5s; }
+        .visualizer-bar:nth-child(7) { height: 80%; animation-delay: 0.6s; }
+        .visualizer-bar:nth-child(8) { height: 45%; animation-delay: 0.7s; }
+
+        @keyframes visualize {
+            0% { transform: scaleY(0.5); opacity: 0.7; }
+            100% { transform: scaleY(1); opacity: 1; }
+        }
+        .visualizer.paused .visualizer-bar {
+            animation-play-state: paused;
+            height: 20%; /* Keep bars low when paused */
+            opacity: 0.5;
+        }
     </style>
 </head>
 <body class="bg-black text-white min-h-screen">
@@ -331,18 +574,18 @@
     </nav>
 
     <!-- Main Content Wrapper -->
-    <div id="main-content">
+    <div id="main-content" class="pixel-bg">
         <!-- Hero Section -->
-        <section class="relative h-screen flex items-center justify-center bg-black overflow-hidden">
+        <section class="relative h-screen flex items-center justify-center bg-black overflow-hidden px-4">
             <!-- Background decorative elements (simple pixel noise or subtle pattern) -->
             <div class="absolute inset-0 opacity-10" style="background-image: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"4\" height=\"4\"><rect width=\"2\" height=\"2\" fill=\"white\" opacity=\"0.1\"/><rect x=\"2\" y=\"2\" width=\"2\" height=\"2\" fill=\"white\" opacity=\"0.1\"/></svg>'); background-size: 4px 4px; image-rendering: pixelated;"></div>
             <!-- Hero content -->
-            <div class="text-center z-10 px-4 py-8">
+            <div class="text-center z-10 py-8 w-full max-w-4xl mx-auto">
                 <h1 class="text-5xl md:text-7xl lg:text-8xl mb-6 typing-effect-pixel text-shadow-pixel">
                     <span class="text-white">DOOFY</span><span class="text-gray-400">TALE</span>
                 </h1>
-                <p class="mb-4 text-lg md:text-xl max-w-2xl mx-auto text-gray-200 text-shadow-pixel">THE GAME WHERE MERCY, MISCHIEF, AND FALLING IN LOVE WITH CHAOS... IS KINDA THE POINT.</p>
-                <p class="text-base md:text-lg text-gray-500 mb-10 text-shadow-pixel">A SPECIAL ADVENTURE FOR QUACKERS! HAPPY BIRTHDAY!</p>
+                <p class="mb-4 text-lg md:text-xl max-w-2xl mx-auto text-gray-200 text-shadow-pixel">WELCOME TO DOOFYTALE: WHERE YOUR HEART IS HUGE, THE PUZZLES ARE... PUZZLING, AND EVERYONE'S A LITTLE BIT CHAOTIC. (ESPECIALLY DOOFY.)</p>
+                <p class="text-base md:text-lg text-gray-500 mb-10 text-shadow-pixel">A BIRTHDAY ADVENTURE FOR THE LEGENDARY QUACKERS! PREPARE FOR FEELS, FUN, AND MAYBE A FEW ACCIDENTAL FIGHTS.</p>
                 <div class="flex flex-col md:flex-row justify-center gap-6">
                     <!-- Changed from button to anchor tag linking to game.html -->
                     <a href="game.html" class="game-button px-10 py-5 text-lg text-shadow-pixel">
@@ -365,18 +608,15 @@
                 <h2 class="text-4xl md:text-5xl mb-16 text-center text-white text-shadow-pixel">ABOUT THE GAME</h2>
                 <div class="grid md:grid-cols-2 gap-16 items-center">
                     <!-- Game description -->
-                    <div class="game-box">
-                        <p class="mb-6 text-lg leading-relaxed text-gray-300 text-shadow-pixel">THIS ISN’T JUST UNDERTALE. IT’S DOOFY’S VERY QUESTIONABLE BIRTHDAY GIFT.</p>
-                        <p class="mb-6 text-lg leading-relaxed text-gray-300 text-shadow-pixel">UNDERTALE IS AN RPG FULL OF MONSTERS, SPAGHETTI, AND DRAMATIC LIFE CHOICES — WHICH HONESTLY FELT KIND OF FAMILIAR. SO, DOOFY MADE THIS TRIBUTE FOR QUACKERS, BECAUSE WHY NOT CELEBRATE HER BIRTHDAY WITH A MAGICAL UNDERGROUND FULL OF CHAOS, GOATS, AND EMOTIONAL SKELETONS?</p>
-                        <p class="mb-6 text-lg leading-relaxed text-gray-300 text-shadow-pixel">IN THIS VERSION, QUACKERS IS CLEARLY THE ONE WHO’D SPARE EVERYONE. DOOFY? ACCIDENTALLY PRESSES FIGHT WHILE TRYING TO HUG SOMEONE. CLASSIC.</p>
-                        <p class="mb-6 text-lg leading-relaxed text-gray-300 text-shadow-pixel">TOGETHER, THEY WOULD ABSOLUTELY SURVIVE A BULLET-HELL BOSS FIGHT, ARGUE OVER WHO GETS TO TALK TO PAPYRUS, AND LAUGH THROUGH EVERY RANDOM DOG THAT EXPlODES FOR NO REASON.</p>
-                        <p class="text-lg leading-relaxed text-gray-300 text-shadow-pixel">THIS PAGE? IT’S NOT FANCY. BUT IT’S FILLED WITH SAVE POINTS, BAD DECISIONS, GOOD VIBES, AND ONE QUACKERS-APPROVED LEVEL OF WHOLESOME CHAOS.</p>
-                        <p class="text-xl leading-relaxed mt-10 text-center text-gray-500 text-shadow-pixel">WELCOME TO DOOFYTALE. PLEASE PROCEED WITH CAUTION 🧡</p>
+                    <div class="game-box dialogue-box">
+                        <p class="mb-6 text-lg leading-relaxed text-gray-300 text-shadow-pixel">SO, WHAT'S DOOFYTALE? IT'S DOOFY'S LOVE LETTER TO QUACKERS, WRITTEN IN PIXELS AND PURE, UNADULTERATED CHAOS. THINK UNDERTALE, BUT WITH MORE INSIDE JOKES AND A SLIGHTLY HIGHER CHANCE OF ACCIDENTALLY HUGGING A MONSTER.</p>
+                        <p class="mb-6 text-lg leading-relaxed text-gray-300 text-shadow-pixel">WE'VE GOT FRIENDSHIP, FROLIC, AND THE OCCASIONAL EXISTENTIAL CRISIS (USUALLY OVER SPAGHETTI). QUACKERS, BEING THE SMART ONE, WILL NAVIGATE THE UNDERGROUND WITH GRACE AND STRATEGY. DOOFY? HE'LL BE THERE, PROBABLY TRIPPING OVER A ROCK OR TRYING TO PET A GLITCH.</p>
+                        <p class="text-lg leading-relaxed text-gray-300 text-shadow-pixel">IT'S A JOURNEY OF MERCY, MISCHIEF, AND PROOF THAT EVEN THE CLUMSIEST SOUL CAN FIND THEIR WAY HOME. THIS PAGE IS A SAVE POINT FOR ALL THE GOOD TIMES. GRAB A BUTTERSCOTCH PIE AND GET READY. NYEH HEH HEH! 🧡</p>
                     </div>
                     <!-- Poster Placeholder -->
                     <div class="relative flex justify-center items-center h-full min-h-[400px] p-4"> 
                         <div class="game-box w-full h-full flex items-center justify-center text-gray-400 text-center text-xl text-shadow-pixel">
-                            <img src="UT1.png" alt="About Game Poster" class="card-image-placeholder">
+                            <img src="UT1.png" alt="About Game Poster" class="card-image-placeholder" onerror="this.onerror=null;this.src='https://placehold.co/400x400/000/FFF?text=DOOFYTALE+POSTER';">
                         </div>
                         <!-- Animated soul outside the box -->
                         <div class="absolute -bottom-8 -right-8 w-28 h-28 soul-animation hidden md:block">
@@ -390,76 +630,88 @@
         <!-- Characters Section -->
         <section id="characters" class="py-24 px-6 bg-black border-t-4 border-white">
             <div class="max-w-6xl mx-auto">
-                <h2 class="text-4xl md:text-5xl mb-16 text-center text-white text-shadow-pixel">MEET THE CHARACTERS</h2>
-                <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <h2 class="text-4xl md:text-5xl mb-8 text-center text-white text-shadow-pixel">MEET THE CHARACTERS</h2>
+                <!-- Hint for expandable cards -->
+                <p class="text-center text-lg text-gray-500 mb-16 text-shadow-pixel">
+                    CLICK ON A CHARACTER CARD FOR MORE DETAILS! <i class="fas fa-hand-pointer animate-pulse text-red-500"></i>
+                </p>
+                <div class="grid sm:grid-cols-1 md:grid-cols-2 gap-8">
                     <!-- Character Card: Sans -->
-                    <div class="card-base">
-                        <div class="h-48 char-sans flex items-center justify-center border-b-2 border-white">
-                            <img src="UT2.png" alt="Sans Character Image" class="card-image-placeholder">
+                    <div class="card-base character-card">
+                        <div class="card-image-container char-sans flex items-center justify-center border-b-2 border-white">
+                            <img src="UT2.png" alt="Sans Character Image" class="card-image-placeholder" onerror="this.onerror=null;this.src='https://placehold.co/288x288/111/FFF?text=SANS';">
                         </div>
                         <div class="p-6">
                             <h3 class="text-2xl mb-3 text-white text-shadow-pixel">SANS</h3>
-                            <p class="text-gray-300 text-base leading-relaxed text-shadow-pixel">
-                                TITLE: THE PUN-LOVING SHORTCUT SKELETON<br>
-                                BIO:<br>
-                                MASTER OF BAD JOKES AND SUSPICIOUS NAPS. SANS IS LAZY, CLEVER, AND POSSIBLY THE STRONGEST BEING IN THE UNDERGROUND — BUT MOSTLY JUST VIBES. KNOWN TO TELEPORT, WINK MID-FIGHT, AND CONFUSE YOU WITH METAPHYSICS AND KETCHUP.<br>
-                                SPECIAL MOVE: JUDGMENTAL EYE GLOW<br>
-                                LIKES: NAPPING, HOT DOGS, QUANTUM PHYSICS<br>
-                                DISLIKES: SERIOUS CONVERSATIONS, STAIRS
+                            <div class="character-bio-container text-gray-300 text-base leading-relaxed text-shadow-pixel">
+                                <p><span class="font-bold text-red-400 block mb-1">TITLE:</span> THE LAZY LEGEND (AND PUN MASTER)</p>
+                                <p><span class="font-bold text-red-400 block mb-1">BIO:</span> HE'S GOT A SMILE AS WIDE AS HIS LAZINESS IS DEEP. SANS IS THE KIND OF GUY WHO'LL OFFER YOU A HOT DOG, THEN TELL YOU A PUN SO BAD IT RESETS YOUR HP. DON'T LET THE SLEEPY EYES FOOL YOU; HE'S GOT SECRETS... AND PROBABLY A STASH OF KETCHUP. HE'S THE BEST BROTHER A TALL SKELETON COULD ASK FOR, EVEN IF HE FORGETS TO PAY HIS SHARE OF THE RENT.</p>
+                                <p><span class="font-bold text-red-400 block mb-1 mt-3">SPECIAL MOVE:</span> GASTER BLASTER GLARE (AND A SNEAKY SHORTCUT)</p>
+                                <p><span class="font-bold text-red-400 block mb-1">LIKES:</span> NAPPING, KETCHUP, BREAKING THE FOURTH WALL</p>
+                                <p><span class="font-bold text-red-400 block mb-1">DISLIKES:</span> WORK, EXERCISE, PAPYRUS'S COOKING (SHHH!)</p>
+                            </div>
+                            <p class="text-gray-500 text-sm cursor-pointer toggle-bio block mt-4 text-right">
+                                ...READ MORE <i class="fas fa-chevron-down toggle-icon"></i>
                             </p>
                         </div>
                     </div>
                     
                     <!-- Character Card: Papyrus -->
-                    <div class="card-base">
-                        <div class="h-48 char-papyrus flex items-center justify-center border-b-2 border-white">
-                            <img src="UT3.png" alt="Papyrus Character Image" class="card-image-placeholder">
+                    <div class="card-base character-card">
+                        <div class="card-image-container char-papyrus flex items-center justify-center border-b-2 border-white">
+                            <img src="UT3.png" alt="Papyrus Character Image" class="card-image-placeholder" onerror="this.onerror=null;this.src='https://placehold.co/288x288/222/FFF?text=PAPYRUS';">
                         </div>
                         <div class="p-6">
                             <h3 class="text-2xl mb-3 text-white text-shadow-pixel">PAPYRUS</h3>
-                            <p class="text-gray-300 text-base leading-relaxed text-shadow-pixel">
-                                TITLE: THE LOUDEST PUZZLE PRINCE<br>
-                                BIO:<br>
-                                A TALL SKELETON WITH AN EVEN TALLER EGO — BUT A HEART OF SOLID SPAGHETTI. PAPYRUS DREAMS OF JOINING THE ROYAL GUARD AND CAPTURING A HUMAN... ONCE HE FINISHES REARRANGING HIS SOCK DRAWER.<br>
-                                SPECIAL MOVE: ANNOYING BLUE ATTACKS!!!<br>
-                                LIKES: SPAGHETTI, PUZZLES, HIMSELF<br>
-                                DISLIKES: BEING IGNORED, SANS
+                            <div class="character-bio-container text-gray-300 text-base leading-relaxed text-shadow-pixel">
+                                <p><span class="font-bold text-red-400 block mb-1">TITLE:</span> THE GREAT PAPYRUS! (AND SPAGHETTI AFICIONADO)</p>
+                                <p><span class="font-bold text-red-400 block mb-1">BIO:</span> NYEH HEH HEH! PREPARE TO BE AMAZED BY THE MAGNIFICENT PAPYRUS! THIS SKELETON IS ALL ABOUT PUZZLES, PIZAZZ, AND PERFECTLY ALIGNED PASTA. HE'S DETERMINED TO JOIN THE ROYAL GUARD, BUT FIRST, HE MUST MASTER THE ART OF... MAKING FRIENDS? AND MAYBE NOT TRIPPING OVER HIS OWN CAPE. HIS HEART IS AS BIG AS HIS AMBITIONS, AND HIS SPAGHETTI IS... AN EXPERIENCE.</p>
+                                <p><span class="font-bold text-red-400 block mb-1 mt-3">SPECIAL MOVE:</span> INCREDIBLY DIFFICULT (BUT FAIR!) BLUE ATTACKS</p>
+                                <p><span class="font-bold text-red-400 block mb-1">LIKES:</span> SPAGHETTI, PUZZLES, HIS COOL SCARF, HIMSELF (OBVIOUSLY)</p>
+                                <p><span class="font-bold text-red-400 block mb-1">DISLIKES:</span> SOCKS ON THE FLOOR, SANS'S PUNS, UNDERCOOKED PASTA</p>
+                            </div>
+                            <p class="text-gray-500 text-sm cursor-pointer toggle-bio block mt-4 text-right">
+                                ...READ MORE <i class="fas fa-chevron-down toggle-icon"></i>
                             </p>
                         </div>
                     </div>
                     
                     <!-- Character Card: Doofy -->
-                    <div class="card-base">
-                        <div class="h-48 char-doofy flex items-center justify-center border-b-2 border-white">
-                            <img src="UT4.png" alt="Doofy Character Image" class="card-image-placeholder">
+                    <div class="card-base character-card">
+                        <div class="card-image-container char-doofy flex items-center justify-center border-b-2 border-white">
+                            <img src="UT4.png" alt="Doofy Character Image" class="card-image-placeholder" onerror="this.onerror=null;this.src='https://placehold.co/288x288/333/FFF?text=DOOFY';">
                         </div>
                         <div class="p-6">
                             <h3 class="text-2xl mb-3 text-white text-shadow-pixel">DOOFY</h3>
-                            <p class="text-gray-300 text-base leading-relaxed text-shadow-pixel">
-                                TITLE: THE LAGGY SOUL WITH BIG HEART<br>
-                                BIO:<br>
-                                SWEET, DRAMATIC, PROBABLY PRESSING THE WRONG BUTTON — DOOFY TRIES HIS BEST. KNOWN FOR HEROIC DISH-WASHING, TERRIBLE PLATFORMING, AND GIVING 110% EMOTIONAL SUPPORT (AND CHAOS).<br>
-                                SPECIAL MOVE: PANIC HUG & BUTTON MASH COMBO<br>
-                                LIKES: QUACKERS, RICE, MORAL VICTORIES<br>
-                                DISLIKES: JUMP PUZZLES, BEING PLAYER 1
+                            <div class="character-bio-container text-gray-300 text-base leading-relaxed text-shadow-pixel">
+                                <p><span class="font-bold text-red-400 block mb-1">TITLE:</span> THE ADORABLY CLUMSY HERO (PLAYER 2 EXTRAORDINAIRE)</p>
+                                <p><span class="font-bold text-red-400 block mb-1">BIO:</span> DOOFY MEANS WELL. REALLY. HE'S THE HEART OF THE TEAM, EVEN IF HIS COORDINATION IS... A WORK IN PROGRESS. EXPECT DRAMATIC ENTRANCES, ACCIDENTAL BUTTON MASHES, AND HUGS SO POWERFUL THEY MIGHT JUST SOLVE A PUZZLE. HE'S GOT MORE LOVE THAN LOGIC, AND HE'S ALWAYS READY TO SUPPORT QUACKERS, EVEN IF IT MEANS FALLING INTO EVERY PIT TRAP.</p>
+                                <p><span class="font-bold text-red-400 block mb-1 mt-3">SPECIAL MOVE:</span> EMPATHY OVERLOAD & UNINTENTIONAL COMEDY</p>
+                                <p><span class="font-bold text-red-400 block mb-1">LIKES:</span> QUACKERS, RICE (ESPECIALLY IF QUACKERS COOKED IT), SNUGGLES, FRIENDSHIP</p>
+                                <p><span class="font-bold text-red-400 block mb-1">DISLIKES:</span> PERFECTIONISM, JUMPING PUZZLES, BEING TOLD HE'S WRONG (HE'S TRYING!)</p>
+                            </div>
+                            <p class="text-gray-500 text-sm cursor-pointer toggle-bio block mt-4 text-right">
+                                ...READ MORE <i class="fas fa-chevron-down toggle-icon"></i>
                             </p>
                         </div>
                     </div>
                     
                     <!-- Character Card: Quackers -->
-                    <div class="card-base">
-                        <div class="h-48 char-quackers flex items-center justify-center border-b-2 border-white">
-                            <img src="UT5.png" alt="Quackers Character Image" class="card-image-placeholder">
+                    <div class="card-base character-card">
+                        <div class="card-image-container char-quackers flex items-center justify-center border-b-2 border-white">
+                            <img src="UT5.png" alt="Quackers Character Image" class="card-image-placeholder" onerror="this.onerror=null;this.src='https://placehold.co/288x288/444/FFF?text=QUACKERS';">
                         </div>
                         <div class="p-6">
                             <h3 class="text-2xl mb-3 text-white text-shadow-pixel">QUACKERS</h3>
-                            <p class="text-gray-300 text-base leading-relaxed text-shadow-pixel">
-                                TITLE: THE STRATEGIC DUCK OF DESTINY<br>
-                                BIO:<br>
-                                BRAINS OF THE OPERATION, QUEEN OF PATIENCE, AND CERTIFIED 3-STAR STRATEGIST. QUACKERS CARRIES THE TEAM EFFORTLESSLY, USUALLY WHILE SMILING AND PLANNING FIVE MOVES AHEAD.<br>
-                                SPECIAL MOVE: TACTICAL QUACK & INSTANT CLUTCH<br>
-                                LIKES: WINNING GRACEFULLY, OVERCOOKED RICE, CALM CHAOS<br>
-                                DISLIKES: BURNT ONIONS, LAG, MISSING STARS
+                            <div class="character-bio-container text-gray-300 text-base leading-relaxed text-shadow-pixel">
+                                <p><span class="font-bold text-red-400 block mb-1">TITLE:</span> THE STRATEGIC MASTERMIND (AND BIRTHDAY QUEEN!)</p>
+                                <p><span class="font-bold text-red-400 block mb-1">BIO:</span> MEET QUACKERS: THE BRAINS, THE BEAUTY, THE BOSS. SHE'S THE ONE WHO ACTUALLY UNDERSTANDS THE PUZZLES, REMEMBERS THE PATTERNS, AND CARRIES THE ENTIRE OPERATION WITH A SINGLE, CONFIDENT QUACK. WHILE DOOFY'S BUSY MASHING BUTTONS, QUACKERS IS ALREADY FIVE STEPS AHEAD, CALCULATING THE OPTIMAL PATH TO VICTORY. SHE'S PATIENT, BRILLIANT, AND DESERVES ALL THE STARS IN THE UNIVERSE.</p>
+                                <p><span class="font-bold text-red-400 block mb-1 mt-3">SPECIAL MOVE:</span> UNMATCHED STRATEGY & THE ULTIMATE CLUTCH SAVE</p>
+                                <p><span class="font-bold text-red-400 block mb-1">LIKES:</span> ACHIEVING 3-STARS, PERFECTLY COOKED RICE, DOOFY'S ENDEARING CHAOS, BIRTHDAY CAKE</p>
+                                <p><span class="font-bold text-red-400 block mb-1">DISLIKES:</span> UNNECESSARY DRAMA, LAG SPIKES, MISSING A SINGLE STAR</p>
+                            </div>
+                            <p class="text-gray-500 text-sm cursor-pointer toggle-bio block mt-4 text-right">
+                                ...READ MORE <i class="fas fa-chevron-down toggle-icon"></i>
                             </p>
                         </div>
                     </div>
@@ -473,7 +725,7 @@
                 <h2 class="text-4xl md:text-5xl mb-16 text-center text-white text-shadow-pixel">SOUNDTRACK</h2>
                 <div class="grid md:grid-cols-2 gap-16 items-center">
                     <!-- Soundtrack description and top tracks list -->
-                    <div class="game-box">
+                    <div class="game-box dialogue-box">
                         <p class="mb-8 text-lg leading-relaxed text-gray-300 text-shadow-pixel">DOOFY MADE THESE SONGS JUST FOR QUACKERS, LITTLE LOVE LETTERS WRAPPED IN CHIPTUNE AND CHARM. INSPIRED BY THE HEART AND HUMOUR OF UNDERTALE, EACH MELODY TELLS THEIR STORY: THE GIGGLES, THE TEAMWORK, THE BOSS BATTLES AND ALL THE SWEET MOMENTS IN BETWEEN. IT'S MUSIC FOR PLAYER ONE, FROM PLAYER TWO.</p>
                         <div class="game-box p-6">
                             <h3 class="text-xl mb-4 text-white text-shadow-pixel">TOP TRACKS</h3>
@@ -501,33 +753,42 @@
                             </ul>
                         </div>
                     </div>
-                    <!-- Mock Music Player -->
+                    <!-- Modern & Elegant Music Player -->
                     <div class="flex items-center justify-center">
-                        <div class="relative w-full max-w-md">
-                            <div class="absolute inset-0 bg-white opacity-10 blur-sm animate-pulse" style="border-radius: 0;"></div>
-                            <div class="relative game-box p-10">
-                                <div class="flex justify-center mb-8">
-                                    <!-- Image for the current track -->
-                                    <div class="track-image-container">
-                                        <img id="track-image" src="https://placehold.co/120x120/000/FFF?text=TRACK" alt="Current Track Image" class="track-image">
-                                    </div>
-                                </div>
-                                <h3 id="now-playing-title" class="text-center text-2xl mb-3 text-white text-shadow-pixel">NOW PLAYING</h3>
-                                <p id="now-playing-track-name" class="text-center text-gray-300 text-xl mb-8 text-shadow-pixel">SELECT A TRACK TO PLAY</p>
-                                <div class="mb-6">
-                                    <div class="progress-bar-bg mb-1">
-                                        <div id="progress-bar" class="h-full w-0 shadow-sm transition-none"></div>
-                                    </div>
-                                    <div class="flex justify-between text-xs text-gray-500 text-shadow-pixel">
-                                        <span id="current-time">0:00</span>
-                                        <span id="total-time">0:00</span>
-                                    </div>
-                                </div>
-                                <div class="flex justify-center space-x-10">
-                                    <button id="prev-track-button" class="text-4xl text-gray-400 hover:text-white transition-none"><i class="fas fa-step-backward"></i></button>
-                                    <button id="toggle-play-pause" class="text-5xl text-white hover:text-gray-300 transition-none"><i class="fas fa-play"></i></button>
-                                    <button id="next-track-button" class="text-4xl text-gray-400 hover:text-white transition-none"><i class="fas fa-step-forward"></i></button>
-                                </div>
+                        <div class="modern-player-container w-full max-w-md">
+                            <div class="player-image-wrapper">
+                                <img id="track-image" src="https://placehold.co/200x200/000/FFF?text=TRACK" alt="Current Track Image">
+                            </div>
+                            <div class="track-info">
+                                <h3 id="now-playing-track-name" class="track-title">SELECT A TRACK TO PLAY</h3>
+                                <p id="now-playing-artist" class="track-artist">DOOFY & QUACKERS</p>
+                            </div>
+                            <div class="progress-bar-wrapper" id="progress-bar-wrapper">
+                                <div id="progress-bar" class="progress-bar-fill"></div>
+                            </div>
+                            <div class="time-display">
+                                <span id="current-time">0:00</span>
+                                <span id="total-time">0:00</span>
+                            </div>
+                            <div class="player-controls">
+                                <button id="prev-track-button" class="control-button"><i class="fas fa-step-backward"></i></button>
+                                <button id="toggle-play-pause" class="control-button play-pause-button"><i class="fas fa-play"></i></button>
+                                <button id="next-track-button" class="control-button"><i class="fas fa-step-forward"></i></button>
+                            </div>
+                            <div class="volume-control-wrapper">
+                                <i class="fas fa-volume-down text-white text-xl"></i>
+                                <input type="range" id="volume-slider" class="volume-slider" min="0" max="1" step="0.01" value="1">
+                                <i class="fas fa-volume-up text-white text-xl"></i>
+                            </div>
+                            <div id="visualizer" class="visualizer">
+                                <div class="visualizer-bar"></div>
+                                <div class="visualizer-bar"></div>
+                                <div class="visualizer-bar"></div>
+                                <div class="visualizer-bar"></div>
+                                <div class="visualizer-bar"></div>
+                                <div class="visualizer-bar"></div>
+                                <div class="visualizer-bar"></div>
+                                <div class="visualizer-bar"></div>
                             </div>
                         </div>
                     </div>
@@ -538,22 +799,19 @@
         <!-- Merch Section -->
         <section id="merch" class="py-24 px-6 bg-black border-t-4 border-white">
             <div class="max-w-6xl mx-auto">
-                <h2 class="text-4xl md:text-5xl mb-6 text-center text-white text-shadow-pixel">SANS SAYS: TAKE A BREAK, KID.</h2>
-                <p class="text-center text-lg text-gray-400 mb-16 text-shadow-pixel">HERE’S SOME COOL STUFF I FOUND LYING AROUND. MIGHT BE WEIRD. MIGHT BE WONDERFUL. DEFINITELY NOT MERCH.</p>
+                <h2 class="text-4xl md:text-5xl mb-6 text-center text-white text-shadow-pixel">SANS SAYS: 'HEY KID, LOOKIN' TIRED. WANNA BUY SOME JUNK I FOUND?'</h2>
+                <p class="text-center text-lg text-gray-400 mb-16 text-shadow-pixel">(IT'S NOT JUNK. IT'S TREASURE. PROBABLY.)</p>
                 
-                <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-10">
+                <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                     <!-- Item 1: The Birthday Buff -->
                     <div class="card-base">
                         <div class="card-image-container">
-                            <img src="UT6.png" alt="The Birthday Buff" class="card-image-placeholder">
+                            <img src="UT6.png" alt="The Birthday Buff" class="card-image-placeholder" onerror="this.onerror=null;this.src='https://placehold.co/300x200/111/FFF?text=BIRTHDAY+BUFF';">
                         </div>
                         <div class="p-6">
-                            <h3 class="text-2xl mb-3 text-white text-shadow-pixel">THE BIRTHDAY BUFF</h3>
+                            <h3 class="text-2xl mb-3 text-white text-shadow-pixel">THE BIRTHDAY BUFF (ULTRA RARE!)</h3>
                             <p class="text-gray-300 text-base leading-relaxed mb-4 text-shadow-pixel">
-                                “HEALS 99HP. AND YOUR SOUL, PROBABLY.”<br>
-                                QUACKERS LEVELED UP TODAY. GOT WISDOM, CHARM, AND STILL MORE STARS THAN DOOFY IN ANY CO-OP GAME EVER.<br>
-                                EFFECT: +100% SMILE RATE<br>
-                                RARITY: UNRESETTABLE
+                                EFFECT: INSTANT JOY & +999 CHARM. QUACKERS JUST LEVELED UP IRL! THIS EXCLUSIVE BUFF GRANTS UNLIMITED WISDOM, UNBEATABLE STRATEGY, AND THE ABILITY TO MAKE ANYONE SMILE. SIDE EFFECT: MAY CAUSE DOOFY TO BECOME EVEN MORE ADORINGLY CLUMSY. CANNOT BE RESET.
                             </p>
                             <div class="flex justify-between items-center">
                                 <span class="font-bold text-xl text-white text-shadow-pixel">FREE!</span>
@@ -565,14 +823,12 @@
                     <!-- Item 2: The Laggy Soul -->
                     <div class="card-base">
                         <div class="card-image-container">
-                            <img src="UT7.png" alt="The Laggy Soul" class="card-image-placeholder">
+                            <img src="UT7.png" alt="The Laggy Soul" class="card-image-placeholder" onerror="this.onerror=null;this.src='https://placehold.co/300x200/222/FFF?text=LAGGY+SOUL';">
                         </div>
                         <div class="p-6">
-                            <h3 class="text-2xl mb-3 text-white text-shadow-pixel">DOOFY</h3>
+                            <h3 class="text-2xl mb-3 text-white text-shadow-pixel">THE DOOFY SOUL (HANDLE WITH LOVE!)</h3>
                             <p class="text-gray-300 text-base leading-relaxed text-shadow-pixel">
-                                “HE TRIES. AND HONESTLY? THAT’S KINDA THE WHOLE POINT.”<br>
-                                DOOFY’S SOUL MAY STUTTER, BUT HIS HUGS ARE HIGH-ACCURACY. PROUDLY POWERED BY PANIC AND LOVE.<br>
-                                BONUS: CAUSES UNSKIPPABLE CUTENESS
+                                DESCRIPTION: A RARE ARTIFACT OF PURE, UNADULTERATED HEART. IT MIGHT GLITCH A LITTLE, AND IT'S DEFINITELY NOT GOOD AT JUMP PUZZLES, BUT IT'S GOT MORE LOVE THAN ANY MONSTER IN THE UNDERGROUND. COMES WITH A FREE, OPTIONAL HUG. WARNING: MAY CAUSE SUDDEN OUTBURSTS OF AFFECTION.
                             </p>
                             <div class="flex justify-between items-center">
                                 <span class="font-bold text-xl text-white text-shadow-pixel">PRICELESS</span>
@@ -584,14 +840,12 @@
                     <!-- Item 3: Tactical Duck Energy -->
                     <div class="card-base">
                         <div class="card-image-container">
-                            <img src="UT8.png" alt="Tactical Duck Energy" class="card-image-placeholder">
+                            <img src="UT8.png" alt="Tactical Duck Energy" class="card-image-placeholder" onerror="this.onerror=null;this.src='https://placehold.co/300x200/333/FFF?text=TACTICAL+DUCK';">
                         </div>
                         <div class="p-6">
-                            <h3 class="text-2xl mb-3 text-white text-shadow-pixel">TACTICAL DUCK ENERGY</h3>
+                            <h3 class="text-2xl mb-3 text-white text-shadow-pixel">TACTICAL DUCK ENERGY (LEGENDARY!)</h3>
                             <p class="text-gray-300 text-base leading-relaxed mb-4 text-shadow-pixel">
-                                “QUACK ONCE TO WIN. QUACK TWICE TO CARRY THE TEAM.”<br>
-                                QUACKERS HAS UNLOCKED ALL THE HIDDEN BOSS MECHANICS. AND PATIENCE. AND STRATEGY. BASICALLY A FINAL FORM.<br>
-                                WARNING: CAUSES OVERACHIEVEMENT
+                                DESCRIPTION: UNLEASH THE POWER OF QUACKERS! THIS ITEM GRANTS UNPARALLELED STRATEGIC INSIGHT, PERFECT TIMING, AND THE ABILITY TO CARRY ANY TEAM, ANY GAME. IT'S LIKE HAVING A BUILT-IN GUIDEBOOK, BUT CUTER. SIDE EFFECT: DOOFY MAY ATTEMPT TO FOLLOW YOUR EVERY COMMAND, WITH VARYING DEGREES OF SUCCESS.
                             </p>
                             <div class="flex justify-between items-center">
                                 <span class="font-bold text-xl text-white text-shadow-pixel">LEGENDARY</span>
@@ -606,7 +860,7 @@
         <!-- Next Adventure Button Section -->
         <section class="py-16 px-6 bg-black border-t-4 border-white text-center">
             <button id="next-adventure-button" class="game-button px-10 py-5 text-lg text-shadow-pixel">
-                NEXT ADVENTURE?
+                READY FOR THE NEXT LEVEL?
             </button>
         </section>
 
@@ -619,7 +873,7 @@
                         <h3 class="text-2xl md:text-3xl mb-5 text-white text-shadow-pixel">
                             <span class="text-white">DOOFY</span><span class="text-gray-400">TALE</span>
                         </h3>
-                        <p class="text-gray-500 text-base leading-relaxed text-shadow-pixel">THE GAME WHERE MERCY, MISCHIEF, AND FALLING IN LOVE WITH CHAOS... IS KINDA THE POINT.</p>
+                        <p class="text-gray-500 text-base leading-relaxed text-shadow-pixel">A LOVE LETTER IN PIXELS. FOR QUACKERS, FROM DOOFY. (AND MAYBE A FEW FRIENDLY MONSTERS.)</p>
                     </div>
                     <!-- Quick Links -->
                     <div>
@@ -661,22 +915,26 @@
 
         // --- Music Player Logic ---
         const nowPlayingTrackName = document.getElementById('now-playing-track-name');
+        const nowPlayingArtist = document.getElementById('now-playing-artist'); // New element for artist
         const trackImage = document.getElementById('track-image');
         const progressBar = document.getElementById('progress-bar');
+        const progressBarWrapper = document.getElementById('progress-bar-wrapper'); // Wrapper for seeking
         const currentTimeDisplay = document.getElementById('current-time');
         const totalTimeDisplay = document.getElementById('total-time');
         const togglePlayPauseButton = document.getElementById('toggle-play-pause');
         const prevTrackButton = document.getElementById('prev-track-button');
         const nextTrackButton = document.getElementById('next-track-button');
         const playTrackButtons = document.querySelectorAll('.play-track-button');
+        const volumeSlider = document.getElementById('volume-slider'); // New volume slider
+        const visualizer = document.getElementById('visualizer'); // Visualizer container
 
         // Define tracks (name, image URL, and audio URL)
         const tracks = [
-            { name: "ONE SOUL, ONE CAKE", imageUrl: "UT13.png", audioUrl: "UM1.mp3" },
-            { name: "QUACKSTEP WALTZ", imageUrl: "UT12.png", audioUrl: "UM2.mp3" },
-            { name: "DISH DUTY HERO", imageUrl: "UT11.png", audioUrl: "UM3.mp3" },
-            { name: "FEATHER VS FLUFF", imageUrl: "UT10.png", audioUrl: "UM4.mp3" },
-            { name: "DUAL SOUL MODE", imageUrl: "UT9.png", audioUrl: "UM5.mp3" }
+            { name: "ONE SOUL, ONE CAKE", artist: "DOOFY & QUACKERS", imageUrl: "UT13.png", audioUrl: "UM1.mp3" },
+            { name: "QUACKSTEP WALTZ", artist: "DOOFY & QUACKERS", imageUrl: "UT12.png", audioUrl: "UM2.mp3" },
+            { name: "DISH DUTY HERO", artist: "DOOFY & QUACKERS", imageUrl: "UT11.png", audioUrl: "UM3.mp3" },
+            { name: "FEATHER VS FLUFF", artist: "DOOFY & QUACKERS", imageUrl: "UT10.png", audioUrl: "UM4.mp3" },
+            { name: "DUAL SOUL MODE", artist: "DOOFY & QUACKERS", imageUrl: "UT9.png", audioUrl: "UM5.mp3" }
         ];
 
         let currentTrackIndex = -1;
@@ -687,6 +945,7 @@
         audio.addEventListener('ended', () => {
             isPlaying = false;
             updateMusicPlayerUI();
+            visualizer.classList.add('paused'); // Pause visualizer
             playNextTrack(); // Automatically play the next track
         });
 
@@ -698,6 +957,16 @@
         // Event listener for audio time updates (for progress bar)
         audio.addEventListener('timeupdate', () => {
             updateMusicPlayerUI();
+        });
+
+        // Event listener for when audio starts playing
+        audio.addEventListener('play', () => {
+            visualizer.classList.remove('paused'); // Resume visualizer
+        });
+
+        // Event listener for when audio is paused
+        audio.addEventListener('pause', () => {
+            visualizer.classList.add('paused'); // Pause visualizer
         });
 
         /**
@@ -718,17 +987,20 @@
         function updateMusicPlayerUI() {
             if (currentTrackIndex === -1 || !tracks[currentTrackIndex]) {
                 nowPlayingTrackName.textContent = "SELECT A TRACK TO PLAY";
-                trackImage.src = "https://placehold.co/120x120/000/FFF?text=TRACK"; // Default image
+                nowPlayingArtist.textContent = "DOOFY & QUACKERS";
+                trackImage.src = "https://placehold.co/200x200/000/FFF?text=TRACK"; // Default image
                 trackImage.alt = "DEFAULT TRACK IMAGE";
                 progressBar.style.width = '0%';
                 currentTimeDisplay.textContent = '0:00';
                 totalTimeDisplay.textContent = '0:00';
                 togglePlayPauseButton.innerHTML = '<i class="fas fa-play"></i>';
+                visualizer.classList.add('paused'); // Ensure visualizer is paused when no track
                 return;
             }
 
             const currentTrack = tracks[currentTrackIndex];
             nowPlayingTrackName.textContent = currentTrack.name;
+            nowPlayingArtist.textContent = currentTrack.artist;
             trackImage.src = currentTrack.imageUrl;
             trackImage.alt = currentTrack.name + " IMAGE";
             
@@ -740,8 +1012,10 @@
 
             if (isPlaying) {
                 togglePlayPauseButton.innerHTML = '<i class="fas fa-pause"></i>';
+                visualizer.classList.remove('paused');
             } else {
                 togglePlayPauseButton.innerHTML = '<i class="fas fa-play"></i>';
+                visualizer.classList.add('paused');
             }
         }
 
@@ -770,8 +1044,7 @@
                 console.error("ERROR PLAYING AUDIO:", error);
                 isPlaying = false;
                 updateMusicPlayerUI();
-                // Use a custom message box instead of alert
-                showCustomMessage("COULD NOT PLAY AUDIO. PLEASE CHECK THE FILE PATH."); 
+                showCustomMessage("COULD NOT PLAY AUDIO. PLEASE CHECK THE FILE PATHS (UM1.mp3 to UM5.mp3 and UT9.png to UT13.png)."); 
             });
         }
 
@@ -792,7 +1065,7 @@
                     // Successfully played
                 }).catch(error => {
                     console.error("ERROR RESUMING AUDIO:", error);
-                    showCustomMessage("COULD NOT RESUME AUDIO. PLEASE CHECK THE FILE PATH.");
+                    showCustomMessage("COULD NOT RESUME AUDIO. PLEASE CHECK THE FILE PATHS.");
                 });
             }
             isPlaying = !isPlaying;
@@ -833,6 +1106,21 @@
         togglePlayPauseButton.addEventListener('click', togglePlayPause);
         prevTrackButton.addEventListener('click', playPreviousTrack);
         nextTrackButton.addEventListener('click', playNextTrack);
+
+        // Volume control
+        volumeSlider.addEventListener('input', () => {
+            audio.volume = volumeSlider.value;
+        });
+
+        // Progress bar seeking
+        progressBarWrapper.addEventListener('click', (e) => {
+            const clickX = e.offsetX; // X position of the click relative to the element
+            const width = progressBarWrapper.offsetWidth; // Total width of the progress bar
+            const seekTime = (clickX / width) * audio.duration;
+            if (!isNaN(seekTime)) { // Ensure seekTime is a valid number
+                audio.currentTime = seekTime;
+            }
+        });
 
         // --- Next Adventure Button Logic ---
         const nextAdventureButton = document.getElementById('next-adventure-button');
@@ -888,6 +1176,33 @@
             `;
             document.body.appendChild(messageBox);
         }
+
+        // --- Expandable Character Card Logic ---
+        document.querySelectorAll('.character-card').forEach(card => {
+            const bioContainer = card.querySelector('.character-bio-container');
+            const toggleButton = card.querySelector('.toggle-bio'); // The paragraph containing "Read More/Show Less"
+
+            // Ensure the initial state is collapsed
+            if (!bioContainer.classList.contains('expanded')) {
+                toggleButton.innerHTML = '...READ MORE <i class="fas fa-chevron-down toggle-icon"></i>';
+            }
+
+            card.addEventListener('click', (event) => {
+                // Prevent clicks on inner elements (like links or buttons if they were there) from triggering toggle
+                if (event.target.tagName === 'A' || event.target.tagName === 'BUTTON') {
+                    return;
+                }
+                
+                bioContainer.classList.toggle('expanded');
+                const icon = toggleButton.querySelector('i');
+
+                if (bioContainer.classList.contains('expanded')) {
+                    toggleButton.innerHTML = '...SHOW LESS <i class="fas fa-chevron-up toggle-icon"></i>';
+                } else {
+                    toggleButton.innerHTML = '...READ MORE <i class="fas fa-chevron-down toggle-icon"></i>';
+                }
+            });
+        });
     </script>
 </body>
 </html>
