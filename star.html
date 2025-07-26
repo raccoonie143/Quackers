@@ -338,7 +338,7 @@
         }
 
         .character-bio-container.expanded {
-            max-height: 500px; /* Sufficiently large to show all content */
+            max-height: 2000px; /* Sufficiently large to show all content */
             /* Using a large fixed height for max-height transition is generally better than 'none' for smooth animation */
         }
 
@@ -362,6 +362,26 @@
             align-items: center;
             text-align: center;
             transition: box-shadow 0.2s ease-in-out; /* Subtle hover transition */
+            position: relative; /* For gradient glow */
+            overflow: hidden; /* Contain glow */
+        }
+        .modern-player-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(255, 0, 0, 0.2) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease-in-out;
+            pointer-events: none;
+            z-index: 0; /* Behind content */
+            transform: scale(0.8); /* Start smaller */
+        }
+        .modern-player-container:hover::before {
+            opacity: 1;
+            transform: scale(1); /* Expand on hover */
         }
         .modern-player-container:hover {
             box-shadow: 6px 6px 0px #ff0000; /* Pop with red on hover */
@@ -505,9 +525,9 @@
             box-shadow: 2px 2px 0px rgba(0,0,0,0.8);
         }
 
-        /* Simple visualizer */
+        /* Simple visualizer (removed from HTML, but keeping styles if re-added) */
         .visualizer {
-            display: flex;
+            display: none; /* Hide visualizer */
             justify-content: center;
             align-items: flex-end;
             width: 100%;
@@ -543,6 +563,83 @@
             animation-play-state: paused;
             height: 20%; /* Keep bars low when paused */
             opacity: 0.5;
+        }
+
+        /* New styles for About section fun redesign */
+        .about-image-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            min-height: 400px;
+            padding: 1rem;
+            flex-direction: column; /* Stack elements vertically */
+        }
+
+        .about-image-frame {
+            border: 4px solid #ffffff;
+            box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.8);
+            background-color: #000000;
+            border-radius: 0;
+            padding: 1rem;
+            width: 100%;
+            max-width: 400px; /* Constrain image width */
+            margin-bottom: 2rem; /* Space between image and save point */
+            position: relative; /* For the subtle glow */
+            overflow: hidden; /* Ensure content doesn't spill */
+        }
+
+        .about-image-frame::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            pointer-events: none; /* Allow clicks to pass through */
+        }
+
+        .about-image-frame:hover::before {
+            opacity: 1; /* Subtle glow on hover */
+        }
+
+        .save-point {
+            width: 100px;
+            height: 100px;
+            background-color: #00ff00; /* Bright green for save point */
+            border: 4px solid #ffffff;
+            box-shadow: 6px 6px 0px #00cc00; /* Green shadow */
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2.5rem;
+            color: #000000;
+            text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
+            animation: save-point-pulse 1.5s infinite steps(2) alternate; /* Pulsing animation */
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .save-point::before {
+            content: 'SAVE';
+            position: absolute;
+            font-size: 1rem;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #000000;
+        }
+
+        @keyframes save-point-pulse {
+            0% { transform: scale(1); box-shadow: 6px 6px 0px #00cc00; }
+            100% { transform: scale(1.05); box-shadow: 8px 8px 0px #00ff00; }
+        }
+
+        .about-text-container {
+            position: relative;
+            z-index: 5; /* Ensure text is above any background elements */
         }
     </style>
 </head>
@@ -608,16 +705,17 @@
                 <h2 class="text-4xl md:text-5xl mb-16 text-center text-white text-shadow-pixel">ABOUT THE GAME</h2>
                 <div class="grid md:grid-cols-2 gap-16 items-center">
                     <!-- Game description -->
-                    <div class="game-box dialogue-box">
+                    <div class="game-box dialogue-box about-text-container">
                         <p class="mb-6 text-lg leading-relaxed text-gray-300 text-shadow-pixel">SO, WHAT'S DOOFYTALE? IT'S DOOFY'S LOVE LETTER TO QUACKERS, WRITTEN IN PIXELS AND PURE, UNADULTERATED CHAOS. THINK UNDERTALE, BUT WITH MORE INSIDE JOKES AND A SLIGHTLY HIGHER CHANCE OF ACCIDENTALLY HUGGING A MONSTER.</p>
                         <p class="mb-6 text-lg leading-relaxed text-gray-300 text-shadow-pixel">WE'VE GOT FRIENDSHIP, FROLIC, AND THE OCCASIONAL EXISTENTIAL CRISIS (USUALLY OVER SPAGHETTI). QUACKERS, BEING THE SMART ONE, WILL NAVIGATE THE UNDERGROUND WITH GRACE AND STRATEGY. DOOFY? HE'LL BE THERE, PROBABLY TRIPPING OVER A ROCK OR TRYING TO PET A GLITCH.</p>
                         <p class="text-lg leading-relaxed text-gray-300 text-shadow-pixel">IT'S A JOURNEY OF MERCY, MISCHIEF, AND PROOF THAT EVEN THE CLUMSIEST SOUL CAN FIND THEIR WAY HOME. THIS PAGE IS A SAVE POINT FOR ALL THE GOOD TIMES. GRAB A BUTTERSCOTCH PIE AND GET READY. NYEH HEH HEH! 🧡</p>
                     </div>
-                    <!-- Poster Placeholder -->
-                    <div class="relative flex justify-center items-center h-full min-h-[400px] p-4"> 
-                        <div class="game-box w-full h-full flex items-center justify-center text-gray-400 text-center text-xl text-shadow-pixel">
+                    <!-- Poster and Save Point -->
+                    <div class="about-image-container"> 
+                        <div class="about-image-frame">
                             <img src="UT1.png" alt="About Game Poster" class="card-image-placeholder" onerror="this.onerror=null;this.src='https://placehold.co/400x400/000/FFF?text=DOOFYTALE+POSTER';">
                         </div>
+                        <div class="save-point" id="save-point-button"></div>
                         <!-- Animated soul outside the box -->
                         <div class="absolute -bottom-8 -right-8 w-28 h-28 soul-animation hidden md:block">
                             <div class="heart"></div>
@@ -780,16 +878,7 @@
                                 <input type="range" id="volume-slider" class="volume-slider" min="0" max="1" step="0.01" value="1">
                                 <i class="fas fa-volume-up text-white text-xl"></i>
                             </div>
-                            <div id="visualizer" class="visualizer">
-                                <div class="visualizer-bar"></div>
-                                <div class="visualizer-bar"></div>
-                                <div class="visualizer-bar"></div>
-                                <div class="visualizer-bar"></div>
-                                <div class="visualizer-bar"></div>
-                                <div class="visualizer-bar"></div>
-                                <div class="visualizer-bar"></div>
-                                <div class="visualizer-bar"></div>
-                            </div>
+                            <!-- Visualizer removed -->
                         </div>
                     </div>
                 </div>
@@ -926,7 +1015,7 @@
         const nextTrackButton = document.getElementById('next-track-button');
         const playTrackButtons = document.querySelectorAll('.play-track-button');
         const volumeSlider = document.getElementById('volume-slider'); // New volume slider
-        const visualizer = document.getElementById('visualizer'); // Visualizer container
+        // const visualizer = document.getElementById('visualizer'); // Visualizer container - removed
 
         // Define tracks (name, image URL, and audio URL)
         const tracks = [
@@ -945,7 +1034,7 @@
         audio.addEventListener('ended', () => {
             isPlaying = false;
             updateMusicPlayerUI();
-            visualizer.classList.add('paused'); // Pause visualizer
+            // visualizer.classList.add('paused'); // Pause visualizer - removed
             playNextTrack(); // Automatically play the next track
         });
 
@@ -961,12 +1050,12 @@
 
         // Event listener for when audio starts playing
         audio.addEventListener('play', () => {
-            visualizer.classList.remove('paused'); // Resume visualizer
+            // visualizer.classList.remove('paused'); // Resume visualizer - removed
         });
 
         // Event listener for when audio is paused
         audio.addEventListener('pause', () => {
-            visualizer.classList.add('paused'); // Pause visualizer
+            // visualizer.classList.add('paused'); // Pause visualizer - removed
         });
 
         /**
@@ -994,7 +1083,7 @@
                 currentTimeDisplay.textContent = '0:00';
                 totalTimeDisplay.textContent = '0:00';
                 togglePlayPauseButton.innerHTML = '<i class="fas fa-play"></i>';
-                visualizer.classList.add('paused'); // Ensure visualizer is paused when no track
+                // visualizer.classList.add('paused'); // Ensure visualizer is paused when no track - removed
                 return;
             }
 
@@ -1012,10 +1101,10 @@
 
             if (isPlaying) {
                 togglePlayPauseButton.innerHTML = '<i class="fas fa-pause"></i>';
-                visualizer.classList.remove('paused');
+                // visualizer.classList.remove('paused'); - removed
             } else {
                 togglePlayPauseButton.innerHTML = '<i class="fas fa-play"></i>';
-                visualizer.classList.add('paused');
+                // visualizer.classList.add('paused'); - removed
             }
         }
 
@@ -1203,6 +1292,14 @@
                 }
             });
         });
+
+        // --- Save Point Interaction ---
+        const savePointButton = document.getElementById('save-point-button');
+        if (savePointButton) {
+            savePointButton.addEventListener('click', () => {
+                showCustomMessage("GAME SAVED! Your progress (and butterscotch pie) is safe!");
+            });
+        }
     </script>
 </body>
 </html>
