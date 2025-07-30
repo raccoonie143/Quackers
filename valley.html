@@ -657,11 +657,6 @@
             padding: 2rem;
         }
 
-        /* Increased padding for farm type cards */
-        .farm-type-card .p-8 {
-            padding: 2.5rem;
-        }
-
         /* Adjustments for character card info padding */
         .character-card-info {
             padding: 1.5rem;
@@ -988,6 +983,95 @@
             100% { transform: scale(0); opacity: 0; }
         }
 
+        /* Farm Type Card Specific Styles */
+        .farm-type-card {
+            background-color: var(--sdv-lightgreen);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 6px solid var(--sdv-brown);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.3);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            min-height: 550px; /* Increased min-height for better balance */
+        }
+        .farm-type-card:hover {
+            transform: translateY(-12px) rotate(1deg);
+            box-shadow: 0 18px 35px rgba(0,0,0,0.35);
+        }
+        .farm-type-card img {
+            width: 100%;
+            height: 300px; /* Made image slightly bigger */
+            object-fit: cover;
+            display: block;
+            image-rendering: pixelated;
+            transition: transform 0.3s ease-in-out;
+            /* Removed border-bottom-4 here */
+        }
+        .farm-type-card:hover img {
+            transform: scale(1.05);
+        }
+        .farm-type-card .card-content {
+            padding: 2rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Pushes bottom elements to the bottom */
+            width: 100%;
+        }
+        .farm-type-card h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            text-shadow: 3px 3px 0 var(--sdv-darkgreen);
+            color: var(--sdv-darkgreen);
+        }
+        .farm-type-card p {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--sdv-text-dark);
+            flex-grow: 1; /* Allows description to take available space */
+            margin-bottom: 1.5rem; /* Space before the bottom stats */
+        }
+        .farm-type-card .stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            font-size: 0.9rem;
+            color: var(--sdv-text-dark);
+            flex-wrap: wrap; /* Allow stats to wrap on smaller screens */
+            gap: 0.5rem;
+        }
+        .farm-type-card .stats span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: normal; /* Ensure text wraps within the span */
+            word-break: break-word; /* Break long words if necessary */
+        }
+        .farm-type-card .stats i {
+            font-size: 1.5rem;
+        }
+
+        /* Adjustments for About and Community Center images */
+        #about .md\:w-1\/2 img,
+        #community .md\:w-1\/2 img {
+            height: 500px; /* Increased height */
+            object-fit: cover;
+            margin-top: 0; /* Remove top margin */
+            margin-bottom: 0; /* Remove bottom margin */
+        }
+        #about .flex-col, #community .flex-col {
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+        #about .flex-col > div, #community .flex-col > div {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
     </style>
 </head>
 <body class="pixel-font animate-flicker">
@@ -1119,7 +1203,7 @@
                         <p class="mb-5 text-lg leading-relaxed">Quackers charges into battle like a fearless legend — Doofy follows closely behind with snacks, moral support, and occasional screaming. We explore deep, bonk weird creatures, and dig up sparkly treasures to make our tools (and maybe ourselves) a little stronger.</p>
                         <div class="flex flex-wrap gap-3 justify-center">
                             <span class="px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm pixel-font border border-blue-300 shadow-sm">🕳️ 120 Floors (and too many ladders)</span>
-                            <span class="px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm pixel-font border border-blue-300 shadow-sm">👾 20+ Monsters (most of them scary, all of them bonkable)</span>
+                            <span class="px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm pixel-font border border-blue-300 shadow-sm">� 20+ Monsters (most of them scary, all of them bonkable)</span>
                             <span class="px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm pixel-font border border-blue-300 shadow-sm">🛠️ 5 Tool Levels (Doofy still uses the wrong one sometimes)</span>
                         </div>
                     </div>
@@ -1170,7 +1254,7 @@
             <div class="flex flex-col md:flex-row items-center gap-12">
                 <div class="md:w-1/2">
                     <!-- Image Placeholder for About Section Farm -->
-                    <img src="vv5.png" alt="Stardew Valley Farm" class="w-full h-[450px] md:h-[600px] object-cover rounded-xl pixel-border shadow-2xl image-pixelated parallax-bg border-8 border-[var(--sdv-brown)]">
+                    <img src="vv5.png" alt="Stardew Valley Farm" class="w-full h-[500px] md:h-[500px] object-cover rounded-xl pixel-border shadow-2xl image-pixelated parallax-bg border-8 border-[var(--sdv-brown)]">
                 </div>
                 <div class="md:w-1/2 text-left">
                     <p class="text-xl mb-8 leading-relaxed">Stardew Valley is where Quackers runs a tight, optimized farming empire… and Doofy runs into fences. A lot.</p>
@@ -1249,7 +1333,7 @@
                 <span class="particle" style="left: 90%; top: 75%;">🎃</span>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-12"> <!-- Changed to 2x2 grid -->
                 <div class="season-card-base season-spring">
                     <div class="absolute top-4 right-4 pixel-font text-3xl bg-black/40 px-3 py-1 rounded-full shadow-md">🌸</div>
                     <div class="card-particle-container">
@@ -1337,39 +1421,39 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-                <div class="farm-type-card bg-[var(--sdv-lightgreen)] rounded-xl overflow-hidden pixel-border shadow-xl transform transition-transform hover:scale-105 flex flex-col">
-                    <!-- Image Placeholder for Quackers Duck Farm -->
-                    <img src="vv18.png" alt="Quackers Duck Farm" class="w-full h-64 object-cover pixel-character image-pixelated parallax-bg">
-                    <div class="p-8 flex flex-col flex-grow">
-                        <h3 class="pixel-font text-2xl mb-3 text-[var(--sdv-darkgreen)] text-stroke">Quackers Duck Farm</h3>
-                        <p class="mb-5 text-lg leading-relaxed flex-grow">A meticulously managed ducktopia where every quack is accounted for. Designed by Quackers for optimal duck-to-pond ratios, with color-coded feeding charts and strictly enforced nap schedules. Doofy’s role? Feed the ducks, look cute, and try not to accidentally release them.</p>
-                        <div class="flex justify-between text-base pixel-font mt-4">
-                            <span class="flex items-center gap-2 text-green-700"><i class="fas fa-duck text-2xl"></i> 85% Ducks (living in luxury)</span>
-                            <span class="flex items-center gap-2 text-red-700"><i class="fas fa-question text-2xl"></i> 🤔 15% Doofy, mildly overwhelmed but very enthusiastic</span>
+                <!-- Quackers Duck Farm Card -->
+                <div class="farm-type-card">
+                    <img src="vv18.png" alt="Quackers Duck Farm" class="image-pixelated parallax-bg">
+                    <div class="card-content">
+                        <h3 class="pixel-font">Quackers Duck Farm</h3>
+                        <p>A meticulously managed ducktopia where every quack is accounted for. Designed by Quackers for optimal duck-to-pond ratios, with color-coded feeding charts and strictly enforced nap schedules. Doofy’s role? Feed the ducks, look cute, and try not to accidentally release them.</p>
+                        <div class="stats">
+                            <span class="text-green-700"><i class="fas fa-duck"></i> 85% Ducks (living in luxury)</span>
+                            <span class="text-red-700"><i class="fas fa-question"></i> 🤔 15% Doofy, mildly overwhelmed but very enthusiastic</span>
                         </div>
                     </div>
                 </div>
-                <div class="farm-type-card bg-[var(--sdv-lightgreen)] rounded-xl overflow-hidden pixel-border shadow-xl transform transition-transform hover:scale-105 flex flex-col">
-                    <!-- Image Placeholder for Doofy's Greenhouse Grove -->
-                    <img src="vv16.png" alt="Doofy's Greenhouse Grove" class="w-full h-64 object-cover pixel-character image-pixelated parallax-bg">
-                    <div class="p-8 flex flex-col flex-grow">
-                        <h3 class="pixel-font text-2xl mb-3 text-[var(--sdv-darkgreen)] text-stroke">Doofy’s Greenhouse Grove</h3>
-                        <p class="mb-5 text-lg leading-relaxed flex-grow">A warm, slightly unhinged paradise where plants thrive despite Doofy’s questionable farming methods. Perfect for experimenting, vibing, and occasionally discovering a new hybrid by sheer accident (or planting the same thing three times).</p>
-                        <div class="flex justify-between text-base pixel-font mt-4">
-                            <span class="flex items-center gap-2 text-green-700"><i class="fas fa-seedling text-2xl"></i> 🌿 70% Cozy Greenhouse Magic</span>
-                            <span class="flex items-center gap-2 text-yellow-700"><i class="fas fa-exclamation-triangle text-2xl"></i> 🌱 30% “Wait… did I already plant this row?”</span>
+                <!-- Doofy's Greenhouse Grove Card -->
+                <div class="farm-type-card">
+                    <img src="vv16.png" alt="Doofy's Greenhouse Grove" class="image-pixelated parallax-bg">
+                    <div class="card-content">
+                        <h3 class="pixel-font">Doofy’s Greenhouse Grove</h3>
+                        <p>A warm, slightly unhinged paradise where plants thrive despite Doofy’s questionable farming methods. Perfect for experimenting, vibing, and occasionally discovering a new hybrid by sheer accident (or planting the same thing three times).</p>
+                        <div class="stats">
+                            <span class="text-green-700"><i class="fas fa-seedling"></i> 🌿 70% Cozy Greenhouse Magic</span>
+                            <span class="text-yellow-700"><i class="fas fa-exclamation-triangle"></i> 🌱 30% “Wait… did I already plant this row?”</span>
                         </div>
                     </div>
                 </div>
-                <div class="farm-type-card bg-[var(--sdv-lightgreen)] rounded-xl overflow-hidden pixel-border shadow-xl transform transition-transform hover:scale-105 flex flex-col">
-                    <!-- Image Placeholder for The Fishy Wishy Farm -->
-                    <img src="vv17.png" alt="The Fishy Wishy Farm" class="w-full h-64 object-cover pixel-character image-pixelated parallax-bg">
-                    <div class="p-8 flex flex-col flex-grow">
-                        <h3 class="pixel-font text-2xl mb-3 text-[var(--sdv-darkgreen)] text-stroke">The Fishy Wishy Farm</h3>
-                        <p class="mb-5 text-lg leading-relaxed flex-grow">A splashy paradise of cozy bridges, secret fishing spots, and occasional soaking. Quackers reels in rare treasures with precision. Doofy? He’s mostly tangled in seaweed, casting in the wrong direction, and trying very hard not to fall in. Again.</p>
-                        <div class="flex justify-between text-base pixel-font mt-4">
-                            <span class="flex items-center gap-2 text-blue-700"><i class="fas fa-water text-2xl"></i> 🎣 50% Peaceful Fishing</span>
-                            <span class="flex items-center gap-2 text-blue-700"><i class="fas fa-fish text-2xl"></i> 💦 50% “DOOFY, NOT THE RIVER!”</span>
+                <!-- The Fishy Wishy Farm Card -->
+                <div class="farm-type-card">
+                    <img src="vv17.png" alt="The Fishy Wishy Farm" class="image-pixelated parallax-bg">
+                    <div class="card-content">
+                        <h3 class="pixel-font">The Fishy Wishy Farm</h3>
+                        <p>A splashy paradise of cozy bridges, secret fishing spots, and occasional soaking. Quackers reels in rare treasures with precision. Doofy? He’s mostly tangled in seaweed, casting in the wrong direction, and trying very hard not to fall in. Again.</p>
+                        <div class="stats">
+                            <span class="text-blue-700"><i class="fas fa-water"></i> 🎣 50% Peaceful Fishing</span>
+                            <span class="text-blue-700"><i class="fas fa-fish"></i> 💦 50% “DOOFY, NOT THE RIVER!”</span>
                         </div>
                     </div>
                 </div>
@@ -1397,7 +1481,7 @@
             <div class="flex flex-col md:flex-row items-center gap-12">
                 <div class="md:w-1/2">
                     <!-- Image Placeholder for Community Center -->
-                    <img src="vv6.png" alt="Community Center" class="w-full h-[450px] md:h-[600px] object-cover rounded-xl pixel-border shadow-2xl animate-pulse-slow image-pixelated parallax-bg border-8 border-[var(--sdv-brown)]">
+                    <img src="vv6.png" alt="Community Center" class="w-full h-[500px] md:h-[500px] object-cover rounded-xl pixel-border shadow-2xl animate-pulse-slow image-pixelated parallax-bg border-8 border-[var(--sdv-brown)]">
                 </div>
                 <div class="md:w-1/2 text-left">
                     <p class="text-xl mb-8 leading-relaxed">The Community Center used to be a creaky old building with more cobwebs than purpose… but Quackers wasn’t having any of that. With her plans, strategies, and determined sparkle, and my enthusiastic (if slightly misguided) item deliveries, we’ve been breathing life back into it — one bundle, one room, and one hilariously slippery fish at a time. 🎣🧺</p>
@@ -1546,7 +1630,7 @@
                     It’s about us.
                     So I made this little website as a birthday surprise — a small love letter to the game she adores, and the memories we’re creating in it together. From planning dream farms to laughing through the chaos, every moment with her has felt like something rare and beautiful.
                     Happy Birthday, Quackers 💛
-                    <br><br>Thanks for letting me be part of your world — in Stardew, and everywhere else. �🦆</p>
+                    <br><br>Thanks for letting me be part of your world — in Stardew, and everywhere else.🌾🦆</p>
             </div>
         </div>
     </footer>
