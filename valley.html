@@ -6,6 +6,8 @@
     <title>Stardew Valley | Farming RPG</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Tone.js for subtle UI sounds -->
+    <script src="https://unpkg.com/tone@14.7.58/build/Tone.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@300;400;500;600;700&display=swap');
         
@@ -28,6 +30,16 @@
             --sdv-softgreen: #e8f4ea; /* Lighter green for backgrounds */
             --sdv-text-dark: #333;
             --sdv-text-light: #f8e9d1;
+
+            /* New Section Background Colors with subtle gradients */
+            --bg-farm-field: linear-gradient(to bottom right, #d8e8c8, #c4e09f);
+            --bg-forest-path: linear-gradient(to top left, #e0f0e0, #d0e0d0);
+            --bg-mountain-cave: linear-gradient(to bottom, #d0d8e0, #c0c8d0);
+            --bg-town-square: linear-gradient(to top, #f5f0e8, #e8e0d8);
+            --bg-river-bank: linear-gradient(to top, #dbe8f0, #cce0f0);
+            --bg-harvest-festival: linear-gradient(to bottom, #f2e0b8, #e6d0a8);
+            --bg-progress-journey: linear-gradient(to right, #e8f4ea, #d8e8c8);
+            --bg-newsletter-gold: linear-gradient(to bottom right, #f2cb61, #e6b850);
         }
         
         /* Fonts */
@@ -45,8 +57,8 @@
             color: var(--sdv-text-dark);
             overflow-x: hidden;
             position: relative; /* Needed for global overlays */
-            font-size: 0.9rem; /* Smaller base font size for pixel readability */
-            line-height: 1.6; /* Adjusted line height for pixel font */
+            font-size: 1rem;
+            line-height: 1.6;
         }
 
         /* Apply pixel font to all elements by default */
@@ -54,7 +66,7 @@
             font-family: 'Press Start 2P', cursive;
         }
 
-        /* Global Subtle Pixel Grid Overlay - Increased opacity */
+        /* Global Subtle Pixel Grid Overlay */
         .pixel-grid-overlay {
             position: fixed;
             top: 0;
@@ -62,20 +74,20 @@
             width: 100%;
             height: 100%;
             background-image: 
-                linear-gradient(to right, rgba(0,0,0,0.06) 1px, transparent 1px), /* More visible */
-                linear-gradient(to bottom, rgba(0,0,0,0.06) 1px, transparent 1px); /* More visible */
-            background-size: 16px 16px; /* Size of the pixel cells */
+                linear-gradient(to right, rgba(0,0,0,0.08) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0,0,0,0.08) 1px, transparent 1px);
+            background-size: 16px 16px;
             pointer-events: none;
-            z-index: 0; /* Keep it in the very background */
-            animation: pixel-grid-shift 60s linear infinite; /* Slow, subtle shift */
+            z-index: 0;
+            animation: pixel-grid-shift 60s linear infinite;
         }
 
         @keyframes pixel-grid-shift {
             0% { background-position: 0 0; }
-            100% { background-position: 16px 16px; } /* Shift by one cell size */
+            100% { background-position: 16px 16px; }
         }
 
-        /* NEW: Global CRT Scanline Overlay */
+        /* Global CRT Scanline Overlay */
         .crt-scanline-overlay {
             position: fixed;
             top: 0;
@@ -83,33 +95,33 @@
             width: 100%;
             height: 100%;
             background: 
-                linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.35) 50%), /* More prominent */
-                linear-gradient(90deg, rgba(255, 0, 0, 0.08), rgba(0, 255, 0, 0.03), rgba(0, 0, 255, 0.08)); /* More prominent */
-            background-size: 100% 2px, 3px 100%; /* Horizontal scanlines, subtle RGB grain */
+                linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.45) 50%),
+                linear-gradient(90deg, rgba(255, 0, 0, 0.1), rgba(0, 255, 0, 0.05), rgba(0, 0, 255, 0.1));
+            background-size: 100% 2px, 3px 100%;
             pointer-events: none;
-            z-index: 9999; /* On top of everything */
-            opacity: 0.2; /* Slightly more opacity */
+            z-index: 9999;
+            opacity: 0.25;
         }
         
         /* Pixel Art Decorations */
         .pixel-corner {
             position: absolute;
-            width: 24px; /* Larger corners */
-            height: 24px; /* Larger corners */
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="0" y="0" width="24" height="24" fill="%236b8f3a"/><rect x="0" y="0" width="12" height="12" fill="%234a6b2a"/><rect x="12" y="12" width="12" height="12" fill="%234a6b2a"/></svg>');
+            width: 32px;
+            height: 32px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect x="0" y="0" width="32" height="32" fill="%236b8f3a"/><rect x="0" y="0" width="16" height="16" fill="%234a6b2a"/><rect x="16" y="16" width="16" height="16" fill="%234a6b2a"/></svg>');
             image-rendering: pixelated;
         }
         
         .pixel-divider {
-            height: 16px; /* Thicker divider */
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 16"><rect x="0" y="0" width="32" height="16" fill="%238b4513"/><rect x="0" y="0" width="16" height="8" fill="%235d2906"/><rect x="16" y="8" width="16" height="8" fill="%235d2906"/><rect x="4" y="2" width="4" height="12" fill="%23b97a57"/><rect x="12" y="2" width="4" height="12" fill="%23b97a57"/><rect x="20" y="2" width="4" height="12" fill="%23b97a57"/><rect x="28" y="2" width="4" height="12" fill="%23b97a57"/></svg>'); /* More detailed wooden fence pattern */
-            background-size: 32px 16px;
+            height: 24px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 24"><rect x="0" y="0" width="48" height="24" fill="%238b4513"/><rect x="0" y="0" width="24" height="12" fill="%235d2906"/><rect x="24" y="12" width="24" height="12" fill="%235d2906"/><rect x="6" y="3" width="6" height="18" fill="%23b97a57"/><rect x="18" y="3" width="6" height="18" fill="%23b97a57"/><rect x="30" y="3" width="6" height="18" fill="%23b97a57"/><rect x="42" y="3" width="6" height="18" fill="%23b97a57"/></svg>');
+            background-size: 48px 24px;
             image-rendering: pixelated;
-            margin: 80px auto; /* More spacing */
-            max-width: 900px;
+            margin: 100px auto;
+            max-width: 950px;
             width: 90%;
-            border-radius: 6px; /* Slightly more rounded */
-            box-shadow: 0 6px 12px rgba(0,0,0,0.3); /* Stronger shadow */
+            border-radius: 8px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.4);
         }
         
         /* Parallax Backgrounds */
@@ -118,41 +130,41 @@
             background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
-            image-rendering: pixelated; /* Ensure parallax images are pixelated */
+            image-rendering: pixelated;
         }
         
         /* Pixel Border for UI Elements */
         .pixel-border {
-            border: 6px solid var(--sdv-darkbrown); /* Thicker border */
+            border: 8px solid var(--sdv-darkbrown);
             box-shadow: 
-                6px 0 0 var(--sdv-brown),
-                0 6px 0 var(--sdv-brown),
-                -6px 0 0 var(--sdv-brown),
-                0 -6px 0 var(--sdv-brown),
-                12px 0 0 var(--sdv-darkbrown), /* More pronounced outer shadow */
-                0 12px 0 var(--sdv-darkbrown),
-                -12px 0 0 var(--sdv-darkbrown),
-                0 -12px 0 var(--sdv-darkbrown);
+                8px 0 0 var(--sdv-brown),
+                0 8px 0 var(--sdv-brown),
+                -8px 0 0 var(--sdv-brown),
+                0 -8px 0 var(--sdv-brown),
+                16px 0 0 var(--sdv-darkbrown),
+                0 16px 0 var(--sdv-darkbrown),
+                -16px 0 0 var(--sdv-darkbrown),
+                0 -16px 0 var(--sdv-darkbrown);
             position: relative;
-            border-radius: 12px; /* More rounded */
+            border-radius: 16px;
         }
         
         .pixel-border::after {
             content: '';
             position: absolute;
-            top: 3px; /* Adjusted inner border */
-            left: 3px;
-            right: 3px;
-            bottom: 3px;
-            border: 3px solid rgba(255,255,255,0.3); /* More visible inner highlight */
+            top: 4px;
+            left: 4px;
+            right: 4px;
+            bottom: 4px;
+            border: 4px solid rgba(255,255,255,0.4);
             pointer-events: none;
-            border-radius: 9px;
+            border-radius: 12px;
         }
         
         /* Text Stroke Effect */
         .text-stroke {
             text-shadow: 
-                4px 4px 0 #000, /* Thicker stroke */
+                4px 4px 0 #000,
                 -2px -2px 0 #000,  
                 2px -2px 0 #000,
                 -2px 2px 0 #000,
@@ -162,42 +174,42 @@
         /* Pixelated Button Style */
         .pixel-button {
             position: relative;
-            display: inline-flex; /* Changed to inline-flex for better content alignment */
-            align-items: center; /* Vertically center content */
-            justify-content: center; /* Horizontally center content */
-            padding: 25px 55px; /* Significantly increased padding */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 28px 60px;
             color: var(--sdv-yellow);
             background: var(--sdv-darkgreen);
             border: none;
             font-family: 'Press Start 2P', cursive;
-            font-size: 1.2rem; /* Slightly larger font for readability */
+            font-size: 1.3rem;
             text-transform: uppercase;
             cursor: pointer;
-            border: 6px solid var(--sdv-brown); /* Thicker border */
+            border: 8px solid var(--sdv-brown);
             box-shadow: 
-                6px 0 0 var(--sdv-darkbrown),
-                0 6px 0 var(--sdv-darkbrown),
-                -6px 0 0 var(--sdv-darkbrown),
-                0 -6px 0 var(--sdv-darkbrown),
-                8px 8px 0 rgba(0,0,0,0.4); /* Stronger overall shadow */
+                8px 0 0 var(--sdv-darkbrown),
+                0 8px 0 var(--sdv-darkbrown),
+                -8px 0 0 var(--sdv-darkbrown),
+                0 -8px 0 var(--sdv-darkbrown),
+                12px 12px 0 rgba(0,0,0,0.5);
             transition: all 0.1s ease-out;
-            text-shadow: 3px 3px 0 var(--sdv-darkbrown);
-            border-radius: 8px;
+            text-shadow: 4px 4px 0 var(--sdv-darkbrown);
+            border-radius: 10px;
             overflow: hidden;
-            white-space: nowrap; /* Prevent text from wrapping */
-            transform: translateZ(0); /* Hardware acceleration */
-            line-height: 1; /* Ensure single line height */
-            min-width: 300px; /* Explicit minimum width */
+            white-space: nowrap;
+            transform: translateZ(0);
+            line-height: 1;
+            min-width: 320px;
         }
         
         .pixel-button:hover {
-            transform: translate(3px, 3px);
-            box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.4);
-            text-shadow: 3px 3px 0 var(--sdv-darkbrown), 0 0 10px rgba(255,255,0,0.7);
+            transform: translate(4px, 4px);
+            box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.5);
+            text-shadow: 4px 4px 0 var(--sdv-darkbrown), 0 0 12px rgba(255,255,0,0.8);
         }
         
         .pixel-button:active {
-            transform: translate(6px, 6px);
+            transform: translate(8px, 8px);
             box-shadow: none;
         }
 
@@ -205,7 +217,7 @@
         .pixel-button .ripple {
             position: absolute;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.7);
             animation: ripple-effect 0.8s forwards;
             transform: scale(0);
             pointer-events: none;
@@ -220,56 +232,62 @@
         
         /* Season Card Styles */
         .season-card-base {
-            padding: 1.5rem;
-            border-radius: 8px;
+            padding: 2rem;
+            border-radius: 12px;
             position: relative;
             overflow: hidden;
-            border: 4px solid var(--sdv-brown); /* Consistent border */
-            box-shadow: 6px 6px 0 rgba(0,0,0,0.2); /* Consistent shadow */
+            border: 6px solid var(--sdv-brown);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.3);
             transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
+            min-height: 500px;
         }
         .season-card-base:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 25px rgba(0,0,0,0.2);
+            transform: translateY(-12px) rotate(1deg);
+            box-shadow: 0 18px 35px rgba(0,0,0,0.35);
         }
 
         .season-card-base img {
             width: 100%;
-            height: auto;
-            border-radius: 4px; /* Slightly rounded image corners */
-            margin-bottom: 1rem;
-            border: 2px solid var(--sdv-darkbrown); /* Border around image */
-            box-shadow: 3px 3px 0 rgba(0,0,0,0.1); /* Image shadow */
+            height: 250px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+            border: 3px solid var(--sdv-darkbrown);
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.15);
+            transition: transform 0.3s ease-in-out;
+        }
+        .season-card-base:hover img {
+            transform: scale(1.05);
         }
 
         .season-card-base h3 {
-            font-size: 2rem; /* Adjusted font size for headings */
-            margin-bottom: 0.75rem; /* Reduced margin */
-            text-shadow: 2px 2px 0 var(--sdv-darkbrown); /* Darker stroke for contrast */
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 3px 3px 0 var(--sdv-darkbrown);
         }
         .season-card-base p {
-            font-size: 0.85rem; /* Slightly smaller for better fit */
-            line-height: 1.4;
-            flex-grow: 1; /* Allows text to take up available space */
+            font-size: 1rem;
+            line-height: 1.5;
+            flex-grow: 1;
             word-wrap: break-word;
             overflow-wrap: break-word;
         }
         .season-card-base .tag {
-            font-size: 0.7rem; /* Smaller tags */
-            padding: 0.25rem 0.6rem;
-            border-radius: 9999px; /* Fully rounded pills */
-            box-shadow: 1px 1px 0 rgba(0,0,0,0.1); /* Subtle tag shadow */
+            font-size: 0.8rem;
+            padding: 0.35rem 0.8rem;
+            border-radius: 9999px;
+            box-shadow: 2px 2px 0 rgba(0,0,0,0.15);
         }
 
 
-        .season-spring { background-color: #a7d46f; color: #3a5a1d; }
-        .season-summer { background-color: #5b9bd5; color: #1e3d6b; }
-        .season-fall { background-color: #db804e; color: #5d2906; }
-        .season-winter { background-color: #a8c3d4; color: #2c4d6b; }
+        .season-spring { background-color: var(--bg-farm-field); color: #3a5a1d; }
+        .season-summer { background-color: var(--bg-river-bank); color: #1e3d6b; }
+        .season-fall { background-color: var(--bg-harvest-festival); color: #5d2906; }
+        .season-winter { background-color: var(--bg-mountain-cave); color: #2c4d6b; }
         
         /* General Animations */
         .animate-float {
@@ -278,7 +296,7 @@
         
         @keyframes float {
             0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
+            50% { transform: translateY(-12px); }
             100% { transform: translateY(0px); }
         }
 
@@ -289,26 +307,26 @@
         
         @keyframes progress {
             from { width: 0% }
-            to { width: var(--progress-width, 65%); } /* Dynamic width */
+            to { width: var(--progress-width, 65%); }
         }
 
         /* Feature Card Hover Effect */
         .feature-card:hover img {
-            transform: scale(1.08); /* Slightly less aggressive zoom */
-            filter: drop-shadow(0 0 10px rgba(255,255,255,0.7)); /* Stronger glow */
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 15px rgba(255,255,255,0.8));
         }
 
         .feature-card:hover .feature-icon {
-            transform: translateY(-8px) scale(1.2); /* More pronounced lift and scale */
+            transform: translateY(-12px) scale(1.3);
             opacity: 1;
-            text-shadow: 0 0 10px rgba(255,255,0,0.8); /* Icon glow */
+            text-shadow: 0 0 15px rgba(255,255,0,0.9);
         }
         
         /* Section Entrance Animations */
         .section-animate {
             opacity: 0;
-            transform: translateY(30px); /* More pronounced initial offset */
-            transition: all 1s ease-out; /* Slower transition */
+            transform: translateY(40px);
+            transition: all 1.2s cubic-bezier(0.23, 1, 0.32, 1);
         }
         
         .section-visible {
@@ -322,15 +340,18 @@
             position: relative;
             overflow: hidden;
             background-color: var(--sdv-cream);
-            border-radius: 8px;
-            border: 4px solid var(--sdv-brown); /* Pixel border for the card */
-            box-shadow: 6px 6px 0 rgba(0,0,0,0.2); /* Shadow for depth */
+            border-radius: 12px;
+            border: 6px solid var(--sdv-brown);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.3);
+            min-height: 480px;
+            display: flex;
+            flex-direction: column;
         }
         
         .character-card:hover {
-            transform: scale(1.05) rotate(1deg);
+            transform: scale(1.07) rotate(2deg);
             z-index: 10;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
         
         .character-card::before {
@@ -340,7 +361,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: radial-gradient(circle at center, transparent 0%, rgba(255,255,255,0.2) 100%); /* More visible radial gradient */
+            background: radial-gradient(circle at center, transparent 0%, rgba(255,255,255,0.3) 100%);
             opacity: 0;
             transition: opacity 0.3s;
         }
@@ -352,53 +373,59 @@
         .character-card .pixel-character {
             image-rendering: pixelated;
             width: 100%;
-            height: auto;
+            height: 300px;
+            object-fit: cover;
             display: block;
             transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out;
-            border-bottom: 2px solid var(--sdv-brown); /* Separator for image */
+            border-bottom: 3px solid var(--sdv-brown);
         }
 
         .character-card:hover .pixel-character {
-            transform: scale(1.05);
-            filter: brightness(1.1) saturate(1.1); /* Subtle visual pop */
+            transform: scale(1.07);
+            filter: brightness(1.2) saturate(1.2);
         }
 
         .character-card-info {
             background-color: var(--sdv-darkgreen);
             color: var(--sdv-yellow);
-            padding: 0.75rem;
-            border-top: 4px solid var(--sdv-brown);
-            text-shadow: 1px 1px 0 var(--sdv-darkbrown);
-            border-bottom-left-radius: 6px;
-            border-bottom-right-radius: 6px;
+            padding: 1rem;
+            border-top: 6px solid var(--sdv-brown);
+            text-shadow: 2px 2px 0 var(--sdv-darkbrown);
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .character-card-info p {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.75rem;
+            font-size: 1rem;
         }
 
         /* Tooltip for characters */
         .character-tooltip {
             position: absolute;
-            background-color: rgba(0, 0, 0, 0.95); /* Darker, more opaque */
+            background-color: rgba(0, 0, 0, 0.98);
             color: white;
-            padding: 1.2rem; /* More padding */
-            border-radius: 0.75rem; /* More rounded */
-            font-family: 'Press Start 2P', cursive; /* Ensure tooltip text is pixelated */
-            font-size: 0.9rem;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1rem;
             z-index: 100;
             pointer-events: none;
             opacity: 0;
             transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
-            transform: translateY(15px); /* More pronounced initial offset */
-            min-width: 220px; /* Slightly wider */
-            max-width: 350px; /* Wider max */
-            box-shadow: 8px 8px 0 rgba(0,0,0,0.7); /* Stronger shadow */
-            border: 4px solid var(--sdv-brown); /* Thicker border */
+            transform: translateY(20px);
+            min-width: 250px;
+            max-width: 400px;
+            box-shadow: 10px 10px 0 rgba(0,0,0,0.8);
+            border: 6px solid var(--sdv-brown);
             text-align: left;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><rect x="0" y="0" width="16" height="16" fill="rgba(255,255,255,0.08)"/><rect x="0" y="0" width="8" height="8" fill="rgba(255,255,255,0.04)"/><rect x="8" y="8" width="8" height="8" fill="rgba(255,255,255,0.04)"/></svg>'); /* More visible pixel texture */
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><rect x="0" y="0" width="16" height="16" fill="rgba(255,255,255,0.1)"/><rect x="0" y="0" width="8" height="8" fill="rgba(255,255,255,0.05)"/><rect x="8" y="8" width="8" height="8" fill="rgba(255,255,255,0.05)"/></svg>');
             background-size: 16px 16px;
         }
 
@@ -410,29 +437,29 @@
         .character-tooltip::before {
             content: '';
             position: absolute;
-            bottom: -12px; /* Adjusted arrow position */
+            bottom: -15px;
             left: 50%;
             transform: translateX(-50%) rotate(45deg);
-            width: 24px; /* Larger arrow */
-            height: 24px; /* Larger arrow */
-            background-color: rgba(0, 0, 0, 0.95);
-            border-right: 4px solid var(--sdv-brown); /* Thicker arrow border */
-            border-bottom: 4px solid var(--sdv-brown);
+            width: 30px;
+            height: 30px;
+            background-color: rgba(0, 0, 0, 0.98);
+            border-right: 6px solid var(--sdv-brown);
+            border-bottom: 6px solid var(--sdv-brown);
             z-index: -1;
         }
 
         .character-tooltip.below::before {
-            top: -12px; /* Adjusted arrow position */
+            top: -15px;
             bottom: auto;
-            border-top: 4px solid var(--sdv-brown);
-            border-left: 4px solid var(--sdv-brown);
+            border-top: 6px solid var(--sdv-brown);
+            border-left: 6px solid var(--sdv-brown);
             border-right: none;
             border-bottom: none;
         }
         
         /* Hero Section Specific */
         .hero-overlay {
-            background: linear-gradient(to bottom, rgba(58,90,138,0.9) 0%, rgba(58,90,138,0.6) 50%, rgba(58,90,138,0.9) 100%); /* Stronger overlay */
+            background: linear-gradient(to bottom, rgba(58,90,138,0.95) 0%, rgba(58,90,138,0.7) 50%, rgba(58,90,138,0.95) 100%);
         }
 
         /* Hero Section Scanline/Grain Overlay */
@@ -443,88 +470,88 @@
             width: 100%;
             height: 100%;
             background-image: 
-                linear-gradient(rgba(0,0,0,0.15) 1px, transparent 1px), /* More visible */
-                linear-gradient(90deg, rgba(0,0,0,0.08) 1px, transparent 1px); /* More visible */
+                linear-gradient(rgba(0,0,0,0.2) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px);
             background-size: 2px 2px;
             pointer-events: none;
-            z-index: 1; /* Above parallax image, below content */
-            opacity: 0.6; /* More opaque */
+            z-index: 1;
+            opacity: 0.7;
         }
 
         /* Section Headings */
         .section-heading-wrapper {
             display: inline-block;
-            padding: 12px 28px; /* More padding */
+            padding: 16px 32px;
             background-color: var(--sdv-cream);
-            border: 6px solid var(--sdv-brown); /* Thicker border */
+            border: 8px solid var(--sdv-brown);
             position: relative;
             z-index: 1;
-            border-radius: 12px; /* More rounded */
-            box-shadow: 6px 6px 0 rgba(0,0,0,0.3); /* Stronger shadow */
-            margin-bottom: 30px; /* More spacing */
+            border-radius: 16px;
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.4);
+            margin-bottom: 40px;
         }
         .section-heading-wrapper::before,
         .section-heading-wrapper::after {
             content: '';
             position: absolute;
-            width: 28px; /* Larger decorative squares */
-            height: 28px;
+            width: 36px;
+            height: 36px;
             background-color: var(--sdv-darkgreen);
-            border: 3px solid var(--sdv-brown); /* Thicker border */
+            border: 4px solid var(--sdv-brown);
             transform: rotate(45deg);
             z-index: -1;
         }
         .section-heading-wrapper::before {
-            top: -14px; /* Adjusted position */
-            left: -14px;
+            top: -18px;
+            left: -18px;
         }
         .section-heading-wrapper::after {
-            bottom: -14px;
-            right: -14px;
+            bottom: -18px;
+            right: -18px;
         }
 
         /* Milestone Card */
         .milestone-card {
             transition: all 0.3s ease-in-out;
-            border-radius: 8px;
+            border-radius: 12px;
             cursor: pointer;
             position: relative;
-            padding: 1.5rem; /* Adjusted padding */
+            padding: 2rem;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            min-height: 250px; /* Increased minimum height for more content */
+            min-height: 300px;
             text-align: center;
-            box-shadow: 8px 8px 0 rgba(0,0,0,0.3);
-            border: 4px solid var(--sdv-brown);
+            box-shadow: 10px 10px 0 rgba(0,0,0,0.4);
+            border: 6px solid var(--sdv-brown);
             background-color: var(--sdv-lightgreen);
         }
         .milestone-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 18px 35px rgba(0,0,0,0.35);
+            transform: translateY(-15px) rotate(-1deg);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.45);
             background-color: var(--sdv-green);
             color: var(--sdv-cream);
         }
         .milestone-card .icon-wrapper {
-            background-color: rgba(255,255,255,0.9);
+            background-color: rgba(255,255,255,0.95);
             border-radius: 50%;
-            box-shadow: inset 0 0 8px rgba(0,0,0,0.2);
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
             transition: all 0.3s;
-            width: 90px; /* Larger icon circle */
-            height: 90px;
-            font-size: 3.5rem; /* Larger icon */
+            width: 100px;
+            height: 100px;
+            font-size: 4rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 1.2rem; /* More spacing */
-            border: 3px solid var(--sdv-darkbrown);
+            margin-bottom: 1.5rem;
+            border: 4px solid var(--sdv-darkbrown);
         }
         .milestone-card:hover .icon-wrapper {
-            transform: scale(1.15) rotate(5deg);
+            transform: scale(1.2) rotate(8deg);
             background-color: var(--sdv-yellow);
             color: var(--sdv-darkgreen);
-            box-shadow: 0 0 15px rgba(255,255,0,0.8);
+            box-shadow: 0 0 20px rgba(255,255,0,0.9);
         }
 
         /* Milestone Completion Styles */
@@ -532,89 +559,71 @@
             background-color: var(--sdv-darkgreen);
             color: var(--sdv-yellow);
             border-color: var(--sdv-darkbrown);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
-            transform: scale(1.03);
-        }
-
-        .milestone-card.completed .icon-wrapper {
-            background-color: var(--sdv-yellow);
-            color: var(--sdv-darkgreen);
-            box-shadow: 0 0 15px rgba(255,255,0,0.8);
-        }
-
-        .milestone-card .completion-checkmark {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            font-size: 2.5rem;
-            color: var(--sdv-yellow);
-            text-shadow: 3px 3px 0 var(--sdv-darkbrown);
-            opacity: 0;
-            transform: scale(0.6);
-            transition: all 0.4s ease-out;
+            box-shadow: 0 12px 25px rgba(0,0,0,0.5);
+            transform: scale(1.05);
         }
 
         .milestone-card.completed .completion-checkmark {
             opacity: 1;
             transform: scale(1);
-            animation: bounce-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: bounce-in 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         @keyframes bounce-in {
-            0% { transform: scale(0.6); opacity: 0; }
-            50% { transform: scale(1.2); opacity: 1; }
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { transform: scale(1.3); opacity: 1; }
             100% { transform: scale(1); }
         }
 
         /* Milestone Card Text */
         .milestone-card h3 {
-            font-size: 1.5rem; /* Larger heading */
-            margin-bottom: 0.75rem; /* More space below heading */
-            text-stroke: 2px 2px 0 var(--sdv-darkgreen); /* Consistent stroke */
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            text-stroke: 3px 3px 0 var(--sdv-darkgreen);
         }
         .milestone-card p {
-            font-size: 0.9rem; /* Larger paragraph text */
-            line-height: 1.4; /* Better line spacing */
+            font-size: 1rem;
+            line-height: 1.5;
             word-wrap: break-word;
             overflow-wrap: break-word;
             flex-grow: 1;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-top: 0.75rem;
-            padding: 0 0.75rem; /* Increased horizontal padding */
-            color: var(--sdv-text-dark); /* Ensure dark text by default */
+            margin-top: 1rem;
+            padding: 0 1rem;
+            color: var(--sdv-text-dark);
         }
         .milestone-card.completed p {
-            color: var(--sdv-cream); /* Light text when completed */
+            color: var(--sdv-cream);
         }
 
         /* Footer */
         footer {
             background-color: #2c3e50;
-            border-top: 6px solid var(--sdv-brown); /* Thicker border */
-            box-shadow: inset 0 8px 15px rgba(0,0,0,0.4); /* Inner shadow for depth */
+            border-top: 8px solid var(--sdv-brown);
+            box-shadow: inset 0 10px 20px rgba(0,0,0,0.5);
         }
         footer a:hover {
             color: var(--sdv-yellow);
-            text-shadow: 0 0 8px rgba(255,255,0,0.5); /* Subtle glow on hover */
+            text-shadow: 0 0 10px rgba(255,255,0,0.6);
         }
 
         /* New subtle animations */
         @keyframes sparkle {
-            0%, 100% { opacity: 1; text-shadow: 0 0 8px rgba(255,255,0,0.7); } /* Stronger sparkle */
-            50% { opacity: 0.8; text-shadow: none; }
+            0%, 100% { opacity: 1; text-shadow: 0 0 10px rgba(255,255,0,0.8); }
+            50% { opacity: 0.7; text-shadow: none; }
         }
         .animate-sparkle {
-            animation: sparkle 2.5s ease-in-out infinite; /* Slower sparkle */
+            animation: sparkle 2s ease-in-out infinite;
         }
 
         @keyframes flicker {
             0%, 100% { filter: brightness(1); }
-            50% { filter: brightness(0.97); } /* More subtle flicker */
+            50% { filter: brightness(0.95); }
         }
         .animate-flicker {
-            animation: flicker 12s ease-in-out infinite; /* Slower flicker */
+            animation: flicker 10s ease-in-out infinite;
         }
 
         @keyframes spin-slow {
@@ -622,15 +631,15 @@
             to { transform: rotate(360deg); }
         }
         .animate-spin-slow {
-            animation: spin-slow 10s linear infinite; /* Slower spin */
+            animation: spin-slow 8s linear infinite;
         }
 
         @keyframes bounce-slow {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-18px); } /* More pronounced bounce */
+            50% { transform: translateY(-20px); }
         }
         .animate-bounce-slow {
-            animation: bounce-slow 3.5s infinite; /* Slower bounce */
+            animation: bounce-slow 3s infinite;
         }
 
         /* Image pixelation for specific elements */
@@ -640,73 +649,83 @@
 
         /* Increased padding for feature cards */
         .feature-card .p-5 {
-            padding: 1.8rem; /* More padding */
+            padding: 2rem;
         }
 
         /* Increased padding for season cards */
         .season-spring, .season-summer, .season-fall, .season-winter {
-            padding: 1.8rem; /* More padding */
+            padding: 2rem;
         }
 
         /* Increased padding for farm type cards */
-        .farm-type-card .p-8 { /* Using p-8 as per existing code */
-            padding: 2rem; /* Even more padding for farm cards */
+        .farm-type-card .p-8 {
+            padding: 2.5rem;
         }
 
         /* Adjustments for character card info padding */
         .character-card-info {
-            padding: 1.2rem; /* More padding */
+            padding: 1.5rem;
         }
 
         /* Adjustments for general text size within cards for readability with pixel font */
         .text-base {
-            font-size: 1rem; /* Slightly larger for readability */
+            font-size: 1rem;
         }
         .text-lg {
-            font-size: 1.1rem; /* Slightly larger for readability */
+            font-size: 1.1rem;
         }
         .text-xl {
-            font-size: 1.2rem; /* Slightly larger for readability */
+            font-size: 1.2rem;
         }
 
-        /* NEW: Styles for the redesigned About Game cards */
+        /* Styles for the redesigned About Game cards */
         .about-game-card {
-            background-color: var(--sdv-cream); /* Cream background */
-            border: 4px solid var(--sdv-darkbrown); /* Dark brown pixel border */
-            border-radius: 8px; /* Slightly rounded corners */
-            padding: 1.5rem; /* Generous padding */
+            background-color: var(--sdv-cream);
+            border: 6px solid var(--sdv-darkbrown);
+            border-radius: 12px;
+            padding: 2rem;
             text-align: center;
             position: relative;
             overflow: hidden;
-            box-shadow: 6px 6px 0 rgba(0,0,0,0.2); /* Stronger shadow for depth */
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.3);
             transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+            min-height: 280px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
         .about-game-card:hover {
-            transform: translate(2px, 2px); /* Slight shift on hover */
-            box-shadow: 4px 4px 0 rgba(0,0,0,0.3);
+            transform: translate(3px, 3px) scale(1.02);
+            box-shadow: 5px 5px 0 rgba(0,0,0,0.4);
         }
 
         .about-game-card .icon {
-            font-size: 3.5rem; /* Larger icons */
-            margin-bottom: 0.85rem; /* More spacing */
-            color: var(--sdv-darkgreen); /* Default icon color */
-            text-shadow: 3px 3px 0 rgba(0,0,0,0.15); /* More pronounced icon shadow */
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: var(--sdv-darkgreen);
+            text-shadow: 4px 4px 0 rgba(0,0,0,0.2);
+            transition: transform 0.2s ease-out, text-shadow 0.2s ease-out;
+        }
+        .about-game-card:hover .icon {
+            transform: translateY(-5px) scale(1.1);
+            text-shadow: 0 0 15px rgba(255,255,0,0.8);
         }
 
         .about-game-card h3 {
-            color: var(--sdv-brown); /* Brown heading color */
-            text-shadow: 2px 2px 0 rgba(0,0,0,0.15); /* More pronounced text shadow */
-            margin-bottom: 0.6rem;
-            font-size: 1.2rem; /* Slightly larger heading */
+            color: var(--sdv-brown);
+            text-shadow: 3px 3px 0 rgba(0,0,0,0.2);
+            margin-bottom: 0.8rem;
+            font-size: 1.3rem;
         }
 
         .about-game-card p {
-            font-size: 0.9rem; /* Slightly larger, more readable text */
-            line-height: 1.5; /* Adjusted line height for readability */
+            font-size: 1rem;
+            line-height: 1.6;
             color: var(--sdv-text-dark);
-            word-wrap: break-word; /* Ensure long words break */
-            overflow-wrap: break-word; /* Ensure long words break */
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
 
         /* Specific icon colors for the about cards */
@@ -718,44 +737,257 @@
         /* Hero Section Buttons Responsiveness */
         .hero-section-buttons {
             display: flex;
-            flex-direction: column; /* Stack vertically on small screens by default */
+            flex-direction: column;
             justify-content: center;
-            align-items: center; /* Center items when stacked */
-            gap: 1.8rem; /* More space between buttons */
-            width: 100%; /* Take full width of parent */
-            max-width: 650px; /* Slightly wider max-width */
-            margin: 0 auto; /* Center the button container */
-            padding: 0 1.5rem; /* More horizontal padding to prevent cutting */
-            flex-wrap: wrap; /* Allow buttons to wrap if space is tight */
-            z-index: 20; /* Ensure buttons are on top */
+            align-items: center;
+            gap: 2rem;
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            flex-wrap: wrap;
+            z-index: 20;
         }
 
-        @media (min-width: 768px) { /* Medium screens and up */
+        @media (min-width: 768px) {
             .hero-section-buttons {
-                flex-direction: row; /* Arrange horizontally */
-                padding: 0; /* Remove extra padding if not needed on larger screens */
-                flex-wrap: nowrap; /* Prevent wrapping on larger screens */
+                flex-direction: row;
+                padding: 0;
+                flex-wrap: nowrap;
             }
         }
 
         /* Style for the quote over the background image */
         .quote-overlay-text {
-            background-color: rgba(0, 0, 0, 0.6); /* Slightly more transparent */
-            padding: 1.5rem 2rem; /* Increased padding */
-            border-radius: 1rem; /* More rounded corners */
-            border: 4px solid var(--sdv-brown); /* Stronger border */
-            box-shadow: 6px 6px 0 rgba(0,0,0,0.3); /* Stronger shadow */
-            color: var(--sdv-cream); /* Light text color for contrast */
-            text-shadow: 3px 3px 0 var(--sdv-darkbrown); /* Stronger text stroke */
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 2rem 2.5rem;
+            border-radius: 1.2rem;
+            border: 5px solid var(--sdv-brown);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.4);
+            color: var(--sdv-cream);
+            text-shadow: 4px 4px 0 var(--sdv-darkbrown);
             position: relative;
-            z-index: 2; /* Ensure it's above other elements if needed */
-            margin-bottom: 2.5rem; /* More space below it */
+            z-index: 2;
+            margin-bottom: 3rem;
         }
         .quote-overlay-text small {
-            color: var(--sdv-lightgreen); /* Lighter color for attribution */
-            text-shadow: 2px 2px 0 var(--sdv-darkgreen); /* Stronger text stroke for attribution */
+            color: var(--sdv-lightgreen);
+            text-shadow: 3px 3px 0 var(--sdv-darkgreen);
         }
-        
+
+        /* Section Specific Backgrounds & Living Textures */
+        @keyframes subtle-pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.005); opacity: 0.98; } /* Very subtle scale and transparency change */
+        }
+
+        #features { background: var(--bg-farm-field); animation: subtle-pulse 20s ease-in-out infinite; }
+        #about { background: var(--bg-town-square); animation: subtle-pulse 22s ease-in-out infinite; }
+        #characters { background: var(--bg-forest-path); animation: subtle-pulse 21s ease-in-out infinite; }
+        #seasons { background: var(--bg-harvest-festival); animation: subtle-pulse 23s ease-in-out infinite; }
+        #farm { background: var(--bg-river-bank); animation: subtle-pulse 24s ease-in-out infinite; }
+        #community { background: var(--bg-mountain-cave); animation: subtle-pulse 25s ease-in-out infinite; }
+        .game-progress-section { background: var(--bg-progress-journey); animation: subtle-pulse 20s ease-in-out infinite; }
+        .newsletter-section { background: var(--bg-newsletter-gold); animation: subtle-pulse 22s ease-in-out infinite; }
+
+        /* Particle Animations - General */
+        @keyframes float-up {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            20% { opacity: 1; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        @keyframes float-left {
+            0% { transform: translateX(0) rotate(0deg); opacity: 0; }
+            20% { opacity: 1; }
+            100% { transform: translateX(-100px) rotate(-360deg); opacity: 0; }
+        }
+
+        @keyframes float-right {
+            0% { transform: translateX(0) rotate(0deg); opacity: 0; }
+            20% { opacity: 1; }
+            100% { transform: translateX(100px) rotate(360deg); opacity: 0; }
+        }
+
+        @keyframes float-down {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            20% { opacity: 1; }
+            100% { transform: translateY(100px) rotate(360deg); opacity: 0; }
+        }
+
+        /* Particle Container */
+        .particle-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 1; /* Below content, above background */
+        }
+
+        /* Individual Particle Style (hidden by default) */
+        .particle {
+            position: absolute;
+            font-size: 1.5rem; /* Default particle size */
+            opacity: 0;
+            pointer-events: none;
+            white-space: nowrap; /* Prevent emoji from wrapping */
+        }
+
+        /* Section-specific particle animations */
+
+        /* Features Section Particles */
+        #features .particle {
+            animation: float-up 10s linear infinite;
+            color: var(--sdv-green);
+        }
+        #features .particle:nth-child(1) { left: 10%; top: 80%; animation-delay: 0s; font-size: 1.8rem; }
+        #features .particle:nth-child(2) { left: 30%; top: 90%; animation-delay: 2s; font-size: 1.5rem; }
+        #features .particle:nth-child(3) { left: 50%; top: 70%; animation-delay: 4s; font-size: 2rem; }
+        #features .particle:nth-child(4) { left: 70%; top: 85%; animation-delay: 6s; font-size: 1.7rem; }
+        #features .particle:nth-child(5) { left: 90%; top: 75%; animation-delay: 8s; font-size: 1.6rem; }
+
+        /* About Section Particles */
+        #about .particle {
+            animation: float-up 12s linear infinite;
+            color: var(--sdv-yellow); /* Sparkle color */
+        }
+        #about .particle:nth-child(1) { left: 5%; top: 85%; animation-delay: 0s; font-size: 1.2rem; }
+        #about .particle:nth-child(2) { left: 25%; top: 75%; animation-delay: 3s; font-size: 1.5rem; }
+        #about .particle:nth-child(3) { left: 45%; top: 90%; animation-delay: 6s; font-size: 1.3rem; }
+        #about .particle:nth-child(4) { left: 65%; top: 80%; animation-delay: 9s; font-size: 1.6rem; }
+        #about .particle:nth-child(5) { left: 85%; top: 70%; animation-delay: 12s; font-size: 1.4rem; }
+
+        /* Characters Section Particles */
+        #characters .particle {
+            animation: float-down 15s linear infinite;
+            color: var(--sdv-brown); /* Leaf color */
+        }
+        #characters .particle:nth-child(1) { left: 15%; top: 10%; animation-delay: 0s; font-size: 1.8rem; }
+        #characters .particle:nth-child(2) { left: 40%; top: 5%; animation-delay: 3s; font-size: 2rem; }
+        #characters .particle:nth-child(3) { left: 60%; top: 15%; animation-delay: 6s; font-size: 1.7rem; }
+        #characters .particle:nth-child(4) { left: 85%; top: 8%; animation-delay: 9s; font-size: 1.9rem; }
+
+        /* Seasons Section Particles (general for the section, specific for cards below) */
+        #seasons .particle {
+            animation: float-up 18s linear infinite;
+            color: var(--sdv-orange); /* General harvest feel */
+        }
+        #seasons .particle:nth-child(1) { left: 10%; top: 95%; animation-delay: 0s; font-size: 2rem; }
+        #seasons .particle:nth-child(2) { left: 30%; top: 80%; animation-delay: 5s; font-size: 1.8rem; }
+        #seasons .particle:nth-child(3) { left: 70%; top: 90%; animation-delay: 10s; font-size: 2.2rem; }
+        #seasons .particle:nth-child(4) { left: 90%; top: 75%; animation-delay: 15s; font-size: 1.9rem; }
+
+        /* Seasons Card Specific Particles */
+        .season-card-base .card-particle-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 0; /* Behind card content */
+        }
+        .season-card-base .card-particle {
+            position: absolute;
+            font-size: 1.2rem;
+            opacity: 0;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        /* Spring Card Particles */
+        .season-spring .card-particle { animation: float-up 8s linear infinite; color: #f7a8b8; } /* Pink for blossoms */
+        .season-spring .card-particle:nth-child(1) { left: 15%; top: 80%; animation-delay: 0s; }
+        .season-spring .card-particle:nth-child(2) { left: 40%; top: 90%; animation-delay: 2s; }
+        .season-spring .card-particle:nth-child(3) { left: 70%; top: 70%; animation-delay: 4s; }
+
+        /* Summer Card Particles */
+        .season-summer .card-particle { animation: float-up 7s linear infinite; color: #ffd700; } /* Gold for sun */
+        .season-summer .card-particle:nth-child(1) { left: 20%; top: 75%; animation-delay: 0s; }
+        .season-summer .card-particle:nth-child(2) { left: 50%; top: 85%; animation-delay: 2s; }
+        .season-summer .card-particle:nth-child(3) { left: 80%; top: 65%; animation-delay: 4s; }
+
+        /* Fall Card Particles */
+        .season-fall .card-particle { animation: float-down 9s linear infinite; color: #d68910; } /* Darker orange for fall leaves */
+        .season-fall .card-particle:nth-child(1) { left: 10%; top: 10%; animation-delay: 0s; }
+        .season-fall .card-particle:nth-child(2) { left: 35%; top: 5%; animation-delay: 3s; }
+        .season-fall .card-particle:nth-child(3) { left: 65%; top: 15%; animation-delay: 6s; }
+
+        /* Winter Card Particles */
+        .season-winter .card-particle { animation: float-down 10s linear infinite; color: #ffffff; } /* White for snowflakes */
+        .season-winter .card-particle:nth-child(1) { left: 5%; top: 5%; animation-delay: 0s; }
+        .season-winter .card-particle:nth-child(2) { left: 25%; top: 15%; animation-delay: 2s; }
+        .season-winter .card-particle:nth-child(3) { left: 50%; top: 10%; animation-delay: 4s; }
+        .season-winter .card-particle:nth-child(4) { left: 75%; top: 20%; animation-delay: 6s; }
+
+        /* Farm Types Section Particles */
+        #farm .particle {
+            animation: float-up 10s linear infinite;
+            color: #87ceeb; /* Light blue for bubbles */
+            font-size: 1.8rem;
+        }
+        #farm .particle:nth-child(1) { left: 10%; top: 90%; animation-delay: 0s; }
+        #farm .particle:nth-child(2) { left: 30%; top: 80%; animation-delay: 2s; }
+        #farm .particle:nth-child(3) { left: 50%; top: 70%; animation-delay: 4s; }
+        #farm .particle:nth-child(4) { left: 70%; top: 85%; animation-delay: 6s; }
+        #farm .particle:nth-child(5) { left: 90%; top: 75%; animation-delay: 8s; }
+
+        /* Community Center Section Particles */
+        #community .particle {
+            animation: float-up 12s linear infinite;
+            color: #e0b0ff; /* Light purple for gems */
+            font-size: 1.7rem;
+        }
+        #community .particle:nth-child(1) { left: 5%; top: 85%; animation-delay: 0s; }
+        #community .particle:nth-child(2) { left: 25%; top: 75%; animation-delay: 3s; }
+        #community .particle:nth-child(3) { left: 45%; top: 90%; animation-delay: 6s; }
+        #community .particle:nth-child(4) { left: 65%; top: 80%; animation-delay: 9s; }
+        #community .particle:nth-child(5) { left: 85%; top: 70%; animation-delay: 12s; }
+
+        /* Game Progress Section Particles */
+        .game-progress-section .particle {
+            animation: float-up 8s linear infinite;
+            color: var(--sdv-yellow); /* Golden sparkles */
+            font-size: 1.6rem;
+        }
+        .game-progress-section .particle:nth-child(1) { left: 10%; top: 90%; animation-delay: 0s; }
+        .game-progress-section .particle:nth-child(2) { left: 30%; top: 70%; animation-delay: 2s; }
+        .game-progress-section .particle:nth-child(3) { left: 50%; top: 85%; animation-delay: 4s; }
+        .game-progress-section .particle:nth-child(4) { left: 70%; top: 75%; animation-delay: 6s; }
+        #game-progress-section .particle:nth-child(5) { left: 90%; top: 90%; animation-delay: 8s; }
+
+        /* Newsletter Section Particles */
+        .newsletter-section .particle {
+            animation: float-up 9s linear infinite;
+            color: #ffd700; /* Gold for coins */
+            font-size: 1.8rem;
+        }
+        .newsletter-section .particle:nth-child(1) { left: 15%; top: 80%; animation-delay: 0s; }
+        .newsletter-section .particle:nth-child(2) { left: 40%; top: 90%; animation-delay: 2s; }
+        .newsletter-section .particle:nth-child(3) { left: 60%; top: 70%; animation-delay: 4s; }
+        .newsletter-section .particle:nth-child(4) { left: 85%; top: 85%; animation-delay: 6s; }
+
+        /* Cursor Trail */
+        .cursor-trail-particle {
+            position: absolute;
+            font-size: 1.2rem; /* Size of cursor trail particles */
+            opacity: 0;
+            pointer-events: none;
+            white-space: nowrap;
+            animation: fade-and-shrink 0.8s forwards; /* Faster fade for trail */
+            z-index: 9998; /* Below CRT overlay */
+            image-rendering: pixelated; /* Ensure pixelated look */
+        }
+
+        @keyframes fade-and-shrink {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(0); opacity: 0; }
+        }
+
     </style>
 </head>
 <body class="pixel-font animate-flicker">
@@ -769,6 +1001,9 @@
     <div class="pixel-grid-overlay"></div>
     <!-- Global CRT Scanline Overlay -->
     <div class="crt-scanline-overlay"></div>
+
+    <!-- Cursor Trail Container -->
+    <div id="cursor-trail-container"></div>
 
     <!-- Navigation -->
     <nav class="bg-[var(--sdv-darkgreen)] text-[var(--sdv-yellow)] pixel-font sticky top-0 z-50 shadow-lg border-b-6 border-[var(--sdv-brown)]">
@@ -819,8 +1054,8 @@
             
             <!-- Quote with background removed, now overlaying the main hero background -->
             <p class="pixel-font text-xl md:text-3xl max-w-3xl mx-auto quote-overlay-text">
-                <span class="text-[var(--sdv-yellow)] animate-sparkle">🌙</span> Drift into the countryside and grow something magical together! <span class="text-[var(--sdv-yellow)] animate-sparkle">🌾</span><br>
-                <small class="text-base block mt-3">"The coziest, most charming farm adventure — especially with someone you love." – Not IGN, just Doofy 💛</small>
+                <span class="text-[var(--sdv-yellow)] animate-sparkle">🌙</span> Tumble into farm life, where even weeds feel magical when I’m with you <span class="text-[var(--sdv-yellow)] animate-sparkle">🌾</span><br>
+                <small class="text-base block mt-3">“Every day’s a little chaotic, super cozy, and kinda perfect — just like us.” – Not IGN, just your loyal farmhand, Doofy 💛</small>
             </p>
             
             <!-- Removed the hero-section-buttons div and its content -->
@@ -829,7 +1064,7 @@
     </header>
 
     <!-- Game Features Section -->
-    <section class="py-20 bg-[var(--sdv-softcream)] relative overflow-hidden section-animate" id="features">
+    <section class="py-20 relative overflow-hidden section-animate" id="features">
         <div class="pixel-divider"></div>
         <div class="container mx-auto px-8 lg:px-10 text-center max-w-screen-xl">
             <div class="section-heading-wrapper">
@@ -837,10 +1072,18 @@
             </div>
             <p class="text-center mb-16 pixel-font text-lg text-gray-700">"So much to do, so little time!"</p>
             
+            <div class="particle-container">
+                <span class="particle" style="left: 10%; top: 80%;">🍃</span>
+                <span class="particle" style="left: 30%; top: 90%;">🌱</span>
+                <span class="particle" style="left: 50%; top: 70%;">🌾</span>
+                <span class="particle" style="left: 70%; top: 85%;">🌿</span>
+                <span class="particle" style="left: 90%; top: 75%;">🍃</span>
+            </div>
+
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
                 <!-- Feature 1: Farming & Crafting -->
                 <div class="feature-card bg-[var(--sdv-lightgreen)] rounded-xl overflow-hidden pixel-border shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-3">
-                    <div class="relative h-56 overflow-hidden border-b-4 border-[var(--sdv-brown)]">
+                    <div class="relative h-64 overflow-hidden border-b-4 border-[var(--sdv-brown)]">
                         <img src="vv12.png" alt="Farming" class="w-full h-full object-cover transition-transform duration-500 image-pixelated">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
                         <div class="absolute bottom-0 left-0 right-0 p-5">
@@ -851,18 +1094,18 @@
                         </div>
                     </div>
                     <div class="p-8 text-gray-800">
-                        <p class="mb-5 text-lg leading-relaxed">With Quackers leading the way and Doofy “helping,” we plant crops, raise fluffy friends, and turn eggs into mayo masterpieces (on purpose... mostly). Mayonnaise Machines, Kegs, and cozy farm vibes included!</p>
+                        <p class="mb-5 text-lg leading-relaxed">With Quackers running the show and Doofy enthusiastically following instructions, we grow crops, raise adorable animals, and somehow manage to turn eggs into mayo (intentionally… most of the time). Expect cozy vibes, clinking kegs, and the occasional farm crisis we laugh through together.</p>
                         <div class="flex flex-wrap gap-3 justify-center">
                             <span class="px-4 py-2 bg-green-100 text-green-800 rounded-full text-sm pixel-font border border-green-300 shadow-sm">🌽 28 Crops</span>
-                            <span class="px-4 py-2 bg-green-100 text-green-800 rounded-full text-sm pixel-font border border-green-300 shadow-sm">🐄 12 Animals</span>
-                            <span class="px-4 py-2 bg-green-100 text-green-800 rounded-full text-sm pixel-font border border-green-300 shadow-sm">🍓 100+ Recipes (some actually edible)</span>
+                            <span class="px-4 py-2 bg-green-100 text-green-800 rounded-full text-sm pixel-font border border-green-300 shadow-sm">🐄 12 Very Judgy Animals</span>
+                            <span class="px-4 py-2 bg-green-100 text-green-800 rounded-full text-sm pixel-font border border-green-300 shadow-sm">🍓 100+ Recipes (yes, some are edible… barely)</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Feature 2: Mining & Combat -->
                 <div class="feature-card bg-[var(--sdv-lightgreen)] rounded-xl overflow-hidden pixel-border shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-3">
-                    <div class="relative h-56 overflow-hidden border-b-4 border-[var(--sdv-brown)]">
+                    <div class="relative h-64 overflow-hidden border-b-4 border-[var(--sdv-brown)]">
                         <img src="vv11.png" alt="Mining" class="w-full h-full object-cover transition-transform duration-500 image-pixelated">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
                         <div class="absolute bottom-0 left-0 right-0 p-5">
@@ -873,18 +1116,18 @@
                         </div>
                     </div>
                     <div class="p-8 text-gray-800">
-                        <p class="mb-5 text-lg leading-relaxed">Quackers dives into danger like a pro — Doofy mostly brings snacks and panics. Together, we brave the mines, bonk monsters, and dig up shiny things to upgrade our tools (and occasionally... ourselves).</p>
+                        <p class="mb-5 text-lg leading-relaxed">Quackers charges into battle like a fearless legend — Doofy follows closely behind with snacks, moral support, and occasional screaming. We explore deep, bonk weird creatures, and dig up sparkly treasures to make our tools (and maybe ourselves) a little stronger.</p>
                         <div class="flex flex-wrap gap-3 justify-center">
-                            <span class="px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm pixel-font border border-blue-300 shadow-sm">🕳️ 120 Floors</span>
-                            <span class="px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm pixel-font border border-blue-300 shadow-sm">👾 20+ Monsters</span>
-                            <span class="px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm pixel-font border border-blue-300 shadow-sm">� 5 Tool Levels</span>
+                            <span class="px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm pixel-font border border-blue-300 shadow-sm">🕳️ 120 Floors (and too many ladders)</span>
+                            <span class="px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm pixel-font border border-blue-300 shadow-sm">👾 20+ Monsters (most of them scary, all of them bonkable)</span>
+                            <span class="px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm pixel-font border border-blue-300 shadow-sm">🛠️ 5 Tool Levels (Doofy still uses the wrong one sometimes)</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Feature 3: Festivals & Events -->
                 <div class="feature-card bg-[var(--sdv-lightgreen)] rounded-xl overflow-hidden pixel-border shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-3">
-                    <div class="relative h-56 overflow-hidden border-b-4 border-[var(--sdv-brown)]">
+                    <div class="relative h-64 overflow-hidden border-b-4 border-[var(--sdv-brown)]">
                         <img src="vv10.png" alt="Festivals" class="w-full h-full object-cover transition-transform duration-500 image-pixelated">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
                         <div class="absolute bottom-0 left-0 right-0 p-5">
@@ -895,11 +1138,11 @@
                         </div>
                     </div>
                     <div class="p-8 text-gray-800">
-                        <p class="mb-5 text-lg leading-relaxed">From chasing eggs to dancing with jellyfish under the moonlight, Quackers never misses a festival — and Doofy’s just happy to be her date (and eat the free snacks). Every season brings something to celebrate!</p>
+                        <p class="mb-5 text-lg leading-relaxed">Quackers arrives with a plan. Doofy arrives late, holding the wrong item, but smiling like a dork in love. From frantic egg hunts to slow-dancing with jellyfish under the stars, every festival is a mix of chaos, cuddles, and confetti. Somehow, we make it magical.</p>
                         <div class="flex flex-wrap gap-3 justify-center">
-                            <span class="px-4 py-2 bg-purple-100 text-purple-800 rounded-full text-sm pixel-font border border-purple-300 shadow-sm">🥚 8 Festivals</span>
-                            <span class="px-4 py-2 bg-purple-100 text-purple-800 rounded-full text-sm pixel-font tag border border-purple-300 shadow-sm">🎂 Birthdays</span>
-                            <span class="px-4 py-2 bg-purple-100 text-purple-800 rounded-full text-sm pixel-font tag border border-purple-300 shadow-sm">✨ Special Events & Surprises</span>
+                            <span class="px-4 py-2 bg-purple-100 text-purple-800 rounded-full text-sm pixel-font border border-purple-300 shadow-sm">🥚 8 Festivals (and at least 3 minor disasters)</span>
+                            <span class="px-4 py-2 bg-purple-100 text-purple-800 rounded-full text-sm pixel-font tag border border-purple-300 shadow-sm">🎂 Birthdays (we never forget each other’s 💛)</span>
+                            <span class="px-4 py-2 bg-purple-100 text-purple-800 rounded-full text-sm pixel-font tag border border-purple-300 shadow-sm">✨ Unexpected moments, stolen kiths, and seasonal chaos</span>
                         </div>
                     </div>
                 </div>
@@ -908,47 +1151,54 @@
     </section>
 
     <!-- About Section -->
-    <section id="about" class="py-20 bg-white relative section-animate">
+    <section id="about" class="py-20 relative section-animate">
         <div class="pixel-divider"></div>
         <div class="container mx-auto px-8 lg:px-10 text-center max-w-screen-xl">
             <div class="section-heading-wrapper">
                 <h2 class="pixel-font text-4xl md:text-5xl text-green-800 text-stroke">ABOUT THE GAME</h2>
             </div>
-            <p class="text-center mb-16 pixel-font text-lg text-gray-700">Quackers: "Just one more day…" – Doofy, pretending he has any say in this matter.</p>
+            <p class="text-center mb-16 pixel-font text-lg text-gray-700">Quackers: "Just one more day..." Doofy: hasn’t blinked in 3 hours, but would follow her into 100 more.</p>
+            
+            <div class="particle-container">
+                <span class="particle" style="left: 5%; top: 85%;">✨</span>
+                <span class="particle" style="left: 25%; top: 75%;">🌟</span>
+                <span class="particle" style="left: 45%; top: 90%;">✨</span>
+                <span class="particle" style="left: 65%; top: 80%;">🌟</span>
+                <span class="particle" style="left: 85%; top: 70%;">✨</span>
+            </div>
+
             <div class="flex flex-col md:flex-row items-center gap-12">
                 <div class="md:w-1/2">
                     <!-- Image Placeholder for About Section Farm -->
-                    <img src="vv5.png" alt="Stardew Valley Farm" class="w-full h-[450px] md:h-[600px] object-cover rounded-xl pixel-border shadow-2xl image-pixelated border-8 border-[var(--sdv-brown)]">
+                    <img src="vv5.png" alt="Stardew Valley Farm" class="w-full h-[450px] md:h-[600px] object-cover rounded-xl pixel-border shadow-2xl image-pixelated parallax-bg border-8 border-[var(--sdv-brown)]">
                 </div>
                 <div class="md:w-1/2 text-left">
-                    <p class="text-xl mb-8 leading-relaxed">Stardew Valley is where Quackers runs a tight farming operation… and Doofy mostly runs into fences.</p>
-                    <p class="text-xl mb-10 leading-relaxed">Armed with spreadsheets (her), snacks (me), and the sheer will to restart the day if anything goes slightly wrong, we’ve turned Grandpa’s humble plot into a booming mess of ducks, crops, cows, and complete, beautiful chaos. 
-                        She’s planning three steps ahead, I’m still holding a fish I accidentally gifted to someone’s grandma — and somehow, it works. We laugh, we hustle, we argue over sprinklers, and we always end the day (eventually) with hearts full of love and a backpack full of random stuff.
-                        It may not always be efficient, but it’s our perfectly messy little farm — and I wouldn’t trade it for anything.</p>
+                    <p class="text-xl mb-8 leading-relaxed">Stardew Valley is where Quackers runs a tight, optimized farming empire… and Doofy runs into fences. A lot.</p>
+                    <p class="text-xl mb-10 leading-relaxed">Armed with Quackers’ spreadsheets, my emergency snacks, and the shared understanding that we WILL restart the day if someone forgets to pet the chickens. We’ve turned Grandpa’s peaceful farm into a whirlwind of ducks, crops, cows, and joyful mayhem. Quackers is always three steps ahead. I’m usually two steps behind, accidentally giving a raw fish to someone’s grandma. And yet… it works. We hustle, we giggle, we passionately debate sprinkler layouts, and no matter what — we end the day (eventually) with hearts full of love and backpacks full of nonsense. And somehow… it works. We sprint. We scream. We emotionally argue over sprinkler placements. But we always end the day (around 4AM) with hearts full of love and a backpack full of absolutely useless but somehow essential junk. It’s not always efficient, but it’s our perfectly imperfect little farm. And I wouldn’t trade a single second of it. It’s chaotic. It’s messy. It’s magic. And it’s ours.</p>
                     <div class="grid grid-cols-2 gap-10">
                         <!-- Redesigned Farming Card -->
-                        <div class="about-game-card farming border-4 border-[var(--sdv-darkgreen)] shadow-lg hover:shadow-xl">
+                        <div class="about-game-card farming border-6 border-[var(--sdv-darkgreen)] shadow-lg hover:shadow-xl">
                             <i class="fas fa-tractor icon"></i>
                             <h3 class="font-bold pixel-font text-xl mb-2">Farming</h3>
-                            <p class="text-base">Quackers plans the farm. Doofy pets the cow. Chaos = thriving.</p>
+                            <p class="text-base">Quackers strategizes every square. Doofy pets the cow. Chaos? Thriving.</p>
                         </div>
                         <!-- Redesigned Fishing Card -->
-                        <div class="about-game-card fishing border-4 border-[var(--sdv-darkgreen)] shadow-lg hover:shadow-xl">
+                        <div class="about-game-card fishing border-6 border-[var(--sdv-darkgreen)] shadow-lg hover:shadow-xl">
                             <i class="fas fa-fish icon"></i>
                             <h3 class="font-bold pixel-font text-xl mb-2">Fishing</h3>
-                            <p class="text-base">Cast. Panic. Miss. Repeat.</p>
+                            <p class="text-base">Cast. Panic. Miss. Apologize to Linus. Repeat.</p>
                         </div>
                         <!-- Redesigned Mining Card -->
-                        <div class="about-game-card mining border-4 border-[var(--sdv-darkgreen)] shadow-lg hover:shadow-xl">
+                        <div class="about-game-card mining border-6 border-[var(--sdv-darkgreen)] shadow-lg hover:shadow-xl">
                             <i class="fas fa-gem icon"></i>
                             <h3 class="font-bold pixel-font text-xl mb-2">Mining</h3>
-                            <p class="text-base">She slays. I snack. Occasionally scream.</p>
+                            <p class="text-base">She slays. I snack. Occasionally scream. Perfect system.</p>
                         </div>
                         <!-- Redesigned Relationships Card -->
-                        <div class="about-game-card relationships border-4 border-[var(--sdv-darkgreen)] shadow-lg hover:shadow-xl">
+                        <div class="about-game-card relationships border-6 border-[var(--sdv-darkgreen)] shadow-lg hover:shadow-xl">
                             <i class="fas fa-heart icon"></i>
                             <h3 class="font-bold pixel-font text-xl mb-2">Relationships</h3>
-                            <p class="text-base">We gift. We gossip. We might be the town’s weirdest power couple.</p>
+                            <p class="text-base">We gift, gossip, and somehow became the town’s most chaotic power couple.</p>
                         </div>
                     </div>
                 </div>
@@ -957,13 +1207,21 @@
     </section>
 
     <!-- Characters Section -->
-    <section id="characters" class="py-20 bg-[var(--sdv-softgreen)] relative section-animate">
+    <section id="characters" class="py-20 relative overflow-hidden section-animate">
         <div class="pixel-divider"></div>
         <div class="container mx-auto px-8 lg:px-10 text-center max-w-screen-xl">
             <div class="section-heading-wrapper">
                 <h2 class="pixel-font text-4xl md:text-5xl text-green-800 text-stroke">MEET THE FAMILY</h2>
             </div>
             <p class="text-center mb-16 pixel-font text-lg text-gray-700">"Not just pixels — they’re part of the quacky little family we chose!"</p>
+            
+            <div class="particle-container">
+                <span class="particle" style="left: 15%; top: 10%;">🍂</span>
+                <span class="particle" style="left: 40%; top: 5%;">🍁</span>
+                <span class="particle" style="left: 60%; top: 15%;">🍂</span>
+                <span class="particle" style="left: 85%; top: 8%;">🍁</span>
+            </div>
+
             <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-10">
                 <!-- Character cards will be populated by JavaScript -->
             </div>
@@ -976,56 +1234,85 @@
     </section>
 
     <!-- Seasons Section -->
-    <section id="seasons" class="py-20 bg-[var(--sdv-softcream)] relative section-animate">
+    <section id="seasons" class="py-20 relative overflow-hidden section-animate">
         <div class="pixel-divider relative z-10"></div>
         <div class="container mx-auto px-8 lg:px-10 text-center relative z-10 max-w-screen-xl">
             <div class="section-heading-wrapper bg-[var(--sdv-darkgreen)] border-[var(--sdv-yellow)]">
                 <h2 class="pixel-font text-4xl md:text-5xl text-white text-stroke">SEASONS OF STARDEW</h2>
             </div>
-            <p class="text-center mb-16 pixel-font text-lg text-gray-700">"From flower blooms to snowstorms, every season’s a new adventure (and a chance for Doofy to forget what crops are in season)."</p>
+            <p class="text-center mb-16 pixel-font text-lg text-gray-700">Each season brings new colors, new festivals, and new reminders that Doofy still has no idea what grows in fall.</p>
+            
+            <div class="particle-container">
+                <span class="particle" style="left: 10%; top: 95%;">🌻</span>
+                <span class="particle" style="left: 30%; top: 80%;">🌾</span>
+                <span class="particle" style="left: 70%; top: 90%;">🌽</span>
+                <span class="particle" style="left: 90%; top: 75%;">🎃</span>
+            </div>
+
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
                 <div class="season-card-base season-spring">
                     <div class="absolute top-4 right-4 pixel-font text-3xl bg-black/40 px-3 py-1 rounded-full shadow-md">🌸</div>
-                    <img src="vv13.png" alt="Spring Season" class="image-pixelated w-full h-auto rounded-md shadow-md">
+                    <div class="card-particle-container">
+                        <span class="card-particle" style="left: 15%; top: 80%;">🌸</span>
+                        <span class="card-particle" style="left: 40%; top: 90%;">🌼</span>
+                        <span class="card-particle" style="left: 70%; top: 70%;">🌷</span>
+                    </div>
+                    <img src="vv13.png" alt="Spring Season" class="image-pixelated rounded-md shadow-md">
                     <h3 class="pixel-font text-3xl mb-4 text-stroke text-[var(--sdv-darkgreen)]">SPRING</h3>
-                    <p class="text-lg leading-relaxed text-[var(--sdv-text-dark)]">The valley wakes up in full bloom — flowers, sunshine, and a fresh start! Quackers plans the perfect crop layout while Doofy runs around chasing butterflies and forgetting where he planted the potatoes.</p>
+                    <p class="text-lg leading-relaxed text-[var(--sdv-text-dark)]">The valley stretches, yawns, and bursts into bloom. It's go-time for crops and chaos. Quackers maps out the farm like a tactical genius. Doofy? He's somewhere frolicking after butterflies and realizing too late that he planted potatoes in the wrong spot. Again.</p>
                     <div class="mt-6 flex flex-wrap gap-3 justify-center">
-                        <span class="bg-white text-green-800 px-4 py-2 rounded-full text-sm pixel-font tag border border-green-300">🍓 Strawberries</span>
-                        <span class="bg-white text-green-800 px-4 py-2 rounded-full text-sm pixel-font tag border border-green-300">🥔 Potatoes</span>
-                        <span class="bg-white text-green-800 px-4 py-2 rounded-full text-sm pixel-font tag border border-green-300">🥦 Cauliflower</span>
+                        <span class="bg-white text-green-800 px-4 py-2 rounded-full text-sm pixel-font tag border border-green-300">🍓 Strawberries (thriving under Quackers' reign)</span>
+                        <span class="bg-white text-green-800 px-4 py-2 rounded-full text-sm pixel-font tag border border-green-300">🥔 Potatoes (somewhere... hopefully)</span>
+                        <span class="bg-white text-green-800 px-4 py-2 rounded-full text-sm pixel-font tag border border-green-300">🥦 Cauliflower (Doofy thought it was a flower. It's not.)</span>
                     </div>
                 </div>
                 <div class="season-card-base season-summer">
                     <div class="absolute top-4 right-4 pixel-font text-3xl bg-black/40 px-3 py-1 rounded-full shadow-md">☀️</div>
-                    <img src="vv14.png" alt="Summer Season" class="image-pixelated w-full h-auto rounded-md shadow-md">
+                    <div class="card-particle-container">
+                        <span class="card-particle" style="left: 20%; top: 75%;">☀️</span>
+                        <span class="card-particle" style="left: 50%; top: 85%;">💧</span>
+                        <span class="card-particle" style="left: 80%; top: 65%;">🌞</span>
+                    </div>
+                    <img src="vv14.png" alt="Summer Season" class="image-pixelated rounded-md shadow-md">
                     <h3 class="pixel-font text-3xl mb-4 text-stroke text-[var(--sdv-darkblue)]">SUMMER</h3>
-                    <p class="text-lg leading-relaxed text-[var(--sdv-text-dark)]">Long days, warm nights, and fields full of juicy goodness! Quackers keeps the blueberries thriving while Doofy “accidentally” eats half the melon stash. It’s hot, hectic, and full of farm love.</p>
+                    <p class="text-lg leading-relaxed text-[var(--sdv-text-dark)]">It’s hot, it’s hectic, and the farm is bursting with fruity chaos. Quackers is laser-focused on maximizing yield. Doofy is in the field “helping,” aka eating melons and getting distracted by butterflies. The blueberries are thriving. The scarecrows are concerned.</p>
                     <div class="mt-6 flex flex-wrap gap-3 justify-center">
-                        <span class="bg-white text-blue-800 px-4 py-2 rounded-full text-sm pixel-font tag border border-blue-300">🫐 Blueberries</span>
-                        <span class="bg-white text-blue-800 px-4 py-2 rounded-full text-sm pixel-font tag border border-blue-300">🍈 Melons</span>
-                        <span class="bg-white text-blue-800 px-4 py-2 rounded-full text-sm pixel-font tag border border-blue-300">🍺 Hops</span>
+                        <span class="bg-white text-blue-800 px-4 py-2 rounded-full text-sm pixel-font tag border border-blue-300">🫐 Blueberries (watered daily… twice, just in case)</span>
+                        <span class="bg-white text-blue-800 px-4 py-2 rounded-full text-sm pixel-font tag border border-blue-300">🍈 Melons (Doofy: 7, Storage: 3)</span>
+                        <span class="bg-white text-blue-800 px-4 py-2 rounded-full text-sm pixel-font tag border border-blue-300">🍺 Hops (aka Doofy’s hiding spot)</span>
                     </div>
                 </div>
                 <div class="season-card-base season-fall">
                     <div class="absolute top-4 right-4 pixel-font text-3xl bg-black/40 px-3 py-1 rounded-full shadow-md">🍂</div>
-                    <img src="vv15.png" alt="Fall Season" class="image-pixelated w-full h-auto rounded-md shadow-md">
+                    <div class="card-particle-container">
+                        <span class="card-particle" style="left: 10%; top: 10%;">🍂</span>
+                        <span class="card-particle" style="left: 35%; top: 5%;">🍁</span>
+                        <span class="card-particle" style="left: 65%; top: 15%;">🍂</span>
+                    </div>
+                    <img src="vv15.png" alt="Fall Season" class="image-pixelated rounded-md shadow-md">
                     <h3 class="pixel-font text-3xl mb-4 text-stroke text-[var(--sdv-brown)]">FALL</h3>
-                    <p class="text-lg leading-relaxed text-[var(--sdv-text-dark)]">The leaves turn golden, the pumpkins get plump, and Quackers enters full harvest queen mode. Doofy’s busy taste-testing the grapes and totally not bribing judges at the Stardew Valley Fair.</p>
+                    <p class="text-lg leading-relaxed text-[var(--sdv-text-dark)]">The leaves are crisp, the pumpkins are thicc, and Quackers is ruling the farm like a seasonal goddess. Meanwhile, Doofy is “quality-checking” the grapes (by eating them) and whispering sweet nothings to the Grange Display judges. It's cozy, competitive, and just the right amount of unhinged.</p>
                     <div class="mt-6 flex flex-wrap gap-3 justify-center">
-                        <span class="bg-white text-orange-800 px-4 py-2 rounded-full text-sm pixel-font tag border border-orange-300">🎃 Pumpkins</span>
-                        <span class="bg-white text-orange-800 px-4 py-2 rounded-full text-sm pixel-font tag border border-orange-300">🍒 Cranberries</span>
-                        <span class="bg-white text-orange-800 px-4 py-2 rounded-full text-sm pixel-font tag border border-orange-300">🍇 Grapes</span>
+                        <span class="bg-white text-orange-800 px-4 py-2 rounded-full text-sm pixel-font tag border border-orange-300">🎃 Pumpkins (thicc, round, and festival-ready)</span>
+                        <span class="bg-white text-orange-800 px-4 py-2 rounded-full text-sm pixel-font tag border border-orange-300">🍒 Cranberries (organized by color-coded bins)</span>
+                        <span class="bg-white text-orange-800 px-4 py-2 rounded-full text-sm pixel-font tag border border-orange-300">🍇 Grapes (one for the basket, three for Doofy)</span>
                     </div>
                 </div>
                 <div class="season-card-base season-winter">
                     <div class="absolute top-4 right-4 pixel-font text-3xl bg-black/40 px-3 py-1 rounded-full shadow-md">❄️</div>
-                    <img src="vv9.png" alt="Winter Season" class="image-pixelated w-full h-auto rounded-md shadow-md">
+                    <div class="card-particle-container">
+                        <span class="card-particle" style="left: 5%; top: 5%;">❄️</span>
+                        <span class="card-particle" style="left: 25%; top: 15%;">🌨️</span>
+                        <span class="card-particle" style="left: 50%; top: 10%;">❄️</span>
+                        <span class="card-particle" style="left: 75%; top: 20%;">🌨️</span>
+                    </div>
+                    <img src="vv9.png" alt="Winter Season" class="image-pixelated rounded-md shadow-md">
                     <h3 class="pixel-font text-3xl mb-4 text-stroke text-[var(--sdv-darkblue)]">WINTER</h3>
-                    <p class="text-lg leading-relaxed text-[var(--sdv-text-dark)]">The valley naps under a snowy blanket, but Quackers keeps us busy mining, fishing, and gift-hunting for the Winter Star. Doofy mostly slips on ice and gives people the wrong presents.</p>
+                    <p class="text-lg leading-relaxed text-[var(--sdv-text-dark)]">The valley may be snoozing under a snowy blanket, but Quackers turns it into a full-blown productivity season. She’s mining, fishing, and masterfully prepping for the Feast of the Winter Star. Doofy? He’s slipping on ice, gifting rocks to the wrong villagers, and calling it “festive.”</p>
                     <div class="mt-6 flex flex-wrap gap-3 justify-center">
-                        <span class="bg-gray-800 text-white px-4 py-2 rounded-full text-sm pixel-font tag border border-gray-600">🌱 Winter Seeds</span>
-                        <span class="bg-gray-800 text-white px-4 py-2 rounded-full text-sm pixel-font tag border border-gray-600">💎 Crystal Fruit</span>
-                        <span class="bg-gray-800 text-white px-4 py-2 rounded-full text-sm pixel-font tag border border-gray-600">🍠 Snow Yam</span>
+                        <span class="bg-gray-800 text-white px-4 py-2 rounded-full text-sm pixel-font tag border border-gray-600">🌱 Winter Seeds (strategically planted by Quackers)</span>
+                        <span class="bg-gray-800 text-white px-4 py-2 rounded-full text-sm pixel-font tag border border-gray-600">💎 Crystal Fruit (too pretty to sell… so we hoard them)</span>
+                        <span class="bg-gray-800 text-white px-4 py-2 rounded-full text-sm pixel-font tag border border-gray-600">🍠 Snow Yam (Doofy thought it was a lost potato)</span>
                     </div>
                 </div>
             </div>
@@ -1033,47 +1320,56 @@
     </section>
 
     <!-- Farm Types Section -->
-    <section id="farm" class="py-20 bg-white relative section-animate">
+    <section id="farm" class="py-20 relative overflow-hidden section-animate">
         <div class="pixel-divider"></div>
         <div class="container mx-auto px-8 lg:px-10 text-center max-w-screen-xl">
             <div class="section-heading-wrapper">
                 <h2 class="pixel-font text-4xl md:text-5xl text-green-800 text-stroke">CHOOSE YOUR FARM</h2>
             </div>
-            <p class="text-center mb-16 pixel-font text-lg text-gray-700">“Step 1: Pick a farm. Step 2: Let Quackers do all the planning while Doofy picks the one with the cutest ducks.”</p>
+            <p class="text-center mb-16 pixel-font text-lg text-gray-700">Step 1: Choose a farm. Step 2: Let Quackers make a spreadsheet... while Doofy picks the one with the most adorable ducks and zero regard for logistics.</p>
+            
+            <div class="particle-container">
+                <span class="particle" style="left: 10%; top: 90%;">🫧</span>
+                <span class="particle" style="left: 30%; top: 80%;">💧</span>
+                <span class="particle" style="left: 50%; top: 70%;">🫧</span>
+                <span class="particle" style="left: 70%; top: 85%;">💧</span>
+                <span class="particle" style="left: 90%; top: 75%;">🫧</span>
+            </div>
+
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-                <div class="farm-type-card bg-[var(--sdv-lightgreen)] rounded-xl overflow-hidden pixel-border shadow-xl transform transition-transform hover:scale-105">
+                <div class="farm-type-card bg-[var(--sdv-lightgreen)] rounded-xl overflow-hidden pixel-border shadow-xl transform transition-transform hover:scale-105 flex flex-col">
                     <!-- Image Placeholder for Quackers Duck Farm -->
-                    <img src="vv18.png" alt="Quackers Duck Farm" class="w-full pixel-character image-pixelated border-b-4 border-[var(--sdv-brown)]">
-                    <div class="p-8">
+                    <img src="vv18.png" alt="Quackers Duck Farm" class="w-full h-64 object-cover pixel-character image-pixelated parallax-bg">
+                    <div class="p-8 flex flex-col flex-grow">
                         <h3 class="pixel-font text-2xl mb-3 text-[var(--sdv-darkgreen)] text-stroke">Quackers Duck Farm</h3>
-                        <p class="mb-5 text-lg leading-relaxed">A perfectly organized paradise where ducks roam free (but on a schedule). Designed by Quackers for maximum duck-to-pond efficiency, Doofy’s job is to feed them and not get in the way.</p>
+                        <p class="mb-5 text-lg leading-relaxed flex-grow">A meticulously managed ducktopia where every quack is accounted for. Designed by Quackers for optimal duck-to-pond ratios, with color-coded feeding charts and strictly enforced nap schedules. Doofy’s role? Feed the ducks, look cute, and try not to accidentally release them.</p>
                         <div class="flex justify-between text-base pixel-font mt-4">
-                            <span class="flex items-center gap-2 text-green-700"><i class="fas fa-duck text-2xl"></i> 85% Ducks</span>
-                            <span class="flex items-center gap-2 text-red-700"><i class="fas fa-question text-2xl"></i> 15% Doofy Confusion</span>
+                            <span class="flex items-center gap-2 text-green-700"><i class="fas fa-duck text-2xl"></i> 85% Ducks (living in luxury)</span>
+                            <span class="flex items-center gap-2 text-red-700"><i class="fas fa-question text-2xl"></i> 🤔 15% Doofy, mildly overwhelmed but very enthusiastic</span>
                         </div>
                     </div>
                 </div>
-                <div class="farm-type-card bg-[var(--sdv-lightgreen)] rounded-xl overflow-hidden pixel-border shadow-xl transform transition-transform hover:scale-105">
+                <div class="farm-type-card bg-[var(--sdv-lightgreen)] rounded-xl overflow-hidden pixel-border shadow-xl transform transition-transform hover:scale-105 flex flex-col">
                     <!-- Image Placeholder for Doofy's Greenhouse Grove -->
-                    <img src="vv16.png" alt="Doofy's Greenhouse Grove" class="w-full pixel-character image-pixelated border-b-4 border-[var(--sdv-brown)]">
-                    <div class="p-8">
+                    <img src="vv16.png" alt="Doofy's Greenhouse Grove" class="w-full h-64 object-cover pixel-character image-pixelated parallax-bg">
+                    <div class="p-8 flex flex-col flex-grow">
                         <h3 class="pixel-font text-2xl mb-3 text-[var(--sdv-darkgreen)] text-stroke">Doofy’s Greenhouse Grove</h3>
-                        <p class="mb-5 text-lg leading-relaxed">A cozy, slightly chaotic farm where plants grow strong (even if Doofy forgets to water them). Great for experimenting, goofing around, and maybe accidentally inventing a new crop.</p>
+                        <p class="mb-5 text-lg leading-relaxed flex-grow">A warm, slightly unhinged paradise where plants thrive despite Doofy’s questionable farming methods. Perfect for experimenting, vibing, and occasionally discovering a new hybrid by sheer accident (or planting the same thing three times).</p>
                         <div class="flex justify-between text-base pixel-font mt-4">
-                            <span class="flex items-center gap-2 text-green-700"><i class="fas fa-seedling text-2xl"></i> 70% Greenhouse Vibes</span>
-                            <span class="flex items-center gap-2 text-yellow-700"><i class="fas fa-exclamation-triangle text-2xl"></i> 30% "Oops, I planted it twice"</span>
+                            <span class="flex items-center gap-2 text-green-700"><i class="fas fa-seedling text-2xl"></i> 🌿 70% Cozy Greenhouse Magic</span>
+                            <span class="flex items-center gap-2 text-yellow-700"><i class="fas fa-exclamation-triangle text-2xl"></i> 🌱 30% “Wait… did I already plant this row?”</span>
                         </div>
                     </div>
                 </div>
-                <div class="farm-type-card bg-[var(--sdv-lightgreen)] rounded-xl overflow-hidden pixel-border shadow-xl transform transition-transform hover:scale-105">
+                <div class="farm-type-card bg-[var(--sdv-lightgreen)] rounded-xl overflow-hidden pixel-border shadow-xl transform transition-transform hover:scale-105 flex flex-col">
                     <!-- Image Placeholder for The Fishy Wishy Farm -->
-                    <img src="vv17.png" alt="The Fishy Wishy Farm" class="w-full pixel-character image-pixelated border-b-4 border-[var(--sdv-brown)]">
-                    <div class="p-8">
+                    <img src="vv17.png" alt="The Fishy Wishy Farm" class="w-full h-64 object-cover pixel-character image-pixelated parallax-bg">
+                    <div class="p-8 flex flex-col flex-grow">
                         <h3 class="pixel-font text-2xl mb-3 text-[var(--sdv-darkgreen)] text-stroke">The Fishy Wishy Farm</h3>
-                        <p class="mb-5 text-lg leading-relaxed">A watery wonderland full of fishing spots and adorable bridges. Quackers catches rare fish while Doofy just tries not to fall in the river (again).</p>
+                        <p class="mb-5 text-lg leading-relaxed flex-grow">A splashy paradise of cozy bridges, secret fishing spots, and occasional soaking. Quackers reels in rare treasures with precision. Doofy? He’s mostly tangled in seaweed, casting in the wrong direction, and trying very hard not to fall in. Again.</p>
                         <div class="flex justify-between text-base pixel-font mt-4">
-                            <span class="flex items-center gap-2 text-blue-700"><i class="fas fa-water text-2xl"></i> 50% Water</span>
-                            <span class="flex items-center gap-2 text-blue-700"><i class="fas fa-fish text-2xl"></i> 50% Splash</span>
+                            <span class="flex items-center gap-2 text-blue-700"><i class="fas fa-water text-2xl"></i> 🎣 50% Peaceful Fishing</span>
+                            <span class="flex items-center gap-2 text-blue-700"><i class="fas fa-fish text-2xl"></i> 💦 50% “DOOFY, NOT THE RIVER!”</span>
                         </div>
                     </div>
                 </div>
@@ -1082,23 +1378,32 @@
     </section>
 
     <!-- Community Center Section -->
-    <section id="community" class="py-20 bg-[var(--sdv-softcream)] relative section-animate">
+    <section id="community" class="py-20 relative overflow-hidden section-animate">
         <div class="pixel-divider"></div>
         <div class="container mx-auto px-8 lg:px-10 relative z-10 text-center max-w-screen-xl">
             <div class="section-heading-wrapper">
                 <h2 class="pixel-font text-4xl md:text-5xl text-green-800 text-stroke">COMMUNITY CENTER</h2>
             </div>
             <p class="text-center mb-16 pixel-font text-lg text-gray-700">Doofy & Quackers: fixing Pelican Town with love, snacks, and mild chaos.</p>
+            
+            <div class="particle-container">
+                <span class="particle" style="left: 5%; top: 85%;">💎</span>
+                <span class="particle" style="left: 25%; top: 75%;">⛏️</span>
+                <span class="particle" style="left: 45%; top: 90%;">💎</span>
+                <span class="particle" style="left: 65%; top: 80%;">⛏️</span>
+                <span class="particle" style="left: 85%; top: 70%;">💎</span>
+            </div>
+
             <div class="flex flex-col md:flex-row items-center gap-12">
                 <div class="md:w-1/2">
                     <!-- Image Placeholder for Community Center -->
-                    <img src="vv6.png" alt="Community Center" class="w-full h-[450px] md:h-[600px] object-cover rounded-xl pixel-border shadow-2xl animate-pulse-slow image-pixelated border-8 border-[var(--sdv-brown)]">
+                    <img src="vv6.png" alt="Community Center" class="w-full h-[450px] md:h-[600px] object-cover rounded-xl pixel-border shadow-2xl animate-pulse-slow image-pixelated parallax-bg border-8 border-[var(--sdv-brown)]">
                 </div>
                 <div class="md:w-1/2 text-left">
-                    <p class="text-xl mb-8 leading-relaxed">The Community Center used to be this quiet, crumbling place… but not on Quackers’ watch! With her planning (and my very enthusiastic bundle-delivering), we’ve been slowly bringing it back to life, one room, one crop, and one silly fish at a time. 🎣🧺</p>
-                    <p class="text-xl mb-10 leading-relaxed">It’s kind of magical, honestly. Every bundle we finish unlocks something new — like secret areas, fancy prizes, or just a happy little Junimo dance. And seeing the town come back to life? It’s the best feeling.
-                        We’re not just restoring Pelican Town... we’re making memories, together. 💛🦆🌾
-                        Doofy</p>
+                    <p class="text-xl mb-8 leading-relaxed">The Community Center used to be a creaky old building with more cobwebs than purpose… but Quackers wasn’t having any of that. With her plans, strategies, and determined sparkle, and my enthusiastic (if slightly misguided) item deliveries, we’ve been breathing life back into it — one bundle, one room, and one hilariously slippery fish at a time. 🎣🧺</p>
+                    <p class="text-xl mb-10 leading-relaxed">There’s something kind of magical about it. Every time we complete a bundle, the Junimos throw a tiny dance party, something new unlocks, and I get way too excited about it. Secret rooms, shiny rewards, weird forest magic — it's like a treasure hunt with spreadsheets.
+                        Watching Pelican Town slowly sparkle again? That’s the good stuff. We’re not just fixing up an old building... we’re building memories. Together. 💛🦆🌾
+                        <br><br>– Doofy</p>
                     <button class="pixel-button bg-purple-700 hover:bg-[#8e44ad]">
                         <i class="fas fa-book-open mr-3"></i> Learn About Bundles
                     </button>
@@ -1108,14 +1413,24 @@
     </section>
 
     <!-- Game Progress Section -->
-    <section class="py-20 bg-[var(--sdv-softcream)] relative overflow-hidden section-animate">
+    <section class="py-20 relative overflow-hidden section-animate game-progress-section">
         <div class="pixel-divider"></div>
         <div class="container mx-auto px-8 lg:px-10 text-center max-w-screen-xl">
             <div class="section-heading-wrapper">
                 <h2 class="pixel-font text-4xl md:text-5xl text-green-800 text-stroke">YOUR JOURNEY AWAITS</h2>
             </div>
-            <p class="text-center mb-16 pixel-font text-lg text-gray-700">Where Quackers runs the farm like a pro: schedules, strategy, and zero wasted minutes. Doofy? He’s just here to follow orders, be cute, and occasionally water the cat instead of the crops.</p>
+            <p class="text-center mb-16 pixel-font text-lg text-gray-700">Where Quackers runs the farm with military precision — every crop timed, every tool in place, every second accounted for. And Doofy? He’s the lovable whirlwind of confusion who waters the cat, misplaces the seeds, and somehow charms her anyway.
+                She sighs, rolls her eyes, mutters “Doofy…” But behind that serious face? She’s absolutely smitten.
+                <br><br>Because deep down, she wouldn’t want to farm with anyone else. 💛🦆</p>
             
+            <div class="particle-container">
+                <span class="particle" style="left: 10%; top: 90%;">✨</span>
+                <span class="particle" style="left: 30%; top: 70%;">🌟</span>
+                <span class="particle" style="left: 50%; top: 85%;">✨</span>
+                <span class="particle" style="left: 70%; top: 75%;">🌟</span>
+                <span class="particle" style="left: 90%; top: 90%;">✨</span>
+            </div>
+
             <div class="max-w-4xl mx-auto">
                 <!-- Progress Bar -->
                 <div class="mb-16">
@@ -1180,16 +1495,30 @@
     </section>
 
     <!-- Newsletter Section -->
-    <section class="py-20 bg-[var(--sdv-yellow)] text-green-900">
+    <section class="py-20 text-green-900 newsletter-section">
         <div class="container mx-auto px-8 lg:px-10 max-w-screen-xl text-center">
             <h2 class="pixel-font text-4xl mb-8 text-green-800 text-stroke">Join the Doofy & Quackers Gazette!</h2>
             <p class="mb-10 text-xl">Get all the latest Stardew Valley news, cozy updates, and silly farm tips from your favourite duo, delivered straight from our coop to your inbox. No spam, just love (and maybe a duck feather or two).</p>
+            
+            <div class="particle-container">
+                <span class="particle" style="left: 15%; top: 80%;">💰</span>
+                <span class="particle" style="left: 40%; top: 90%;">✨</span>
+                <span class="particle" style="left: 60%; top: 70%;">💰</span>
+                <span class="particle" style="left: 85%; top: 85%;">✨</span>
+            </div>
+
             <form class="flex flex-col md:flex-row gap-6 justify-center">
                 <input type="email" placeholder="Your email address" class="flex-grow max-w-md px-6 py-4 rounded-xl border-4 border-gray-400 focus:outline-none focus:ring-4 focus:ring-green-600 transition-all shadow-inner text-gray-800 bg-white/90 pixel-font text-lg" required>
                 <button type="submit" class="pixel-button bg-[var(--sdv-darkgreen)] hover:bg-[var(--sdv-green)] text-white">
                     <i class="fas fa-envelope mr-3"></i> Subscribe
                 </button>
             </form>
+            <!-- New "Next Adventure?" button moved here -->
+            <div class="mt-10 text-center">
+                <a href="law.html" class="pixel-button bg-blue-600 hover:bg-blue-700 text-white">
+                    <i class="fas fa-compass mr-3"></i> Next Adventure?
+                </a>
+            </div>
         </div>
     </section>
 
@@ -1212,7 +1541,12 @@
                 </div>
             </div>
             <div class="mt-12 pt-10 border-t-4 border-gray-700 text-center text-base text-gray-400">
-                <p>Stardew Valley has always been one of Quackers’ favorite games, and recently, she invited me (Doofy) to join her on the farm. At first, I didn’t quite get it... but now, I do. I made this little website as a birthday surprise for her, a tribute to the cozy world she loves and the memories we’re growing together. From planning perfect farm days to dreaming up duck, chicken, and cow empires, every moment with her in this game has become something special. This is for you, Quackers — happy birthday!💛🌾</p>
+                <p>Stardew Valley has always been one of Quackers’ favorite places — a cozy little world where everything has purpose, peace, and just the right amount of magic. Recently, she invited me to join her there… and I didn’t know then just how special it would become.
+                    At first, I was clumsy and confused — asking too many questions, forgetting where I planted things, and probably watering the wrong spots. But slowly, season by season, I started to understand. It’s not just about crops or festivals or pixel-perfect farms.
+                    It’s about us.
+                    So I made this little website as a birthday surprise — a small love letter to the game she adores, and the memories we’re creating in it together. From planning dream farms to laughing through the chaos, every moment with her has felt like something rare and beautiful.
+                    Happy Birthday, Quackers 💛
+                    <br><br>Thanks for letting me be part of your world — in Stardew, and everywhere else. �🦆</p>
             </div>
         </div>
     </footer>
@@ -1233,6 +1567,69 @@
         const currentDaySpan = document.getElementById('current-day');
         const currentYearSpan = document.getElementById('current-year');
 
+        // --- Tone.js Sound Effects Setup ---
+        // Initialize Tone.js context
+        const Tone = window.Tone; // Ensure Tone is accessible globally
+        let clickSynth, dingSynth, chirpSynth, rustleSynth, waterSynth;
+
+        async function setupAudio() {
+            try {
+                // Start Tone.js context (required for audio to play)
+                await Tone.start();
+                console.log("Audio context started.");
+
+                // Create simple synths for UI sounds
+                clickSynth = new Tone.MembraneSynth().toDestination();
+                dingSynth = new Tone.MetalSynth().toDestination();
+
+                // Create players for ambient sounds (using simple synth-like sounds or short tones)
+                chirpSynth = new Tone.Synth({
+                    oscillator: { type: "triangle" },
+                    envelope: { attack: 0.1, decay: 0.2, sustain: 0.1, release: 0.5 },
+                    volume: -20 // Very subtle
+                }).toDestination();
+
+                rustleSynth = new Tone.NoiseSynth({
+                    noise: { type: "white" },
+                    envelope: { attack: 0.01, decay: 0.2, sustain: 0, release: 0.3 },
+                    volume: -25 // Very subtle
+                }).toDestination();
+
+                waterSynth = new Tone.NoiseSynth({
+                    noise: { type: "pink" },
+                    envelope: { attack: 0.01, decay: 0.3, sustain: 0, release: 0.4 },
+                    volume: -22 // Very subtle
+                }).toDestination();
+
+            } catch (error) {
+                console.error("Error setting up audio context:", error);
+            }
+        }
+
+        // Play sound functions
+        function playClickSound() {
+            if (clickSynth) clickSynth.triggerAttackRelease("C4", "8n");
+        }
+
+        function playDingSound() {
+            if (dingSynth) dingSynth.triggerAttackRelease("G5", "16n");
+        }
+
+        function playChirpSound() {
+            if (chirpSynth) chirpSynth.triggerAttackRelease("C5", "8n");
+        }
+
+        function playRustleSound() {
+            if (rustleSynth) rustleSynth.triggerAttackRelease("8n");
+        }
+
+        function playWaterSound() {
+            if (waterSynth) waterSynth.triggerAttackRelease("8n");
+        }
+
+        // --- End Tone.js Setup ---
+
+
         // Function to update progress bar and message
         function updateProgress() {
             let totalMilestoneProgress = 0;
@@ -1241,6 +1638,7 @@
                     totalMilestoneProgress += milestones[key].value;
                 }
             }
+            const oldProgress = currentProgress;
             currentProgress = Math.min(100, Math.max(0, totalMilestoneProgress)); // Cap between 0 and 100
 
             progressBarFill.style.setProperty('--progress-width', `${currentProgress}%`);
@@ -1252,6 +1650,9 @@
             currentYearSpan.textContent = Math.floor(totalDays / 112) + 1; // 4 seasons * 28 days = 112 days per year
 
             updateJourneyMessage();
+            if (currentProgress > oldProgress && currentProgress % 25 === 0) { // Play ding on major progress milestones
+                playDingSound();
+            }
         }
 
         // Function to update dynamic journey message
@@ -1272,6 +1673,7 @@
 
         // Event listeners for progress buttons
         document.getElementById('increase-progress').addEventListener('click', () => {
+            playClickSound(); // Play sound on button click
             // Find an uncompleted milestone and complete it
             let completedOne = false;
             for (const key in milestones) {
@@ -1290,6 +1692,7 @@
         });
 
         document.getElementById('decrease-progress').addEventListener('click', () => {
+            playClickSound(); // Play sound on button click
             // Find a completed milestone and uncomplete it
             let uncompletedOne = false;
             const milestoneKeys = Object.keys(milestones).reverse(); // Uncomplete from last to first
@@ -1311,6 +1714,7 @@
         // Event listeners for milestone cards
         document.querySelectorAll('.milestone-card').forEach(card => {
             card.addEventListener('click', function() {
+                playClickSound(); // Play sound on card click
                 const milestoneId = this.dataset.milestoneId;
                 if (milestoneId) {
                     milestones[milestoneId].completed = !milestones[milestoneId].completed;
@@ -1450,14 +1854,68 @@
             characterContainer.appendChild(card);
         });
 
+        // --- Cursor Trail Effect ---
+        const cursorTrailContainer = document.getElementById('cursor-trail-container');
+        const cursorTrailEmojis = ['✨', '🌟']; // Emojis for the trail
+        let lastMouseX = 0;
+        let lastMouseY = 0;
+        let trailCount = 0;
+        const maxTrailParticles = 50; // Limit the number of particles for performance
+        const particleCreationInterval = 50; // Milliseconds between particle creation
+
+        let lastParticleTime = 0;
+
+        document.body.addEventListener('mousemove', function(e) {
+            const currentTime = Date.now();
+            if (currentTime - lastParticleTime < particleCreationInterval) {
+                return; // Throttle particle creation
+            }
+            lastParticleTime = currentTime;
+
+            // Only create a particle if the mouse has moved a significant amount
+            const distance = Math.sqrt(Math.pow(e.clientX - lastMouseX, 2) + Math.pow(e.clientY - lastMouseY, 2));
+            if (distance < 10) { // Adjust this threshold as needed
+                return;
+            }
+
+            lastMouseX = e.clientX;
+            lastMouseY = e.clientY;
+
+            const particle = document.createElement('span');
+            particle.className = 'cursor-trail-particle';
+            particle.textContent = cursorTrailEmojis[Math.floor(Math.random() * cursorTrailEmojis.length)];
+            particle.style.left = `${e.clientX}px`;
+            particle.style.top = `${e.clientY}px`;
+            
+            cursorTrailContainer.appendChild(particle);
+            trailCount++;
+
+            // Remove oldest particle if limit exceeded
+            if (trailCount > maxTrailParticles) {
+                cursorTrailContainer.removeChild(cursorTrailContainer.firstChild);
+                trailCount--;
+            }
+
+            // Remove particle after its animation
+            particle.addEventListener('animationend', () => {
+                if (particle.parentNode === cursorTrailContainer) {
+                    cursorTrailContainer.removeChild(particle);
+                    trailCount--;
+                }
+            });
+        });
+
+
         // Initialize effects
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() { // Made async
+            await setupAudio(); // Await audio setup
             setupIntersectionObserver();
             updateProgress(); // Initialize progress bar and message on load
             
-            // Add ripple effect to buttons
+            // Add ripple effect to buttons and play click sound
             document.querySelectorAll('.pixel-button').forEach(button => {
                 button.addEventListener('click', function(e) {
+                    playClickSound(); // Play sound on button click
                     const ripple = document.createElement('span');
                     ripple.className = 'ripple';
                     
@@ -1479,6 +1937,27 @@
                     setTimeout(() => ripple.remove(), 1000);
                 });
             });
+
+            // --- Ambient Sound Hovers ---
+            // Ensure elements exist before adding listeners
+            const featuresSection = document.getElementById('features');
+            const charactersSection = document.getElementById('characters');
+            const farmSection = document.getElementById('farm');
+
+            if (featuresSection) {
+                featuresSection.addEventListener('mouseenter', () => playChirpSound());
+                featuresSection.addEventListener('mouseleave', () => chirpSynth.triggerRelease());
+            }
+
+            if (charactersSection) {
+                charactersSection.addEventListener('mouseenter', () => playRustleSound());
+                charactersSection.addEventListener('mouseleave', () => rustleSynth.triggerRelease());
+            }
+
+            if (farmSection) {
+                farmSection.addEventListener('mouseenter', () => playWaterSound());
+                farmSection.addEventListener('mouseleave', () => waterSynth.triggerRelease());
+            }
         });
         
         // Smooth scrolling for anchor links
@@ -1496,11 +1975,26 @@
             });
         });
 
-        // Parallax effect for header
+        // Parallax effect for header and other parallax-bg elements
         window.addEventListener('scroll', function() {
             const scrollPosition = window.pageYOffset;
-            const parallaxElement = document.querySelector('.parallax');
-            parallaxElement.style.backgroundPositionY = `calc(50% + ${scrollPosition * 0.5}px)`;
+            
+            // Hero parallax
+            const heroParallaxElement = document.querySelector('header.parallax');
+            if (heroParallaxElement) {
+                heroParallaxElement.style.backgroundPositionY = `calc(50% + ${scrollPosition * 0.5}px)`;
+            }
+
+            // Other parallax-bg elements
+            document.querySelectorAll('.parallax-bg').forEach(img => {
+                const section = img.closest('section');
+                if (section) {
+                    const sectionTop = section.offsetTop;
+                    const relativeScroll = scrollPosition - sectionTop;
+                    // Adjust the multiplier for different parallax speeds
+                    img.style.transform = `translateY(${relativeScroll * 0.2}px)`; // Slower than hero, subtle depth
+                }
+            });
         });
 
         // Cloud animation for hero section (keyframes are in the main style block now)
