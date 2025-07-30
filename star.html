@@ -1113,9 +1113,10 @@
 
         <!-- Next Adventure Button Section -->
         <section class="py-16 px-6 bg-black border-t-4 border-white text-center">
-            <button id="next-adventure-button" class="game-button px-10 py-5 text-lg text-shadow-pixel">
+            <!-- Changed this from a button to an anchor tag to link to valley.html -->
+            <a href="valley.html" class="game-button px-10 py-5 text-lg text-shadow-pixel">
                 READY FOR THE NEXT LEVEL?
-            </button>
+            </a>
         </section>
 
         <!-- Footer -->
@@ -1374,13 +1375,6 @@
             if (!isNaN(seekTime)) { // Ensure seekTime is a valid number
                 audio.currentTime = seekTime;
             }
-        });
-
-        // --- Next Adventure Button Logic ---
-        const nextAdventureButton = document.getElementById('next-adventure-button');
-        nextAdventureButton.addEventListener('click', function() {
-            // Placeholder for next adventure, could be another game or section
-            showCustomMessage("THE NEXT ADVENTURE AWAITS! (Feature not yet implemented)");
         });
 
         // Initial UI update for music player
