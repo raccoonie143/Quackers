@@ -10,57 +10,83 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Font: Inter for a modern look -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Particles.js CDN for background effects -->
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
             scroll-behavior: smooth;
-            background-color: #0f172a; /* Deeper dark background (slate-950) */
-            color: #e2e8f0; /* Light gray text for readability (gray-200) */
+            background-color: #0A0A0F; /* Very dark almost black */
+            color: #E0E0E0; /* Light gray text for readability */
             position: relative;
             overflow-x: hidden; /* Prevent horizontal scroll from animations */
         }
 
-        /* Subtle Animated Background Effect */
-        body::before {
-            content: '';
-            position: fixed;
+        /* Animated Gradient Overlays for Sections */
+        .section-bg-gradient {
+            position: absolute;
             inset: 0;
             z-index: -1;
-            background: radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.05) 0%, rgba(15, 23, 42, 0) 60%),
-                        radial-gradient(circle at 90% 80%, rgba(59, 130, 246, 0.05) 0%, rgba(15, 23, 42, 0) 60%);
-            background-size: 150% 150%;
-            animation: subtleGradientShift 30s ease-in-out infinite alternate;
+            opacity: 0.08; /* More subtle overlay */
+            pointer-events: none;
         }
-
-        @keyframes subtleGradientShift {
+        .section-bg-gradient.blue-purple {
+            background: radial-gradient(circle at 20% 80%, rgba(74, 144, 226, 0.08), transparent 70%), /* Darker blue */
+                        radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.08), transparent 70%); /* Muted purple */
+            background-size: 200% 200%;
+            animation: gradientShift 25s ease-in-out infinite alternate;
+        }
+        .section-bg-gradient.green-blue {
+            background: radial-gradient(circle at 10% 90%, rgba(0, 196, 184, 0.08), transparent 70%), /* Subtle teal */
+                        radial-gradient(circle at 90% 10%, rgba(74, 144, 226, 0.08), transparent 70%); /* Darker blue */
+            background-size: 200% 200%;
+            animation: gradientShift 20s ease-in-out infinite alternate-reverse;
+        }
+        @keyframes gradientShift {
             0% { background-position: 0% 0%; }
             100% { background-position: 100% 100%; }
         }
 
+        /* Particles.js Container Styling */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -2; /* Ensure particles are behind everything */
+            background-color: transparent;
+        }
+
         /* Navigation Bar Enhancements */
         .navbar {
-            backdrop-filter: blur(8px); /* Subtle blur effect */
-            background-color: rgba(15, 23, 42, 0.85); /* Slightly transparent background */
-            transition: background-color 0.3s ease-in-out;
+            backdrop-filter: blur(15px); /* Stronger blur effect */
+            background-color: rgba(10, 10, 15, 0.95); /* Very dark transparent background */
+            transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            border-bottom: 1px solid rgba(74, 144, 226, 0.2); /* Subtle bottom border */
         }
         .navbar.scrolled {
-            background-color: rgba(15, 23, 42, 0.95); /* More opaque when scrolled */
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            background-color: rgba(10, 10, 15, 0.98); /* More opaque when scrolled */
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.8);
         }
 
         /* Navigation Link Underline Effect */
         .nav-link {
             position: relative;
-            padding-bottom: 4px;
+            padding-bottom: 8px; /* Increased padding for underline */
+            font-weight: 500;
+            color: #C0C0C0; /* Lighter gray for links */
         }
         .nav-link::after {
             content: '';
             position: absolute;
             width: 0;
-            height: 2px;
+            height: 3px;
             bottom: 0;
-            left: 0;
-            background-color: #3b82f6; /* Blue-500 for accent */
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(to right, #4A90E2, #8B5CF6); /* Blue to Purple gradient */
+            border-radius: 9999px;
             transition: width 0.3s ease-in-out;
         }
         .nav-link:hover::after {
@@ -69,8 +95,9 @@
 
         /* Mobile Menu Slide-in Animation */
         #mobile-menu {
-            transition: transform 0.3s ease-out;
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Ease-in-out cubic-bezier */
             transform: translateY(-100%);
+            background-color: #1A1A1F; /* Darker menu background */
         }
         #mobile-menu.active {
             transform: translateY(0);
@@ -78,85 +105,132 @@
 
         /* Card Hover Effect */
         .card-hover-effect {
-            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+            transition: transform 0.4s ease-out, box-shadow 0.4s ease-out;
+            border: 1px solid #282830; /* Initial subtle border */
+            position: relative;
+            overflow: hidden;
+            background-color: #1C1C22; /* Darker card background */
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3); /* Subtle inner shadow */
+        }
+        .card-hover-effect::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 0.75rem; /* rounded-xl */
+            padding: 2px; /* controls the thickness of the glow */
+            background: linear-gradient(45deg, #4A90E2, #8B5CF6, #00C4B8); /* Gradient for glow */
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.4s ease-out;
         }
         .card-hover-effect:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.5), 0 10px 15px -8px rgba(0, 0, 0, 0.2);
+            transform: translateY(-12px); /* More pronounced lift */
+            box-shadow: 0 30px 50px -20px rgba(0, 0, 0, 0.9), 0 20px 30px -15px rgba(0, 0, 0, 0.6);
+            border-color: transparent; /* Hide original border */
+        }
+        .card-hover-effect:hover::before {
+            opacity: 1; /* Show glow on hover */
         }
 
-        /* Button Hover Effect */
+        /* Button Styling */
         .btn-primary {
-            transition: background-color 0.3s ease-out, transform 0.3s ease-out, box-shadow 0.3s ease-out;
+            background: linear-gradient(to right, #4A90E2, #8B5CF6); /* Blue to Purple */
+            transition: all 0.4s ease-out;
+            box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4);
         }
         .btn-primary:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 8px 15px rgba(59, 130, 246, 0.4);
+            background: linear-gradient(to right, #8B5CF6, #4A90E2); /* Reverse gradient */
+            transform: translateY(-5px) scale(1.04);
+            box-shadow: 0 12px 30px rgba(139, 92, 246, 0.6);
         }
         .btn-secondary {
-            transition: background-color 0.3s ease-out, color 0.3s ease-out, transform 0.3s ease-out, border-color 0.3s ease-out;
+            background-color: transparent;
+            border: 2px solid #8B5CF6; /* Purple border */
+            color: #8B5CF6;
+            transition: all 0.4s ease-out;
         }
         .btn-secondary:hover {
-            background-color: #e2e8f0; /* gray-200 */
-            color: #1e40af; /* blue-800 */
-            border-color: #e2e8f0;
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 8px 15px rgba(226, 232, 240, 0.1);
+            background-color: #8B5CF6;
+            color: #fff;
+            transform: translateY(-5px) scale(1.04);
+            box-shadow: 0 12px 30px rgba(139, 92, 246, 0.5);
         }
 
         /* Form Input Styling */
         .form-input {
-            background-color: #1f2937; /* Darker gray for input background (gray-800) */
-            color: #e2e8f0; /* Light gray for input text (gray-200) */
-            border-color: #374151; /* Gray-700 for border */
+            background-color: #1A1A1F; /* Darker input background */
+            color: #E0E0E0;
+            border-color: #4A90E2; /* Blue for border */
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
         .form-input::placeholder {
-            color: #9ca3af; /* Gray-400 for placeholder */
+            color: #909090; /* Muted gray for placeholder */
         }
         .form-input:focus {
-            border-color: #3b82f6; /* Blue-500 */
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.35); /* Stronger focus ring */
-            outline: none; /* Remove default outline */
+            border-color: #8B5CF6; /* Purple-500 */
+            box-shadow: 0 0 0 5px rgba(139, 92, 246, 0.5); /* Stronger focus ring */
+            outline: none;
         }
 
         /* Section Heading Underline Effect */
         .section-heading-line {
-            width: 4rem;
-            height: 0.25rem;
-            background-color: #3b82f6; /* Blue-500 */
-            margin: 1.5rem auto 0;
+            width: 6rem; /* Initial width */
+            height: 0.4rem;
+            background: linear-gradient(to right, #4A90E2, #8B5CF6);
+            margin: 2rem auto 0; /* More space below heading */
             border-radius: 9999px;
-            transition: width 0.5s ease-out; /* Animation for the line */
+            transition: width 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
-        .section-heading:hover .section-heading-line {
-            width: 6rem; /* Expand on hover */
+        .section-heading.in-view .section-heading-line {
+            width: 10rem; /* Expand on view */
         }
 
         /* Hero Section Background */
         .hero-section {
-            background: linear-gradient(rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.9)), url('https://images.unsplash.com/photo-1589829545856-d10d557cf95f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background: linear-gradient(rgba(10, 10, 15, 0.98), rgba(10, 10, 15, 0.98)), url('https://images.unsplash.com/photo-1589829545856-d10d557cf95f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(74, 144, 226, 0.15), transparent 70%); /* Blue glow */
+            animation: pulseGlow 18s ease-in-out infinite alternate;
+        }
+        @keyframes pulseGlow {
+            0% { transform: scale(1); opacity: 0.15; }
+            50% { transform: scale(1.1); opacity: 0.25; }
+            100% { transform: scale(1); opacity: 0.15; }
         }
 
         /* About Section Image Overlay */
         .about-image-wrapper {
             position: relative;
             transition: transform 0.5s ease-out, box-shadow 0.5s ease-out;
+            border: 2px solid transparent; /* Initial transparent border for glow */
+            border-image: linear-gradient(45deg, #4A90E2, #8B5CF6) 1;
+            border-image-slice: 1;
+            box-shadow: 0 0 25px rgba(74, 144, 226, 0.3);
         }
         .about-image-wrapper::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(to top right, rgba(59, 130, 246, 0.3), rgba(15, 23, 42, 0.3)); /* Subtle overlay */
+            background: linear-gradient(to top right, rgba(74, 144, 226, 0.25), rgba(139, 92, 246, 0.25)); /* Subtle overlay */
             border-radius: 0.75rem; /* rounded-xl */
             z-index: 1;
             transition: opacity 0.5s ease, background 0.5s ease;
         }
         .about-image-wrapper:hover::before {
-            background: linear-gradient(to top right, rgba(59, 130, 246, 0.5), rgba(15, 23, 42, 0.5)); /* More intense on hover */
+            background: linear-gradient(to top right, rgba(74, 144, 226, 0.4), rgba(139, 92, 246, 0.4)); /* More intense on hover */
         }
         .about-image {
             position: relative;
@@ -164,151 +238,16 @@
         }
         .about-image-wrapper:hover {
             transform: scale(1.03);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
-        }
-
-        /* Case Study Specific Styles */
-        .case-study-card {
-            cursor: pointer;
-            overflow: hidden;
-            transition: all 0.5s ease-in-out;
-            position: relative;
-            border: 1px solid #374151; /* Gray-700 subtle border */
-            transform-origin: center;
-            display: flex;
-            flex-direction: column;
-        }
-        .case-study-card:hover {
-            border-color: #3b82f6; /* Blue-500 border on hover */
-            transform: translateY(-8px);
-            box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.5), 0 10px 15px -8px rgba(0, 0, 0, 0.2);
-        }
-
-        .case-study-image-container {
-            position: relative;
-            overflow: hidden;
-            border-radius: 0.75rem 0.75rem 0 0;
-        }
-        .case-study-image {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-        .case-study-card:hover .case-study-image {
-            transform: scale(1.05);
-        }
-
-        .case-study-content {
-            padding: 1.5rem;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .case-study-details {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.6s ease-in-out, opacity 0.4s ease-in-out;
-            opacity: 0;
-            padding-top: 0;
-        }
-
-        .case-study-card.expanded .case-study-details {
-            max-height: 600px; /* Sufficiently large value */
-            opacity: 1;
-            padding-top: 1.5rem;
-        }
-
-        .toggle-icon {
-            position: absolute;
-            top: 1.5rem;
-            right: 1.5rem;
-            color: #93c5fd; /* Blue-300 */
-            font-size: 1.75rem;
-            transition: transform 0.3s ease, color 0.3s ease, background-color 0.3s ease;
-            background-color: rgba(30, 64, 175, 0.2);
-            border-radius: 50%;
-            padding: 0.5rem;
-            z-index: 10;
-        }
-
-        .case-study-card.expanded .toggle-icon {
-            transform: rotate(45deg);
-            color: #ef4444; /* Red for close */
-            background-color: rgba(239, 68, 68, 0.2);
-        }
-
-        /* Testimonial Carousel Specific Styles */
-        .testimonial-carousel-container {
-            position: relative;
-            overflow: hidden;
-        }
-        .testimonial-carousel-track {
-            display: flex;
-            transition: transform 0.5s ease-in-out;
-            scroll-snap-type: x mandatory; /* Enable scroll snapping */
-            -webkit-overflow-scrolling: touch; /* For smooth scrolling on iOS */
-        }
-        .testimonial-carousel-track > div {
-            flex: 0 0 100%; /* Each card takes full width of container */
-            scroll-snap-align: start; /* Snap to start of each card */
-        }
-        @media (min-width: 768px) { /* md breakpoint */
-            .testimonial-carousel-track > div {
-                flex: 0 0 calc(50% - 1.25rem); /* Two cards with gap */
-            }
-        }
-        @media (min-width: 1024px) { /* lg breakpoint */
-            .testimonial-carousel-track > div {
-                flex: 0 0 calc(33.333% - 1.333rem); /* Three cards with gap */
-            }
-        }
-
-        .carousel-button {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: rgba(59, 130, 246, 0.7); /* Blue-500 with opacity */
-            color: white;
-            padding: 0.75rem 1rem;
-            border-radius: 9999px;
-            cursor: pointer;
-            z-index: 20;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-        }
-        .carousel-button:hover {
-            background-color: #3b82f6; /* Solid blue-500 */
-            transform: translateY(-50%) scale(1.1);
-        }
-        .carousel-button.left { left: 1rem; }
-        .carousel-button.right { right: 1rem; }
-
-        .carousel-dots {
-            display: flex;
-            justify-content: center;
-            margin-top: 2rem;
-            gap: 0.75rem;
-        }
-        .dot {
-            width: 0.75rem;
-            height: 0.75rem;
-            background-color: rgba(59, 130, 246, 0.4); /* Blue-500 with opacity */
-            border-radius: 50%;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-        }
-        .dot.active {
-            background-color: #3b82f6; /* Solid blue-500 */
-            transform: scale(1.2);
+            box-shadow: 0 0 40px rgba(74, 144, 226, 0.8), 0 0 25px rgba(139, 92, 246, 0.6);
         }
 
         /* Testimonial Card Styling */
         .testimonial-card {
-            background-color: #1f2937; /* Gray-800 */
-            border: 1px solid #374151; /* Gray-700 */
+            background-color: #1C1C22;
+            border: 1px solid #282830;
             position: relative;
             overflow: hidden;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3); /* Subtle inner shadow */
         }
         .testimonial-card::before {
             content: "\201C"; /* Left double quotation mark */
@@ -316,8 +255,8 @@
             position: absolute;
             top: 0.5rem;
             left: 1rem;
-            font-size: 8rem; /* Large quote icon */
-            color: rgba(59, 130, 246, 0.1); /* Very subtle blue */
+            font-size: 8rem;
+            color: rgba(139, 92, 246, 0.05); /* Very subtle purple */
             z-index: 0;
             line-height: 1;
         }
@@ -326,131 +265,150 @@
             z-index: 1;
         }
         .testimonial-author-img {
-            border: 3px solid #3b82f6; /* Blue border for author image */
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2); /* Subtle blue glow */
+            border: 3px solid #8B5CF6; /* Purple border for author image */
+            box-shadow: 0 0 0 5px rgba(139, 92, 246, 0.3);
         }
+        .testimonial-carousel-container .carousel-button {
+            display: none; /* Hide buttons */
+        }
+        .testimonial-carousel-container .dot {
+            background-color: rgba(74, 144, 226, 0.4);
+        }
+        .testimonial-carousel-container .dot.active {
+            background-color: #4A90E2;
+            transform: scale(1.3);
+        }
+
 
         /* Milestones Section Specifics */
         .milestone-item {
-            background-color: #1f2937; /* Gray-800 */
-            border: 1px solid #374151; /* Gray-700 */
-            padding: 2.5rem; /* Increased padding */
+            background-color: #1C1C22;
+            border: 1px solid #282830;
+            padding: 2.5rem;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3); /* Subtle inner shadow */
         }
-        .milestone-number-display { /* Class for the animated number */
-            font-size: 4rem; /* Even larger for impact */
-            font-weight: 800; /* font-extrabold */
-            color: #60a5fa; /* Blue-400 */
+        .milestone-number-display {
+            font-size: 5rem; /* Even larger for impact */
+            font-weight: 800;
+            color: #00C4B8; /* Teal accent */
             line-height: 1;
-            margin-bottom: 0.75rem; /* More space */
-            text-shadow: 0 0 15px rgba(96, 165, 250, 0.4); /* Subtle glow */
+            margin-bottom: 1rem;
+            text-shadow: 0 0 25px rgba(0, 196, 184, 0.8); /* Stronger glow */
         }
-        .milestone-latin-title { /* Class for the Latin text */
-            font-size: 2rem; /* text-3xl, slightly smaller to fit better below the large number */
-            font-weight: 700; /* font-bold */
-            color: #93c5fd; /* Lighter blue for highlighting */
-            margin-bottom: 0.75rem; /* More space */
+        .milestone-latin-title {
+            font-size: 2.5rem; /* text-4xl */
+            font-weight: 700;
+            color: #4A90E2; /* Blue for highlighting */
+            margin-bottom: 1rem;
             line-height: 1.2;
         }
         .milestone-label {
-            font-size: 1.125rem; /* text-lg */
-            font-weight: 500; /* font-medium */
-            color: #9ca3af; /* Gray-400 */
+            font-size: 1.35rem; /* text-xl */
+            font-weight: 500;
+            color: #C0C0C0; /* Light gray */
         }
 
         /* Awards & Press Section Specifics */
         .award-card {
-            background-color: #1f2937; /* Gray-800 */
-            border: 1px solid #374151; /* Gray-700 */
+            background-color: #1C1C22;
+            border: 1px solid #282830;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3); /* Subtle inner shadow */
         }
         .award-logo-img {
-            filter: grayscale(100%) brightness(150%); /* Lighten and desaturate for dark theme */
-            transition: filter 0.3s ease;
+            filter: grayscale(100%) brightness(200%); /* Lighten and desaturate for dark theme */
+            transition: filter 0.4s ease;
         }
         .award-card:hover .award-logo-img {
             filter: grayscale(0%) brightness(100%); /* Color on hover */
         }
         
         .news-item-card {
-            background-color: #1f2937; /* Gray-800 */
-            border: 1px solid #374151; /* Gray-700 */
+            background-color: #1C1C22;
+            border: 1px solid #282830;
             overflow: hidden;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3); /* Subtle inner shadow */
         }
         .news-image {
-            transition: transform 0.3s ease;
+            transition: transform 0.4s ease;
         }
         .news-item-card:hover .news-image {
-            transform: scale(1.05);
+            transform: scale(1.1); /* More pronounced zoom */
         }
 
         /* Case Results Section Specifics */
         .result-card {
-            background-color: #1f2937; /* Gray-800 */
-            border: 1px solid #374151; /* Gray-700 */
+            background-color: #1C1C22;
+            border: 1px solid #282830;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3); /* Subtle inner shadow */
         }
         .result-amount {
-            font-size: 2.75rem; /* Slightly larger */
-            font-weight: 800; /* font-extrabold */
-            color: #34d399; /* Green-400 for success */
-            text-shadow: 0 0 10px rgba(52, 211, 153, 0.4); /* Subtle glow */
+            font-size: 3.5rem; /* Larger */
+            font-weight: 800;
+            color: #4ADE80; /* Green accent */
+            text-shadow: 0 0 20px rgba(74, 222, 128, 0.8); /* Stronger glow */
         }
         .result-description {
-            color: #9ca3af; /* Gray-400 */
+            color: #C0C0C0; /* Light gray */
         }
 
         /* Practice Area Card Specifics */
         .practice-card {
-            background-color: #1f2937; /* Gray-800 */
-            border: 1px solid #374151; /* Gray-700 */
+            background-color: #1C1C22;
+            border: 1px solid #282830;
             position: relative;
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            justify-content: space-between; /* Pushes button to bottom */
+            justify-content: space-between;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3); /* Subtle inner shadow */
         }
         .practice-card-icon-wrapper {
-            background: linear-gradient(to bottom right, rgba(59, 130, 246, 0.2), rgba(15, 23, 42, 0)); /* Subtle gradient behind icon */
+            background: linear-gradient(to bottom right, rgba(74, 144, 226, 0.2), rgba(139, 92, 246, 0.1)); /* Subtle gradient behind icon */
             display: inline-flex;
-            padding: 1.25rem; /* Increased padding */
+            padding: 1.75rem; /* Increased padding */
             border-radius: 0.75rem;
             margin-bottom: 1.5rem;
-            transition: background 0.3s ease;
+            transition: background 0.4s ease;
         }
         .practice-card:hover .practice-card-icon-wrapper {
-            background: linear-gradient(to bottom right, rgba(59, 130, 246, 0.4), rgba(15, 23, 42, 0.1));
+            background: linear-gradient(to bottom right, rgba(74, 144, 226, 0.4), rgba(139, 92, 246, 0.2));
         }
         .practice-card-icon {
-            color: #3b82f6; /* Blue-500 */
-            font-size: 4rem; /* Larger icon */
+            color: #8B5CF6; /* Purple accent */
+            font-size: 5rem; /* Larger icon */
+            text-shadow: 0 0 20px rgba(139, 92, 246, 0.6);
         }
         .practice-card-link {
             display: inline-flex;
             align-items: center;
             font-weight: 600;
-            color: #60a5fa; /* Blue-400 */
+            color: #4A90E2; /* Blue for links */
             transition: color 0.3s ease;
         }
         .practice-card-link:hover {
-            color: #93c5fd; /* Blue-300 */
+            color: #00C4B8; /* Teal on hover */
         }
         .practice-card-link i {
-            margin-left: 0.5rem;
+            margin-left: 0.75rem;
             transition: transform 0.3s ease;
         }
         .practice-card-link:hover i {
-            transform: translateX(5px);
+            transform: translateX(10px); /* More pronounced arrow movement */
         }
 
         /* General Section Padding */
         section {
-            padding-top: 6rem; /* Consistent top padding for sections */
-            padding-bottom: 6rem; /* Consistent bottom padding */
+            padding-top: 10rem; /* Consistent top padding for sections */
+            padding-bottom: 10rem; /* Consistent bottom padding */
+            position: relative; /* For background gradients */
+            overflow: hidden; /* Ensure gradients don't spill */
         }
 
         /* Animation Keyframes for Fade-in-up */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(40px); /* More pronounced lift */
             }
             to {
                 opacity: 1;
@@ -458,18 +416,42 @@
             }
         }
         .animate-fade-in-up {
-            animation: fadeInUp 0.8s ease-out forwards;
+            animation: fadeInUp 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; /* Longer, smoother animation */
             opacity: 0; /* Start invisible */
         }
         .delay-100 { animation-delay: 0.1s; }
         .delay-200 { animation-delay: 0.2s; }
         .delay-300 { animation-delay: 0.3s; }
-        .delay-400 { animation-delay: 0.4s; } /* Added for more granular control */
+        .delay-400 { animation-delay: 0.4s; }
         .delay-500 { animation-delay: 0.5s; }
+        .delay-600 { animation-delay: 0.6s; }
+        .delay-700 { animation-delay: 0.7s; }
+        .delay-800 { animation-delay: 0.8s; }
+        .delay-900 { animation-delay: 0.9s; }
+        .delay-1000 { animation-delay: 1.0s; }
 
+        /* Diagonal separator for About sections */
+        .diagonal-separator {
+            position: relative;
+            padding-bottom: 6rem; /* Adjust as needed */
+        }
+        .diagonal-separator::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px; /* Line thickness */
+            background: linear-gradient(to right, #4A90E2, transparent);
+            transform: skewY(-1deg); /* Creates the diagonal effect */
+            transform-origin: 0% 100%;
+        }
     </style>
 </head>
 <body class="bg-gray-950 text-gray-100">
+
+    <!-- Particles.js Container -->
+    <div id="particles-js"></div>
 
     <!-- Navigation Bar -->
     <nav class="navbar fixed w-full z-50 py-4">
@@ -477,20 +459,19 @@
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
                     <div class="flex-shrink-0 flex items-center">
-                        <i class="fas fa-gavel text-blue-500 text-3xl mr-3"></i>
-                        <span class="text-2xl font-extrabold text-white">Quackers & Doofy LLP</span>
+                        <i class="fas fa-gavel text-blue-400 text-3xl mr-3"></i>
+                        <span class="text-2xl font-extrabold text-white tracking-wide">Quackers & Doofy LLP</span>
                     </div>
                 </div>
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="#home" class="nav-link text-gray-300 hover:text-blue-400 font-medium transition duration-300">Home</a>
-                    <a href="#about-doofy" class="nav-link text-gray-300 hover:text-blue-400 font-medium transition duration-300">About Doofy</a>
-                    <a href="#about-quackers" class="nav-link text-gray-300 hover:text-blue-400 font-medium transition duration-300">About Quackers</a>
-                    <a href="#practice" class="nav-link text-gray-300 hover:text-blue-400 font-medium transition duration-300">Practice Areas</a>
-                    <a href="#cases" class="nav-link text-gray-300 hover:text-blue-400 font-medium transition duration-300">Case Studies</a>
-                    <a href="#contact" class="nav-link text-gray-300 hover:text-blue-400 font-medium transition duration-300">Contact</a>
+                    <a href="#home" class="nav-link text-gray-300 hover:text-blue-300 transition duration-300">Home</a>
+                    <a href="#about-doofy" class="nav-link text-gray-300 hover:text-blue-300 transition duration-300">About Doofy</a>
+                    <a href="#about-quackers" class="nav-link text-gray-300 hover:text-blue-300 transition duration-300">About Quackers</a>
+                    <a href="#practice" class="nav-link text-gray-300 hover:text-blue-300 transition duration-300">Practice Areas</a>
+                    <a href="#contact" class="nav-link text-gray-300 hover:text-blue-300 transition duration-300">Contact</a>
                 </div>
                 <div class="md:hidden flex items-center">
-                    <button id="menu-btn" class="text-gray-300 hover:text-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-md p-2">
+                    <button id="menu-btn" class="text-gray-300 hover:text-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-md p-2">
                         <i class="fas fa-bars text-2xl"></i>
                     </button>
                 </div>
@@ -498,33 +479,33 @@
         </div>
         
         <!-- Mobile menu -->
-        <div id="mobile-menu" class="md:hidden hidden bg-gray-800 shadow-lg py-2">
-            <div class="px-4 pt-2 pb-3 space-y-1">
-                <a href="#home" class="block px-3 py-2 text-base font-medium text-gray-200 hover:bg-gray-700 hover:text-blue-400 rounded-md">Home</a>
-                <a href="#about-doofy" class="block px-3 py-2 text-base font-medium text-gray-200 hover:bg-gray-700 hover:text-blue-400 rounded-md">About Doofy</a>
-                <a href="#about-quackers" class="block px-3 py-2 text-base font-medium text-gray-200 hover:bg-gray-700 hover:text-blue-400 rounded-md">About Quackers</a>
-                <a href="#practice" class="block px-3 py-2 text-base font-medium text-gray-200 hover:bg-gray-700 hover:text-blue-400 rounded-md">Practice Areas</a>
-                <a href="#cases" class="block px-3 py-2 text-base font-medium text-gray-200 hover:bg-gray-700 hover:text-blue-400 rounded-md">Case Studies</a>
-                <a href="#contact" class="block px-3 py-2 text-base font-medium text-gray-200 hover:bg-gray-700 hover:text-blue-400 rounded-md">Contact</a>
+        <div id="mobile-menu" class="md:hidden hidden shadow-lg py-2 absolute w-full top-full left-0">
+            <div class="px-4 pt-2 pb-3 space-y-2">
+                <a href="#home" class="block px-3 py-2 text-base font-medium text-gray-200 hover:bg-gray-900 hover:text-blue-300 rounded-md">Home</a>
+                <a href="#about-doofy" class="block px-3 py-2 text-base font-medium text-gray-200 hover:bg-gray-900 hover:text-blue-300 rounded-md">About Doofy</a>
+                <a href="#about-quackers" class="block px-3 py-2 text-base font-medium text-gray-200 hover:bg-gray-900 hover:text-blue-300 rounded-md">About Quackers</a>
+                <a href="#practice" class="block px-3 py-2 text-base font-medium text-gray-200 hover:bg-gray-900 hover:text-blue-300 rounded-md">Practice Areas</a>
+                <a href="#contact" class="block px-3 py-2 text-base font-medium text-gray-200 hover:bg-gray-900 hover:text-blue-300 rounded-md">Contact</a>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section id="home" class="hero-section min-h-screen flex items-center justify-center text-white pt-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-20">
-            <p class="text-lg md:text-xl font-light mb-4 text-blue-300 animate-fade-in-up">Your Premier Representation in Affectional Jurisprudence</p>
-            <h1 class="text-5xl md:text-7xl font-extrabold leading-tight mb-6 animate-fade-in-up delay-100">
+    <section id="home" class="hero-section min-h-screen flex items-center justify-center text-white pt-20 relative">
+        <div class="section-bg-gradient blue-purple"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-20 relative z-10">
+            <p class="text-lg md:text-xl font-light mb-4 text-blue-300 animate-fade-in-up delay-100">Your Premier Representation in Affectional Jurisprudence</p>
+            <h1 class="text-5xl md:text-7xl font-extrabold leading-tight mb-6 animate-fade-in-up delay-200 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
                 Delivering Warmth. <br class="hidden md:block"> Enforcing Affection. <br class="hidden md:block"> Prosecuting Boredom.
             </h1>
-            <p class="text-xl max-w-4xl mx-auto mb-10 opacity-90 animate-fade-in-up delay-200">
+            <p class="text-xl max-w-4xl mx-auto mb-10 opacity-90 animate-fade-in-up delay-300 text-gray-300">
                 At Quackers & Doofy LLP, we combine sharp legal instincts with boundless affection, ensuring emotionally sound outcomes and full compliance with all Snuggle Statutes.
             </p>
-            <div class="flex flex-col sm:flex-row justify-center gap-5 animate-fade-in-up delay-300">
-                <a href="#contact" class="btn-primary bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-full shadow-lg">
+            <div class="flex flex-col sm:flex-row justify-center gap-6 animate-fade-in-up delay-400">
+                <a href="#contact" class="btn-primary font-semibold py-3 px-8 rounded-full">
                     Petition for Attention
                 </a>
-                <a href="#practice" class="btn-secondary bg-transparent text-white font-semibold py-3 px-8 border-2 border-white rounded-full">
+                <a href="#practice" class="btn-secondary font-semibold py-3 px-8 rounded-full">
                     Areas of Heartfelt Expertise
                 </a>
             </div>
@@ -532,48 +513,50 @@
     </section>
 
     <!-- Dynamic Statistics & Milestones Section -->
-    <section id="milestones" class="py-20 bg-gray-900">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="milestones" class="py-20 bg-gradient-to-b from-gray-950 to-gray-900 relative">
+        <div class="section-bg-gradient green-blue"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="text-center mb-16 section-heading">
-                <h2 class="text-4xl font-bold text-white mb-4">Our Record of Distinction</h2>
+                <h2 class="text-4xl font-bold text-white mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-teal-400">Our Record of Distinction</h2>
                 <p class="text-lg text-gray-300">Veritas. Affectus. Iustitia.<br>Measured by results. Guided by love. Rendered with excellence.</p>
                 <div class="section-heading-line"></div>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                 <!-- Milestone 1: Annorum Coniunctionis -->
                 <div class="milestone-item p-8 rounded-xl text-center shadow-lg card-hover-effect animate-fade-in-up delay-100">
                     <div class="milestone-number-display" data-target="25" data-final-display="25">0</div>
                     <div class="milestone-latin-title">Annorum Coniunctionis</div>
-                    <div class="milestone-label">(Years of Joint Practice in Affectional Law and Domestic Harmony)</div>
+                    <p class="milestone-label">(Years of Joint Practice in Affectional Law and Domestic Harmony)</p>
                 </div>
                 <!-- Milestone 2: Cura Amoris Recuperata -->
                 <div class="milestone-item p-8 rounded-xl text-center shadow-lg card-hover-effect animate-fade-in-up delay-200">
-                    <div class="milestone-number-display" data-target="42" data-final-display="$42 Million+">0</div>
+                    <div class="milestone-number-display" data-target="42" data-final-display="$42M+">0</div>
                     <div class="milestone-latin-title">Cura Amoris Recuperata</div>
-                    <div class="milestone-label">(Recovered in Emotional Damages, Missed Birthday Compensation & Cake Restitution)</div>
+                    <p class="milestone-label">(Recovered in Emotional Damages, Missed Birthday Compensation & Cake Restitution)</p>
                 </div>
                 <!-- Milestone 3: Clientela Satisfactio -->
                 <div class="milestone-item p-8 rounded-xl text-center shadow-lg card-hover-effect animate-fade-in-up delay-300">
                     <div class="milestone-number-display" data-target="98" data-final-display="98%">0</div>
                     <div class="milestone-latin-title">Clientela Satisfactio</div>
-                    <div class="milestone-label">(Client Satisfaction Rate across Love Litigation, Hug Arbitration, and Quack-related Claims)</div>
+                    <p class="milestone-label">(Client Satisfaction Rate across Love Litigation, Hug Arbitration, and Quack-related Claims)</p>
                 </div>
                 <!-- Milestone 4: Causae Conclusae -->
                 <div class="milestone-item p-8 rounded-xl text-center shadow-lg card-hover-effect animate-fade-in-up delay-400">
                     <div class="milestone-number-display" data-target="500" data-final-display="500+">0</div>
                     <div class="milestone-latin-title">Causae Conclusae</div>
-                    <div class="milestone-label">(Successfully Adjudicated Cases in Romantic Disputes, Cuddle Custody, and Duck Law Compliance)</div>
+                    <p class="milestone-label">(Successfully Adjudicated Cases in Romantic Disputes, Cuddle Custody, and Duck Law Compliance)</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- About Doofy Section -->
-    <section id="about-doofy" class="py-20 bg-gray-950">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="about-doofy" class="py-20 bg-gradient-to-b from-gray-900 to-gray-950 relative diagonal-separator">
+        <div class="section-bg-gradient blue-purple"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="text-center mb-16 section-heading">
-                <h2 class="text-4xl font-bold text-white mb-4">About Doofy Q. Port</h2>
+                <h2 class="text-4xl font-bold text-white mb-4 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">About Doofy Q. Port</h2>
                 <p class="text-lg text-gray-300">Practicing in All Courts of Charm & Cheer, Sworn to Uphold Article 7: Unlimited Birthday Joy</p>
                 <div class="section-heading-line"></div>
             </div>
@@ -582,30 +565,30 @@
                 <!-- Left Column: Image with modern styling -->
                 <div class="lg:w-1/3 flex justify-center lg:justify-start animate-fade-in-up delay-100">
                     <div class="relative w-full max-w-xs lg:max-w-none rounded-xl shadow-2xl overflow-hidden about-image-wrapper">
-                        <img src="https://placehold.co/400x600/2d3748/e2e8f0?text=Doofy+Q.+Port" alt="Doofy Q. Port" class="w-full h-auto object-cover rounded-xl about-image transform hover:scale-105 transition duration-500">
+                        <img src="https://placehold.co/400x600/1C1C22/E0E0E0?text=Doofy+Q.+Port" alt="Doofy Q. Port" class="w-full h-auto object-cover rounded-xl about-image transform hover:scale-105 transition duration-500">
                     </div>
                 </div>
                 
                 <!-- Right Column: Biography, Education, Distinctions -->
                 <div class="lg:w-2/3 flex flex-col">
-                    <h3 class="text-3xl font-bold mb-6 text-white text-center lg:text-left animate-fade-in-up delay-200">A Legacy of Legal Acumen</h3>
-                    <p class="text-gray-300 leading-relaxed mb-10 animate-fade-in-up delay-300">Doofy Q. Port, Senior Counsel and Founding Partner at Quackers & Doofy LLP. is widely regarded as a preeminent figure in the obscure yet emotionally charged realm of Affectional Law and Duck Adjacent Disputes. With over twenty years of legal excellence, Mr. Port has devoted his career to upholding the Fundamental Rights to Love, Laughter, and the Occasional Silly Goose Moment.</p>
-                    <p class="text-gray-300 leading-relaxed mb-10 animate-fade-in-up delay-400">Since his bar admission (and bar-side brunch) in the early 2000s, Mr. Port has served as lead counsel in numerous landmark cases, including Port v. Personal Space and the internationally cited Snuggles v. Sunday Mornings. Before founding his boutique practice in 2015, he held prestigious appointments at top-tier global firms, where he routinely advised Fortune 500 partners on complex issues such as hand-holding clauses, text reply delays, and gift-overthinking liability.</p>
-                    <p class="text-gray-300 leading-relaxed mb-10 animate-fade-in-up delay-500">A master of emotional jurisprudence, Mr. Port crafts bespoke legal strategies designed to optimize joy, maximize heart flutters, and mitigate the risk of romantic misunderstandings. His philosophy? No client too small, no cuddle clause too vague. When not in court, Mr. Port lectures on Hug Ethics, consults on high-profile birthday cases, and serves as honorary chair of the National Committee for Quackers Birthday Surprise.</p>
+                    <h3 class="text-3xl font-bold mb-6 text-white text-center lg:text-left animate-fade-in-up delay-200 text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-purple-300">A Legacy of Legal Acumen</h3>
+                    <p class="text-gray-200 leading-relaxed mb-10 animate-fade-in-up delay-300">Doofy Q. Port, Senior Counsel and Founding Partner at Quackers & Doofy LLP. is widely regarded as a preeminent figure in the obscure yet emotionally charged realm of Affectional Law and Duck Adjacent Disputes. With over twenty years of legal excellence, Mr. Port has devoted his career to upholding the Fundamental Rights to Love, Laughter, and the Occasional Silly Goose Moment.</p>
+                    <p class="text-gray-200 leading-relaxed mb-10 animate-fade-in-up delay-400">Since his bar admission (and bar-side brunch) in the early 2000s, Mr. Port has served as lead counsel in numerous landmark cases, including Port v. Personal Space and the internationally cited Snuggles v. Sunday Mornings. Before founding his boutique practice in 2015, he held prestigious appointments at top-tier global firms, where he routinely advised Fortune 500 partners on complex issues such as hand-holding clauses, text reply delays, and gift-overthinking liability.</p>
+                    <p class="text-gray-200 leading-relaxed mb-10 animate-fade-in-up delay-500">A master of emotional jurisprudence, Mr. Port crafts bespoke legal strategies designed to optimize joy, maximize heart flutters, and mitigate the risk of romantic misunderstandings. His philosophy? No client too small, no cuddle clause too vague. When not in court, Mr. Port lectures on Hug Ethics, consults on high-profile birthday cases, and serves as honorary chair of the National Committee for Quackers Birthday Surprise.</p>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8 mt-4">
                         <!-- Education -->
                         <div class="animate-fade-in-up delay-600">
                             <h4 class="text-2xl font-bold mb-4 text-blue-300 flex items-center">
-                                <i class="fas fa-graduation-cap text-blue-500 mr-3"></i> Credentials of Counsel
+                                <i class="fas fa-graduation-cap text-blue-400 mr-3"></i> Credentials of Counsel
                             </h4>
-                            <ul class="space-y-3 text-gray-300">
+                            <ul class="space-y-3 text-gray-200">
                                 <li class="flex items-start">
-                                    <i class="fas fa-graduation-cap text-blue-500 mr-3 mt-1 text-lg"></i>
+                                    <i class="fas fa-graduation-cap text-blue-400 mr-3 mt-1 text-lg"></i>
                                     <span><strong>Juris Doctor (J.D.)</strong> — Heartvard Law School, 1998 <br><span class="text-gray-400 text-sm">Graduated Magna Cuddle Laude, with a concentration in Emotional Damages and Hug Liability</span></span>
                                 </li>
                                 <li class="flex items-start">
-                                    <i class="fas fa-graduation-cap text-blue-500 mr-3 mt-1 text-lg"></i>
+                                    <i class="fas fa-graduation-cap text-blue-400 mr-3 mt-1 text-lg"></i>
                                     <span><strong>B.A. in Affectional Science</strong> — YAYle University, 1995 <br><span class="text-gray-400 text-sm">Summa Snuggle Laude, with Honors in Soft Glances and Flirty Banter</span></span>
                                 </li>
                             </ul>
@@ -614,23 +597,23 @@
                         <!-- Recognition -->
                         <div class="animate-fade-in-up delay-700">
                             <h4 class="text-2xl font-bold mb-4 text-blue-300 flex items-center">
-                                <i class="fas fa-award text-blue-500 mr-3"></i> Recognition & Admissions
+                                <i class="fas fa-award text-blue-400 mr-3"></i> Recognition & Admissions
                             </h4>
-                            <ul class="space-y-3 text-gray-300">
+                            <ul class="space-y-3 text-gray-200">
                                 <li class="flex items-start">
-                                    <i class="fas fa-gavel text-blue-500 mr-3 mt-1 text-lg"></i>
+                                    <i class="fas fa-gavel text-blue-400 mr-3 mt-1 text-lg"></i>
                                     <span>Admitted to the Bars of New York, California, and Blanket Forts Everywhere</span>
                                 </li>
                                 <li class="flex items-start">
-                                    <i class="fas fa-gavel text-blue-500 mr-3 mt-1 text-lg"></i>
+                                    <i class="fas fa-gavel text-blue-400 mr-3 mt-1 text-lg"></i>
                                     <span>Sworn in before the Supreme Court of Love and Snuggles</span>
                                 </li>
                                 <li class="flex items-start">
-                                    <i class="fas fa-trophy text-blue-500 mr-3 mt-1 text-lg"></i>
+                                    <i class="fas fa-trophy text-blue-400 mr-3 mt-1 text-lg"></i>
                                     <span>Named “Most Huggable Legal Mind” (2012–Present)</span>
                                 </li>
                                 <li class="flex items-start">
-                                    <i class="fas fa-briefcase text-blue-500 mr-3 mt-1 text-lg"></i>
+                                    <i class="fas fa-briefcase text-blue-400 mr-3 mt-1 text-lg"></i>
                                     <span>Rated AV Preeminent in Warmth, Wit, and Wink-Based Advocacy</span>
                                 </li>
                             </ul>
@@ -642,44 +625,45 @@
     </section>
 
     <!-- About Quackers Section -->
-    <section id="about-quackers" class="py-20 bg-gray-900">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="about-quackers" class="py-20 bg-gradient-to-b from-gray-950 to-gray-900 relative diagonal-separator">
+        <div class="section-bg-gradient green-blue"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="text-center mb-16 section-heading">
-                <h2 class="text-4xl font-bold text-white mb-4">About Quackers A. Featherstone</h2>
+                <h2 class="text-4xl font-bold text-white mb-4 text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-blue-400">About Quackers A. Featherstone</h2>
                 <p class="text-lg text-gray-300">A Visionary in Emotional Advocacy & Duck-Adjacent Dispute Resolution</p>
                 <div class="section-heading-line"></div>
             </div>
             
-            <div class="flex flex-col lg:flex-row items-center lg:items-start gap-16">
-                <!-- Left Column: Image with modern styling -->
-                <div class="lg:w-1/3 flex justify-center lg:justify-start animate-fade-in-up delay-100">
+            <div class="flex flex-col lg:flex-row-reverse items-center lg:items-start gap-16">
+                <!-- Right Column (Image for Quackers) -->
+                <div class="lg:w-1/3 flex justify-center lg:justify-end animate-fade-in-up delay-100">
                     <div class="relative w-full max-w-xs lg:max-w-none rounded-xl shadow-2xl overflow-hidden about-image-wrapper">
-                        <img src="https://placehold.co/400x600/2d3748/e2e8f0?text=Quackers" alt="Quackers, Esq." class="w-full h-auto object-cover rounded-xl about-image transform hover:scale-105 transition duration-500">
+                        <img src="https://placehold.co/400x600/1C1C22/E0E0E0?text=Quackers" alt="Quackers, Esq." class="w-full h-auto object-cover rounded-xl about-image transform hover:scale-105 transition duration-500">
                     </div>
                 </div>
                 
-                <!-- Right Column: Biography, Education, Distinctions -->
+                <!-- Left Column (Biography, Education, Distinctions for Quackers) -->
                 <div class="lg:w-2/3 flex flex-col">
-                    <h3 class="text-3xl font-bold mb-6 text-white text-center lg:text-left animate-fade-in-up delay-200">A Heart for Justice, A Mind for Strategy</h3>
-                    <p class="text-gray-300 leading-relaxed mb-10 animate-fade-in-up delay-300">Universally esteemed for her brilliance in the niche but vital disciplines of Affectional Law, Intimate Equity, and Interpersonal Whimsy, Ms. Quackers A. Featherstone is not merely a practitioner — she is a pioneering intellect whose name is whispered in reverent tones across cuddle courts and duck tribunals alike.</p>
-                    <p class="text-gray-300 leading-relaxed mb-10 animate-fade-in-up delay-400">With dual doctorates in Emotional Jurisprudence and Advanced Cuteness Arbitration (honorarily conferred), Quackers ascended the legal echelons with a résumé that spans from international cuddle diplomacy to expert testimony on matters of heart-shaped liability. Before co-founding Quackers & Doofy LLP in 2015, she served in elite firms where she restructured entire departments with her groundbreaking work on Neglected Affection Recovery, Gift Interpretation Liability, and the highly influential Featherstone Doctrine on Daily Affirmation Minimums.</p>
-                    <p class="text-gray-300 leading-relaxed mb-10 animate-fade-in-up delay-500">Her legal strategies are often described as “devastatingly persuasive yet disarmingly adorable,” earning her accolades from both traditional legal institutions and the International Society of Snuggle Law Scholars. She is, without question, the gold standard in heartfelt litigation, known to turn even the most stoic judges into giggling romantics.
+                    <h3 class="text-3xl font-bold mb-6 text-white text-center lg:text-left animate-fade-in-up delay-200 text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-teal-300">A Heart for Justice, A Mind for Strategy</h3>
+                    <p class="text-gray-200 leading-relaxed mb-10 animate-fade-in-up delay-300">Universally esteemed for her brilliance in the niche but vital disciplines of Affectional Law, Intimate Equity, and Interpersonal Whimsy, Ms. Quackers A. Featherstone is not merely a practitioner — she is a pioneering intellect whose name is whispered in reverent tones across cuddle courts and duck tribunals alike.</p>
+                    <p class="text-gray-200 leading-relaxed mb-10 animate-fade-in-up delay-400">With dual doctorates in Emotional Jurisprudence and Advanced Cuteness Arbitration (honorarily conferred), Quackers ascended the legal echelons with a résumé that spans from international cuddle diplomacy to expert testimony on matters of heart-shaped liability. Before co-founding Quackers & Doofy LLP in 2015, she served in elite firms where she restructured entire departments with her groundbreaking work on Neglected Affection Recovery, Gift Interpretation Liability, and the highly influential Featherstone Doctrine on Daily Affirmation Minimums.</p>
+                    <p class="text-gray-200 leading-relaxed mb-10 animate-fade-in-up delay-500">Her legal strategies are often described as “devastatingly persuasive yet disarmingly adorable,” earning her accolades from both traditional legal institutions and the International Society of Snuggle Law Scholars. She is, without question, the gold standard in heartfelt litigation, known to turn even the most stoic judges into giggling romantics.
 </p>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-8 mt-4">
                         <!-- Education -->
                         <div class="animate-fade-in-up delay-600">
                             <h4 class="text-2xl font-bold mb-4 text-blue-300 flex items-center">
-                                <i class="fas fa-graduation-cap text-blue-500 mr-3"></i> Education
+                                <i class="fas fa-graduation-cap text-blue-400 mr-3"></i> Education
                             </h4>
-                            <ul class="space-y-3 text-gray-300">
+                            <ul class="space-y-3 text-gray-200">
                                 <li class="flex items-start">
-                                    <i class="fas fa-graduation-cap text-blue-500 mr-3 mt-1 text-lg"></i>
+                                    <i class="fas fa-graduation-cap text-blue-400 mr-3 mt-1 text-lg"></i>
                                     <span><strong>Juris Doctor (J.D.)</strong> — Columbia School of Charms & Law, Class of 1998 <br><span class="text-gray-400 text-sm">Graduated Magna Cuddle Laude, with a dual focus in Tender Torts and Emotional Contract Enforcement. Capstone research: "Equitable Remedies for the Withholding of Affection."</span></span>
                                 </li>
                                 <li class="flex items-start">
-                                    <i class="fas fa-graduation-cap text-blue-500 mr-3 mt-1 text-lg"></i>
-                                    <span><strong>Bachelor of Arts in Behavioral Romance & Interpersonal Policy</strong> — University of Heartfordshire, Class of 1995 <br><span class="text-gray-400 text-sm">Summa Snuggle Laude, with Honors in Microexpressions, Playful Sarcasm Law, and Early Morning Coffee Negotiations.</span></span>
+                                    <i class="fas fa-graduation-cap text-blue-400 mr-3 mt-1 text-lg"></i>
+                                    <span><strong>B.A. in Behavioral Romance & Interpersonal Policy</strong> — University of Heartfordshire, Class of 1995 <br><span class="text-gray-400 text-sm">Summa Snuggle Laude, with Honors in Microexpressions, Playful Sarcasm Law, and Early Morning Coffee Negotiations.</span></span>
                                 </li>
                             </ul>
                         </div>
@@ -687,31 +671,31 @@
                         <!-- Recognition -->
                         <div class="animate-fade-in-up delay-700">
                             <h4 class="text-2xl font-bold mb-4 text-blue-300 flex items-center">
-                                <i class="fas fa-award text-blue-500 mr-3"></i> Licensure & Distinctions
+                                <i class="fas fa-award text-blue-400 mr-3"></i> Licensure & Distinctions
                             </h4>
-                            <ul class="space-y-3 text-gray-300">
+                            <ul class="space-y-3 text-gray-200">
                                 <li class="flex items-start">
-                                    <i class="fas fa-gavel text-blue-500 mr-3 mt-1 text-lg"></i>
+                                    <i class="fas fa-gavel text-blue-400 mr-3 mt-1 text-lg"></i>
                                     <span>Licensed in New York, California, and All Pillow Fort Jurisdictions</span>
                                 </li>
                                 <li class="flex items-start">
-                                    <i class="fas fa-gavel text-blue-500 mr-3 mt-1 text-lg"></i>
+                                    <i class="fas fa-gavel text-blue-400 mr-3 mt-1 text-lg"></i>
                                     <span>Sworn in before the United Court of Unspoken Feelings and Cuddle Protocol</span>
                                 </li>
                                 <li class="flex items-start">
-                                    <i class="fas fa-trophy text-blue-500 mr-3 mt-1 text-lg"></i>
+                                    <i class="fas fa-trophy text-blue-400 mr-3 mt-1 text-lg"></i>
                                     <span>Appointed Honorary Justice of the International Tribunal for Misunderstood Texts</span>
                                 </li>
                                 <li class="flex items-start">
-                                    <i class="fas fa-briefcase text-blue-500 mr-3 mt-1 text-lg"></i>
+                                    <i class="fas fa-briefcase text-blue-400 mr-3 mt-1 text-lg"></i>
                                     <span>Recognized as “Legal Mind Most Likely to Win Your Heart (and Your Case)” by The Affectional Law Review</span>
                                 </li>
                                 <li class="flex items-start">
-                                    <i class="fas fa-heart text-blue-500 mr-3 mt-1 text-lg"></i>
+                                    <i class="fas fa-heart text-blue-400 mr-3 mt-1 text-lg"></i>
                                     <span>Recipient of the Woolridge Prize for Excellence in Snuggle-Based Mediation</span>
                                 </li>
                                 <li class="flex items-start">
-                                    <i class="fas fa-star text-blue-500 mr-3 mt-1 text-lg"></i>
+                                    <i class="fas fa-star text-blue-400 mr-3 mt-1 text-lg"></i>
                                     <span>Holds a Tier I Preeminence Rating in Charm, Empathy, and Tactical Blushing by RomCom Legal Index</span>
                                 </li>
                             </ul>
@@ -723,57 +707,58 @@
     </section>
 
     <!-- Meet the Team Section -->
-    <section id="team" class="py-20 bg-gray-950">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="team" class="py-20 bg-gradient-to-b from-gray-900 to-gray-950 relative diagonal-separator">
+        <div class="section-bg-gradient blue-purple"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="text-center mb-16 section-heading">
-                <h2 class="text-4xl font-bold text-white mb-4">Meet Our Team</h2>
+                <h2 class="text-4xl font-bold text-white mb-4 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">Meet Our Team</h2>
                 <p class="text-lg text-gray-300">Dedicated legal professionals committed to your success.</p>
                 <div class="section-heading-line"></div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                 <!-- Doofy Q. Port Profile Card -->
-                <div class="bg-gray-800 p-8 rounded-xl shadow-lg hover:shadow-xl transition duration-300 card-hover-effect animate-fade-in-up delay-100">
-                    <img src="https://placehold.co/200x200/2d3748/e2e8f0?text=Doofy+Q.+Port" alt="Doofy Q. Port" class="w-48 h-48 rounded-full mx-auto mb-6 object-cover border-4 border-blue-500 shadow-md">
-                    <h3 class="text-3xl font-bold text-white mb-2">Doofy Q. Port, Esq.</h3>
-                    <p class="text-blue-400 text-lg font-medium mb-4">Founding Partner & Chief Cuddle Counsel</p>
-                    <p class="text-gray-300 leading-relaxed mb-6">Doofy Port is internationally revered for his pioneering work in Affectional Law and Relationship Resolution. With a heart-led approach and razor-sharp wit, he consistently secures favorable verdicts in high-stakes cuddle disputes, flirtation miscommunications, and emotional over-investments.</p>
-                    <div class="space-y-2 mb-6 text-gray-300 text-left mx-auto max-w-xs">
-                        <p class="flex items-center"><i class="fas fa-briefcase text-blue-500 mr-3"></i> Romantic Litigation, Cuddle Contract Enforcement, Text Message Interpretation</p>
-                        <p class="flex items-center"><i class="fas fa-envelope text-blue-500 mr-3"></i> <a href="mailto:doofy@portandpassion.law" class="hover:underline text-blue-300">doofy@portandpassion.law</a></p>
-                        <p class="flex items-center"><i class="fas fa-phone-alt text-blue-500 mr-3"></i> <a href="tel:+12125554847" class="hover:underline text-blue-300">(212) 555-HUGS</a></p>
+                <div class="p-8 rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-100">
+                    <img src="https://placehold.co/200x200/1C1C22/E0E0E0?text=Doofy+Q.+Port" alt="Doofy Q. Port" class="w-48 h-48 rounded-full mx-auto mb-6 object-cover border-4 border-blue-500 shadow-md">
+                    <h3 class="text-3xl font-bold text-white mb-2 text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-purple-300">Doofy Q. Port, Esq.</h3>
+                    <p class="text-purple-400 text-lg font-medium mb-4">Founding Partner & Chief Cuddle Counsel</p>
+                    <p class="text-gray-200 leading-relaxed mb-6">Doofy Port is internationally revered for his pioneering work in Affectional Law and Relationship Resolution. With a heart-led approach and razor-sharp wit, he consistently secures favorable verdicts in high-stakes cuddle disputes, flirtation miscommunications, and emotional over-investments.</p>
+                    <div class="space-y-2 mb-6 text-gray-200 text-left mx-auto max-w-xs">
+                        <p class="flex items-center"><i class="fas fa-briefcase text-blue-400 mr-3"></i> Romantic Litigation, Cuddle Contract Enforcement, Text Message Interpretation</p>
+                        <p class="flex items-center"><i class="fas fa-envelope text-blue-400 mr-3"></i> <a href="mailto:doofy@portandpassion.law" class="hover:underline text-blue-300">doofy@portandpassion.law</a></p>
+                        <p class="flex items-center"><i class="fas fa-phone-alt text-blue-400 mr-3"></i> <a href="tel:+12125554847" class="hover:underline text-blue-300">(212) 555-HUGS</a></p>
                     </div>
                     <div class="flex justify-center space-x-4">
                         <a href="#" class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center text-xl hover:bg-blue-700 transition duration-300 transform hover:scale-110" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center text-xl hover:bg-blue-600 transition duration-300 transform hover:scale-110" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-purple-600 text-white flex items-center justify-center text-xl hover:bg-purple-700 transition duration-300 transform hover:scale-110" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
                     </div>
                 </div>
 
                 <!-- Quackers, Esq. Profile Card -->
-                <div class="bg-gray-800 p-8 rounded-xl shadow-lg hover:shadow-xl transition duration-300 card-hover-effect animate-fade-in-up delay-200">
-                    <img src="https://placehold.co/200x200/2d3748/e2e8f0?text=Quackers" alt="Quackers" class="w-48 h-48 rounded-full mx-auto mb-6 object-cover border-4 border-blue-500 shadow-md">
-                    <h3 class="text-3xl font-bold text-white mb-2">Quackers, Esq.</h3>
-                    <p class="text-blue-400 text-lg font-medium mb-4">Co-Founder & Chief Strategist in Matters of the Heart</p>
-                    <p class="text-gray-300 leading-relaxed mb-6">Quackers brings unmatched brilliance to the field of Emotional Advocacy and Duck-Adjacent Dispute Resolution. Known for her razor-sharp instincts and tender legal touch, she specializes in drafting ironclad cuddle clauses, enforcing love languages, and outmaneuvering passive-aggressive texts with poise and precision. A visionary in the courtroom and in cozy living rooms alike, she ensures every case ends in heartfelt resolution — preferably under a blanket.</p>
-                    <div class="space-y-2 mb-6 text-gray-300 text-left mx-auto max-w-xs">
-                        <p class="flex items-center"><i class="fas fa-briefcase text-blue-500 mr-3"></i> Affectional Arbitration, Snuggle Strategy, Cute Behavior Enforcement</p>
-                        <p class="flex items-center"><i class="fas fa-envelope text-blue-500 mr-3"></i> <a href="mailto:quackers@portandpassion.law" class="hover:underline text-blue-300">quackers@portandpassion.law</a></p>
-                        <p class="flex items-center"><i class="fas fa-phone-alt text-blue-500 mr-3"></i> <a href="tel:+12125557825" class="hover:underline text-blue-300">(212) 555-QUCK</a></p>
+                <div class="p-8 rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-200">
+                    <img src="https://placehold.co/200x200/1C1C22/E0E0E0?text=Quackers" alt="Quackers" class="w-48 h-48 rounded-full mx-auto mb-6 object-cover border-4 border-blue-500 shadow-md">
+                    <h3 class="text-3xl font-bold text-white mb-2 text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-purple-300">Quackers, Esq.</h3>
+                    <p class="text-purple-400 text-lg font-medium mb-4">Co-Founder & Chief Strategist in Matters of the Heart</p>
+                    <p class="text-gray-200 leading-relaxed mb-6">Quackers brings unmatched brilliance to the field of Emotional Advocacy and Duck-Adjacent Dispute Resolution. Known for her razor-sharp instincts and tender legal touch, she specializes in drafting ironclad cuddle clauses, enforcing love languages, and outmaneuvering passive-aggressive texts with poise and precision. A visionary in the courtroom and in cozy living rooms alike, she ensures every case ends in heartfelt resolution — preferably under a blanket.</p>
+                    <div class="space-y-2 mb-6 text-gray-200 text-left mx-auto max-w-xs">
+                        <p class="flex items-center"><i class="fas fa-briefcase text-blue-400 mr-3"></i> Affectional Arbitration, Snuggle Strategy, Cute Behavior Enforcement</p>
+                        <p class="flex items-center"><i class="fas fa-envelope text-blue-400 mr-3"></i> <a href="mailto:quackers@portandpassion.law" class="hover:underline text-blue-300">quackers@portandpassion.law</a></p>
+                        <p class="flex items-center"><i class="fas fa-phone-alt text-blue-400 mr-3"></i> <a href="tel:+12125557825" class="hover:underline text-blue-300">(212) 555-QUCK</a></p>
                     </div>
                     <div class="flex justify-center space-x-4">
                         <a href="#" class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center text-xl hover:bg-blue-700 transition duration-300 transform hover:scale-110" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center text-xl hover:bg-blue-600 transition duration-300 transform hover:scale-110" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-purple-600 text-white flex items-center justify-center text-xl hover:bg-purple-700 transition duration-300 transform hover:scale-110" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
                     </div>
                 </div>
 
                 <!-- Placeholder for future team members -->
-                <div class="bg-gray-800 p-8 rounded-xl shadow-lg hover:shadow-xl transition duration-300 card-hover-effect text-center flex flex-col justify-center items-center animate-fade-in-up delay-300">
-                    <div class="w-48 h-48 rounded-full mx-auto mb-6 flex items-center justify-center bg-gray-700 text-gray-400 text-6xl border-4 border-gray-600">
+                <div class="p-8 rounded-xl shadow-lg card-hover-effect text-center flex flex-col justify-center items-center animate-fade-in-up delay-300">
+                    <div class="w-48 h-48 rounded-full mx-auto mb-6 flex items-center justify-center bg-gray-800 text-blue-400 text-6xl border-4 border-gray-700">
                         <i class="fas fa-plus-circle"></i>
                     </div>
-                    <h3 class="text-3xl font-bold text-white mb-2">Join Our Team</h3>
-                    <p class="text-gray-300 leading-relaxed">We're always looking for talented legal professionals. Reach out to explore opportunities.</p>
-                    <a href="#contact" class="mt-6 btn-primary bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-full shadow-md">
+                    <h3 class="text-3xl font-bold text-white mb-2 text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-purple-300">Join Our Team</h3>
+                    <p class="text-gray-200 leading-relaxed">We're always looking for talented legal professionals. Reach out to explore opportunities.</p>
+                    <a href="#contact" class="mt-6 btn-primary font-semibold py-2 px-6 rounded-full">
                         Inquire Now
                     </a>
                 </div>
@@ -781,229 +766,98 @@
         </div>
     </section>
 
-    <!-- Awards, Accolades & Press Mentions Section -->
-    <section id="awards" class="py-20 bg-gray-950">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 section-heading">
-                <h2 class="text-4xl font-bold text-white mb-4">Awards & Recognition</h2>
-                <p class="text-lg text-gray-300">Celebrating our commitment to legal excellence.</p>
-                <div class="section-heading-line"></div>
-            </div>
-            
-            <!-- Doofy's Awards Section -->
-            <div class="text-center mb-10 section-heading">
-                <h3 class="text-3xl font-bold text-white mb-4">Doofy's Awards</h3>
-                <p class="text-lg text-gray-300">Recognitions for our esteemed founding partner.</p>
-                <div class="section-heading-line w-24"></div> <!-- Shorter line for sub-heading -->
-            </div>
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mb-16">
-                <!-- Award Card 1: Legal 500 -->
-                <div class="award-card p-6 rounded-xl shadow-lg hover:shadow-xl transition duration-300 card-hover-effect animate-fade-in-up delay-100">
-                    <div class="text-center">
-                        <img src="https://placehold.co/100x100/1f2937/93c5fd?text=Legal+500" alt="Legal 500 Logo" class="w-24 h-24 object-contain mx-auto mb-4 award-logo-img">
-                        <h3 class="text-xl font-bold text-white mb-2">Legal 500</h3>
-                        <p class="text-gray-400 text-sm">Celebrated for exceptional performance in Love Law, Cuddle Clause Arbitration, and Duck Rights Advocacy (2018–2023).</p>
-                    </div>
-                </div>
-                <!-- Award Card 2: Super Lawyers -->
-                <div class="award-card p-6 rounded-xl shadow-lg hover:shadow-xl transition duration-300 card-hover-effect animate-fade-in-up delay-200">
-                    <div class="text-center">
-                        <img src="https://placehold.co/100x100/1f2937/c4b5fd?text=Super+Lawyers" alt="Super Lawyers Logo" class="w-24 h-24 object-contain mx-auto mb-4 award-logo-img">
-                        <h3 class="text-xl font-bold text-white mb-2">Super Lawyers</h3>
-                        <p class="text-gray-400 text-sm">Doofy Port repeatedly honored as a Top Rated Romantic Litigator — specializing in heartfelt arguments and persuasive snuggle motions (2015–2023).</p>
-                    </div>
-                </div>
-                <!-- Award Card 3: Best Lawyers in America -->
-                <div class="award-card p-6 rounded-xl shadow-lg hover:shadow-xl transition duration-300 card-hover-effect animate-fade-in-up delay-300">
-                    <div class="text-center">
-                        <img src="https://placehold.co/100x100/1f2937/d8b4fe?text=Best+Lawyers" alt="Best Lawyers Logo" class="w-24 h-24 object-contain mx-auto mb-4 award-logo-img">
-                        <h3 class="text-xl font-bold text-white mb-2">Best Lawyers in America</h3>
-                        <p class="text-gray-400 text-sm">Featured annually for pioneering the field of Affectional Law and setting new standards in emotional justice (since 2012).</p>
-                    </div>
-                </div>
-                <!-- Award Card 4: Martindale-Hubbell -->
-                <div class="award-card p-6 rounded-xl shadow-lg hover:shadow-xl transition duration-300 card-hover-effect animate-fade-in-up delay-400">
-                    <div class="text-center">
-                        <img src="https://placehold.co/100x100/1f2937/67e8f9?text=Martindale" alt="Martindale-Hubbell Logo" class="w-24 h-24 object-contain mx-auto mb-4 award-logo-img">
-                        <h3 class="text-xl font-bold text-white mb-2">Martindale-Hubbell</h3>
-                        <p class="text-gray-400 text-sm">Received the highest AV Preeminent rating — for unparalleled charm, compassion, and commitment to romantic resolution.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Quackers' Awards Section -->
-            <div class="text-center mb-10 section-heading mt-20"> <!-- Added margin-top for separation -->
-                <h3 class="text-3xl font-bold text-white mb-4">Quackers' Awards</h3>
-                <p class="text-lg text-gray-300">Accolades celebrating our visionary co-founder.</p>
-                <div class="section-heading-line w-24"></div> <!-- Shorter line for sub-heading -->
-            </div>
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mb-16">
-                <!-- Award Card 1: The Golden Gavel Circle -->
-                <div class="award-card p-6 rounded-xl shadow-lg hover:shadow-xl transition duration-300 card-hover-effect animate-fade-in-up delay-100">
-                    <div class="text-center">
-                        <img src="https://placehold.co/100x100/1f2937/ffd700?text=Golden+Gavel" alt="Golden Gavel Logo" class="w-24 h-24 object-contain mx-auto mb-4 award-logo-img">
-                        <h3 class="text-xl font-bold text-white mb-2">The Golden Gavel Circle</h3>
-                        <p class="text-gray-400 text-sm">Recognized for excellence in Conflict Resolution, Relationship Mediation, and Emotional Intelligence Law (2018–2023).</p>
-                    </div>
-                </div>
-                <!-- Award Card 2: The Counsel of Hearts Directory -->
-                <div class="award-card p-6 rounded-xl shadow-lg hover:shadow-xl transition duration-300 card-hover-effect animate-fade-in-up delay-200">
-                    <div class="text-center">
-                        <img src="https://placehold.co/100x100/1f2937/60a5fa?text=Counsel+of+Hearts" alt="Counsel of Hearts Logo" class="w-24 h-24 object-contain mx-auto mb-4 award-logo-img">
-                        <h3 class="text-xl font-bold text-white mb-2">The Counsel of Hearts Directory</h3>
-                        <p class="text-gray-400 text-sm">Quackers consistently named a Top Rated Advisor in strategic affection management and empathetic legal frameworks (2016–2023).</p>
-                    </div>
-                </div>
-                <!-- Award Card 3: The Affectionate Advocates List -->
-                <div class="award-card p-6 rounded-xl shadow-lg hover:shadow-xl transition duration-300 card-hover-effect animate-fade-in-up delay-300">
-                    <div class="text-center">
-                        <img src="https://placehold.co/100x100/1f2937/34d399?text=Advocates+List" alt="Affectionate Advocates Logo" class="w-24 h-24 object-contain mx-auto mb-4 award-logo-img">
-                        <h3 class="text-xl font-bold text-white mb-2">The Affectionate Advocates List</h3>
-                        <p class="text-gray-400 text-sm">Honored annually for redefining best practices in interpersonal harmony and co-counseling with heart (since 2013).</p>
-                    </div>
-                </div>
-                <!-- Award Card 4: The Port Honor Roll for Emotional Jurisprudence -->
-                <div class="award-card p-6 rounded-xl shadow-lg hover:shadow-xl transition duration-300 card-hover-effect animate-fade-in-up delay-400">
-                    <div class="text-center">
-                        <img src="https://placehold.co/100x100/1f2937/ef4444?text=Honor+Roll" alt="Port Honor Roll Logo" class="w-24 h-24 object-contain mx-auto mb-4 award-logo-img">
-                        <h3 class="text-xl font-bold text-white mb-2">The Port Honor Roll for Emotional Jurisprudence</h3>
-                        <p class="text-gray-400 text-sm">Earned Preeminent Distinction for empathy-driven strategy, professional warmth, and unmatched emotional acuity.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="text-center mb-16 section-heading">
-                <h3 class="text-3xl font-bold text-white mb-4">In The News</h3>
-                <p class="text-lg text-gray-300">Featured insights and mentions in leading publications.</p>
-                <div class="section-heading-line"></div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- News Item 1 -->
-                <div class="news-item-card rounded-xl shadow-lg hover:shadow-xl transition duration-300 card-hover-effect animate-fade-in-up delay-100">
-                    <div class="relative h-48 overflow-hidden rounded-t-xl">
-                        <img src="https://placehold.co/600x200/2d3748/e2e8f0?text=Legal+Insights" alt="Legal Insights Image" class="w-full h-full object-cover news-image">
-                        <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent"></div>
-                    </div>
-                    <div class="p-6">
-                        <p class="text-blue-400 text-xs uppercase font-semibold mb-2">Legal Times | October 26, 2023</p>
-                        <h3 class="text-2xl font-bold text-white mb-3 leading-tight">"James Wilson on the Future of IP Law"</h3>
-                        <p class="text-gray-300 leading-relaxed text-sm mb-4">An in-depth interview discussing emerging trends in intellectual property litigation and strategies for protecting digital assets in a rapidly evolving landscape.</p>
-                        <a href="#" class="text-blue-400 hover:underline font-semibold flex items-center">
-                            Read Article <i class="fas fa-arrow-right ml-2 text-sm"></i>
-                        </a>
-                    </div>
-                </div>
-                <!-- News Item 2 -->
-                <div class="news-item-card rounded-xl shadow-lg hover:shadow-xl transition duration-300 card-hover-effect animate-fade-in-up delay-200">
-                    <div class="relative h-48 overflow-hidden rounded-t-xl">
-                        <img src="https://placehold.co/600x200/4c1d95/c4b5fd?text=Business+News" alt="Business News Image" class="w-full h-full object-cover news-image">
-                        <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent"></div>
-                    </div>
-                    <div class="p-6">
-                        <p class="text-blue-400 text-xs uppercase font-semibold mb-2">Business Daily | September 15, 2023</p>
-                        <h3 class="text-2xl font-bold text-white mb-3 leading-tight">"Landmark Verdict in TechCorp Case"</h3>
-                        <p class="text-gray-300 leading-relaxed text-sm mb-4">Coverage of the significant intellectual property dispute victory achieved for TechCorp, highlighting the firm's strategic approach and impact on the industry.</p>
-                        <a href="#" class="text-blue-400 hover:underline font-semibold flex items-center">
-                            Read Article <i class="fas fa-arrow-right ml-2 text-sm"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Practice Areas Section -->
-    <section id="practice" class="py-20 bg-gray-900">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="practice" class="py-20 bg-gradient-to-b from-gray-950 to-gray-900 relative">
+        <div class="section-bg-gradient green-blue"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="text-center mb-16 section-heading">
-                <h2 class="text-4xl font-bold text-white mb-4">Areas of Heartfelt Expertise</h2>
+                <h2 class="text-4xl font-bold text-white mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-teal-400">Areas of Heartfelt Expertise</h2>
                 <p class="text-lg text-gray-300">Specialized legal services tailored to your unique needs.</p>
                 <div class="section-heading-line"></div>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                 <!-- Practice Area Card 1: Civil Litigation -->
-                <div class="practice-card p-8 rounded-xl shadow-lg hover:shadow-xl transition duration-300 card-hover-effect animate-fade-in-up delay-100">
+                <div class="p-8 rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-100">
                     <div>
                         <div class="practice-card-icon-wrapper">
                             <i class="fas fa-scale-balanced practice-card-icon"></i>
                         </div>
-                        <h3 class="text-2xl font-bold mb-4 text-white">Civil Litigation</h3>
-                        <p class="text-gray-300 leading-relaxed mb-6">Expert representation in complex civil disputes, including breach of contract, business torts, and partnership disagreements, with a strong record of successful outcomes.</p>
+                        <h3 class="text-2xl font-bold mb-4 text-white text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-purple-300">Civil Litigation<br><span class="text-blue-400 text-lg font-medium">✨ Resolving Chaos with Charm</span></h3>
+                        <p class="text-gray-200 leading-relaxed mb-6">Commanding representation in high-stakes civil matters — from breach of contract and business torts to partner drama disguised as “disagreements.” We turn conflict into clarity with poise, precision, and an impressive win streak.</p>
                     </div>
                     <a href="#" class="practice-card-link">
-                        Learn More <i class="fas fa-arrow-right"></i>
+                        → Learn More <i class="fas fa-arrow-right"></i>
                     </a>
                 </div>
                 
                 <!-- Practice Area Card 2: Corporate Law -->
-                <div class="practice-card p-8 rounded-xl shadow-lg hover:shadow-xl transition duration-300 card-hover-effect animate-fade-in-up delay-200">
+                <div class="p-8 rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-200">
                     <div>
                         <div class="practice-card-icon-wrapper">
                             <i class="fas fa-building practice-card-icon"></i>
                         </div>
-                        <h3 class="text-2xl font-bold mb-4 text-white">Corporate Law</h3>
-                        <p class="text-gray-300 leading-relaxed mb-6">Comprehensive legal guidance for businesses, covering entity formation, corporate governance, regulatory compliance, mergers & acquisitions, and shareholder relations.</p>
+                        <h3 class="text-2xl font-bold mb-4 text-white text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-purple-300">Corporate Law<br><span class="text-blue-400 text-lg font-medium">💼 Counsel for the Ambitiously Affectionate</span></h3>
+                        <p class="text-gray-200 leading-relaxed mb-6">Strategic legal support for businesses great and small, covering everything from elegant entity formation and boardroom diplomacy to mergers, acquisitions, and shareholder sass.</p>
                     </div>
                     <a href="#" class="practice-card-link">
-                        Learn More <i class="fas fa-arrow-right"></i>
+                        → Learn More <i class="fas fa-arrow-right"></i>
                     </a>
                 </div>
                 
                 <!-- Practice Area Card 3: Intellectual Property -->
-                <div class="practice-card p-8 rounded-xl shadow-lg hover:shadow-xl transition duration-300 card-hover-effect animate-fade-in-up delay-300">
+                <div class="p-8 rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-300">
                     <div>
                         <div class="practice-card-icon-wrapper">
                             <i class="fas fa-lightbulb practice-card-icon"></i>
                         </div>
-                        <h3 class="text-2xl font-bold mb-4 text-white">Intellectual Property</h3>
-                        <p class="text-gray-300 leading-relaxed mb-6">Vigorous protection and enforcement of intellectual property rights, including patents, trademarks, copyrights, and trade secrets, through litigation and strategic counseling.</p>
+                        <h3 class="text-2xl font-bold mb-4 text-white text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-purple-300">Intellectual Property<br><span class="text-blue-400 text-lg font-medium">🧠 Because Brilliant Ideas Deserve Bodyguards</span></h3>
+                        <p class="text-gray-200 leading-relaxed mb-6">Robust defense of what makes you you — be it a patent, a poem, or a pixel. We protect trademarks, copyrights, and trade secrets with tactical litigation and creative finesse.</p>
                     </div>
                     <a href="#" class="practice-card-link">
-                        Learn More <i class="fas fa-arrow-right"></i>
+                        → Learn More <i class="fas fa-arrow-right"></i>
                     </a>
                 </div>
                 
                 <!-- Practice Area Card 4: Dispute Resolution -->
-                <div class="practice-card p-8 rounded-xl shadow-lg hover:shadow-xl transition duration-300 card-hover-effect animate-fade-in-up delay-400">
+                <div class="p-8 rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-400">
                     <div>
                         <div class="practice-card-icon-wrapper">
                             <i class="fas fa-handshake-angle practice-card-icon"></i>
                         </div>
-                        <h3 class="text-2xl font-bold mb-4 text-white">Dispute Resolution</h3>
-                        <p class="text-gray-300 leading-relaxed mb-6">Effective alternative dispute resolution services, including mediation and arbitration, designed to achieve efficient and favorable outcomes without prolonged litigation.</p>
+                        <h3 class="text-2xl font-bold mb-4 text-white text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-purple-300">Dispute Resolution<br><span class="text-blue-400 text-lg font-medium">🤝 Peace, Not Paper Cuts</span></h3>
+                        <p class="text-gray-200 leading-relaxed mb-6">When court isn't the vibe, we master the art of alternative resolution — mediation, arbitration, and smooth talk — to find solutions that are efficient, elegant, and emotionally intelligent.</p>
                     </div>
                     <a href="#" class="practice-card-link">
-                        Learn More <i class="fas fa-arrow-right"></i>
+                        → Learn More <i class="fas fa-arrow-right"></i>
                     </a>
                 </div>
                 
                 <!-- Practice Area Card 5: Securities Litigation -->
-                <div class="practice-card p-8 rounded-xl shadow-lg hover:shadow-xl transition duration-300 card-hover-effect animate-fade-in-up delay-500">
+                <div class="p-8 rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-500">
                     <div>
                         <div class="practice-card-icon-wrapper">
                             <i class="fas fa-chart-line practice-card-icon"></i>
                         </div>
-                        <h3 class="text-2xl font-bold mb-4 text-white">Securities Litigation</h3>
-                        <p class="text-gray-300 leading-relaxed mb-6">Specialized representation in complex securities fraud cases, shareholder derivative suits, and investigations by regulatory bodies like the SEC.</p>
+                        <h3 class="text-2xl font-bold mb-4 text-white text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-purple-300">Securities Litigation<br><span class="text-blue-400 text-lg font-medium">📈 Defending Truth in a World of Fine Print</span></h3>
+                        <p class="text-gray-200 leading-relaxed mb-6">High-level representation in securities fraud claims, shareholder whisperings, and regulatory showdowns. Fearless advocacy for financial transparency, minus the corporate coldness.</p>
                     </div>
                     <a href="#" class="practice-card-link">
-                        Learn More <i class="fas fa-arrow-right"></i>
+                        → Learn More <i class="fas fa-arrow-right"></i>
                     </a>
                 </div>
                 
                 <!-- Practice Area Card 6: Real Estate Law -->
-                <div class="practice-card p-8 rounded-xl shadow-lg hover:shadow-xl transition duration-300 card-hover-effect animate-fade-in-up delay-600">
+                <div class="p-8 rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-600">
                     <div>
                         <div class="practice-card-icon-wrapper">
                             <i class="fas fa-house-chimney practice-card-icon"></i>
                         </div>
-                        <h3 class="text-2xl font-bold mb-4 text-white">Real Estate Law</h3>
-                        <p class="text-gray-300 leading-relaxed mb-6">Comprehensive legal support for real estate matters, including property disputes, transactional issues, zoning, and landlord-tenant conflicts.</p>
+                        <h3 class="text-2xl font-bold mb-4 text-white text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-purple-300">Real Estate Law<br><span class="text-blue-400 text-lg font-medium">🏡 Property Law with Heart and Hustle</span></h3>
+                        <p class="text-gray-200 leading-relaxed mb-6">Comprehensive counsel for all things concrete (and conceptual). From zoning to landlord stand-offs, we build legal foundations stronger than your neighbor’s HOA bylaws.</p>
                     </div>
                     <a href="#" class="practice-card-link">
-                        Learn More <i class="fas fa-arrow-right"></i>
+                        → Learn More <i class="fas fa-arrow-right"></i>
                     </a>
                 </div>
             </div>
@@ -1011,63 +865,88 @@
     </section>
 
     <!-- Case Results / Verdicts & Settlements Section -->
-    <section id="results" class="py-20 bg-gray-900">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="results" class="py-20 bg-gradient-to-b from-gray-900 to-gray-950 relative">
+        <div class="section-bg-gradient blue-purple"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="text-center mb-16 section-heading">
-                <h2 class="text-4xl font-bold text-white mb-4">⚖️ Notable Case Outcomes</h2>
+                <h2 class="text-4xl font-bold text-white mb-4 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">⚖️ Notable Case Outcomes</h2>
                 <p class="text-lg text-gray-300">Documented success in matters of the heart, the hug, and the occasional dramatic misunderstanding.</p>
                 <div class="section-heading-line"></div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div class="result-card p-8 rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-100">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="p-8 rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-100">
                     <div class="text-center">
                         <div class="text-green-400 text-5xl mb-4">
                             <i class="fas fa-dollar-sign"></i>
                         </div>
                         <p class="result-amount" data-target="15" data-final-display="$15M">0</p>
-                        <h3 class="text-xl font-bold text-white mb-2">Unlawful Affection Withdrawal Settlement</h3>
-                        <p class="result-description text-sm">Successfully negotiated a landmark resolution on behalf of a passionate young startup wronged by a cold and unfeeling conglomerate, in a case involving less kiths , stolen ideas, and general emotional betrayal.</p>
-                        <p class="text-gray-500 text-xs mt-3">Practice Area: Commitment Law, Intellectual Property of the Heart</p>
+                        <h3 class="text-xl font-bold text-white mb-2 text-transparent bg-clip-text bg-gradient-to-r from-green-300 to-blue-300">Unlawful Affection Withdrawal Settlement</h3>
+                        <p class="result-description text-sm text-gray-200">Successfully negotiated a landmark resolution on behalf of a passionate young startup wronged by a cold and unfeeling conglomerate, in a case involving less kiths , stolen ideas, and general emotional betrayal.</p>
+                        <p class="text-gray-400 text-xs mt-3">Practice Area: Commitment Law, Intellectual Property of the Heart</p>
                     </div>
                 </div>
-                <div class="result-card p-8 rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-200">
+                <div class="p-8 rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-200">
                     <div class="text-center">
                         <div class="text-green-400 text-5xl mb-4">
                             <i class="fas fa-gavel"></i>
                         </div>
                         <p class="result-amount" data-target="7.5" data-final-display="$7.5M">0</p>
-                        <h3 class="text-xl font-bold text-white mb-2">Improper Parting & Emotional Damages</h3>
-                        <p class="result-description text-sm">Triumphed in a high-profile employment dispute involving the abrupt and unjust dismissal of a beloved senior executive. Allegations included workplace cold-shouldering, dignity erosion, and unauthorized termination of vibes. Justice was restored with interest.</p>
-                        <p class="text-gray-500 text-xs mt-3">Practice Area: Executive Affairs, Professional Heartbreak Law</p>
+                        <h3 class="text-xl font-bold text-white mb-2 text-transparent bg-clip-text bg-gradient-to-r from-green-300 to-blue-300">Improper Parting & Emotional Damages</h3>
+                        <p class="result-description text-sm text-gray-200">Triumphed in a high-profile employment dispute involving the abrupt and unjust dismissal of a beloved senior executive. Allegations included workplace cold-shouldering, dignity erosion, and unauthorized termination of vibes. Justice was restored with interest.</p>
+                        <p class="text-gray-400 text-xs mt-3">Practice Area: Executive Affairs, Professional Heartbreak Law</p>
                     </div>
                 </div>
-                <div class="result-card p-8 rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-300">
+                <div class="p-8 rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-300">
                     <div class="text-center">
                         <div class="text-green-400 text-5xl mb-4">
                             <i class="fas fa-chart-line"></i>
                         </div>
                         <p class="result-amount" data-target="12.4" data-final-display="$12.4M">0</p>
-                        <h3 class="text-xl font-bold text-white mb-2">Negligent Cuddle Withdrawal</h3>
-                        <p class="result-description text-sm">Represented a plaintiff in a high-stakes case involving prolonged cuddle deprivation and unauthorized emotional distance. After a heated trial (and some very cold nights), the court ruled in favor of reinstated snuggles with immediate effect and backdated forehead kisses.</p>
-                        <p class="text-gray-500 text-xs mt-3">Practice Area: Affectional Law & Cozy Rights Enforcement</p>
+                        <h3 class="text-xl font-bold text-white mb-2 text-transparent bg-clip-text bg-gradient-to-r from-green-300 to-blue-300">Negligent Cuddle Withdrawal</h3>
+                        <p class="result-description text-sm text-gray-200">Represented a plaintiff in a high-stakes case involving prolonged cuddle deprivation and unauthorized emotional distance. After a heated trial (and some very cold nights), the court ruled in favor of reinstated snuggles with immediate effect and backdated forehead kisses.</p>
+                        <p class="text-gray-400 text-xs mt-3">Practice Area: Affectional Law & Cozy Rights Enforcement</p>
                     </div>
                 </div>
-                <div class="result-card p-8 rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-400">
+                <div class="p-8 rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-400">
                     <div class="text-center">
                         <div class="text-green-400 text-5xl mb-4">
                             <i class="fas fa-handshake"></i>
                         </div>
                         <p class="result-amount" data-target="6.7" data-final-display="$6.7M">0</p>
-                        <h3 class="text-xl font-bold text-white mb-2">Unlawful Withholding of Compliments</h3>
-                        <p class="result-description text-sm">Brought justice in a case where the defendant failed to deliver the minimum daily quota of compliments, despite the plaintiff looking objectively adorable. The ruling mandated verbal affirmations every morning and spontaneous admiration clauses on date nights.</p>
-                        <p class="text-gray-500 text-xs mt-3">Practice Area: Flattery Enforcement & Emotional Affirmation Law</p>
+                        <h3 class="text-xl font-bold text-white mb-2 text-transparent bg-clip-text bg-gradient-to-r from-green-300 to-blue-300">Unlawful Withholding of Compliments</h3>
+                        <p class="result-description text-sm text-gray-200">Brought justice in a case where the defendant failed to deliver the minimum daily quota of compliments, despite the plaintiff looking objectively adorable. The ruling mandated verbal affirmations every morning and spontaneous admiration clauses on date nights.</p>
+                        <p class="text-gray-400 text-xs mt-3">Practice Area: Flattery Enforcement & Emotional Affirmation Law</p>
+                    </div>
+                </div>
+                 <!-- New Result 5 -->
+                <div class="p-8 rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-500">
+                    <div class="text-center">
+                        <div class="text-green-400 text-5xl mb-4">
+                            <i class="fas fa-balance-scale"></i>
+                        </div>
+                        <p class="result-amount" data-target="9.1" data-final-display="$9.1M">0</p>
+                        <h3 class="text-xl font-bold text-white mb-2 text-transparent bg-clip-text bg-gradient-to-r from-green-300 to-blue-300">Breach of Friendship Contract</h3>
+                        <p class="result-description text-sm text-gray-200">Successfully mediated a complex dispute between long-term friends over shared responsibilities and emotional support, resulting in a renewed bond and compensatory damages for emotional distress.</p>
+                        <p class="text-gray-400 text-xs mt-3">Practice Area: Friendship Law, Emotional Contract Enforcement</p>
+                    </div>
+                </div>
+                <!-- New Result 6 -->
+                <div class="p-8 rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-600">
+                    <div class="text-center">
+                        <div class="text-green-400 text-5xl mb-4">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <p class="result-amount" data-target="3.2" data-final-display="$3.2M">0</p>
+                        <h3 class="text-xl font-bold text-white mb-2 text-transparent bg-clip-text bg-gradient-to-r from-green-300 to-blue-300">Misunderstood Text Message Damages</h3>
+                        <p class="result-description text-sm text-gray-200">Represented a client who suffered significant emotional turmoil due to a poorly worded text message. Secured a settlement that included mandatory emoji usage and clarity training for the defendant.</p>
+                        <p class="text-gray-400 text-xs mt-3">Practice Area: Digital Communication Law, Emotional Clarity</p>
                     </div>
                 </div>
             </div>
 
-            <div class="text-center mt-16">
-                <button class="btn-primary bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-full shadow-md">
+            <div class="text-center mt-16 animate-fade-in-up delay-700">
+                <button class="btn-primary font-semibold py-3 px-8 rounded-full">
                     View All Results <i class="fas fa-arrow-right ml-2 text-sm"></i>
                 </button>
             </div>
@@ -1075,18 +954,19 @@
     </section>
 
     <!-- Testimonials Section -->
-    <section id="testimonials" class="py-20 bg-gray-950">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="testimonials" class="py-20 bg-gradient-to-b from-gray-950 to-gray-900 relative">
+        <div class="section-bg-gradient green-blue"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="text-center mb-16 section-heading">
-                <h2 class="text-4xl font-bold text-white mb-4">What Our Clients Say</h2>
+                <h2 class="text-4xl font-bold text-white mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-teal-400">What Our Clients Say</h2>
                 <p class="text-lg text-gray-300">Authentic feedback from those we've served.</p>
                 <div class="section-heading-line"></div>
             </div>
             
-            <div class="testimonial-carousel-container">
+            <div class="testimonial-carousel-container relative">
                 <div class="testimonial-carousel-track gap-10">
                     <!-- Testimonial 1 -->
-                    <div class="bg-gray-800 p-8 rounded-xl shadow-lg testimonial-card card-hover-effect animate-fade-in-up delay-100">
+                    <div class="p-8 rounded-xl shadow-lg testimonial-card card-hover-effect animate-fade-in-up delay-100">
                         <div class="testimonial-content">
                             <div class="flex items-center mb-5">
                                 <div class="text-yellow-400 text-lg">
@@ -1094,21 +974,21 @@
                                 </div>
                                 <span class="ml-3 text-gray-400 text-sm">5.0 Rating</span>
                             </div>
-                            <p class="text-gray-300 italic leading-relaxed mb-6">"James Wilson's strategic brilliance and meticulous attention to detail were pivotal in navigating our complex IP dispute. His commanding yet empathetic courtroom presence ensured we felt supported every step of the way. Truly exceptional representation."</p>
+                            <p class="text-gray-200 italic leading-relaxed mb-6">"Doofy's compassionate approach and Quackers' strategic brilliance were pivotal in navigating our complex emotional dispute. Their commanding yet empathetic courtroom presence ensured we felt supported every step of the way. Truly exceptional representation in affectional law!"</p>
                             <div class="flex items-center pt-4 border-t border-gray-700">
                                 <div class="w-16 h-16 rounded-full overflow-hidden mr-4 shadow-lg flex-shrink-0 testimonial-author-img">
                                     <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Client Photo" class="w-full h-full object-cover">
                                 </div>
                                 <div>
                                     <h4 class="font-bold text-lg text-white">Michael Thompson</h4>
-                                    <p class="text-blue-400 text-sm">CEO, Tech Innovations Inc.</p>
+                                    <p class="text-blue-400 text-sm">CEO, Heartfelt Innovations Inc.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                     
                     <!-- Testimonial 2 -->
-                    <div class="bg-gray-800 p-8 rounded-xl shadow-lg testimonial-card card-hover-effect animate-fade-in-up delay-200">
+                    <div class="p-8 rounded-xl shadow-lg testimonial-card card-hover-effect animate-fade-in-up delay-200">
                         <div class="testimonial-content">
                             <div class="flex items-center mb-5">
                                 <div class="text-yellow-400 text-lg">
@@ -1116,21 +996,21 @@
                                 </div>
                                 <span class="ml-3 text-gray-400 text-sm">5.0 Rating</span>
                             </div>
-                            <p class="text-gray-300 italic leading-relaxed mb-6">"Facing a potentially devastating lawsuit, James provided expert guidance and unwavering support. His exceptional negotiation skills led to a settlement that far exceeded our expectations, protecting our company's future."</p>
+                            <p class="text-gray-200 italic leading-relaxed mb-6">"Facing a potentially devastating emotional lawsuit, Quackers & Doofy LLP provided expert guidance and unwavering support. Their exceptional negotiation skills led to a resolution that far exceeded our expectations, protecting our company's future emotional well-being."</p>
                             <div class="flex items-center pt-4 border-t border-gray-700">
                                 <div class="w-16 h-16 rounded-full overflow-hidden mr-4 shadow-lg flex-shrink-0 testimonial-author-img">
                                     <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Client Photo" class="w-full h-full object-cover">
                                 </div>
                                 <div>
                                     <h4 class="font-bold text-lg text-white">Sarah Johnson</h4>
-                                    <p class="text-blue-400 text-sm">CFO, Global Ventures Group</p>
+                                    <p class="text-blue-400 text-sm">CFO, Global Affection Ventures</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                     
                     <!-- Testimonial 3 -->
-                    <div class="bg-gray-800 p-8 rounded-xl shadow-lg testimonial-card card-hover-effect animate-fade-in-up delay-300">
+                    <div class="p-8 rounded-xl shadow-lg testimonial-card card-hover-effect animate-fade-in-up delay-300">
                         <div class="testimonial-content">
                             <div class="flex items-center mb-5">
                                 <div class="text-yellow-400 text-lg">
@@ -1138,21 +1018,21 @@
                                 </div>
                                 <span class="ml-3 text-gray-400 text-sm">5.0 Rating</span>
                             </div>
-                            <p class="text-gray-300 italic leading-relaxed mb-6">"James's profound understanding of corporate law was evident throughout our complex merger. He proactively identified potential issues and offered clear, actionable solutions, making a daunting process seamless. His reputation is well-deserved."</p>
+                            <p class="text-gray-200 italic leading-relaxed mb-6">"The profound understanding of interpersonal law demonstrated by Quackers & Doofy LLP was evident throughout our complex relationship mediation. They proactively identified potential issues and offered clear, actionable solutions, making a daunting process seamless. Their reputation is well-deserved."</p>
                             <div class="flex items-center pt-4 border-t border-gray-700">
                                 <div class="w-16 h-16 rounded-full overflow-hidden mr-4 shadow-lg flex-shrink-0 testimonial-author-img">
                                     <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Client Photo" class="w-full h-full object-cover">
                                 </div>
                                 <div>
                                     <h4 class="font-bold text-lg text-white">David Chen</h4>
-                                    <p class="text-blue-400 text-sm">Board Chairman, Apex Solutions</p>
+                                    <p class="text-blue-400 text-sm">Board Chairman, Apex Affection Solutions</p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Testimonial 4 (New) -->
-                    <div class="bg-gray-800 p-8 rounded-xl shadow-lg testimonial-card card-hover-effect animate-fade-in-up delay-400">
+                    <!-- Testimonial 4 -->
+                    <div class="p-8 rounded-xl shadow-lg testimonial-card card-hover-effect animate-fade-in-up delay-400">
                         <div class="testimonial-content">
                             <div class="flex items-center mb-5">
                                 <div class="text-yellow-400 text-lg">
@@ -1160,27 +1040,63 @@
                                 </div>
                                 <span class="ml-3 text-gray-400 text-sm">4.5 Rating</span>
                             </div>
-                            <p class="text-gray-300 italic leading-relaxed mb-6">"The team at James Wilson Law provided exceptional guidance during a challenging real estate dispute. Their expertise and dedication led to a resolution that protected our interests. Highly recommend their services."</p>
+                            <p class="text-gray-200 italic leading-relaxed mb-6">"The team at Quackers & Doofy LLP provided exceptional guidance during a challenging friendship dispute. Their expertise and dedication led to a resolution that protected our emotional interests. Highly recommend their services for all matters of the heart."</p>
                             <div class="flex items-center pt-4 border-t border-gray-700">
                                 <div class="w-16 h-16 rounded-full overflow-hidden mr-4 shadow-lg flex-shrink-0 testimonial-author-img">
                                     <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Client Photo" class="w-full h-full object-cover">
                                 </div>
                                 <div>
                                     <h4 class="font-bold text-lg text-white">Emily White</h4>
-                                    <p class="text-blue-400 text-sm">Property Investor</p>
+                                    <p class="text-blue-400 text-sm">Friendship Advocate</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- New Testimonial 5 -->
+                    <div class="p-8 rounded-xl shadow-lg testimonial-card card-hover-effect animate-fade-in-up delay-500">
+                        <div class="testimonial-content">
+                            <div class="flex items-center mb-5">
+                                <div class="text-yellow-400 text-lg">
+                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                                </div>
+                                <span class="ml-3 text-gray-400 text-sm">5.0 Rating</span>
+                            </div>
+                            <p class="text-gray-200 italic leading-relaxed mb-6">"Quackers' insightful strategies saved our partnership from a major emotional fallout. Their ability to navigate complex interpersonal dynamics is truly unmatched. We're grateful for their compassionate and effective legal counsel."</p>
+                            <div class="flex items-center pt-4 border-t border-gray-700">
+                                <div class="w-16 h-16 rounded-full overflow-hidden mr-4 shadow-lg flex-shrink-0 testimonial-author-img">
+                                    <img src="https://randomuser.me/api/portraits/men/19.jpg" alt="Client Photo" class="w-full h-full object-cover">
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg text-white">Robert Davis</h4>
+                                    <p class="text-blue-400 text-sm">Co-Founder, Harmony Solutions</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- New Testimonial 6 -->
+                    <div class="p-8 rounded-xl shadow-lg testimonial-card card-hover-effect animate-fade-in-up delay-600">
+                        <div class="testimonial-content">
+                            <div class="flex items-center mb-5">
+                                <div class="text-yellow-400 text-lg">
+                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                                </div>
+                                <span class="ml-3 text-gray-400 text-sm">4.5 Rating</span>
+                            </div>
+                            <p class="text-gray-200 italic leading-relaxed mb-6">"Doofy's calm demeanor and clear communication were exactly what we needed during a stressful family dispute. He helped us find common ground and achieve a resolution that preserved our relationships. Highly recommend their unique approach!"</p>
+                            <div class="flex items-center pt-4 border-t border-gray-700">
+                                <div class="w-16 h-16 rounded-full overflow-hidden mr-4 shadow-lg flex-shrink-0 testimonial-author-img">
+                                    <img src="https://randomuser.me/api/portraits/women/90.jpg" alt="Client Photo" class="w-full h-full object-cover">
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg text-white">Jessica Lee</h4>
+                                    <p class="text-blue-400 text-sm">Family Relations Consultant</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Carousel Navigation Buttons -->
-                <button class="carousel-button left" aria-label="Previous Testimonial">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                <button class="carousel-button right" aria-label="Next Testimonial">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
 
                 <!-- Carousel Dots -->
                 <div class="carousel-dots">
@@ -1188,23 +1104,159 @@
                     <span class="dot" data-slide="1"></span>
                     <span class="dot" data-slide="2"></span>
                     <span class="dot" data-slide="3"></span>
+                    <span class="dot" data-slide="4"></span>
+                    <span class="dot" data-slide="5"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Awards, Accolades & Press Mentions Section -->
+    <section id="awards" class="py-20 bg-gradient-to-b from-gray-900 to-gray-950 relative">
+        <div class="section-bg-gradient blue-purple"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-16 section-heading">
+                <h2 class="text-4xl font-bold text-white mb-4 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">Awards & Recognition</h2>
+                <p class="text-lg text-gray-300">Celebrating our commitment to legal excellence.</p>
+                <div class="section-heading-line"></div>
+            </div>
+            
+            <!-- Doofy's Awards Section -->
+            <div class="text-center mb-10 section-heading">
+                <h3 class="text-3xl font-bold text-white mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-purple-300">Doofy's Awards</h3>
+                <p class="text-lg text-gray-300">Recognitions for our esteemed founding partner.</p>
+                <div class="section-heading-line w-24"></div>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mb-16">
+                <!-- Award Card 1: Legal 500 -->
+                <div class="p-6 rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-100">
+                    <div class="text-center">
+                        <img src="https://placehold.co/100x100/1C1C22/E0E0E0?text=Legal+500" alt="Legal 500 Logo" class="w-24 h-24 object-contain mx-auto mb-4 award-logo-img">
+                        <h3 class="text-xl font-bold text-white mb-2">Legal 500</h3>
+                        <p class="text-gray-300 text-sm">Celebrated for exceptional performance in Love Law, Cuddle Clause Arbitration, and Duck Rights Advocacy (2018–2023).</p>
+                    </div>
+                </div>
+                <!-- Award Card 2: Super Lawyers -->
+                <div class="p-6 rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-200">
+                    <div class="text-center">
+                        <img src="https://placehold.co/100x100/1C1C22/E0E0E0?text=Super+Lawyers" alt="Super Lawyers Logo" class="w-24 h-24 object-contain mx-auto mb-4 award-logo-img">
+                        <h3 class="text-xl font-bold text-white mb-2">Super Lawyers</h3>
+                        <p class="text-gray-300 text-sm">Doofy Port repeatedly honored as a Top Rated Romantic Litigator — specializing in heartfelt arguments and persuasive snuggle motions (2015–2023).</p>
+                    </div>
+                </div>
+                <!-- Award Card 3: Best Lawyers in America -->
+                <div class="p-6 rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-300">
+                    <div class="text-center">
+                        <img src="https://placehold.co/100x100/1C1C22/E0E0E0?text=Best+Lawyers" alt="Best Lawyers Logo" class="w-24 h-24 object-contain mx-auto mb-4 award-logo-img">
+                        <h3 class="text-xl font-bold text-white mb-2">Best Lawyers in America</h3>
+                        <p class="text-gray-300 text-sm">Featured annually for pioneering the field of Affectional Law and setting new standards in emotional justice (since 2012).</p>
+                    </div>
+                </div>
+                <!-- Award Card 4: Martindale-Hubbell -->
+                <div class="p-6 rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-400">
+                    <div class="text-center">
+                        <img src="https://placehold.co/100x100/1C1C22/E0E0E0?text=Martindale" alt="Martindale-Hubbell Logo" class="w-24 h-24 object-contain mx-auto mb-4 award-logo-img">
+                        <h3 class="text-xl font-bold text-white mb-2">Martindale-Hubbell</h3>
+                        <p class="text-gray-300 text-sm">Received the highest AV Preeminent rating — for unparalleled charm, compassion, and commitment to romantic resolution.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quackers' Awards Section -->
+            <div class="text-center mb-10 section-heading mt-20">
+                <h3 class="text-3xl font-bold text-white mb-4 text-transparent bg-clip-text bg-gradient-to-r from-teal-300 to-blue-300">Quackers' Awards</h3>
+                <p class="text-lg text-gray-300">Accolades celebrating our visionary co-founder.</p>
+                <div class="section-heading-line w-24"></div>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mb-16">
+                <!-- Award Card 1: The Golden Gavel Circle -->
+                <div class="p-6 rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-100">
+                    <div class="text-center">
+                        <img src="https://placehold.co/100x100/1C1C22/E0E0E0?text=Golden+Gavel" alt="Golden Gavel Logo" class="w-24 h-24 object-contain mx-auto mb-4 award-logo-img">
+                        <h3 class="text-xl font-bold text-white mb-2">The Golden Gavel Circle</h3>
+                        <p class="text-gray-300 text-sm">Recognized for excellence in Conflict Resolution, Relationship Mediation, and Emotional Intelligence Law (2018–2023).</p>
+                    </div>
+                </div>
+                <!-- Award Card 2: The Counsel of Hearts Directory -->
+                <div class="p-6 rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-200">
+                    <div class="text-center">
+                        <img src="https://placehold.co/100x100/1C1C22/E0E0E0?text=Counsel+of+Hearts" alt="Counsel of Hearts Logo" class="w-24 h-24 object-contain mx-auto mb-4 award-logo-img">
+                        <h3 class="text-xl font-bold text-white mb-2">The Counsel of Hearts Directory</h3>
+                        <p class="text-gray-300 text-sm">Quackers consistently named a Top Rated Advisor in strategic affection management and empathetic legal frameworks (2016–2023).</p>
+                    </div>
+                </div>
+                <!-- Award Card 3: The Affectionate Advocates List -->
+                <div class="p-6 rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-300">
+                    <div class="text-center">
+                        <img src="https://placehold.co/100x100/1C1C22/E0E0E0?text=Advocates+List" alt="Affectionate Advocates Logo" class="w-24 h-24 object-contain mx-auto mb-4 award-logo-img">
+                        <h3 class="text-xl font-bold text-white mb-2">The Affectionate Advocates List</h3>
+                        <p class="text-gray-300 text-sm">Honored annually for redefining best practices in interpersonal harmony and co-counseling with heart (since 2013).</p>
+                    </div>
+                </div>
+                <!-- Award Card 4: The Port Honor Roll for Emotional Jurisprudence -->
+                <div class="p-6 rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-400">
+                    <div class="text-center">
+                        <img src="https://placehold.co/100x100/1C1C22/E0E0E0?text=Honor+Roll" alt="Port Honor Roll Logo" class="w-24 h-24 object-contain mx-auto mb-4 award-logo-img">
+                        <h3 class="text-xl font-bold text-white mb-2">The Port Honor Roll for Emotional Jurisprudence</h3>
+                        <p class="text-gray-300 text-sm">Earned Preeminent Distinction for empathy-driven strategy, professional warmth, and unmatched emotional acuity.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mb-16 section-heading">
+                <h3 class="text-3xl font-bold text-white mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-teal-400">In The News</h3>
+                <p class="text-lg text-gray-300">Featured insights and mentions in leading publications.</p>
+                <div class="section-heading-line"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- News Item 1 -->
+                <div class="rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-100">
+                    <div class="relative h-48 overflow-hidden rounded-t-xl">
+                        <img src="https://placehold.co/600x200/1C1C22/E0E0E0?text=Legal+Insights" alt="Legal Insights Image" class="w-full h-full object-cover news-image">
+                        <div class="absolute inset-0 bg-gradient-to-t from-gray-950 to-transparent"></div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-blue-400 text-xs uppercase font-semibold mb-2">Legal Times | October 26, 2023</p>
+                        <h3 class="text-2xl font-bold text-white mb-3 leading-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-purple-300">"Quackers & Doofy LLP: Leading the Way in Affectional Law"</h3>
+                        <p class="text-gray-200 leading-relaxed text-sm mb-4">An in-depth interview discussing emerging trends in emotional jurisprudence and strategies for protecting heartfelt connections in a rapidly evolving world.</p>
+                        <a href="#" class="text-blue-400 hover:underline font-semibold flex items-center">
+                            Read Article <i class="fas fa-arrow-right ml-2 text-sm"></i>
+                        </a>
+                    </div>
+                </div>
+                <!-- News Item 2 -->
+                <div class="rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-200">
+                    <div class="relative h-48 overflow-hidden rounded-t-xl">
+                        <img src="https://placehold.co/600x200/1C1C22/E0E0E0?text=Business+News" alt="Business News Image" class="w-full h-full object-cover news-image">
+                        <div class="absolute inset-0 bg-gradient-to-t from-gray-950 to-transparent"></div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-blue-400 text-xs uppercase font-semibold mb-2">Business Daily | September 15, 2023</p>
+                        <h3 class="text-2xl font-bold text-white mb-3 leading-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-purple-300">"Landmark Verdict in The Case of the Unreturned Hug"</h3>
+                        <p class="text-gray-200 leading-relaxed text-sm mb-4">Coverage of a significant victory achieved for a client in a case involving emotional neglect, highlighting the firm's strategic approach to ensuring fair emotional compensation.</p>
+                        <a href="#" class="text-blue-400 hover:underline font-semibold flex items-center">
+                            Read Article <i class="fas fa-arrow-right ml-2 text-sm"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="py-20 bg-gray-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="contact" class="py-20 bg-gradient-to-b from-gray-900 to-gray-950 relative">
+        <div class="section-bg-gradient blue-purple"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="text-center mb-16 section-heading">
-                <h2 class="text-4xl font-bold text-white mb-4">Connect With Us</h2>
+                <h2 class="text-4xl font-bold text-white mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-teal-400">Connect With Us</h2>
                 <p class="text-lg text-gray-300">Schedule a consultation or reach out to our office.</p>
                 <div class="section-heading-line"></div>
             </div>
             
             <div class="flex flex-col lg:flex-row gap-16 items-start">
-                <div class="lg:w-1/2 bg-gray-900 p-10 rounded-xl shadow-lg border border-gray-700 animate-fade-in-up delay-100">
-                    <h3 class="text-3xl font-bold mb-8 text-white">Schedule Your Consultation</h3>
+                <div class="lg:w-1/2 p-10 rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-100">
+                    <h3 class="text-3xl font-bold mb-8 text-white text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-purple-300">Schedule Your Consultation</h3>
                     <form class="space-y-6">
                         <div>
                             <label for="name" class="block text-sm font-medium text-gray-300 mb-2">Full Name</label>
@@ -1224,14 +1276,14 @@
                         <div>
                             <label for="subject" class="block text-sm font-medium text-gray-300 mb-2">Nature of Inquiry</label>
                             <select id="subject" name="subject" class="form-input w-full px-4 py-3 rounded-lg">
-                                <option value="" class="bg-gray-700 text-gray-300">Select a subject</option>
-                                <option value="civil_litigation" class="bg-gray-700 text-gray-300">Civil Litigation</option>
-                                <option value="corporate_law" class="bg-gray-700 text-gray-300">Corporate Law</option>
-                                <option value="intellectual_property" class="bg-gray-700 text-gray-300">Intellectual Property</option>
-                                <option value="dispute_resolution" class="bg-gray-700 text-gray-300">Dispute Resolution</option>
-                                <option value="securities_litigation" class="bg-gray-700 text-gray-300">Securities Litigation</option>
-                                <option value="real_estate_law" class="bg-gray-700 text-gray-300">Real Estate Law</option>
-                                <option value="other" class="bg-gray-700 text-gray-300">Other Legal Matter</option>
+                                <option value="" class="bg-gray-800 text-gray-300">Select a subject</option>
+                                <option value="civil_litigation" class="bg-gray-800 text-gray-300">Civil Litigation</option>
+                                <option value="corporate_law" class="bg-gray-800 text-gray-300">Corporate Law</option>
+                                <option value="intellectual_property" class="bg-gray-800 text-gray-300">Intellectual Property</option>
+                                <option value="dispute_resolution" class="bg-gray-800 text-gray-300">Dispute Resolution</option>
+                                <option value="securities_litigation" class="bg-gray-800 text-gray-300">Securities Litigation</option>
+                                <option value="real_estate_law" class="bg-gray-800 text-gray-300">Real Estate Law</option>
+                                <option value="other" class="bg-gray-800 text-gray-300">Other Legal Matter</option>
                             </select>
                         </div>
                         
@@ -1241,7 +1293,7 @@
                         </div>
                         
                         <div>
-                            <button type="submit" class="btn-primary w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md">
+                            <button type="submit" class="btn-primary w-full font-semibold py-3 px-6 rounded-lg">
                                 Send Message
                             </button>
                         </div>
@@ -1249,15 +1301,15 @@
                 </div>
                 
                 <div class="lg:w-1/2 animate-fade-in-up delay-200">
-                    <h3 class="text-3xl font-bold mb-8 text-white">Office & Contact Details</h3>
-                    <div class="bg-gray-900 p-10 rounded-xl shadow-lg border border-gray-700 space-y-8">
+                    <h3 class="text-3xl font-bold mb-8 text-white text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-purple-300">Office & Contact Details</h3>
+                    <div class="p-10 rounded-xl shadow-lg card-hover-effect space-y-8">
                         <div class="flex items-start">
                             <div class="text-blue-500 text-3xl mr-5 mt-1">
                                 <i class="fas fa-map-marker-alt"></i>
                             </div>
                             <div>
                                 <h4 class="font-bold text-xl mb-1 text-white">Our Location</h4>
-                                <p class="text-gray-300 leading-relaxed">
+                                <p class="text-gray-200 leading-relaxed">
                                     123 Legal Heights, Suite 500<br>
                                     Metropolis, NY 10001, USA
                                 </p>
@@ -1270,7 +1322,7 @@
                             </div>
                             <div>
                                 <h4 class="font-bold text-xl mb-1 text-white">Phone Numbers</h4>
-                                <p class="text-gray-300">
+                                <p class="text-gray-200">
                                     Main Office: <a href="tel:+12125551234" class="text-blue-400 hover:underline">(212) 555-1234</a><br>
                                     Direct Line: <a href="tel:+19175555678" class="text-blue-400 hover:underline">(917) 555-5678</a>
                                 </p>
@@ -1283,9 +1335,9 @@
                             </div>
                             <div>
                                 <h4 class="font-bold text-xl mb-1 text-white">Email Addresses</h4>
-                                <p class="text-gray-300">
-                                    General Inquiries: <a href="mailto:info@jameswilsonlaw.com" class="text-blue-400 hover:underline">info@jameswilsonlaw.com</a><br>
-                                    Client Support: <a href="mailto:support@jameswilsonlaw.com" class="text-blue-400 hover:underline">support@jameswilsonlaw.com</a>
+                                <p class="text-gray-200">
+                                    General Inquiries: <a href="mailto:info@quackersdoofy.law" class="text-blue-400 hover:underline">info@quackersdoofy.law</a><br>
+                                    Client Support: <a href="mailto:support@quackersdoofy.law" class="text-blue-400 hover:underline">support@quackersdoofy.law</a>
                                 </p>
                             </div>
                         </div>
@@ -1296,7 +1348,7 @@
                             </div>
                             <div>
                                 <h4 class="font-bold text-xl mb-1 text-white">Office Hours</h4>
-                                <p class="text-gray-300">
+                                <p class="text-gray-200">
                                     Monday - Friday: 9:00 AM - 6:00 PM<br>
                                     Weekends: By Appointment Only
                                 </p>
@@ -1304,13 +1356,13 @@
                         </div>
                     </div>
                     
-                    <div class="mt-10">
-                        <h4 class="text-2xl font-bold mb-5 text-white">Connect on Social Media</h4>
+                    <div class="mt-10 animate-fade-in-up delay-300">
+                        <h4 class="text-2xl font-bold mb-5 text-white text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-purple-300">Connect on Social Media</h4>
                         <div class="flex space-x-4">
                             <a href="#" class="w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center text-xl hover:bg-blue-700 transition duration-300 transform hover:scale-110 shadow-md" aria-label="LinkedIn">
                                 <i class="fab fa-linkedin-in"></i>
                             </a>
-                            <a href="#" class="w-12 h-12 rounded-full bg-blue-500 text-white flex items-center justify-center text-xl hover:bg-blue-600 transition duration-300 transform hover:scale-110 shadow-md" aria-label="Twitter">
+                            <a href="#" class="w-12 h-12 rounded-full bg-purple-600 text-white flex items-center justify-center text-xl hover:bg-purple-700 transition duration-300 transform hover:scale-110 shadow-md" aria-label="Twitter">
                                 <i class="fab fa-twitter"></i>
                             </a>
                             <a href="#" class="w-12 h-12 rounded-full bg-blue-700 text-white flex items-center justify-center text-xl hover:bg-blue-800 transition duration-300 transform hover:scale-110 shadow-md" aria-label="Facebook">
@@ -1346,7 +1398,6 @@
                         <li><a href="#team" class="text-gray-400 hover:text-white transition duration-300">Our Team</a></li>
                         <li><a href="#awards" class="text-gray-400 hover:text-white transition duration-300">Awards</a></li>
                         <li><a href="#practice" class="text-gray-400 hover:text-white transition duration-300">Practice Areas</a></li>
-                        <li><a href="#cases" class="text-gray-400 hover:text-white transition duration-300">Case Studies</a></li>
                         <li><a href="#results" class="text-gray-400 hover:text-white transition duration-300">Case Results</a></li>
                         <li><a href="#testimonials" class="text-gray-400 hover:text-white transition duration-300">Testimonials</a></li>
                         <li><a href="#contact" class="text-gray-400 hover:text-white transition duration-300">Contact</a></li>
@@ -1380,7 +1431,7 @@
                         <a href="#" class="text-gray-400 hover:text-white transition duration-300 text-xl" aria-label="Facebook">
                                 <i class="fab fa-facebook-f"></i>
                             </a>
-                            <a href="#" class="w-12 h-12 rounded-full bg-gray-700 text-white flex items-center justify-center text-xl hover:bg-gray-600 transition duration-300 transform hover:scale-110 shadow-md" aria-label="GitHub">
+                            <a href="#" class="text-gray-400 hover:text-white transition duration-300 text-xl" aria-label="GitHub">
                                 <i class="fab fa-github"></i>
                             </a>
                         </div>
@@ -1444,14 +1495,12 @@
             }
         });
         
-        // Case Study Expansion Logic
+        // Case Study Expansion Logic (Placeholder, as no case studies section exists)
         document.querySelectorAll('.case-study-card').forEach(card => {
             card.addEventListener('click', function(event) {
-                // Prevent the link from navigating if clicked directly
                 if (event.target.tagName === 'A' || event.target.closest('.read-more-link')) {
                     return;
                 }
-
                 this.classList.toggle('expanded');
                 const details = this.querySelector('.case-study-details');
                 const readMoreLink = this.querySelector('.read-more-link');
@@ -1475,21 +1524,22 @@
 
         // Testimonial Carousel Logic
         const carouselTrack = document.querySelector('.testimonial-carousel-track');
-        const prevButton = document.querySelector('.carousel-button.left');
-        const nextButton = document.querySelector('.carousel-button.right');
         const dotsContainer = document.querySelector('.carousel-dots');
         const testimonialCards = document.querySelectorAll('.testimonial-carousel-track > div');
         let currentIndex = 0;
 
         function updateCarousel() {
-            // Get the actual rendered width of a single testimonial card
-            // This width already includes any margin/padding/gap applied by flexbox for the card itself
-            const cardRenderedWidth = testimonialCards[0].getBoundingClientRect().width + 40; // Add gap for calculation
+            let cardWidth;
+            if (window.innerWidth >= 1024) {
+                cardWidth = testimonialCards[0].offsetWidth + 20;
+            } else if (window.innerWidth >= 768) {
+                cardWidth = testimonialCards[0].offsetWidth + 20;
+            } else {
+                cardWidth = testimonialCards[0].offsetWidth + 40;
+            }
+
+            carouselTrack.style.transform = `translateX(-${currentIndex * cardWidth}px)`;
             
-            // The scroll position should be a multiple of the card's rendered width
-            carouselTrack.style.transform = `translateX(-${currentIndex * cardRenderedWidth}px)`;
-            
-            // Update dots
             dotsContainer.querySelectorAll('.dot').forEach((dot, index) => {
                 if (index === currentIndex) {
                     dot.classList.add('active');
@@ -1499,16 +1549,6 @@
             });
         }
 
-        prevButton.addEventListener('click', () => {
-            currentIndex = (currentIndex > 0) ? currentIndex - 1 : testimonialCards.length - 1;
-            updateCarousel();
-        });
-
-        nextButton.addEventListener('click', () => {
-            currentIndex = (currentIndex < testimonialCards.length - 1) ? currentIndex + 1 : 0;
-            updateCarousel();
-        });
-
         dotsContainer.addEventListener('click', (event) => {
             if (event.target.classList.contains('dot')) {
                 currentIndex = parseInt(event.target.dataset.slide);
@@ -1516,58 +1556,55 @@
             }
         });
 
-        // Initialize carousel on load and update on resize
         window.addEventListener('load', updateCarousel);
         window.addEventListener('resize', updateCarousel);
 
         // Dynamic Statistics Counter Logic for Milestones
         const milestonesSection = document.getElementById('milestones');
         const milestoneNumberDisplays = document.querySelectorAll('#milestones .milestone-number-display');
-        let milestonesAnimated = false; // Flag to ensure animation runs only once
+        let milestonesAnimated = false;
 
         const milestoneObserverOptions = {
-            root: null, // viewport as root
+            root: null,
             rootMargin: '0px',
-            threshold: 0.1 // Trigger when 10% of the section is visible
+            threshold: 0.1
         };
 
         const milestoneObserver = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting && !milestonesAnimated) {
                     milestoneNumberDisplays.forEach(valueElement => {
-                        const target = parseFloat(valueElement.dataset.target); // Use parseFloat for decimals
+                        const target = parseFloat(valueElement.dataset.target);
                         const finalDisplay = valueElement.dataset.finalDisplay; 
                         let current = 0;
-                        const duration = 2000; // 2 seconds
-                        const increment = target / (duration / 60); // ~60 frames per second
+                        const duration = 2000;
+                        const increment = target / (duration / 60);
 
-                        // Add a small delay to allow parent card to fade in
                         setTimeout(() => {
                             if (!isNaN(target)) {
                                 const animateCount = () => {
                                     current += increment;
                                     if (current < target) {
-                                        // Format for currency/percentage if needed, otherwise just floor
                                         let displayValue = Math.floor(current);
                                         if (finalDisplay.includes('%')) {
                                             displayValue = `${Math.floor(current)}%`;
                                         } else if (finalDisplay.includes('$') && finalDisplay.includes('M')) {
-                                            displayValue = `$${current.toFixed(1)}M`; // Keep one decimal for millions
+                                            displayValue = `$${current.toFixed(1)}M`;
                                         }
                                         valueElement.textContent = displayValue;
                                         requestAnimationFrame(animateCount);
                                     } else {
-                                        valueElement.textContent = finalDisplay; // Set to full text with suffix
+                                        valueElement.textContent = finalDisplay;
                                     }
                                 };
                                 animateCount();
                             } else {
                                 valueElement.textContent = finalDisplay;
                             }
-                        }, 300); // 300ms delay
+                        }, 300);
                     });
-                    milestonesAnimated = true; // Set flag to true after animation
-                    observer.unobserve(milestonesSection); // Stop observing after animation
+                    milestonesAnimated = true;
+                    observer.unobserve(milestonesSection);
                 }
             });
         }, milestoneObserverOptions);
@@ -1577,12 +1614,12 @@
         // Dynamic Statistics Counter Logic for Case Outcomes
         const resultsSection = document.getElementById('results');
         const resultAmountDisplays = document.querySelectorAll('#results .result-amount');
-        let resultsAnimated = false; // Flag to ensure animation runs only once
+        let resultsAnimated = false;
 
         const resultsObserverOptions = {
-            root: null, // viewport as root
+            root: null,
             rootMargin: '0px',
-            threshold: 0.1 // Trigger when 10% of the section is visible
+            threshold: 0.1
         };
 
         const resultsObserver = new IntersectionObserver((entries, observer) => {
@@ -1592,7 +1629,7 @@
                         const target = parseFloat(valueElement.dataset.target);
                         const finalDisplay = valueElement.dataset.finalDisplay; 
                         let current = 0;
-                        const duration = 2000; // 2 seconds
+                        const duration = 2000;
                         const increment = target / (duration / 60);
 
                         setTimeout(() => {
@@ -1600,7 +1637,7 @@
                                 const animateCount = () => {
                                     current += increment;
                                     if (current < target) {
-                                        let displayValue = current.toFixed(1); // Keep one decimal for amounts
+                                        let displayValue = current.toFixed(1);
                                         valueElement.textContent = `$${displayValue}M`;
                                         requestAnimationFrame(animateCount);
                                     } else {
@@ -1620,15 +1657,6 @@
         }, resultsObserverOptions);
 
         resultsObserver.observe(resultsSection);
-
-
-        // Load more cases functionality (placeholder)
-        const loadMoreBtn = document.getElementById('loadMoreCases');
-        if (loadMoreBtn) {
-            loadMoreBtn.addEventListener('click', () => {
-                alert('This button would load more case studies in a live application!');
-            });
-        }
         
         // Form submission handling (placeholder)
         const contactForm = document.querySelector('#contact form');
@@ -1640,48 +1668,162 @@
             });
         }
 
-        // Section Heading Line Animation on Scroll (Optional, if not already handled by hover)
+        // Section Heading Line Animation on Scroll
         const sectionHeadings = document.querySelectorAll('.section-heading');
         const headingLineObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.querySelector('.section-heading-line').style.width = '6rem';
-                } else {
-                    entry.target.querySelector('.section-heading-line').style.width = '4rem';
+                const line = entry.target.querySelector('.section-heading-line');
+                if (line) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('in-view');
+                    } else {
+                        entry.target.classList.remove('in-view');
+                    }
                 }
             });
-        }, { threshold: 0.3 }); // Trigger when 30% of heading is visible
+        }, { threshold: 0.3 });
 
         sectionHeadings.forEach(heading => {
             headingLineObserver.observe(heading);
         });
 
         // Add fade-in-up to all sections on scroll
-        const sections = document.querySelectorAll('section:not(#home)'); // Exclude home as it has its own animation
+        const sections = document.querySelectorAll('section:not(#home)');
         const sectionObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.querySelectorAll('.animate-fade-in-up').forEach((el, index) => {
-                        // Ensure elements within milestone-item or result-card are not re-animated by this general observer
-                        if (!el.closest('.milestone-item') && !el.closest('.result-card')) {
-                            el.style.animationDelay = `${index * 0.1}s`; // Stagger animation
+                        if (!el.closest('.milestone-item') && !el.closest('.result-card') && !el.style.animationDelay) {
+                            el.style.animationDelay = `${index * 0.1}s`;
                             el.style.animationPlayState = 'running';
-                            el.style.opacity = '1'; // Ensure it becomes visible
-                            el.style.transform = 'translateY(0)'; // Ensure it moves to final position
+                            el.style.opacity = '1';
+                            el.style.transform = 'translateY(0)';
                         }
                     });
                 }
             });
-        }, { threshold: 0.1 }); // Trigger when 10% of section is visible
+        }, { threshold: 0.1 });
 
         sections.forEach(section => {
-            // Apply animate-fade-in-up to relevant elements within sections
-            section.querySelectorAll('h2, h3, p, .card-hover-effect:not(.milestone-item):not(.result-card), .btn-primary, .btn-secondary, .about-image-wrapper, .news-item-card, .practice-card').forEach(el => {
-                el.classList.add('animate-fade-in-up');
+            section.querySelectorAll('h2, h3, p, .card-hover-effect, .btn-primary, .btn-secondary, .about-image-wrapper, .news-item-card, .practice-card').forEach(el => {
+                if (!el.classList.contains('animate-fade-in-up')) {
+                    el.classList.add('animate-fade-in-up');
+                }
             });
             sectionObserver.observe(section);
         });
 
+        // Particles.js Initialization
+        particlesJS('particles-js', {
+            "particles": {
+                "number": {
+                    "value": 120,
+                    "density": {
+                        "enable": true,
+                        "value_area": 1200
+                    }
+                },
+                "color": {
+                    "value": ["#4A90E2", "#8B5CF6", "#00C4B8", "#E0E0E0"]
+                },
+                "shape": {
+                    "type": "circle",
+                    "stroke": {
+                        "width": 0,
+                        "color": "#000000"
+                    },
+                    "polygon": {
+                        "nb_sides": 5
+                    },
+                    "image": {
+                        "src": "img/github.svg",
+                        "width": 100,
+                        "height": 100
+                    }
+                },
+                "opacity": {
+                    "value": 0.7,
+                    "random": true,
+                    "anim": {
+                        "enable": false,
+                        "speed": 1,
+                        "opacity_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "size": {
+                    "value": 4,
+                    "random": true,
+                    "anim": {
+                        "enable": false,
+                        "speed": 40,
+                        "size_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 200,
+                    "color": "#4A90E2",
+                    "opacity": 0.6,
+                    "width": 1.2
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 2.8,
+                    "direction": "none",
+                    "random": false,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false,
+                    "attract": {
+                        "enable": false,
+                        "rotateX": 600,
+                        "rotateY": 1200
+                    }
+                }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "repulse"
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "push"
+                    },
+                    "resize": true
+                },
+                "modes": {
+                    "grab": {
+                        "distance": 400,
+                        "line_linked": {
+                            "opacity": 1
+                        }
+                    },
+                    "bubble": {
+                        "distance": 400,
+                        "size": 40,
+                        "duration": 2,
+                        "opacity": 8,
+                        "speed": 3
+                    },
+                    "repulse": {
+                        "distance": 200,
+                        "duration": 0.4
+                    },
+                    "push": {
+                        "particles_nb": 4
+                    },
+                    "remove": {
+                        "particles_nb": 2
+                    }
+                }
+            },
+            "retina_detect": true
+        });
     </script>
 </body>
 </html>
