@@ -191,7 +191,7 @@
 
         /* Hero Section Background */
         .hero-section {
-            background: linear-gradient(rgba(10, 10, 15, 0.8), rgba(10, 10, 15, 0.8)), url('ll14.png'); /* Adjusted opacity to 0.8 */
+            background: linear-gradient(rgba(10, 10, 15, 0.5), rgba(10, 10, 15, 0.5)), url('ll14.png'); /* Adjusted opacity to 0.5 */
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -313,18 +313,27 @@
             background-color: #1C1C22;
             border: 1px solid #282830;
             box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3); /* Subtle inner shadow */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            transition: transform 0.4s ease-out, box-shadow 0.4s ease-out;
+        }
+        .award-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.7);
         }
         .award-logo-img {
-            /* Removed grayscale and brightness filters to make images colored */
-            /* Increased size for better visibility */
-            width: 128px; /* w-32 */
-            height: 128px; /* h-32 */
+            width: 160px; /* Increased size to w-40 */
+            height: 160px; /* Increased size to h-40 */
             object-fit: contain;
             margin: auto; /* Center the image */
-            transition: transform 0.4s ease; /* Added transition for hover effect */
+            margin-bottom: 1.5rem; /* Add space below image */
+            transition: transform 0.4s ease;
         }
         .award-card:hover .award-logo-img {
-            transform: scale(1.1); /* Slightly zoom on hover */
+            transform: scale(1.05); /* Slightly zoom on hover */
         }
         
         .news-item-card {
@@ -1134,36 +1143,28 @@
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 mb-16">
                 <!-- Award Card 1: Legal 500 -->
-                <div class="p-8 rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-100">
-                    <div class="text-center">
-                        <img src="ll9.png" alt="Legal 500 Logo" class="w-32 h-32 object-contain mx-auto mb-4 award-logo-img">
-                        <h3 class="text-xl font-bold text-white mb-2">Legal 500</h3>
-                        <p class="text-gray-300 text-sm">Celebrated for exceptional performance in Love Law, Cuddle Clause Arbitration, and Duck Rights Advocacy (2018–2023).</p>
-                    </div>
+                <div class="p-8 rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-100 award-card">
+                    <img src="ll9.png" alt="Legal 500 Logo" class="award-logo-img">
+                    <h3 class="text-xl font-bold text-white mb-2">Legal 500</h3>
+                    <p class="text-gray-300 text-sm">Celebrated for exceptional performance in Love Law, Cuddle Clause Arbitration, and Duck Rights Advocacy (2018–2023).</p>
                 </div>
                 <!-- Award Card 2: Super Lawyers -->
-                <div class="p-8 rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-200">
-                    <div class="text-center">
-                        <img src="ll10.png" alt="Super Lawyers Logo" class="w-32 h-32 object-contain mx-auto mb-4 award-logo-img">
-                        <h3 class="text-xl font-bold text-white mb-2">Super Lawyers</h3>
-                        <p class="text-gray-300 text-sm">Doofy Port repeatedly honored as a Top Rated Romantic Litigator — specializing in heartfelt arguments and persuasive snuggle motions (2015–2023).</p>
-                    </div>
+                <div class="p-8 rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-200 award-card">
+                    <img src="ll10.png" alt="Super Lawyers Logo" class="award-logo-img">
+                    <h3 class="text-xl font-bold text-white mb-2">Super Lawyers</h3>
+                    <p class="text-gray-300 text-sm">Doofy Port repeatedly honored as a Top Rated Romantic Litigator — specializing in heartfelt arguments and persuasive snuggle motions (2015–2023).</p>
                 </div>
                 <!-- Award Card 3: Best Lawyers in America -->
-                <div class="p-8 rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-300">
-                    <div class="text-center">
-                        <img src="ll8.png" alt="Best Lawyers Logo" class="w-32 h-32 object-contain mx-auto mb-4 award-logo-img">
-                        <h3 class="text-xl font-bold text-white mb-2">Best Lawyers in America</h3>
-                        <p class="text-gray-300 text-sm">Featured annually for pioneering the field of Affectional Law and setting new standards in emotional justice (since 2012).</p>
-                    </div>
+                <div class="p-8 rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-300 award-card">
+                    <img src="ll8.png" alt="Best Lawyers Logo" class="award-logo-img">
+                    <h3 class="text-xl font-bold text-white mb-2">Best Lawyers in America</h3>
+                    <p class="text-gray-300 text-sm">Featured annually for pioneering the field of Affectional Law and setting new standards in emotional justice (since 2012).</p>
                 </div>
                 <!-- Award Card 4: Martindale-Hubbell -->
-                <div class="p-8 rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-400">
-                    <div class="text-center">
-                        <img src="ll7.png" alt="Martindale-Hubbell Logo" class="w-32 h-32 object-contain mx-auto mb-4 award-logo-img">
-                        <h3 class="text-xl font-bold text-white mb-2">Martindale-Hubbell</h3>
-                        <p class="text-gray-300 text-sm">Received the highest AV Preeminent rating — for unparalleled charm, compassion, and commitment to romantic resolution.</p>
-                    </div>
+                <div class="p-8 rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-400 award-card">
+                    <img src="ll7.png" alt="Martindale-Hubbell Logo" class="award-logo-img">
+                    <h3 class="text-xl font-bold text-white mb-2">Martindale-Hubbell</h3>
+                    <p class="text-gray-300 text-sm">Received the highest AV Preeminent rating — for unparalleled charm, compassion, and commitment to romantic resolution.</p>
                 </div>
             </div>
 
@@ -1175,36 +1176,28 @@
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 mb-16">
                 <!-- Award Card 1: The Golden Gavel Circle -->
-                <div class="p-8 rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-100">
-                    <div class="text-center">
-                        <img src="ll6.png" alt="Golden Gavel Logo" class="w-32 h-32 object-contain mx-auto mb-4 award-logo-img">
-                        <h3 class="text-xl font-bold text-white mb-2">The Golden Gavel Circle</h3>
-                        <p class="text-gray-300 text-sm">Recognized for excellence in Conflict Resolution, Relationship Mediation, and Emotional Intelligence Law (2018–2023).</p>
-                    </div>
+                <div class="p-8 rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-100 award-card">
+                    <img src="ll6.png" alt="Golden Gavel Logo" class="award-logo-img">
+                    <h3 class="text-xl font-bold text-white mb-2">The Golden Gavel Circle</h3>
+                    <p class="text-gray-300 text-sm">Recognized for excellence in Conflict Resolution, Relationship Mediation, and Emotional Intelligence Law (2018–2023).</p>
                 </div>
                 <!-- Award Card 2: The Counsel of Hearts Directory -->
-                <div class="p-8 rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-200">
-                    <div class="text-center">
-                        <img src="ll2.png" alt="Counsel of Hearts Logo" class="w-32 h-32 object-contain mx-auto mb-4 award-logo-img">
-                        <h3 class="text-xl font-bold text-white mb-2">The Counsel of Hearts Directory</h3>
-                        <p class="text-gray-300 text-sm">Quackers consistently named a Top Rated Advisor in strategic affection management and empathetic legal frameworks (2016–2023).</p>
-                    </div>
+                <div class="p-8 rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-200 award-card">
+                    <img src="ll2.png" alt="Counsel of Hearts Logo" class="award-logo-img">
+                    <h3 class="text-xl font-bold text-white mb-2">The Counsel of Hearts Directory</h3>
+                    <p class="text-gray-300 text-sm">Quackers consistently named a Top Rated Advisor in strategic affection management and empathetic legal frameworks (2016–2023).</p>
                 </div>
                 <!-- Award Card 3: The Affectionate Advocates List -->
-                <div class="p-8 rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-300">
-                    <div class="text-center">
-                        <img src="ll1.png" alt="Affectionate Advocates Logo" class="w-32 h-32 object-contain mx-auto mb-4 award-logo-img">
-                        <h3 class="text-xl font-bold text-white mb-2">The Affectionate Advocates List</h3>
-                        <p class="text-gray-300 text-sm">Honored annually for redefining best practices in interpersonal harmony and co-counseling with heart (since 2013).</p>
-                    </div>
+                <div class="p-8 rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-300 award-card">
+                    <img src="ll1.png" alt="Affectionate Advocates Logo" class="award-logo-img">
+                    <h3 class="text-xl font-bold text-white mb-2">The Affectionate Advocates List</h3>
+                    <p class="text-300 text-sm">Honored annually for redefining best practices in interpersonal harmony and co-counseling with heart (since 2013).</p>
                 </div>
                 <!-- Award Card 4: The Port Honor Roll for Emotional Jurisprudence -->
-                <div class="p-8 rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-400">
-                    <div class="text-center">
-                        <img src="ll4.png" alt="Port Honor Roll Logo" class="w-32 h-32 object-contain mx-auto mb-4 award-logo-img">
-                        <h3 class="text-xl font-bold text-white mb-2">The Port Honor Roll for Emotional Jurisprudence</h3>
-                        <p class="text-gray-300 text-sm">Earned Preeminent Distinction for empathy-driven strategy, professional warmth, and unmatched emotional acuity.</p>
-                    </div>
+                <div class="p-8 rounded-xl shadow-lg card-hover-effect animate-fade-in-up delay-400 award-card">
+                    <img src="ll4.png" alt="Port Honor Roll Logo" class="award-logo-img">
+                    <h3 class="text-xl font-bold text-white mb-2">The Port Honor Roll for Emotional Jurisprudence</h3>
+                    <p class="text-gray-300 text-sm">Earned Preeminent Distinction for empathy-driven strategy, professional warmth, and unmatched emotional acuity.</p>
                 </div>
             </div>
 
