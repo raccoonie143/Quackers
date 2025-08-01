@@ -13,8 +13,18 @@
 
         html, body {
             height: 100%; /* Ensure html and body take full height for vh units to work correctly */
-            /* Added for better iOS/Safari compatibility with viewport height */
-            min-height: -webkit-fill-available;
+            min-height: -webkit-fill-available; /* Added for better iOS/Safari compatibility with viewport height */
+        }
+
+        /* Moved background properties to HTML for consistent fixed background */
+        html {
+            background: linear-gradient(165deg, var(--color-background-start), var(--color-background-end));
+            background-size: 350% 350%;
+            background-attachment: fixed; /* Ensures background covers viewport and scrolls with it */
+            background-repeat: no-repeat; /* Prevents background from repeating */
+            animation: cosmicGradient 180s ease infinite alternate;
+            /* Ensure html is full height to contain fixed background */
+            height: 100%;
         }
 
         :root {
@@ -51,13 +61,9 @@
             padding: 0;
             overflow-x: hidden; /* Prevent horizontal scroll */
             overflow-y: auto; /* Allow vertical scroll for main content */
-            background: linear-gradient(165deg, var(--color-background-start), var(--color-background-end));
-            background-size: 350% 350%;
-            background-attachment: fixed; /* Ensures background covers viewport and scrolls with it */
-            background-repeat: no-repeat; /* Prevents background from repeating */
-            animation: cosmicGradient 180s ease infinite alternate;
+            /* Background properties removed from body, now on html */
             color: var(--color-primary);
-            min-height: 100vh;
+            min-height: 100vh; /* Body still takes full viewport height for content layout */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -69,13 +75,14 @@
         }
 
         /* --- Background Animations & Effects --- */
+        /* These pseudo-elements are still on body, but their blur effect will overlay the HTML background */
         body::before, body::after {
             content: '';
             position: fixed;
             border-radius: 50%;
             opacity: 0.015;
             filter: blur(400px);
-            z-index: -1;
+            z-index: -1; /* Ensure they are behind content */
             animation: nebulaDrift 200s ease-in-out infinite alternate;
             will-change: transform, opacity;
         }
@@ -96,12 +103,6 @@
             bottom: -60%;
             right: -60%;
             animation-delay: 10s;
-        }
-
-        @keyframes nebulaDrift {
-            0% { transform: translate(0, 0) scale(1); opacity: 0.015; }
-            50% { transform: translate(250px, 120px) scale(1.15); opacity: 0.03); }
-            100% { transform: translate(0, 0) scale(1); opacity: 0.015; }
         }
 
         @keyframes cosmicGradient {
@@ -1899,6 +1900,8 @@ and the quiet kind of joy that lingers like a melody. 💖`;
             // Orchestrates content visibility during effects (meteor shower, whispers)
             function manageContentVisibilityForEffect(effectFn, effectDuration, callbackAfterEffect = () => {}) {
                 hideAllContentDisplayAreas();
+                // Scroll to the top of the main content before initiating the effect
+                mainContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
                 setTimeout(() => {
                     effectFn();
@@ -2057,7 +2060,8 @@ and the quiet kind of joy that lingers like a melody. 💖`;
                     return;
                 }
                 
-                messageBlock1.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                // Ensure the view is at the top of the main content before starting the effect
+                mainContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
                 manageContentVisibilityForEffect(
                     () => {
@@ -2079,7 +2083,8 @@ and the quiet kind of joy that lingers like a melody. 💖`;
                     return;
                 }
                 
-                messageBlock1.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                // Ensure the view is at the top of the main content before starting the effect
+                mainContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
                 manageContentVisibilityForEffect(
                     () => {
