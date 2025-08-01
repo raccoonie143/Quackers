@@ -13,6 +13,8 @@
 
         html, body {
             height: 100%; /* Ensure html and body take full height for vh units to work correctly */
+            /* Added for better iOS/Safari compatibility with viewport height */
+            min-height: -webkit-fill-available;
         }
 
         :root {
@@ -51,6 +53,8 @@
             overflow-y: auto; /* Allow vertical scroll for main content */
             background: linear-gradient(165deg, var(--color-background-start), var(--color-background-end));
             background-size: 350% 350%;
+            background-attachment: fixed; /* Ensures background covers viewport and scrolls with it */
+            background-repeat: no-repeat; /* Prevents background from repeating */
             animation: cosmicGradient 180s ease infinite alternate;
             color: var(--color-primary);
             min-height: 100vh;
@@ -494,7 +498,6 @@
             bottom: -60%;
             right: -60%;
         }
-
         .layer-3 {
             background: radial-gradient(circle at 50% 50%, var(--color-gold-glow), transparent);
             width: clamp(450px, 70vw, 550px);
@@ -1358,7 +1361,7 @@
 
     <main class="content hidden-element" id="mainContent">
         <h1 class="content-block hidden-element" id="mainTitle">Happy Birthday, my dazzling duck of delight! <span aria-hidden="true">💖</span></h1>
-        <p class="music-hint hidden-element" id="musicHint">🎶 Trust me — your birthday soundtrack is magical. Just listen.... �🎵</p>
+        <p class="music-hint hidden-element" id="musicHint">🎶 Trust me — your birthday soundtrack is magical. Just listen.... 🎵</p>
 
 
         <div class="gif-inline-container content-block hidden-element" id="gifBlock1">
@@ -1647,7 +1650,7 @@ and the quiet kind of joy that lingers like a melody. 💖`;
                 }
                 loveStatusMessage.textContent = loveCount === 100 ? loveMessages[100] : `🌼 Steady and soft, like your kindness. (Love: ${loveCount}%)`;
 
-                if (loveCount > 0 && loveCount < 100 && amount > 0) triggerConfetti(15);
+                if (loveCount > 0 && loveCount < 100) triggerConfetti(15);
                 
                 // Reveal Chapter 3 and 4 buttons based on loveCount, ONLY if not already used
                 if (loveCount >= 25 && chapter3ButtonGroup.classList.contains('hidden-element') && !wishMade) {
