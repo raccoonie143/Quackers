@@ -281,10 +281,6 @@
             z-index: 2;
             transition: transform 0.5s ease-out; /* Added transition for image itself */
         }
-        .about-image-wrapper:hover {
-            transform: scale(1.03);
-            box-shadow: 0 0 40px rgba(74, 144, 226, 0.8), 0 0 25px rgba(139, 92, 246, 0.6);
-        }
         .about-image-wrapper:hover .about-image {
             transform: scale(1.02); /* Subtle zoom on image within wrapper */
         }
@@ -321,29 +317,53 @@
         .testimonial-card:hover .testimonial-author-img {
             transform: scale(1.05); /* Zoom on author image on card hover */
         }
+        .testimonial-carousel-container {
+            position: relative; /* Needed for absolute positioning of buttons */
+            overflow: hidden; /* Crucial for clipping cards outside view */
+        }
+        .testimonial-carousel-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out; /* Smooth transition for slide */
+            gap: 2.5rem; /* gap-10 in Tailwind is 2.5rem or 40px */
+            padding-bottom: 1rem; /* Space for dots */
+        }
+        .testimonial-carousel-track > div { /* Target individual cards */
+            flex-shrink: 0;
+            width: calc((100% - (2 * 2.5rem)) / 3); /* For lg:w-1/3, accounting for 2 gaps */
+        }
+        @media (max-width: 1023px) { /* Adjust for sm:w-1/2 */
+            .testimonial-carousel-track > div {
+                width: calc((100% - 2.5rem) / 2); /* For sm:w-1/2, accounting for 1 gap */
+            }
+        }
+        @media (max-width: 639px) { /* Adjust for w-full */
+            .testimonial-carousel-track > div {
+                width: 100%;
+            }
+        }
+
         .testimonial-carousel-container .carousel-button {
-            display: flex; /* Make buttons visible */
+            display: flex;
             align-items: center;
             justify-content: center;
-            width: 48px; /* Fixed width */
-            height: 48px; /* Fixed height */
-            border-radius: 9999px; /* Fully rounded */
-            background-color: rgba(40, 40, 48, 0.8); /* Dark background with transparency */
-            color: #E0E0E0; /* Light icon color */
-            font-size: 1.5rem; /* Larger icon */
+            width: 48px;
+            height: 48px;
+            border-radius: 9999px;
+            background-color: rgba(40, 40, 48, 0.8);
+            color: #E0E0E0;
+            font-size: 1.5rem;
             transition: background-color 0.3s ease, transform 0.3s ease;
             cursor: pointer;
             outline: none;
             border: none;
         }
         .testimonial-carousel-container .carousel-button:hover {
-            background-color: #4A90E2; /* Blue on hover */
+            background-color: #4A90E2;
             transform: scale(1.1);
         }
         .testimonial-carousel-container .carousel-button:disabled {
-            opacity: 0.4; /* Dim disabled buttons */
             cursor: not-allowed;
-            background-color: rgba(40, 40, 48, 0.5);
+            background-color: rgba(40, 40, 48, 0.5); /* Keep visible, but dim */
         }
         .testimonial-carousel-container .dot {
             background-color: rgba(74, 144, 226, 0.4);
@@ -603,13 +623,26 @@
         .list-item-charm:hover::before {
             transform: rotate(15deg) scale(1.1); /* Spin and grow on hover */
         }
+
+        /* New: Music Button Pulse Animation */
+        @keyframes pulse-slow {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(74, 144, 226, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 15px rgba(74, 144, 226, 0);
+            }
+        }
+        .animate-pulse-slow {
+            animation: pulse-slow 3s infinite cubic-bezier(0.6, 0.05, 0.2, 0.95);
+        }
     </style>
 </head>
 <body class="bg-gray-950 text-gray-100">
 
     <!-- Background Music -->
     <!-- Note: Autoplay might be blocked by some browsers due to user experience policies. -->
-    <audio autoplay loop src="ll.mp3"></audio>
+    <audio id="backgroundMusic" loop src="ll.mp3"></audio>
 
     <!-- Particles.js Container -->
     <div id="particles-js"></div>
@@ -655,7 +688,7 @@
     <section id="home" class="hero-section min-h-screen flex items-center justify-center text-white pt-20 relative">
         <div class="section-bg-gradient blue-purple"></div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-20 relative z-10">
-            <p class="text-lg md:text-xl font-light mb-4 text-blue-300 animate-fade-in-up delay-100">A Special Dedication from Doofy, with Love and Laughter! 💖</p>
+            <p class="text-lg md:text-xl font-light mb-4 text-blue-300 animate-fade-in-up delay-100">A Special Dedication from Doofy, with Love and Laughter!💖</p>
             <h1 class="text-5xl md:text-7xl font-extrabold leading-tight mb-6 animate-fade-in-up delay-200 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
                 Celebrating You, Quackers! 🎉 <br class="hidden md:block"> Our Dearest Partner in Fun. 🥳 <br class="hidden md:block"> Happy Birthday! 🎂
             </h1>
@@ -803,7 +836,7 @@
                 <div class="lg:w-2/3 flex flex-col">
                     <h3 class="text-3xl font-bold mb-6 text-white text-center lg:text-left animate-fade-in-up delay-200 text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-teal-300">A Heart for Justice, A Mind for Strategy, and a Soul Full of Joy! ❤️🧠😊</h3>
                     <p class="text-gray-200 leading-relaxed mb-10 animate-fade-in-up delay-300">Today, we celebrate the one and only Quackers A. Featherstone! A visionary, a legal luminary, and above all, a truly wonderful friend and partner. Your dedication to justice, your infectious laughter, and your unique perspective brighten every day. ✨🦆</p>
-                    <p class="text-gray-200 leading-relaxed mb-10 animate-fade-in-up delay-400">From the moment you joined forces with me, you brought a new dimension of creativity and compassion to our practice. Your ability to navigate complex emotional landscapes with grace and wit is truly inspiring. You don't just win cases; you win hearts. 🏆❤️</p>
+                    <p class="text-gray-200 leading-relaxed mb-10 animate-fade-in-up delay-400">From the moment you joined forces with me, you brought a new dimension of creativity and compassion to our practice. Your ability to navigate complex emotional landscapes with grace and wit is truly inspiring. You don't just win cases; you win hearts. �❤️</p>
                     <p class="text-gray-200 leading-relaxed mb-10 animate-fade-in-up delay-500">May your birthday be filled with all the joy, love, and duck-themed delights you deserve. Here's to many more years of shared triumphs, silly moments, and making the world a more affectionate place, one case at a time. Happy Birthday, Quackers! 🥳🎂
 </p>
 
@@ -964,7 +997,7 @@
                             <i class="fas fa-camera-retro practice-card-icon"></i>
                         </div>
                         <h3 class="text-2xl font-bold mb-4 text-white text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-purple-300">Protecting Precious Memories<br><span class="text-blue-400 text-lg font-medium">🧠 Because Brilliant Ideas Deserve Bodyguards 🛡️</span></h3>
-                        <p class="text-gray-200 leading-relaxed mb-6">Safeguarding all the wonderful memories we create, from candid photos to inside jokes. We ensure every cherished moment is preserved for future smiles. �😄</p>
+                        <p class="text-gray-200 leading-relaxed mb-6">Safeguarding all the wonderful memories we create, from candid photos to inside jokes. We ensure every cherished moment is preserved for future smiles. 😄</p>
                     </div>
                     <a href="#" class="practice-card-link">
                         → Discover More <i class="fas fa-arrow-right"></i>
@@ -1568,7 +1601,7 @@
                         <a href="#" class="text-gray-400 hover:text-white transition duration-300 text-xl social-icon-hover" aria-label="Facebook">
                                 <i class="fab fa-facebook-f"></i>
                             </a>
-                            <a href="#" class="text-gray-400 hover:text-white transition duration-300 text-xl social-icon-hover" aria-label="GitHub">
+                            <a href="#" class="w-12 h-12 rounded-full bg-gray-700 text-white flex items-center justify-center text-xl hover:bg-gray-600 transition duration-300 transform hover:scale-110 social-icon-hover" aria-label="GitHub">
                                 <i class="fab fa-github"></i>
                             </a>
                         </div>
@@ -1586,6 +1619,14 @@
             </div>
         </div>
     </footer>
+
+    <!-- New Music Toggle Button - Repositioned and Restyled -->
+    <div class="fixed bottom-8 right-8 z-50">
+        <button id="musicToggleButton" class="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 text-white flex items-center justify-center text-2xl shadow-xl hover:shadow-2xl hover:scale-110 transition duration-300 ease-in-out transform focus:outline-none focus:ring-4 focus:ring-blue-400 focus:ring-opacity-75 animate-pulse-slow" title="Toggle Music">
+            <i class="fas fa-volume-mute" id="musicIcon"></i>
+            <span class="sr-only">Toggle Music</span> <!-- For accessibility -->
+        </button>
+    </div>
 
     <!-- JavaScript for interactivity -->
     <script>
@@ -1632,110 +1673,92 @@
             }
         });
         
-        // Case Study Expansion Logic (Placeholder, as no case studies section exists)
-        document.querySelectorAll('.case-study-card').forEach(card => {
-            card.addEventListener('click', function(event) {
-                if (event.target.tagName === 'A' || event.target.closest('.read-more-link')) {
-                    return;
-                }
-                this.classList.toggle('expanded');
-                const details = this.querySelector('.case-study-details');
-                const readMoreLink = this.querySelector('.read-more-link');
-                const toggleIcon = this.querySelector('.toggle-icon');
-                
-                if (this.classList.contains('expanded')) {
-                    details.style.maxHeight = details.scrollHeight + "px";
-                    details.style.opacity = "1";
-                    readMoreLink.textContent = 'Show Less';
-                    toggleIcon.classList.remove('fa-plus');
-                    toggleIcon.classList.add('fa-times');
-                } else {
-                    details.style.maxHeight = "0";
-                    details.style.opacity = "0";
-                    toggleIcon.classList.remove('fa-times');
-                    toggleIcon.classList.add('fa-plus');
-                }
-            });
-        });
-
-        // Testimonial Carousel Logic
+        // Testimonial Carousel Logic (using transform: translateX for precise control)
         const carouselTrack = document.querySelector('.testimonial-carousel-track');
         const dotsContainer = document.querySelector('.carousel-dots');
-        const testimonialCards = document.querySelectorAll('.testimonial-carousel-track > div');
+        const testimonialCards = Array.from(document.querySelectorAll('.testimonial-carousel-track > div')); // Convert to array for easier indexing
         const prevBtn = document.getElementById('carousel-prev');
         const nextBtn = document.getElementById('carousel-next');
-        let currentIndex = 0;
+        let currentIndex = 0; // Represents the index of the first visible card
 
-        function getCardsPerView() {
-            // Determine how many cards are visually 'in view' based on responsive design
-            if (window.innerWidth >= 1024) { // lg breakpoint
-                return 3;
-            } else if (window.innerWidth >= 768) { // sm breakpoint
-                return 2;
-            } else { // Mobile
-                return 1;
+        function updateCarouselDisplay() {
+            if (testimonialCards.length === 0) {
+                prevBtn.disabled = true;
+                nextBtn.disabled = true;
+                return;
             }
-        }
 
-        function updateCarousel() {
-            const cardsPerView = getCardsPerView();
-            const totalCards = testimonialCards.length;
+            // Get the computed style of the first card to determine its actual rendered width
+            const cardStyle = getComputedStyle(testimonialCards[0]);
+            const cardWidth = testimonialCards[0].offsetWidth; // Includes padding and border
+            // Get the gap value from the parent flex container's computed style
+            const gap = parseFloat(getComputedStyle(carouselTrack).gap); 
+
+            // Calculate how many cards can fit in the carousel container's width
+            const carouselContainerWidth = carouselTrack.parentElement.offsetWidth;
+            let cardsPerView = 1; // Default for small screens (w-full)
+            if (window.innerWidth >= 1024) { // lg breakpoint
+                cardsPerView = 3;
+            } else if (window.innerWidth >= 640) { // sm breakpoint
+                cardsPerView = 2;
+            }
+            
+            // Determine the maximum index we can scroll to.
+            // We want to stop scrolling when the last set of 'cardsPerView' cards is visible.
+            const maxIndex = Math.max(0, testimonialCards.length - cardsPerView);
+            
+            // Ensure currentIndex doesn't go out of bounds
+            currentIndex = Math.max(0, Math.min(currentIndex, maxIndex));
+
+            // Calculate the translateX value.
+            // It's the current index multiplied by (card width + gap).
+            const translateXValue = -currentIndex * (cardWidth + gap);
+            carouselTrack.style.transform = `translateX(${translateXValue}px)`;
 
             // Update dots
             dotsContainer.innerHTML = ''; // Clear existing dots
-            const numSlides = totalCards - cardsPerView + 1;
-            for (let i = 0; i < numSlides; i++) {
+            // Create a dot for each testimonial card
+            for (let i = 0; i < testimonialCards.length; i++) {
                 const dot = document.createElement('span');
                 dot.classList.add('dot', 'w-3', 'h-3', 'rounded-full', 'mx-1', 'cursor-pointer');
+                // Highlight the dot if its corresponding card is the first in the current view
                 if (i === currentIndex) {
                     dot.classList.add('active');
                 }
-                dot.dataset.slide = i;
+                dot.dataset.slide = i; // Store the index for click handling
                 dotsContainer.appendChild(dot);
             }
 
-            // Enable/disable buttons
+            // Enable/disable buttons based on currentIndex and maxIndex
             prevBtn.disabled = currentIndex === 0;
-            nextBtn.disabled = currentIndex >= (totalCards - cardsPerView);
+            nextBtn.disabled = currentIndex >= maxIndex;
 
-            // Add/remove opacity and cursor classes for disabled state
-            if (prevBtn.disabled) {
-                prevBtn.classList.add('opacity-50', 'cursor-not-allowed');
-            } else {
-                prevBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-            }
-            if (nextBtn.disabled) {
-                nextBtn.classList.add('opacity-50', 'cursor-not-allowed');
-            } else {
-                nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-            }
+            // Apply cursor styles (no opacity change)
+            prevBtn.classList.toggle('cursor-not-allowed', prevBtn.disabled);
+            nextBtn.classList.toggle('cursor-not-allowed', nextBtn.disabled);
         }
 
         // Event listeners for buttons
         prevBtn.addEventListener('click', () => {
             if (currentIndex > 0) {
                 currentIndex--;
-                const cardsPerView = getCardsPerView();
-                const firstCard = testimonialCards[0];
-                const cardWidth = firstCard.offsetWidth;
-                const gap = 40; // Tailwind gap-10 is 40px
-                const scrollAmount = cardWidth + gap;
-                carouselTrack.scrollLeft -= scrollAmount; // Scroll left
-                updateCarousel();
+                updateCarouselDisplay();
             }
         });
 
         nextBtn.addEventListener('click', () => {
-            const cardsPerView = getCardsPerView();
-            const totalCards = testimonialCards.length;
-            if (currentIndex < (totalCards - cardsPerView)) {
+            // Recalculate maxIndex on each click to be robust to resize
+            let cardsPerView = 1;
+            if (window.innerWidth >= 1024) {
+                cardsPerView = 3;
+            } else if (window.innerWidth >= 640) {
+                cardsPerView = 2;
+            }
+            const maxIndex = Math.max(0, testimonialCards.length - cardsPerView);
+
+            if (currentIndex < maxIndex) {
                 currentIndex++;
-                const firstCard = testimonialCards[0];
-                const cardWidth = firstCard.offsetWidth;
-                const gap = 40; // Tailwind gap-10 is 40px
-                const scrollAmount = cardWidth + gap;
-                carouselTrack.scrollLeft += scrollAmount; // Scroll right
-                updateCarousel();
+                updateCarouselDisplay();
             }
         });
 
@@ -1743,29 +1766,32 @@
         dotsContainer.addEventListener('click', (event) => {
             if (event.target.classList.contains('dot')) {
                 const newIndex = parseInt(event.target.dataset.slide);
-                if (newIndex !== currentIndex) {
-                    currentIndex = newIndex;
-                    const cardsPerView = getCardsPerView();
-                    const firstCard = testimonialCards[0];
-                    const cardWidth = firstCard.offsetWidth;
-                    const gap = 40; // Tailwind gap-10 is 40px
-                    const scrollAmount = cardWidth + gap;
-                    carouselTrack.scrollLeft = currentIndex * scrollAmount; // Directly set scroll position
-                    updateCarousel();
+                
+                // Recalculate maxIndex for the current view
+                let cardsPerView = 1;
+                if (window.innerWidth >= 1024) {
+                    cardsPerView = 3;
+                } else if (window.innerWidth >= 640) {
+                    cardsPerView = 2;
                 }
+                const maxIndex = Math.max(0, testimonialCards.length - cardsPerView);
+
+                // If the clicked dot's index is beyond the scrollable range, go to the last possible scroll position
+                if (newIndex > maxIndex) {
+                    currentIndex = maxIndex;
+                } else {
+                    currentIndex = newIndex;
+                }
+                updateCarouselDisplay();
             }
         });
 
-        // Initial update
-        window.addEventListener('load', () => {
-            updateCarousel(); // Initialize dots and button states
-            // Ensure carousel starts at the very beginning without scrolling
-            carouselTrack.scrollLeft = 0;
-        });
+        // Initial update and resize listener
+        window.addEventListener('load', updateCarouselDisplay);
         window.addEventListener('resize', () => {
-            currentIndex = 0; // Reset index on resize to prevent weird states
-            carouselTrack.scrollLeft = 0; // Reset scroll position on resize
-            updateCarousel();
+            // Reset index and update display on resize to ensure correct layout
+            currentIndex = 0;
+            updateCarouselDisplay();
         });
         
         // Form submission handling (placeholder)
@@ -1935,6 +1961,90 @@
 
         resultsObserver.observe(resultsSection);
 
+        // Background Music Control
+        const backgroundMusic = document.getElementById('backgroundMusic');
+        const musicToggleButton = document.getElementById('musicToggleButton');
+        const musicIcon = document.getElementById('musicIcon');
+        let isPlaying = false; // Track music state
+
+        // Set initial volume (optional)
+        backgroundMusic.volume = 0.5;
+
+        // Function to update the music button icon
+        function updateMusicButtonIcon() {
+            if (isPlaying) {
+                musicIcon.classList.remove('fa-volume-mute');
+                musicIcon.classList.add('fa-volume-up');
+            } else {
+                musicIcon.classList.remove('fa-volume-up');
+                musicIcon.classList.add('fa-volume-mute');
+            }
+        }
+
+        musicToggleButton.addEventListener('click', () => {
+            if (isPlaying) {
+                backgroundMusic.pause();
+            } else {
+                backgroundMusic.play().then(() => {
+                    // Play successful
+                    isPlaying = true;
+                    updateMusicButtonIcon();
+                }).catch(error => {
+                    // Autoplay was prevented. Handle error or inform user.
+                    console.error("Music autoplay prevented:", error);
+                    const messageBox = document.createElement('div');
+                    messageBox.style.cssText = `
+                        position: fixed;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        background-color: #dc2626; /* Red-500 */
+                        color: #fff;
+                        padding: 1rem 2rem;
+                        border-radius: 0.5rem;
+                        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+                        z-index: 1001;
+                        text-align: center;
+                        font-family: 'Inter', sans-serif;
+                        max-width: 90%;
+                        width: 400px;
+                    `;
+                    messageBox.innerHTML = `
+                        <p class="font-semibold mb-2">Autoplay Blocked! 🚫</p>
+                        <p class="text-sm">Browsers require user interaction to play music. Please click the music button again to start the party! 🎉</p>
+                        <button class="mt-3 px-4 py-1 bg-white text-red-600 rounded-full text-sm" onclick="this.parentNode.remove()">OK</button>
+                    `;
+                    document.body.appendChild(messageBox);
+                    // Keep isPlaying false so the next click attempts to play again
+                    isPlaying = false;
+                    updateMusicButtonIcon();
+                });
+            }
+        });
+
+        backgroundMusic.addEventListener('play', () => {
+            isPlaying = true;
+            updateMusicButtonIcon();
+        });
+
+        backgroundMusic.addEventListener('pause', () => {
+            isPlaying = false;
+            updateMusicButtonIcon();
+        });
+
+        // Attempt to play music on load (will likely be blocked, but good practice)
+        window.addEventListener('load', () => {
+            backgroundMusic.play().then(() => {
+                // Autoplay successful (e.g., if muted or user previously interacted)
+                isPlaying = true;
+                updateMusicButtonIcon();
+            }).catch(error => {
+                console.warn("Autoplay prevented on load:", error);
+                // No need to show an alert here, the button will handle the first explicit click
+                isPlaying = false;
+                updateMusicButtonIcon();
+            });
+        });
 
         // Particles.js Initialization
         particlesJS('particles-js', {
@@ -1947,7 +2057,7 @@
                     }
                 },
                 "color": {
-                    "value": ["#4A90E2", "#8B5CF6", "#00C4B8", "#E0E0E0"]
+                    "value": ["#4A90E2", "#8B5CF6", "#00C4B8", "#E0E0E0"] // Aligned with site's color palette
                 },
                 "shape": {
                     "type": "circle",
@@ -1959,7 +2069,7 @@
                         "nb_sides": 5
                     },
                     "image": {
-                        "src": "img/github.svg",
+                        "src": "img/github.svg", // Placeholder, not used as type is circle
                         "width": 100,
                         "height": 100
                     }
