@@ -5,6 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Happy Birthday, Quackers! 💖</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lora:ital,wght@0,400;0,700;1,400&family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- Preload Critical Assets -->
+    <link rel="preload" href="https://media.tenor.com/6yBqtjeP1ekAAAAj/bubu-dudu-sseeyall.gif" as="image">
+    <link rel="preload" href="https://media.tenor.com/s5AoXjOy4NsAAAAj/birthday-cake.gif" as="image">
+    <link rel="preload" href="music1.mp3" as="audio">
+    <link rel="preload" href="music2.mp3" as="audio">
+    <link rel="preload" href="https://media.tenor.com/kDB-vGnoBmUAAAAj/bubu-dudu-excited.gif" as="image">
+    <link rel="preload" href="https://media.tenor.com/naYMunSvaa8AAAAj/eating-cake.gif" as="image">
+
     <style>
         /* --- Base Styles & Variables for Celestial Dreamscape --- */
         *, *::before, *::after {
@@ -108,6 +119,12 @@
         @keyframes cosmicGradient {
             0% { background-position: 0% 0%; }
             100% { background-position: 100% 100%; }
+        }
+
+        /* New animation for dynamically generated blobs */
+        @keyframes blobDrift {
+            0% { transform: translate(var(--dx-start), var(--dy-start)); }
+            100% { transform: translate(var(--dx-end), var(--dy-end)); }
         }
 
         /* --- Text Styles --- */
@@ -217,6 +234,7 @@
             opacity: 0;
             transform: translateY(40px);
             transition: opacity var(--transition-duration-medium) ease-out, transform var(--transition-duration-medium) ease-out, box-shadow var(--transition-duration-fast) ease;
+            will-change: opacity, transform, box-shadow; /* Added will-change */
         }
 
         /* Animated border for .message */
@@ -302,6 +320,7 @@
             max-width: clamp(450px, 85vw, 850px);
             position: relative; /* Needed for pseudo-element */
             transition: box-shadow var(--transition-duration-fast) ease, transform var(--transition-duration-fast) ease;
+            will-change: box-shadow, transform; /* Added will-change */
         }
 
         /* Animated border for .message-display */
@@ -341,6 +360,7 @@
             filter: none;
             -webkit-filter: none;
             position: relative;
+            will-change: box-shadow, opacity, transform; /* Added will-change */
         }
 
         #loveMeter.love-meter-pulsing {
@@ -442,11 +462,14 @@
             position: absolute;
             width: clamp(10px, 1.8vw, 14px);
             height: clamp(10px, 1.8vw, 14px);
-            background-color: #f00;
+            /* background-color: #f00; Removed for emoji */
+            background-color: transparent; /* For emoji */
             opacity: 0;
             animation: fallAndTwist 4.5s ease-out forwards;
             border-radius: 5px;
             filter: blur(0.8px);
+            font-size: clamp(1em, 2vw, 1.5em); /* For emoji size */
+            text-shadow: 0 0 5px rgba(255,255,255,0.7); /* Subtle glow for emoji */
         }
 
         @keyframes fallAndTwist {
@@ -472,66 +495,17 @@
             100% { transform: translateY(-250px); opacity: 0; }
         }
 
-        /* --- Background Blobs (Parallax) --- */
+        /* --- Dynamic Background Blobs --- */
         .background-blob {
             position: fixed;
             border-radius: 50%;
-            opacity: 0.008;
+            opacity: 0.01; /* Slightly more opaque for better effect */
             filter: blur(500px);
             z-index: 0;
             transition: transform var(--transition-duration-fast) linear;
             pointer-events: none;
-            will-change: transform;
-        }
-
-        .layer-1 {
-            background: radial-gradient(circle at 90% 10%, var(--color-accent-blue), transparent);
-            width: clamp(1400px, 160vw, 2600px);
-            height: clamp(1400px, 160vw, 2600px);
-            top: -60%;
-            left: -60%;
-        }
-
-        .layer-2 {
-            background: radial-gradient(circle at 10% 90%, var(--color-accent-purple), transparent);
-            width: clamp(1300px, 150vw, 2500px);
-            height: clamp(1300px, 150vw, 2500px);
-            bottom: -60%;
-            right: -60%;
-        }
-        .layer-3 {
-            background: radial-gradient(circle at 50% 50%, var(--color-gold-glow), transparent);
-            width: clamp(450px, 70vw, 550px);
-            height: clamp(450px, 70vw, 550px);
-            top: 60%;
-            left: 18%;
-            transform: translateY(-50%);
-        }
-        .layer-4 {
-            background: radial-gradient(circle at 50% 50%, var(--color-accent-blue), transparent);
-            width: clamp(500px, 80vw, 600px);
-            height: clamp(500px, 80vw, 600px);
-            bottom: 18%;
-            left: 28%;
-            transform: translateX(-50%);
-        }
-        .layer-5 {
-            background: radial-gradient(circle at 60% 40%, var(--color-primary-accent), transparent);
-            width: clamp(350px, 55vw, 450px);
-            height: clamp(350px, 55vw, 450px);
-            top: 8%;
-            right: 8%;
-            opacity: 0.01;
-            filter: blur(450px);
-        }
-        .layer-6 {
-            background: radial-gradient(circle at 40% 60%, var(--color-secondary), transparent);
-            width: clamp(250px, 45vw, 350px);
-            height: clamp(250px, 45vw, 350px);
-            bottom: 4%;
-            left: 4%;
-            opacity: 0.01;
-            filter: blur(450px);
+            will-change: transform, opacity; /* Added will-change */
+            animation: blobDrift var(--animation-duration) ease-in-out infinite alternate;
         }
 
         /* --- Particle Overlay (for general background sparkle) --- */
@@ -545,11 +519,14 @@
 
         .particle-overlay-item {
             position: absolute;
-            background-color: rgba(255, 255, 255, 0.7);
+            /* background-color: rgba(255, 255, 255, 0.7); Removed for emoji */
+            background-color: transparent; /* For emoji */
             border-radius: 50%;
             opacity: 0;
             animation: twinkle 18s infinite ease-in-out;
             box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+            font-size: clamp(0.8em, 1.5vw, 1.2em); /* For emoji size */
+            text-shadow: 0 0 5px rgba(255,255,255,0.7); /* Subtle glow for emoji */
         }
 
         @keyframes twinkle {
@@ -567,7 +544,7 @@
             pointer-events: none;
             transform: translate(-50%, -50%);
             z-index: 2001;
-            filter: drop-shadow(0 0 18px rgba(232, 208, 128, 0.7));
+            filter: drop-shadow(0 0 18px rgba(232, 208, 128, 0.7)) blur(2px); /* Added blur */
             opacity: 0;
             transition: opacity var(--transition-duration-fast) ease;
         }
@@ -586,7 +563,7 @@
             background: linear-gradient(to bottom, var(--color-primary), var(--color-gold-glow), transparent);
             transform: translate(-50%, 0) rotate(45deg);
             transform-origin: top;
-            filter: blur(12px);
+            filter: blur(15px); /* Increased blur */
         }
 
         /* --- Intro Popup --- */
@@ -601,19 +578,18 @@
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
             transition: opacity var(--transition-duration-medium) ease-out, visibility var(--transition-duration-medium) ease-out;
-            padding: clamp(1rem, 3vw, 2rem); /* Overall padding for the popup container */
-            overflow-y: auto; /* Allow the entire popup overlay to scroll if its content is too tall */
-            overflow-x: hidden;
+            padding: 0; /* Changed to 0 to allow card to take full space */
+            overflow: hidden; /* Prevent scrolling on the popup itself */
         }
 
         .popup-card {
             background: linear-gradient(135deg, rgba(8, 8, 24, 0.92), rgba(3, 3, 10, 0.88));
             border-radius: var(--border-radius-lg);
-            /* Increased padding to give more space around content */
-            padding: clamp(2.5rem, 7vw, 4rem);
-            /* Make the card wider and responsive, covering most of the screen */
-            max-width: 95vw; /* Even wider */
-            width: clamp(300px, 95vw, 800px); /* Responsive width, allowing it to be quite wide */
+            /* Adjusted padding and gap for full page responsiveness */
+            padding: clamp(1rem, 4vw, 2.5rem); /* Smaller min, slightly smaller max */
+            /* Make the card take up most of the viewport height and width */
+            width: clamp(300px, 90vw, 800px); /* Allow it to shrink, but also have a max-width */
+            /* Removed max-height and overflow-y: auto to force content to shrink */
             text-align: center;
             box-shadow: 0 15px 50px rgba(0, 0, 0, 0.8), 0 0 70px rgba(58, 96, 160, 0.7);
             position: relative;
@@ -621,14 +597,13 @@
             cursor: pointer;
             border: 2px solid rgba(58, 96, 160, 0.6);
             transition: transform var(--transition-duration-fast) ease, box-shadow var(--transition-duration-fast) ease;
-            /* Crucial: Constrain card height and enable internal scrolling */
-            max-height: 95vh; /* Allow card to take up most of viewport height */
-            overflow-y: auto; /* Allow content inside the card to scroll if it exceeds max-height */
+            overflow: hidden; /* Ensure no overflow on the card itself */
             display: flex; /* Use flexbox for internal content alignment */
             flex-direction: column;
             align-items: center; /* Center items horizontally */
-            justify-content: flex-start; /* Align content to the top */
-            gap: clamp(1.5rem, 4vw, 2.5rem); /* Consistent spacing between elements */
+            justify-content: center; /* Center content vertically within the full page */
+            gap: clamp(0.8rem, 2.5vw, 1.5rem); /* Smaller min, slightly smaller max */
+            will-change: transform, opacity; /* Added will-change */
         }
 
         @keyframes popupEnter {
@@ -643,7 +618,7 @@
 
         .popup-card .gif-top {
             /* No absolute positioning here, it's part of the normal flow */
-            width: clamp(90px, 18vw, 110px);
+            width: clamp(60px, 12vw, 90px); /* Adjusted size for better fit */
             height: auto;
             border-radius: var(--border-radius-md);
             box-shadow: 0 0 20px rgba(232, 208, 128, 0.7);
@@ -651,7 +626,7 @@
             animation: floatPop 4s ease-in-out infinite alternate;
             z-index: 1;
             /* Use negative margin to pull it up and overlap the top border */
-            margin-top: calc(clamp(90px, 18vw, 110px) / -2); /* Half of its height pulled up */
+            margin-top: calc(clamp(60px, 12vw, 90px) / -2); /* Half of its height pulled up */
             /* No margin-bottom here, gap property on popup-card handles spacing */
         }
 
@@ -662,7 +637,7 @@
         }
 
         .popup-card .gif-main {
-            max-width: 100%;
+            max-width: clamp(150px, 50vw, 350px); /* Adjusted size for better fit */
             height: auto;
             border-radius: var(--border-radius-lg);
             /* No margin-top here, gap property on popup-card handles spacing */
@@ -671,7 +646,7 @@
 
         .popup-card h2 {
             color: var(--color-gold-light);
-            font-size: clamp(2.0rem, 4.5vw, 2.8rem);
+            font-size: clamp(1.5rem, 3.5vw, 2.2rem); /* Adjusted font size for better fit */
             /* No margin-top or margin-bottom here, gap property on popup-card handles spacing */
             line-height: 1.5;
             text-shadow: 0 0 18px var(--color-gold-glow);
@@ -682,13 +657,13 @@
 
         .popup-card p {
             /* No margin-top or margin-bottom here, gap property on popup-card handles spacing */
-            font-size: clamp(1.0rem, 2.4vw, 1.15rem);
+            font-size: clamp(0.8rem, 2vw, 1rem); /* Adjusted font size for better fit */
             flex-shrink: 1; /* Allow text to shrink if necessary */
         }
 
         .popup-card .hint-text {
             /* No margin-top or margin-bottom here, gap property on popup-card handles spacing */
-            font-size: clamp(0.9rem, 2.2vw, 1.1rem);
+            font-size: clamp(0.7rem, 1.8vw, 0.9rem); /* Adjusted font size for better fit */
             opacity: 0.7;
             font-style: italic;
             flex-shrink: 1; /* Allow text to shrink if necessary */
@@ -1136,8 +1111,38 @@
             padding: 0 1.2rem;
         }
 
-        /* --- Audio Visualizer Canvas --- */
-        /* Removed styles for audio visualizer as it's no longer used */
+        /* Music Toggle Button */
+        #musicToggleButton {
+            position: fixed;
+            top: clamp(15px, 3vw, 25px);
+            right: clamp(15px, 3vw, 25px);
+            background: linear-gradient(45deg, rgba(58, 96, 160, 0.8), rgba(124, 77, 160, 0.7));
+            color: var(--color-primary);
+            border: none;
+            border-radius: 50%;
+            width: clamp(45px, 8vw, 55px);
+            height: clamp(45px, 8vw, 55px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5), 0 0 20px rgba(232, 208, 128, 0.4);
+            transition: all 0.3s ease;
+            z-index: 1002; /* Higher z-index to be above popup */
+            opacity: 1; /* Always visible */
+        }
+
+        #musicToggleButton:hover {
+            opacity: 1;
+            transform: scale(1.08);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6), 0 0 30px rgba(232, 208, 128, 0.6);
+        }
+
+        #musicToggleButton:active {
+            transform: scale(0.95);
+        }
+
 
         /* Button Group specific adjustments */
         .button-group {
@@ -1172,6 +1177,7 @@
             transform: scale(1);
             animation: subtleButtonGlow 4s infinite alternate ease-in-out;
             border: 1px solid transparent; /* Base transparent border for animation */
+            will-change: transform, box-shadow, opacity; /* Added will-change */
         }
 
         /* Animated border for buttons */
@@ -1314,14 +1320,19 @@
 </head>
 <body>
 
-    <audio id="introMusic" loop>
+    <audio id="introMusic" loop preload="auto" playsinline>
         <source src="music1.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
-    <audio id="mainMusic" loop>
+    <audio id="mainMusic" loop preload="auto" playsinline>
         <source src="music2.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
+
+    <!-- Music Toggle Button - Moved here to be visible from start -->
+    <button id="musicToggleButton">
+        <i class="fas fa-pause" id="musicToggleIcon"></i>
+    </button>
 
     <div id="loadingOverlay" class="active-element">
         <div class="loading-star-container">
@@ -1334,14 +1345,7 @@
 
     <div id="particle-overlay"></div>
 
-    <div class="background-blob layer-1" data-parallax-speed="0.8"></div>
-    <div class="background-blob layer-2" data-parallax-speed="0.6"></div>
-    <div class="background-blob layer-3" data-parallax-speed="0.4"></div>
-    <div class="background-blob layer-4" data-parallax-speed="0.2"></div>
-    <div class="background-blob layer-5" data-parallax-speed="0.3"></div>
-    <div class="background-blob layer-6" data-parallax-speed="0.1"></div>
-
-    <!-- Removed Audio Visualizer Canvas -->
+    <!-- Removed static background blobs, now generated dynamically by JS -->
 
     <div class="comet-cursor" id="cometCursor"></div>
 
@@ -1363,7 +1367,6 @@
     <main class="content hidden-element" id="mainContent">
         <h1 class="content-block hidden-element" id="mainTitle">Happy Birthday, my dazzling duck of delight! <span aria-hidden="true">💖</span></h1>
         <p class="music-hint hidden-element" id="musicHint">🎶 Trust me — your birthday soundtrack is magical. Just listen.... 🎵</p>
-
 
         <div class="gif-inline-container content-block hidden-element" id="gifBlock1">
             <img src="https://media.tenor.com/kDB-vGnoBmUAAAAj/bubu-dudu-excited.gif" alt="Bubu Dudu Excited GIF" loading="lazy" />
@@ -1511,6 +1514,9 @@ Happy Birthday, my radiant duck queen 💫<br>
 
             const introMusic = document.getElementById('introMusic');
             const mainMusic = document.getElementById('mainMusic');
+            const musicToggleButton = document.getElementById('musicToggleButton');
+            const musicToggleIcon = document.getElementById('musicToggleIcon');
+            let currentMusicTrack = introMusic; // Keep track of which music is currently active
 
             const hugGifs = [
                 "https://media.tenor.com/ScOwzW70wHIAAAAj/bubu.gif",
@@ -1570,6 +1576,7 @@ and the quiet kind of joy that lingers like a melody. 💖`;
             };
 
             const confettiColors = ['#E0E8F5', '#AAB7CC', '#2B4E90', '#E0C060', '#6B3A8F'];
+            const confettiShapes = ['⭐', '💖', '✨', '🌈', '🎉', '🌟', '💫', '💛', '🎊']; // Added more shapes
 
             let hugClicked = false;
             let complimentClicked = false;
@@ -1596,7 +1603,7 @@ and the quiet kind of joy that lingers like a melody. 💖`;
                         element.style.display = 'none';
                     }
                     element.removeEventListener('transitionend', handler);
-                }, { once: true });
+                }, { once : true });
             }
 
             // Update Love Meter Progress
@@ -1611,7 +1618,8 @@ and the quiet kind of joy that lingers like a melody. 💖`;
                     auraClass = 'aura-level-1';
                 } else if (loveCount >= 50 && loveCount < 75) {
                     auraClass = 'aura-level-2';
-                } else if (loveCount >= 75 && loveCount < 100) {
+                }
+                else if (loveCount >= 75 && loveCount < 100) {
                     auraClass = 'aura-level-3';
                 } else if (loveCount === 100) {
                     auraClass = 'aura-level-4';
@@ -1631,7 +1639,7 @@ and the quiet kind of joy that lingers like a melody. 💖`;
 
                 if (amount > 0 && loveCount < 100) {
                     loveProgressBar.classList.add('active-shimmer');
-                    createLoveDustSparkles(loveMeterElement);
+                    createInteractionSparkles(loveMeterElement); // Use new interaction sparkles
                 } else {
                     loveProgressBar.classList.remove('active-shimmer');
                 }
@@ -1666,21 +1674,28 @@ and the quiet kind of joy that lingers like a melody. 💖`;
                 checkFinalMessageUnlock();
             }
 
-            // Create love dust sparkles
-            function createLoveDustSparkles(sourceElement) {
-                const rect = sourceElement.getBoundingClientRect();
-                const sparkleCount = 5;
-                for (let i = 0; i < sparkleCount; i++) {
+            // Create interaction sparkles (used for hover and click)
+            function createInteractionSparkles(eventOrElement, isClick = false) {
+                let rect;
+                if (eventOrElement.target) { // It's an event
+                    rect = eventOrElement.currentTarget.getBoundingClientRect();
+                } else { // It's an element
+                    rect = eventOrElement.getBoundingClientRect();
+                }
+
+                const numSparkles = isClick ? 8 : 5; // More sparkles on click
+                for (let i = 0; i < numSparkles; i++) {
                     const sparkle = document.createElement('div');
-                    sparkle.className = 'hover-sparkle';
-                    sparkle.style.left = `${rect.left + rect.width / 2}px`;
-                    sparkle.style.top = `${rect.top + rect.height / 2}px`;
-                    sparkle.style.animationDelay = `${Math.random() * 0.1}s`;
-                    sparkle.style.animationDuration = `${Math.random() * 0.8 + 0.4}s`;
-                    sparkle.style.width = `${Math.random() * 4 + 2}px`;
+                    sparkle.className = 'hover-sparkle'; // Reusing class, but behavior differs
+                    sparkle.style.left = `${rect.left + Math.random() * rect.width}px`;
+                    sparkle.style.top = `${rect.top + Math.random() * rect.height}px`;
+                    
+                    const size = isClick ? (Math.random() * 5 + 3) : (Math.random() * 3 + 2); // Larger on click
+                    sparkle.style.width = `${size}px`;
                     sparkle.style.height = sparkle.style.width;
-                    sparkle.style.backgroundColor = 'var(--color-gold-light)';
-                    sparkle.style.boxShadow = '0 0 10px var(--color-gold-glow)';
+                    sparkle.style.animationDelay = `${Math.random() * 0.1}s`;
+                    sparkle.style.animationDuration = isClick ? `${Math.random() * 1 + 0.8}s` : `${Math.random() * 0.8 + 0.4}s`; // Faster fade on click
+
                     document.body.appendChild(sparkle);
                     sparkle.addEventListener('animationend', () => sparkle.remove());
                 }
@@ -1693,7 +1708,11 @@ and the quiet kind of joy that lingers like a melody. 💖`;
                     confetti.className = 'confetti-piece';
                     confetti.style.left = Math.random() * 100 + 'vw';
                     confetti.style.top = `${-10 - Math.random() * 20}vh`;
-                    confetti.style.backgroundColor = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+                    
+                    // Use emoji for confetti shape
+                    confetti.textContent = confettiShapes[Math.floor(Math.random() * confettiShapes.length)];
+                    confetti.style.backgroundColor = 'transparent'; // Emojis don't need background color
+
                     confetti.style.animationDelay = Math.random() * 0.6 + 's';
                     confetti.style.animationDuration = (Math.random() * 2 + 4) + 's';
                     confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
@@ -1730,15 +1749,13 @@ and the quiet kind of joy that lingers like a melody. 💖`;
                     particle.style.width = `${size}px`;
                     particle.style.height = `${size}px`;
                     particle.style.left = `${Math.random() * 100}vw`;
+                    particle.style.top = `${Math.random() * 100}vh`;
                     particle.style.animationDelay = `${Math.random() * 1.8}s`;
                     particle.style.animationDuration = `${Math.random() * 1.8 + 2.5}s`;
                     particle.style.setProperty('--end-x-offset', `${(Math.random() - 0.5) * 60}px`);
                     whispersContainer.appendChild(particle);
                     particle.addEventListener('animationend', () => particle.remove());
                 }
-
-                // Removed dynamic whisper-message-bubble creation
-                // The message is now displayed in the static whisperMessageDisplay element
             }
 
             // Hide all content display areas (not button groups)
@@ -1786,7 +1803,7 @@ and the quiet kind of joy that lingers like a melody. 💖`;
                              createWishingDust(meteorRect.right, meteorRect.bottom);
                         }
                         meteor.remove();
-                    }, { once: true });
+                    }, { once : true });
                 }
 
                 setTimeout(() => {
@@ -1842,58 +1859,76 @@ and the quiet kind of joy that lingers like a melody. 💖`;
                 orb.addEventListener('animationend', () => orb.remove());
             }
 
-            // Setup parallax for background blobs
-            function setupParallax() {
-                const parallaxLayers = document.querySelectorAll('.background-blob');
-                window.addEventListener('scroll', () => {
-                    const scrollY = window.pageYOffset;
-                    parallaxLayers.forEach(layer => {
-                        const speed = parseFloat(layer.dataset.parallaxSpeed);
-                        const transformY = -scrollY * speed * 0.1;
-                        layer.style.transform = `translateY(${transformY}px)`;
-                    });
-                });
+            // Debounce function for performance sensitive events
+            function debounce(func, delay) {
+                let timeout;
+                return function(...args) {
+                    const context = this;
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => func.apply(context, args), delay);
+                };
             }
 
-            // Create background particles
-            function createParticles(count) {
-                for (let i = 0; i < count; i++) {
-                    const particle = document.createElement('div');
-                    particle.className = 'particle-overlay-item';
-                    particle.style.width = `${Math.random() * 4 + 1}px`;
-                    particle.style.height = particle.style.width;
-                    particle.style.left = `${Math.random() * 100}vw`;
-                    particle.style.top = `${Math.random() * 100}vh`;
-                    particle.style.animationDelay = `${Math.random() * 15}s`;
-                    particle.style.animationDuration = `${Math.random() * 7 + 10}s`;
-                    particleOverlay.appendChild(particle);
-                }
-            }
-
-            // Handle comet cursor movement
-            document.addEventListener("mousemove", (e) => {
+            // Handle comet cursor movement with debounce
+            document.addEventListener("mousemove", debounce((e) => {
                 cometCursor.style.left = `${e.clientX}px`;
                 cometCursor.style.top = `${e.clientY}px`;
                 if (!document.body.classList.contains('comet-active')) {
                     document.body.classList.add('comet-active');
                 }
-            });
+            }, 10)); // Debounce by 10ms
 
-            // Create hover sparkles on elements
-            function createHoverSparkles(event) {
-                const target = event.currentTarget;
-                const rect = target.getBoundingClientRect();
-                const numSparkles = 5;
-                for (let i = 0; i < numSparkles; i++) {
-                    const sparkle = document.createElement('div');
-                    sparkle.className = 'hover-sparkle';
-                    sparkle.style.left = `${rect.left + Math.random() * rect.width}px`;
-                    sparkle.style.top = `${rect.top + Math.random() * rect.height}px`;
-                    sparkle.style.width = `${Math.random() * 3 + 2}px`;
-                    sparkle.style.height = sparkle.style.width;
-                    sparkle.style.animationDelay = `${Math.random() * 0.1}s`;
-                    document.body.appendChild(sparkle);
-                    sparkle.addEventListener('animationend', () => sparkle.remove());
+            // Generate dynamic background blobs
+            function generateBackgroundBlobs(count = 8) { // Increased count for more dynamism
+                const blobContainer = document.body;
+                const colors = [
+                    'var(--color-accent-blue)',
+                    'var(--color-accent-purple)',
+                    'var(--color-gold-glow)',
+                    'var(--color-primary-accent)',
+                    'var(--color-secondary)'
+                ];
+                for (let i = 0; i < count; i++) {
+                    const blob = document.createElement('div');
+                    blob.className = 'background-blob';
+                    blob.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    const size = Math.max(250, Math.min(Math.random() * 2000, 2800)); // Larger range for size
+                    blob.style.width = `${size}px`;
+                    blob.style.height = blob.style.width;
+
+                    blob.style.top = `${Math.random() * 100}vh`;
+                    blob.style.left = `${Math.random() * 100}vw`;
+                    blob.style.opacity = `${0.005 + Math.random() * 0.015}`; // More varied opacity
+                    blob.style.filter = `blur(${Math.random() * 300 + 200}px)`; // More varied blur
+
+                    blob.style.setProperty('--dx-start', `${(Math.random() - 0.5) * 400}px`); // Random start offset
+                    blob.style.setProperty('--dy-start', `${(Math.random() - 0.5) * 400}px`);
+                    blob.style.setProperty('--dx-end', `${(Math.random() - 0.5) * 400}px`);   // Random end offset
+                    blob.style.setProperty('--dy-end', `${(Math.random() - 0.5) * 400}px`);
+
+                    blob.style.setProperty('--animation-duration', `${Math.random() * 100 + 150}s`); // Random duration
+
+                    blobContainer.appendChild(blob);
+                }
+            }
+
+            // Create background particles (emojis)
+            function createParticles(count) {
+                const particleShapes = ['⭐', '✨', '�', '🌟']; // Emojis for background particles
+                for (let i = 0; i < count; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle-overlay-item';
+                    
+                    particle.textContent = particleShapes[Math.floor(Math.random() * particleShapes.length)]; // Set emoji text
+                    particle.style.backgroundColor = 'transparent'; // No background color for emoji
+                    particle.style.fontSize = `${Math.random() * 1.5 + 0.8}em`; // Adjust font size for emojis
+
+                    particle.style.left = `${Math.random() * 100}vw`;
+                    particle.style.top = `${Math.random() * 100}vh`;
+                    particle.style.animationDelay = `${Math.random() * 15}s`;
+                    particle.style.animationDuration = `${Math.random() * 7 + 10}s`;
+                    particleOverlay.appendChild(particle);
                 }
             }
 
@@ -1937,10 +1972,34 @@ and the quiet kind of joy that lingers like a melody. 💖`;
                 }
             }
 
+            // Function to toggle music play/pause
+            function toggleMusic() {
+                if (currentMusicTrack.paused) {
+                    currentMusicTrack.play().then(() => {
+                        musicToggleIcon.classList.remove('fa-play');
+                        musicToggleIcon.classList.add('fa-pause');
+                    }).catch(e => {
+                        console.log("Music playback prevented:", e);
+                        // If playback fails, ensure icon is 'play' state
+                        musicToggleIcon.classList.remove('fa-pause');
+                        musicToggleIcon.classList.add('fa-play');
+                    });
+                } else {
+                    currentMusicTrack.pause();
+                    musicToggleIcon.classList.remove('fa-pause');
+                    musicToggleIcon.classList.add('fa-play');
+                }
+            }
+
             // Start loading screen storytelling
             function startLoadingStorytelling() {
-                // Start intro music immediately
-                introMusic.play().catch(e => console.log("Intro music playback prevented:", e));
+                // Attempt to play intro music immediately (may be blocked by autoplay policies)
+                introMusic.play().catch(e => {
+                    console.log("Intro music autoplay prevented:", e);
+                    // If autoplay is blocked, set the icon to play state
+                    musicToggleIcon.classList.remove('fa-pause');
+                    musicToggleIcon.classList.add('fa-play');
+                });
 
                 function showNextLoadingText() {
                     if (currentLoadingTextIndex < loadingTexts.length) {
@@ -1969,10 +2028,14 @@ and the quiet kind of joy that lingers like a melody. 💖`;
             popupClickArea.addEventListener('click', () => {
                 hideElement(introPopup);
 
-                // Pause intro music and play main music
+                // Pause intro music and play main music (triggered by user gesture)
                 introMusic.pause();
-                introMusic.currentTime = 0;
+                introMusic.currentTime = 0; // Reset intro music to start
                 mainMusic.play().catch(e => console.log("Main music playback prevented:", e));
+                currentMusicTrack = mainMusic; // Switch active track to main music
+                // Ensure the icon is correct after the switch
+                musicToggleIcon.classList.remove('fa-play');
+                musicToggleIcon.classList.add('fa-pause');
                 
 
                 introPopup.addEventListener('transitionend', () => {
@@ -1988,14 +2051,7 @@ and the quiet kind of joy that lingers like a melody. 💖`;
                     revealElement(messageBlock1.closest('.content-block'), 'block', 1200);
 
                     setTimeout(() => {
-                        for(let i = 0; i < 40; i++) {
-                            const s = document.createElement('div');
-                            s.className = 'sparkle';
-                            s.style.left = Math.random() * 100 + 'vw';
-                            s.style.top = Math.random() * 100 + 'vh';
-                            s.style.animationDelay = Math.random() * 8 + 's';
-                            document.body.appendChild(s);
-                        }
+                        createParticles(60); // Use new createParticles for background sparkles
                     }, 1000);
                 }, { once : true });
             });
@@ -2006,7 +2062,8 @@ and the quiet kind of joy that lingers like a melody. 💖`;
             });
 
             // Event listener for Start Journey button
-            startJourneyBtn.addEventListener('click', () => {
+            startJourneyBtn.addEventListener('click', (e) => {
+                createInteractionSparkles(e, true); // Sparkle on click
                 hideElement(startJourneyBtn);
                 hideElement(chapter1ButtonGroup);
                 hideElement(gifBlock1);
@@ -2027,7 +2084,8 @@ and the quiet kind of joy that lingers like a melody. 💖`;
             });
 
             // Event listener for Hug button
-            hugBtn.addEventListener('click', () => {
+            hugBtn.addEventListener('click', (e) => {
+                createInteractionSparkles(e, true); // Sparkle on click
                 hideAllContentDisplayAreas();
                 
                 const randomGif = hugGifs[Math.floor(Math.random() * hugGifs.length)];
@@ -2042,7 +2100,8 @@ and the quiet kind of joy that lingers like a melody. 💖`;
             });
 
             // Event listener for Compliments button
-            complimentsBtn.addEventListener('click', () => {
+            complimentsBtn.addEventListener('click', (e) => {
+                createInteractionSparkles(e, true); // Sparkle on click
                 hideAllContentDisplayAreas();
                 
                 complimentMessageDisplay.textContent = compliments[Math.floor(Math.random() * compliments.length)]; // Directly set text
@@ -2055,7 +2114,8 @@ and the quiet kind of joy that lingers like a melody. 💖`;
             });
 
             // Event listener for Make a Wish button
-            makeAWishBtn.addEventListener('click', () => {
+            makeAWishBtn.addEventListener('click', (e) => {
+                createInteractionSparkles(e, true); // Sparkle on click
                 if (wishMade) {
                     return;
                 }
@@ -2078,7 +2138,8 @@ and the quiet kind of joy that lingers like a melody. 💖`;
             });
 
             // Event listener for Whispers of Starlight button
-            whispersOfStarlightBtn.addEventListener('click', () => {
+            whispersOfStarlightBtn.addEventListener('click', (e) => {
+                createInteractionSparkles(e, true); // Sparkle on click
                 if (starlightWhispered) {
                     return;
                 }
@@ -2104,7 +2165,8 @@ and the quiet kind of joy that lingers like a melody. 💖`;
             });
 
             // Event listener for Final Message button
-            finalMessageBtn.addEventListener('click', () => {
+            finalMessageBtn.addEventListener('click', (e) => {
+                createInteractionSparkles(e, true); // Sparkle on click
                 hideElement(mainContent);
                 
                 window.scrollTo({
@@ -2123,22 +2185,26 @@ and the quiet kind of joy that lingers like a melody. 💖`;
             });
 
             // Event listener for Next Realm button
-            nextRealmBtn.addEventListener('click', () => {
+            nextRealmBtn.addEventListener('click', (e) => {
+                createInteractionSparkles(e, true); // Sparkle on click
                 window.location.href = 'netflix.html';
             });
 
             // Add hover sparkles to interactive elements
             const elementsWithHoverSparkles = [mainTitle, messageBlock1, loveMeterElement];
             elementsWithHoverSparkles.forEach(el => {
-                el.addEventListener('mouseenter', createHoverSparkles);
+                el.addEventListener('mouseenter', createInteractionSparkles);
             });
             document.querySelectorAll('.btn').forEach(btn => {
-                btn.addEventListener('mouseenter', createHoverSparkles);
+                btn.addEventListener('mouseenter', createInteractionSparkles);
             });
 
+            // Event listener for the new music toggle button
+            musicToggleButton.addEventListener('click', toggleMusic);
+
             // Initial setup calls
-            setupParallax();
-            createParticles(200);
+            generateBackgroundBlobs(); // Call the new dynamic blob generation
+            createParticles(200); // Call createParticles for background sparkle
             updateLoveMeter(0);
         });
     </script>
