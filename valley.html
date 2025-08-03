@@ -177,12 +177,12 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 28px 60px;
+            padding: 18px 25px; /* Adjusted padding for mobile */
             color: var(--sdv-yellow);
             background: var(--sdv-darkgreen);
             border: none;
             font-family: 'Press Start 2P', cursive;
-            font-size: 1.3rem;
+            font-size: 0.9rem; /* Adjusted font size for mobile */
             text-transform: uppercase;
             cursor: pointer;
             border: 8px solid var(--sdv-brown);
@@ -196,18 +196,24 @@
             text-shadow: 4px 4px 0 var(--sdv-darkbrown);
             border-radius: 10px;
             overflow: hidden;
-            white-space: nowrap;
+            white-space: normal; /* Allow text to wrap */
+            word-break: break-word; /* Break long words if necessary */
             transform: translateZ(0);
-            line-height: 1;
-            /* Adjusted for responsiveness */
-            width: 100%;
-            max-width: 320px; /* Max width for larger screens */
+            line-height: 1.4; /* Adjusted line height for wrapped text */
+            text-align: center; /* Center text when wrapped */
+            width: auto; /* Let content dictate width, but will be constrained by parent */
+            min-width: 200px; /* Ensure a minimum width even if text is short */
+            max-width: 90%; /* Max width relative to parent to prevent overflow */
         }
         
         @media (min-width: 768px) { /* On medium screens and up, adjust width */
             .pixel-button {
                 width: auto;
-                min-width: 280px; /* A bit smaller min-width for desktop */
+                min-width: auto; /* Remove min-width on desktop to let it grow naturally */
+                padding: 28px 60px; /* Restore original padding for larger screens */
+                font-size: 1.3rem; /* Restore original font size for larger screens */
+                white-space: nowrap; /* Prevent wrapping on larger screens if preferred */
+                max-width: none; /* Remove max-width on desktop */
             }
         }
 
