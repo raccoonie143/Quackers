@@ -7,28 +7,33 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Import Google Fonts for a playful and modern look */
         @import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Poppins:wght@400;600;700&display=swap');
         
+        /* Define CSS Variables for consistent theming */
         :root {
-            --primary: #FF6B6B;
-            --secondary: #4ECDC4;
-            --accent: #FFE66D;
-            --dark: #292F36;
+            --primary: #FF6B6B; /* Red */
+            --secondary: #4ECDC4; /* Teal */
+            --accent: #FFE66D; /* Yellow */
+            --dark: #292F36; /* Dark Gray */
         }
         
+        /* Base body styles */
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #FFF5F5;
+            background-color: #FFF5F5; /* Light Red/Pink */
             color: var(--dark);
-            overflow-x: hidden;
+            overflow-x: hidden; /* Prevent horizontal scroll */
         }
         
+        /* Custom font for titles */
         .title-font {
             font-family: 'Luckiest Guy', cursive;
             text-shadow: 3px 3px 0 rgba(0,0,0,0.1);
             letter-spacing: 1px;
         }
         
+        /* Animations for various elements */
         .chef-hat {
             animation: float 3s ease-in-out infinite;
         }
@@ -49,6 +54,7 @@
             transform: translateY(-10px) rotate(5deg);
         }
         
+        /* Keyframe animations */
         @keyframes float {
             0% { transform: translateY(0px); }
             50% { transform: translateY(-15px); }
@@ -66,28 +72,75 @@
             50% { transform: rotate(5deg); }
             100% { transform: rotate(-5deg); }
         }
-        
+
+        @keyframes pulse-once {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes continuous-pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(255, 107, 107, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 107, 107, 0); }
+        }
+        .pulse-active {
+            animation: continuous-pulse 1.5s infinite;
+        }
+
+        @keyframes breathing {
+            0% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.005); opacity: 1; } /* More subtle scale */
+            100% { transform: scale(1); opacity: 0.9; }
+        }
+        .breathing-animation {
+            animation: breathing 4s ease-in-out infinite;
+        }
+
+        /* Background image for hero section */
         .kitchen-bg {
             background-image: url('https://images.unsplash.com/photo-1600566752227-9688b1151923?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
             background-size: cover;
             background-position: center;
-            background-blend-mode: multiply;
+            position: relative; /* Needed for absolute overlay */
+        }
+        .kitchen-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            /* Updated to a subtle, elegant red tint gradient with higher opacity for better text visibility */
+            background: linear-gradient(to bottom, rgba(255,107,107,0.7), rgba(255,107,107,0.4), rgba(255,107,107,0.7));
+            z-index: 1; /* Place over the image but under content */
+        }
+
+        /* Hero image hover effect */
+        .hero-image-container img {
+            transition: transform 0.3s ease;
+        }
+        .hero-image-container:hover img {
+            transform: scale(1.03);
         }
         
+        /* Hover effects for order cards */
         .order-card {
             transition: all 0.3s ease;
             transform-style: preserve-3d;
         }
         
         .order-card:hover {
-            transform: perspective(1000px) rotateY(10deg) translateY(-5px);
+            transform: perspective(1000px) rotateY(5deg) translateY(-8px);
             box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
         }
         
+        /* Chaos meter animation */
         .chaos-meter {
             transition: width 0.5s ease;
         }
         
+        /* Character selection hover and active states */
         .character-select {
             transition: all 0.3s ease;
         }
@@ -96,13 +149,18 @@
             transform: scale(1.05);
             filter: drop-shadow(0 5px 5px rgba(0,0,0,0.2));
         }
+        .character-select:hover .bg-white {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            border-color: var(--primary); /* Add a border color change */
+        }
         
         .character-select.active {
             transform: scale(1.1);
             filter: drop-shadow(0 0 10px var(--accent));
         }
 
-        /* Custom Slider Styles */
+        /* Custom Slider Styles for Chaos Meter */
         input[type="range"] {
             -webkit-appearance: none; /* Hides the slider track and thumb */
             width: 100%; /* Full-width */
@@ -190,32 +248,146 @@
             height: 16px;
             border-radius: 8px;
         }
+
+        /* Button Base Styles - Removed gradients, added solid colors */
+        .btn-style {
+            padding: 0.75rem 2rem; /* px-8 py-3 */
+            font-weight: 700; /* font-bold */
+            border-radius: 9999px; /* rounded-full */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .btn-style:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Specific button colors */
+        #play-now-button {
+            background-color: var(--accent); /* Yellow */
+            color: var(--dark);
+        }
+        #play-now-button:hover {
+            background-color: #FFD700; /* Slightly darker yellow */
+        }
+
+        #watch-trailer-button {
+            background-color: #ffffff;
+            color: var(--primary); /* Red */
+            border: 2px solid var(--primary);
+        }
+        #watch-trailer-button:hover {
+            background-color: var(--primary);
+            color: #fff;
+        }
+
+        /* Subscribe button */
+        .order-section-subscribe-btn {
+            background-color: var(--primary); /* Red */
+            color: #fff;
+        }
+        .order-section-subscribe-btn:hover {
+            background-color: #E04B4B; /* Darker red */
+        }
+
+        /* Next Adventure button */
+        #next-adventure-button {
+            background-color: var(--accent); /* Yellow */
+            color: var(--dark);
+        }
+        #next-adventure-button:hover {
+            background-color: #FFD700; /* Slightly darker yellow */
+        }
+
+        /* Modal Styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 2.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 90%;
+            width: 450px;
+            position: relative;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal.show .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-close-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #ccc;
+            transition: color 0.2s ease;
+        }
+
+        .modal-close-button:hover {
+            color: #888;
+        }
     </style>
 </head>
 <body>
     <!-- Background Music -->
-    <audio id="background-music" src="over.mp3" autoplay loop></audio>
+    <!-- The 'autoplay' attribute is present, but modern browsers often require user interaction.
+         JavaScript will attempt to play it on window load and provide a toggle button. -->
+    <audio id="background-music" src="over.mp3" loop></audio>
 
-    <!-- Navigation -->
+    <!-- Navigation Bar -->
     <nav class="bg-white shadow-lg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
                 <div class="flex items-center">
                     <div class="flex-shrink-0 flex items-center">
-                        <!-- Overcooked 2 Logo -->
-                        <img class="h-12 w-auto" src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/af7dfb2d-8cc1-45ab-9bab-6b0d0c655e58/dk29y4s-233dab02-e160-4c69-9eb0-fb3cc639429e.png/v1/fill/w_894,h_894/overcooked_2_transparent_png_by_wallpaper_background_dk29y4s-pre.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MjE2MCIsInBhdGgiOiJcL2ZcL2FmN2RmYjJkLThjYzEtNDVhYi05YmFiLTZiMGQwYzY1NWU1OFwvZGsyOXk0cy0yMzNkYWIwMi1lMTYwLTRjNjktOWViMC1mYjNjYzYzOTQyOWUucG5nIiwid2lkdGgiOiI8PTIxNjAifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.x5PlKqS3rlgx2PLgi1-Bh3danNIjSMfu0nIOn0-fVcE" alt="Overcooked 2 Logo">
+                        <!-- Overcooked 2 Logo - Updated Image -->
+                        <img class="h-12 w-auto" src="https://cdn2.steamgriddb.com/logo_thumb/6991aa40ef4b66fb372bd171ba9ad7f2.png" alt="Overcooked 2 Logo">
                         <span class="ml-3 title-font text-2xl text-red-500">Overcooked 2</span>
                     </div>
                 </div>
+                <!-- Desktop Navigation Links -->
                 <div class="hidden md:block">
                     <div class="ml-10 flex items-center space-x-4">
-                        <a href="#home" class="px-3 py-2 rounded-md text-sm font-medium text-red-500 hover:bg-red-50">Home</a>
-                        <a href="#features" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100">Features</a>
-                        <a href="#characters" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100">Characters</a>
-                        <a href="#recipes" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100">Recipes</a>
-                        <a href="#order" class="px-3 py-2 rounded-md text-sm font-medium bg-red-500 text-white hover:bg-red-600">Order Chaos</a>
+                        <a href="#home" class="px-3 py-2 rounded-md text-sm font-medium text-red-500 hover:bg-red-50 transition duration-200">Home</a>
+                        <a href="#features" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100 transition duration-200">Features</a>
+                        <a href="#characters" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100 transition duration-200">Characters</a>
+                        <a href="#recipes" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100 transition duration-200">Recipes</a>
+                        <a href="#order" class="px-3 py-2 rounded-md text-sm font-medium bg-red-500 text-white hover:bg-red-600 transition duration-200">Order Chaos</a>
                     </div>
                 </div>
+                <!-- Mobile Menu Button -->
                 <div class="md:hidden">
                     <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-red-500 focus:outline-none">
                         <i class="fas fa-bars text-xl"></i>
@@ -223,35 +395,37 @@
                 </div>
             </div>
         </div>
-        <!-- Mobile menu -->
+        <!-- Mobile Menu Content -->
         <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                 <a href="#home" class="block px-3 py-2 rounded-md text-base font-medium text-red-500 hover:bg-red-50">Home</a>
                 <a href="#features" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Features</a>
                 <a href="#characters" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Characters</a>
-                <a href="#recipes" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Recipes</a>
+                <a href="#recipes" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-red-600">Recipes</a>
                 <a href="#order" class="block px-3 py-2 rounded-md text-base font-medium bg-red-500 text-white hover:bg-red-600">Order Chaos</a>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section id="home" class="relative overflow-hidden kitchen-bg bg-red-500">
+    <section id="home" class="relative overflow-hidden kitchen-bg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32 relative z-10">
             <div class="md:flex items-center">
                 <div class="md:w-1/2 mb-10 md:mb-0">
                     <h1 class="title-font text-4xl md:text-6xl text-white mb-6">Team Quack Is Back in the Kitchen!</h1>
                     <p class="text-lg text-white mb-8">Grab your aprons and your favorite person — it’s time for another round of adorable chaos! Join Doofy & Quackers as they scream over burning rice, miss every plate toss, and somehow still win — together 💛</p>
-                    <div class="flex space-x-4">
-                        <button class="px-8 py-3 bg-yellow-400 text-gray-900 font-bold rounded-full hover:bg-yellow-300 transition duration-300 transform hover:scale-105 shadow-lg">
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                        <!-- Play Now Button with a subtle pulse animation -->
+                        <button id="play-now-button" class="btn-style animate-pulse-once">
                             <i class="fas fa-gamepad mr-2"></i> Play Now
                         </button>
-                        <button class="px-8 py-3 bg-white text-red-500 font-bold rounded-full hover:bg-gray-100 transition duration-300 transform hover:scale-105 shadow-lg">
+                        <!-- Watch Trailer Button -->
+                        <button id="watch-trailer-button" class="btn-style">
                             <i class="fas fa-trailer mr-2"></i> Watch Trailer
                         </button>
                     </div>
                 </div>
-                <div class="md:w-1/2 flex justify-center relative">
+                <div class="md:w-1/2 flex justify-center relative hero-image-container">
                     <img src="CD8.png" alt="Overcooked 2 Characters" class="rounded-lg shadow-2xl max-w-md w-full border-4 border-white">
                     <div class="absolute -bottom-5 -right-5 bg-yellow-400 p-4 rounded-full shadow-xl">
                         <i class="fas fa-fire-alt text-3xl text-red-500 flame"></i>
@@ -259,7 +433,7 @@
                 </div>
             </div>
         </div>
-        <div class="absolute inset-0 bg-black opacity-40"></div>
+        <!-- The ::before pseudo-element handles the gradient overlay -->
     </section>
 
     <!-- Features Section -->
@@ -272,33 +446,33 @@
             
             <div class="grid md:grid-cols-3 gap-10">
                 <!-- Feature 1: Quackmaster Plans Everything -->
-                <div class="bg-gray-50 p-8 rounded-xl shadow-md hover:shadow-xl transition duration-300">
+                <div class="bg-gray-50 p-8 rounded-xl shadow-md hover:shadow-xl transition duration-300 transform hover:-translate-y-2 breathing-animation">
                     <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-6 mx-auto">
-                        <i class="fas fa-brain text-2xl text-red-500"></i> <!-- Updated icon -->
+                        <i class="fas fa-brain text-2xl text-red-500"></i>
                     </div>
                     <h3 class="text-xl font-bold text-center mb-3">🧠 Quackmaster Plans Everything</h3>
                     <p class="text-gray-600 text-center">Quackers doesn’t just play — she orchestrates. Every onion, every toss, every perfectly-timed plate is part of her master plan. If it has three stars, she made it happen.</p>
-                    <p class="text-sm text-gray-500 mt-2 text-center">🪄 Tags: Strategy · Precision · Boss Energy</p> <!-- New tags -->
+                    <p class="text-sm text-gray-500 mt-2 text-center">🪄 Tags: Strategy · Precision · Boss Energy</p>
                 </div>
                 
                 <!-- Feature 2: Rice? Washed. Dishes? Done. Vibes? Immaculate. -->
-                <div class="bg-gray-50 p-8 rounded-xl shadow-md hover:shadow-xl transition duration-300">
+                <div class="bg-gray-50 p-8 rounded-xl shadow-md hover:shadow-xl transition duration-300 transform hover:-translate-y-2 breathing-animation">
                     <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-6 mx-auto">
-                        <i class="fas fa-basket-shopping text-2xl text-green-500"></i> <!-- Updated icon -->
+                        <i class="fas fa-basket-shopping text-2xl text-green-500"></i>
                     </div>
                     <h3 class="text-xl font-bold text-center mb-3">🍚 Rice? Washed. Dishes? Done. Vibes? Immaculate.</h3>
                     <p class="text-gray-600 text-center">While Quackers runs the kitchen like a five-star general, Doofy keeps the ship afloat — one pot of rice and clean plate at a time. Also: morale-boosting cuteness level = 100%.</p>
-                    <p class="text-sm text-gray-500 mt-2 text-center">🫧 Tags: Support Chef · Cuteness · Very Good Listener</p> <!-- New tags -->
+                    <p class="text-sm text-gray-500 mt-2 text-center">🫧 Tags: Support Chef · Cuteness · Very Good Listener</p>
                 </div>
                 
                 <!-- Feature 3: Three Stars or Nothing -->
-                <div class="bg-gray-50 p-8 rounded-xl shadow-md hover:shadow-xl transition duration-300">
+                <div class="bg-gray-50 p-8 rounded-xl shadow-md hover:shadow-xl transition duration-300 transform hover:-translate-y-2 breathing-animation">
                     <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6 mx-auto">
-                        <i class="fas fa-star text-2xl text-blue-500"></i> <!-- Updated icon -->
+                        <i class="fas fa-star text-2xl text-blue-500"></i>
                     </div>
                     <h3 class="text-xl font-bold text-center mb-3">🔥 Three Stars or Nothing</h3>
                     <p class="text-gray-600 text-center">We never moved on till we nailed it. Failed orders? Restart. One star? Restart. Kitchen on fire? Still... restart. Because chaos is temporary, but three stars? Eternal.</p>
-                    <p class="text-sm text-gray-500 mt-2 text-center">⭐ Tags: Commitment · Perfectionists · Chaos with Standards</p> <!-- New tags -->
+                    <p class="text-sm text-gray-500 mt-2 text-center">⭐ Tags: Commitment · Perfectionists · Chaos with Standards</p>
                 </div>
             </div>
         </div>
@@ -315,8 +489,8 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
                 <!-- Character 1: Doofy -->
                 <div class="character-select" data-character="doofy">
-                    <div class="bg-white p-4 rounded-lg shadow-md text-center">
-                        <div class="w-32 h-32 mx-auto mb-4 overflow-hidden rounded-full border-4 border-red-300">
+                    <div class="bg-white p-4 rounded-lg shadow-md text-center transition-all duration-300">
+                        <div class="w-32 h-32 mx-auto mb-4 overflow-hidden rounded-full border-4 border-red-300 transition-colors duration-300">
                             <img src="CD7.png" alt="Doofy" class="w-full h-full object-cover">
                         </div>
                         <h3 class="font-bold text-lg">👨‍🍳 Doofy</h3>
@@ -326,8 +500,8 @@
                 
                 <!-- Character 2: Quackers -->
                 <div class="character-select" data-character="quackers">
-                    <div class="bg-white p-4 rounded-lg shadow-md text-center">
-                        <div class="w-32 h-32 mx-auto mb-4 overflow-hidden rounded-full border-4 border-green-300">
+                    <div class="bg-white p-4 rounded-lg shadow-md text-center transition-all duration-300">
+                        <div class="w-32 h-32 mx-auto mb-4 overflow-hidden rounded-full border-4 border-green-300 transition-colors duration-300">
                             <img src="CD6.png" alt="Quackers" class="w-full h-full object-cover">
                         </div>
                         <h3 class="font-bold text-lg">👩‍🍳 Quackers</h3>
@@ -337,8 +511,8 @@
                 
                 <!-- Character 3: Ducky -->
                 <div class="character-select" data-character="ducky">
-                    <div class="bg-white p-4 rounded-lg shadow-md text-center">
-                        <div class="w-32 h-32 mx-auto mb-4 overflow-hidden rounded-full border-4 border-blue-300">
+                    <div class="bg-white p-4 rounded-lg shadow-md text-center transition-all duration-300">
+                        <div class="w-32 h-32 mx-auto mb-4 overflow-hidden rounded-full border-4 border-blue-300 transition-colors duration-300">
                             <img src="CD4.png" alt="Ducky" class="w-full h-full object-cover">
                         </div>
                         <h3 class="font-bold text-lg">🐤 Ducky</h3>
@@ -348,8 +522,8 @@
                 
                 <!-- Character 4: Racconie -->
                 <div class="character-select" data-character="racconie">
-                    <div class="bg-white p-4 rounded-lg shadow-md text-center">
-                        <div class="w-32 h-32 mx-auto mb-4 overflow-hidden rounded-full border-4 border-yellow-300">
+                    <div class="bg-white p-4 rounded-lg shadow-md text-center transition-all duration-300">
+                        <div class="w-32 h-32 mx-auto mb-4 overflow-hidden rounded-full border-4 border-yellow-300 transition-colors duration-300">
                             <img src="CD5.png" alt="Racconie" class="w-full h-full object-cover">
                         </div>
                         <h3 class="font-bold text-lg">🦝 Racconie</h3>
@@ -358,6 +532,7 @@
                 </div>
             </div>
             
+            <!-- Character Detail Panel (initially hidden on small screens) -->
             <div id="character-detail" class="mt-12 bg-white rounded-xl shadow-lg overflow-hidden md:flex max-w-4xl mx-auto hidden">
                 <div class="md:w-1/3">
                     <img id="detail-image" src="CD7.png" alt="Selected Character" class="w-full h-full object-cover">
@@ -366,8 +541,8 @@
                     <h3 id="detail-name" class="title-font text-2xl text-red-500 mb-2">Doofy</h3>
                     <p id="detail-title" class="text-gray-500 font-medium mb-4">The Enthusiastic Rookie</p>
                     <p id="detail-bio" class="text-gray-700 mb-6">Doofy is always excited to cook, even if he forgets the rice while doing a victory dance. He may drop a plate or two, but his heart’s always in it — and his smile never leaves.</p>
-                    <div class="flex items-center">
-                        <div class="mr-6">
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center">
+                        <div class="mr-0 sm:mr-6 mb-4 sm:mb-0">
                             <p class="text-sm text-gray-500">Special Ability</p>
                             <p id="detail-ability" class="font-medium">✨ Morale Boost (and accidental chaos)</p>
                         </div>
@@ -391,7 +566,7 @@
             
             <div class="grid md:grid-cols-3 gap-8">
                 <!-- Recipe 1: The Onion Sacrifice -->
-                <div class="order-card bg-white rounded-xl shadow-md overflow-hidden border-2 border-gray-100">
+                <div class="order-card bg-white rounded-xl shadow-md overflow-hidden border-2 border-gray-100 breathing-animation">
                     <div class="h-48 overflow-hidden flex items-center justify-center bg-gray-50">
                         <img src="CD3.png" alt="The Onion Sacrifice" class="w-full h-full object-cover">
                     </div>
@@ -403,10 +578,10 @@
                         <p class="text-gray-600 mb-4">The dish where Quackers told Doofy to toss the onions — and he launched them into the abyss. Twice. Still, no restart because… the vibes were right.</p>
                         <p class="text-sm text-gray-500 mt-2">👩‍🍳 Chef’s Note: "Onions are temporary. Her patience? Legendary."</p>
                         <div class="flex flex-wrap gap-2 mt-4">
-                            <span class="bg-gray-100 px-2 py-1 text-xs rounded-full flex items-center">
+                            <span class="bg-gray-100 px-2 py-1 text-xs rounded-full flex items-center ingredient">
                                 <i class="fas fa-tags text-gray-500 mr-1"></i> Emotional
                             </span>
-                            <span class="bg-gray-100 px-2 py-1 text-xs rounded-full flex items-center">
+                            <span class="bg-gray-100 px-2 py-1 text-xs rounded-full flex items-center ingredient">
                                 <i class="fas fa-tags text-gray-500 mr-1"></i> Unpredictable
                             </span>
                         </div>
@@ -414,7 +589,7 @@
                 </div>
                 
                 <!-- Recipe 2: Rice Under Pressure -->
-                <div class="order-card bg-white rounded-xl shadow-md overflow-hidden border-2 border-gray-100">
+                <div class="order-card bg-white rounded-xl shadow-md overflow-hidden border-2 border-gray-100 breathing-animation">
                     <div class="h-48 overflow-hidden flex items-center justify-center bg-gray-50">
                         <img src="CD2.png" alt="Rice Under Pressure" class="w-full h-full object-cover">
                     </div>
@@ -426,10 +601,10 @@
                         <p class="text-gray-600 mb-4">Quackers was calmly assembling sushi like a goddess. Doofy? Juggling rice, dishes, and internal panic. Did the rice burn? Probably. Did we still win? You bet.</p>
                         <p class="text-sm text-gray-500 mt-2">💬 Fun Fact: Doofy was voted “Best Rice Rescuer 2024”.</p>
                         <div class="flex flex-wrap gap-2 mt-4">
-                            <span class="bg-gray-100 px-2 py-1 text-xs rounded-full flex items-center">
+                            <span class="bg-gray-100 px-2 py-1 text-xs rounded-full flex items-center ingredient">
                                 <i class="fas fa-tags text-gray-500 mr-1"></i> Teamwork
                             </span>
-                            <span class="bg-gray-100 px-2 py-1 text-xs rounded-full flex items-center">
+                            <span class="bg-gray-100 px-2 py-1 text-xs rounded-full flex items-center ingredient">
                                 <i class="fas fa-tags text-gray-500 mr-1"></i> High Stakes
                             </span>
                         </div>
@@ -437,7 +612,7 @@
                 </div>
                 
                 <!-- Recipe 3: The Triple-Star Sandwich -->
-                <div class="order-card bg-white rounded-xl shadow-md overflow-hidden border-2 border-gray-100">
+                <div class="order-card bg-white rounded-xl shadow-md overflow-hidden border-2 border-gray-100 breathing-animation">
                     <div class="h-48 overflow-hidden flex items-center justify-center bg-gray-50">
                         <img src="CD1.png" alt="The Triple-Star Sandwich" class="w-full h-full object-cover">
                     </div>
@@ -449,10 +624,10 @@
                         <p class="text-gray-600 mb-4">We didn’t just complete this level. We dominated it. Plates flew, dishes sparkled, Quackers calculated, and Doofy ran like a caffeinated duck. 3 stars or we restart — always.</p>
                         <p class="text-sm text-gray-500 mt-2">🏆 Achievement Unlocked: "Kitchen Royalty with Side of Chaos"</p>
                         <div class="flex flex-wrap gap-2 mt-4">
-                            <span class="bg-gray-100 px-2 py-1 text-xs rounded-full flex items-center">
+                            <span class="bg-gray-100 px-2 py-1 text-xs rounded-full flex items-center ingredient">
                                 <i class="fas fa-tags text-gray-500 mr-1"></i> Mastery
                             </span>
-                            <span class="bg-gray-100 px-2 py-1 text-xs rounded-full flex items-center">
+                            <span class="bg-gray-100 px-2 py-1 text-xs rounded-full flex items-center ingredient">
                                 <i class="fas fa-tags text-gray-500 mr-1"></i> Relentless
                             </span>
                         </div>
@@ -469,22 +644,23 @@
             <p class="mb-8 text-gray-300">Adjust the chaos meter to see what kind of kitchen madness you're signing up for!</p>
             
             <div class="mb-8">
-                <div class="flex justify-between mb-2">
+                <div class="flex justify-between mb-2 text-sm sm:text-base">
                     <span id="chaos-start-label">🔈 Calm Before the Quackstorm</span>
                     <span id="chaos-end-label">🌪️ THE QUACKPOCALYPSE</span>
                 </div>
-                <input type="range" min="0" max="100" value="50" class="w-full h-3 bg-gray-700 rounded-lg appearance-none cursor-pointer" id="chaos-meter">
+                <!-- Custom styled range input for chaos meter -->
+                <input type="range" min="0" max="100" value="50" class="w-full" id="chaos-meter">
             </div>
             
             <div class="bg-gray-800 rounded-lg p-6">
                 <div class="flex justify-between items-center mb-4">
-                    <span id="chaos-level" class="font-bold text-lg">Mild Panic, Maximum Cute</span>
+                    <span id="chaos-level" class="font-bold text-lg sm:text-xl">Mild Panic, Maximum Cute</span>
                     <span id="chaos-score" class="bg-red-500 text-white px-3 py-1 rounded-full text-sm">50%</span>
                 </div>
                 <div class="h-4 bg-gray-700 rounded-full overflow-hidden">
                     <div id="chaos-bar" class="h-full bg-gradient-to-r from-yellow-400 to-red-500 rounded-full chaos-meter" style="width: 50%"></div>
                 </div>
-                <p id="chaos-description" class="mt-4 text-gray-300">Rice might be burning. Doofy’s yelling. Quackers is fixing it with grace (and judgmental stares).</p>
+                <p id="chaos-description" class="mt-4 text-gray-300 text-sm sm:text-base">Rice might be burning. Doofy’s yelling. Quackers is fixing it with grace (and judgmental stares).</p>
             </div>
         </div>
     </section>
@@ -520,7 +696,7 @@
                                 <label class="block text-gray-700 mb-2" for="email">Want more updates from Team QuackQuack™? Subscribe to future memories, chaos recaps, or just to see if Doofy ever gets promoted.</label>
                                 <input type="email" id="email" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" placeholder="[Enter Your Email]">
                             </div>
-                            <button type="submit" class="w-full bg-red-500 text-white py-3 px-4 rounded-lg font-bold hover:bg-red-600 transition duration-300 flex items-center justify-center">
+                            <button type="submit" class="w-full py-3 px-4 rounded-lg font-bold order-section-subscribe-btn flex items-center justify-center">
                                 <i class="fas fa-paper-plane mr-2"></i> Subscribe
                             </button>
                         </form>
@@ -529,7 +705,7 @@
             </div>
             <!-- New button for next adventure -->
             <div class="text-center mt-12">
-                <button id="next-adventure-button" class="px-8 py-4 bg-yellow-400 text-gray-900 font-bold rounded-full hover:bg-yellow-300 transition duration-300 transform hover:scale-105 shadow-lg text-lg">
+                <button id="next-adventure-button" class="btn-style">
                     Ready for next adventure?
                 </button>
             </div>
@@ -539,7 +715,7 @@
     <!-- Footer -->
     <footer class="bg-gray-900 text-white py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid md:grid-cols-4 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div>
                     <h3 class="title-font text-xl mb-4">Overcooked 2</h3>
                     <p class="text-gray-400">Burnt meals. Big laughs. Better memories.</p>
@@ -553,9 +729,9 @@
                 <div>
                     <h4 class="font-bold mb-4">Game Info</h4>
                     <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-400 hover:text-white">Features</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Characters</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white">Recipes</a></li>
+                        <li><a href="#features" class="text-gray-400 hover:text-white">Features</a></li>
+                        <li><a href="#characters" class="text-gray-400 hover:text-white">Characters</a></li>
+                        <li><a href="#recipes" class="text-gray-400 hover:text-white">Recipes</a></li>
                         <li><a href="#" class="text-gray-400 hover:text-white">DLCs</a></li>
                     </ul>
                 </div>
@@ -586,21 +762,82 @@
         </div>
     </footer>
 
-    <!-- Floating Chef Hat -->
-    <div class="fixed bottom-6 right-6 z-50">
-        <div class="bg-red-500 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-xl cursor-pointer hover:bg-red-600 transition duration-300 chef-hat">
-            <i class="fas fa-hat-chef text-2xl"></i>
+    <!-- Floating Music Toggle Button (replaces chef hat) -->
+    <div id="music-toggle-button" class="fixed bottom-6 right-6 z-50">
+        <button class="bg-red-500 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-xl cursor-pointer hover:bg-red-600 transition duration-300">
+            <i id="music-icon" class="fas fa-volume-up text-2xl"></i>
+        </button>
+    </div>
+
+    <!-- Custom Message Modal -->
+    <div id="message-modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close-button" id="modal-close-button">&times;</button>
+            <h3 id="modal-title" class="title-font text-3xl text-red-500 mb-4"></h3>
+            <p id="modal-text" class="text-gray-700 text-lg mb-6"></p>
+            <img id="modal-image" src="" alt="Doofy" class="mx-auto w-32 h-auto rounded-full mb-4 hidden">
+            <button id="modal-ok-button" class="px-6 py-2 bg-red-500 text-white font-bold rounded-full hover:bg-red-600 transition duration-300">
+                Got It!
+            </button>
         </div>
     </div>
 
     <script>
-        // Mobile menu toggle
+        // --- Global Elements ---
+        const backgroundMusic = document.getElementById('background-music');
+        const musicToggleButton = document.getElementById('music-toggle-button');
+        const musicIcon = document.getElementById('music-icon');
+        const playNowButton = document.getElementById('play-now-button');
+        const watchTrailerButton = document.getElementById('watch-trailer-button');
+        const messageModal = document.getElementById('message-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalText = document.getElementById('modal-text');
+        const modalImage = document.getElementById('modal-image');
+        const modalCloseButton = document.getElementById('modal-close-button');
+        const modalOkButton = document.getElementById('modal-ok-button');
+
+        // --- Music Playback Control ---
+        // Attempt to play music on window load (may be blocked by browser policies)
+        window.onload = function() {
+            try {
+                backgroundMusic.volume = 0.5; // Set a default volume
+                backgroundMusic.play().then(() => {
+                    // Only add pulse if autoplay was successful
+                    musicToggleButton.classList.add('pulse-active');
+                }).catch(e => {
+                    console.log("Autoplay blocked, user interaction needed:", e);
+                    // If autoplay is blocked, ensure the icon reflects muted state
+                    musicIcon.classList.remove('fa-volume-up');
+                    musicIcon.classList.add('fa-volume-mute');
+                    musicToggleButton.classList.remove('pulse-active'); // Remove pulse if not playing
+                });
+            } catch (e) {
+                console.error("Error playing music:", e);
+            }
+        };
+
+        // Music toggle button functionality
+        musicToggleButton.addEventListener('click', function() {
+            if (backgroundMusic.paused) {
+                backgroundMusic.play();
+                musicIcon.classList.remove('fa-volume-mute');
+                musicIcon.classList.add('fa-volume-up');
+                musicToggleButton.classList.add('pulse-active'); // Add pulse when playing
+            } else {
+                backgroundMusic.pause();
+                musicIcon.classList.remove('fa-volume-up');
+                musicIcon.classList.add('fa-volume-mute');
+                musicToggleButton.classList.remove('pulse-active'); // Remove pulse when paused
+            }
+        });
+
+        // --- Mobile Menu Toggle ---
         document.getElementById('mobile-menu-button').addEventListener('click', function() {
             const menu = document.getElementById('mobile-menu');
             menu.classList.toggle('hidden');
         });
 
-        // Character selection
+        // --- Character Selection Logic ---
         const characters = {
             doofy: { 
                 name: "Doofy",
@@ -608,7 +845,7 @@
                 bio: "Doofy is always excited to cook, even if he forgets the rice while doing a victory dance. He may drop a plate or two, but his heart’s always in it — and his smile never leaves.",
                 ability: "✨ Morale Boost (and accidental chaos)",
                 dish: "🍚 Rice (especially when it's not burning)",
-                image: "CD7.png" // Updated local image
+                image: "CD7.png" // Local image
             },
             quackers: { 
                 name: "Quackers",
@@ -616,7 +853,7 @@
                 bio: "Quackers doesn’t just cook — she commands. With flawless timing and genius-level planning, she leads the kitchen like a pro. She's the brain behind every 3-star win (and the reason Doofy survives).",
                 ability: "🧠 Instant Kitchen Plan Deployment™",
                 dish: "🍣 Sushi (perfectly plated, obviously)",
-                image: "CD6.png" // Updated local image
+                image: "CD6.png" // Local image
             },
             ducky: { 
                 name: "Ducky",
@@ -624,7 +861,7 @@
                 bio: "Tiny, fast, and dangerously cute. Ducky zooms around the kitchen carrying ingredients twice their size and still finds time to squeak encouragements. Small flippers, big energy.",
                 ability: "💨 Super Speed (and bonus “aww” factor)",
                 dish: "🥗 Salad — easy to toss, fun to fling",
-                image: "CD4.png" // Updated local image
+                image: "CD4.png" // Local image
             },
             racconie: { 
                 name: "Racconie",
@@ -632,25 +869,25 @@
                 bio: "Don’t underestimate this raccoon — Racconie rolls into chaos like a pro. Always one step ahead, usually holding a tomato, and occasionally stealing snacks off the counter.",
                 ability: "🧯 Controlled Mayhem (with bonus sass)",
                 dish: "🍕 Pizza (but only if it's slightly on fire)",
-                image: "CD5.png" // Updated local image
+                image: "CD5.png" // Local image
             }
         };
 
         document.querySelectorAll('.character-select').forEach(item => {
             item.addEventListener('click', function() {
-                // Remove active class from all
+                // Remove active class from all characters
                 document.querySelectorAll('.character-select').forEach(el => {
                     el.classList.remove('active');
                 });
                 
-                // Add active class to clicked
+                // Add active class to the clicked character
                 this.classList.add('active');
                 
-                // Get character data
+                // Get character data based on data-character attribute
                 const charName = this.getAttribute('data-character');
                 const charData = characters[charName];
                 
-                // Update detail panel
+                // Update the detail panel with selected character's info
                 document.getElementById('detail-image').src = charData.image;
                 document.getElementById('detail-name').textContent = charData.name;
                 document.getElementById('detail-title').textContent = charData.title;
@@ -658,12 +895,12 @@
                 document.getElementById('detail-ability').textContent = charData.ability;
                 document.getElementById('detail-dish').textContent = charData.dish;
                 
-                // Show detail panel if hidden (mobile)
+                // Show detail panel (especially for mobile, as it's hidden by default)
                 document.getElementById('character-detail').classList.remove('hidden');
             });
         });
 
-        // Chaos meter
+        // --- Chaos Meter Functionality ---
         const chaosMeter = document.getElementById('chaos-meter');
         const chaosBar = document.getElementById('chaos-bar');
         const chaosScore = document.getElementById('chaos-score');
@@ -671,13 +908,14 @@
         const chaosDescription = document.getElementById('chaos-description');
         
         chaosMeter.addEventListener('input', function() {
-            const value = parseInt(this.value); // Ensure value is an integer
-            chaosBar.style.width = value + '%';
-            chaosScore.textContent = value + '%';
+            const value = parseInt(this.value); // Get integer value from slider
+            chaosBar.style.width = value + '%'; // Update progress bar width
+            chaosScore.textContent = value + '%'; // Update percentage text
             
-            // Update the CSS variable for the track fill
+            // Update CSS variable for the custom range input track fill
             chaosMeter.style.setProperty('--range-fill-width', value + '%');
 
+            // Update chaos level and description based on slider value
             if (value <= 10) {
                 chaosLevel.textContent = "🔈 Calm Before the Quackstorm";
                 chaosDescription.textContent = "Everything’s under control. Quackers is humming. Doofy hasn’t dropped anything... yet.";
@@ -702,21 +940,21 @@
         // Initialize chaos meter on load to display the correct initial state
         chaosMeter.dispatchEvent(new Event('input'));
 
-        // Smooth scrolling for anchor links
+        // --- Smooth Scrolling for Anchor Links ---
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
-                e.preventDefault();
+                e.preventDefault(); // Prevent default anchor jump
                 
                 const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
+                if (targetId === '#') return; // Ignore empty hash links
                 
                 const targetElement = document.querySelector(targetId);
                 if (targetElement) {
                     targetElement.scrollIntoView({
-                        behavior: 'smooth'
+                        behavior: 'smooth' // Smooth scroll effect
                     });
                     
-                    // Close mobile menu if open
+                    // Close mobile menu if it's open after clicking a link
                     const mobileMenu = document.getElementById('mobile-menu');
                     if (!mobileMenu.classList.contains('hidden')) {
                         mobileMenu.classList.add('hidden');
@@ -725,26 +963,73 @@
             });
         });
 
-        // Animate ingredients on recipe cards
+        // --- Ingredient Animation on Recipe Cards (on hover) ---
         document.querySelectorAll('.order-card').forEach(card => {
             card.addEventListener('mouseenter', function() {
+                // Find all elements with 'ingredient' class within the hovered card
                 const ingredients = this.querySelectorAll('.ingredient');
                 ingredients.forEach((ing, index) => {
+                    // Add a bounce animation with a slight delay for each ingredient
                     setTimeout(() => {
-                        ing.classList.add('animate-bounce');
+                        ing.classList.add('animate-pulse-once'); // Using a custom pulse for a subtle bounce
                     }, index * 100);
                 });
             });
             
             card.addEventListener('mouseleave', function() {
+                // Remove the animation class when mouse leaves
                 const ingredients = this.querySelectorAll('.ingredient');
                 ingredients.forEach(ing => {
-                    ing.classList.remove('animate-bounce');
+                    ing.classList.remove('animate-pulse-once');
                 });
             });
         });
 
-        // Next adventure button functionality
+        // --- Custom Message Modal Logic ---
+        function showModal(title, message, imageUrl = null) {
+            modalTitle.textContent = title;
+            modalText.textContent = message;
+            if (imageUrl) {
+                modalImage.src = imageUrl;
+                modalImage.classList.remove('hidden');
+            } else {
+                modalImage.classList.add('hidden');
+            }
+            messageModal.classList.add('show'); // Show the modal
+        }
+
+        function hideModal() {
+            messageModal.classList.remove('show'); // Hide the modal
+        }
+
+        // Event listeners for modal close buttons
+        modalCloseButton.addEventListener('click', hideModal);
+        modalOkButton.addEventListener('click', hideModal);
+        // Close modal if clicked outside content (on overlay)
+        messageModal.addEventListener('click', function(event) {
+            if (event.target === messageModal) {
+                hideModal();
+            }
+        });
+
+        // --- Button Click Messages ---
+        playNowButton.addEventListener('click', function() {
+            showModal(
+                "Doofy's Budget Alert!",
+                "Looks like Doofy spent all the development funds on extra rice and a new squeaky toy. We need more hugs (and maybe a few coins) to unlock the full game!",
+                "CD7.png" // Doofy's image for the modal
+            );
+        });
+
+        watchTrailerButton.addEventListener('click', function() {
+            showModal(
+                "Trailer Unavailable!",
+                "Quackers is still editing the trailer. Turns out, it's hard to cut out all the screaming and accidental fires. Check back after she's had her coffee!",
+                "CD6.png" // Quackers' image for the modal
+            );
+        });
+
+        // --- Next Adventure Button Functionality ---
         document.getElementById('next-adventure-button').addEventListener('click', function() {
             window.location.href = 'star.html'; // Redirect to star.html
         });
