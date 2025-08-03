@@ -199,9 +199,18 @@
             white-space: nowrap;
             transform: translateZ(0);
             line-height: 1;
-            min-width: 320px;
+            /* Adjusted for responsiveness */
+            width: 100%;
+            max-width: 320px; /* Max width for larger screens */
         }
         
+        @media (min-width: 768px) { /* On medium screens and up, adjust width */
+            .pixel-button {
+                width: auto;
+                min-width: 280px; /* A bit smaller min-width for desktop */
+            }
+        }
+
         .pixel-button:hover {
             transform: translate(4px, 4px);
             box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.5);
@@ -1058,11 +1067,19 @@
         /* Adjustments for About and Community Center images */
         #about .md\:w-1\/2 img,
         #community .md\:w-1\/2 img {
-            height: 500px; /* Increased height */
+            height: 80vh; /* Responsive height for mobile */
+            max-height: 500px; /* Max height for larger screens */
             object-fit: cover;
             margin-top: 0; /* Remove top margin */
             margin-bottom: 0; /* Remove bottom margin */
         }
+        @media (min-width: 768px) {
+            #about .md\:w-1\/2 img,
+            #community .md\:w-1\/2 img {
+                height: 500px; /* Fixed height for desktop */
+            }
+        }
+
         #about .flex-col, #community .flex-col {
             padding-top: 0;
             padding-bottom: 0;
@@ -1072,11 +1089,67 @@
             margin-bottom: 0;
         }
 
+        /* Loading spinner for audio */
+        .audio-loading-spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid var(--sdv-yellow);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin-left: 1rem;
+            display: inline-block;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* New subtle music button style */
+        .music-toggle-button {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 1000; /* Ensure it's on top */
+            background-color: rgba(74, 107, 42, 0.9); /* sdv-darkgreen with opacity */
+            color: var(--sdv-yellow);
+            border: 4px solid var(--sdv-brown);
+            border-radius: 9999px; /* Fully round */
+            width: 60px; /* Smaller size */
+            height: 60px; /* Smaller size */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem; /* Icon size */
+            cursor: pointer;
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.4);
+            transition: all 0.2s ease-in-out;
+            text-shadow: 2px 2px 0 var(--sdv-darkbrown);
+        }
+
+        .music-toggle-button:hover {
+            background-color: var(--sdv-green);
+            transform: translateY(-2px);
+            box-shadow: 6px 6px 0 rgba(0,0,0,0.5);
+        }
+
+        .music-toggle-button:active {
+            transform: translateY(2px);
+            box-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+        }
+
+        .music-toggle-button .audio-loading-spinner {
+            width: 20px;
+            height: 20px;
+            border-width: 3px;
+            margin-left: 0; /* No margin for a small button */
+        }
     </style>
 </head>
 <body class="pixel-font animate-flicker">
     <!-- Background Music -->
-    <audio autoplay loop>
+    <audio id="background-music" loop>
         <source src="svvv.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
@@ -1088,6 +1161,12 @@
 
     <!-- Cursor Trail Container -->
     <div id="cursor-trail-container"></div>
+
+    <!-- Music Toggle Button (Fixed Position) -->
+    <button id="music-toggle-button" class="music-toggle-button">
+        <i id="music-icon" class="fas fa-music"></i>
+        <span id="music-loading-spinner" class="audio-loading-spinner hidden"></span>
+    </button>
 
     <!-- Navigation -->
     <nav class="bg-[var(--sdv-darkgreen)] text-[var(--sdv-yellow)] pixel-font sticky top-0 z-50 shadow-lg border-b-6 border-[var(--sdv-brown)]">
@@ -1101,7 +1180,7 @@
                 <a href="#characters" class="hover:text-yellow-300 transition hover:text-stroke">Characters</a>
                 <a href="#seasons" class="hover:text-yellow-300 transition hover:text-stroke">Seasons</a>
                 <a href="#farm" class="hover:text-yellow-300 transition hover:text-stroke">Your Farm</a>
-                <a href="#community" class="hover:text-yellow-300 transition hover:text-stroke">Community</a>
+                <a href="#community" class="hover:text-yellow-300 transition">Community</a>
             </div>
             <button class="md:hidden text-3xl text-yellow-300" id="mobile-menu-button">
                 <i class="fas fa-bars"></i>
@@ -1142,9 +1221,8 @@
                 <small class="text-base block mt-3">“Every day’s a little chaotic, super cozy, and kinda perfect — just like us.” – Not IGN, just your loyal farmhand, Doofy 💛</small>
             </p>
             
-            <!-- Removed the hero-section-buttons div and its content -->
+            <!-- Removed the old music button from here -->
         </div>
-        <!-- Removed the 10M+ Players box -->
     </header>
 
     <!-- Game Features Section -->
@@ -1203,7 +1281,7 @@
                         <p class="mb-5 text-lg leading-relaxed">Quackers charges into battle like a fearless legend — Doofy follows closely behind with snacks, moral support, and occasional screaming. We explore deep, bonk weird creatures, and dig up sparkly treasures to make our tools (and maybe ourselves) a little stronger.</p>
                         <div class="flex flex-wrap gap-3 justify-center">
                             <span class="px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm pixel-font border border-blue-300 shadow-sm">🕳️ 120 Floors (and too many ladders)</span>
-                            <span class="px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm pixel-font border border-blue-300 shadow-sm">� 20+ Monsters (most of them scary, all of them bonkable)</span>
+                            <span class="px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm pixel-font border border-blue-300 shadow-sm"> 20+ Monsters (most of them scary, all of them bonkable)</span>
                             <span class="px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm pixel-font border border-blue-300 shadow-sm">🛠️ 5 Tool Levels (Doofy still uses the wrong one sometimes)</span>
                         </div>
                     </div>
@@ -1254,7 +1332,7 @@
             <div class="flex flex-col md:flex-row items-center gap-12">
                 <div class="md:w-1/2">
                     <!-- Image Placeholder for About Section Farm -->
-                    <img src="vv5.png" alt="Stardew Valley Farm" class="w-full h-[500px] md:h-[500px] object-cover rounded-xl pixel-border shadow-2xl image-pixelated parallax-bg border-8 border-[var(--sdv-brown)]">
+                    <img src="vv5.png" alt="Stardew Valley Farm" class="w-full h-80 sm:h-96 md:h-[500px] object-cover rounded-xl pixel-border shadow-2xl image-pixelated parallax-bg border-8 border-[var(--sdv-brown)]">
                 </div>
                 <div class="md:w-1/2 text-left">
                     <p class="text-xl mb-8 leading-relaxed">Stardew Valley is where Quackers runs a tight, optimized farming empire… and Doofy runs into fences. A lot.</p>
@@ -1423,7 +1501,8 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
                 <!-- Quackers Duck Farm Card -->
                 <div class="farm-type-card">
-                    <img src="vv18.png" alt="Quackers Duck Farm" class="image-pixelated parallax-bg">
+                    <!-- Removed parallax-bg from img tag -->
+                    <img src="vv18.png" alt="Quackers Duck Farm" class="image-pixelated">
                     <div class="card-content">
                         <h3 class="pixel-font">Quackers Duck Farm</h3>
                         <p>A meticulously managed ducktopia where every quack is accounted for. Designed by Quackers for optimal duck-to-pond ratios, with color-coded feeding charts and strictly enforced nap schedules. Doofy’s role? Feed the ducks, look cute, and try not to accidentally release them.</p>
@@ -1435,7 +1514,8 @@
                 </div>
                 <!-- Doofy's Greenhouse Grove Card -->
                 <div class="farm-type-card">
-                    <img src="vv16.png" alt="Doofy's Greenhouse Grove" class="image-pixelated parallax-bg">
+                    <!-- Removed parallax-bg from img tag -->
+                    <img src="vv16.png" alt="Doofy's Greenhouse Grove" class="image-pixelated">
                     <div class="card-content">
                         <h3 class="pixel-font">Doofy’s Greenhouse Grove</h3>
                         <p>A warm, slightly unhinged paradise where plants thrive despite Doofy’s questionable farming methods. Perfect for experimenting, vibing, and occasionally discovering a new hybrid by sheer accident (or planting the same thing three times).</p>
@@ -1447,7 +1527,8 @@
                 </div>
                 <!-- The Fishy Wishy Farm Card -->
                 <div class="farm-type-card">
-                    <img src="vv17.png" alt="The Fishy Wishy Farm" class="image-pixelated parallax-bg">
+                    <!-- Removed parallax-bg from img tag -->
+                    <img src="vv17.png" alt="The Fishy Wishy Farm" class="image-pixelated">
                     <div class="card-content">
                         <h3 class="pixel-font">The Fishy Wishy Farm</h3>
                         <p>A splashy paradise of cozy bridges, secret fishing spots, and occasional soaking. Quackers reels in rare treasures with precision. Doofy? He’s mostly tangled in seaweed, casting in the wrong direction, and trying very hard not to fall in. Again.</p>
@@ -1481,7 +1562,7 @@
             <div class="flex flex-col md:flex-row items-center gap-12">
                 <div class="md:w-1/2">
                     <!-- Image Placeholder for Community Center -->
-                    <img src="vv6.png" alt="Community Center" class="w-full h-[500px] md:h-[500px] object-cover rounded-xl pixel-border shadow-2xl animate-pulse-slow image-pixelated parallax-bg border-8 border-[var(--sdv-brown)]">
+                    <img src="vv6.png" alt="Community Center" class="w-full h-80 sm:h-96 md:h-[500px] object-cover rounded-xl pixel-border shadow-2xl animate-pulse-slow image-pixelated parallax-bg border-8 border-[var(--sdv-brown)]">
                 </div>
                 <div class="md:w-1/2 text-left">
                     <p class="text-xl mb-8 leading-relaxed">The Community Center used to be a creaky old building with more cobwebs than purpose… but Quackers wasn’t having any of that. With her plans, strategies, and determined sparkle, and my enthusiastic (if slightly misguided) item deliveries, we’ve been breathing life back into it — one bundle, one room, and one hilariously slippery fish at a time. 🎣🧺</p>
@@ -1650,39 +1731,43 @@
         const journeyMessage = document.getElementById('journey-message');
         const currentDaySpan = document.getElementById('current-day');
         const currentYearSpan = document.getElementById('current-year');
+        const backgroundMusic = document.getElementById('background-music');
+        const musicToggleButton = document.getElementById('music-toggle-button');
+        const musicIcon = document.getElementById('music-icon');
+        const musicLoadingSpinner = document.getElementById('music-loading-spinner');
 
         // --- Tone.js Sound Effects Setup ---
-        // Initialize Tone.js context
-        const Tone = window.Tone; // Ensure Tone is accessible globally
-        let clickSynth, dingSynth, chirpSynth, rustleSynth, waterSynth;
+        const Tone = window.Tone;
+        let clickSynth = null, dingSynth = null, chirpSynth = null, rustleSynth = null, waterSynth = null;
+        let audioContextStarted = false;
 
         async function setupAudio() {
+            if (audioContextStarted) return;
+            
             try {
-                // Start Tone.js context (required for audio to play)
                 await Tone.start();
+                audioContextStarted = true;
                 console.log("Audio context started.");
 
-                // Create simple synths for UI sounds
                 clickSynth = new Tone.MembraneSynth().toDestination();
                 dingSynth = new Tone.MetalSynth().toDestination();
 
-                // Create players for ambient sounds (using simple synth-like sounds or short tones)
                 chirpSynth = new Tone.Synth({
                     oscillator: { type: "triangle" },
                     envelope: { attack: 0.1, decay: 0.2, sustain: 0.1, release: 0.5 },
-                    volume: -20 // Very subtle
+                    volume: -20
                 }).toDestination();
 
                 rustleSynth = new Tone.NoiseSynth({
                     noise: { type: "white" },
                     envelope: { attack: 0.01, decay: 0.2, sustain: 0, release: 0.3 },
-                    volume: -25 // Very subtle
+                    volume: -25
                 }).toDestination();
 
                 waterSynth = new Tone.NoiseSynth({
                     noise: { type: "pink" },
                     envelope: { attack: 0.01, decay: 0.3, sustain: 0, release: 0.4 },
-                    volume: -22 // Very subtle
+                    volume: -22
                 }).toDestination();
 
             } catch (error) {
@@ -1690,29 +1775,43 @@
             }
         }
 
-        // Play sound functions
-        function playClickSound() {
-            if (clickSynth) clickSynth.triggerAttackRelease("C4", "8n");
+        function playClickSound() { if (clickSynth) clickSynth.triggerAttackRelease("C4", "8n"); }
+        function playDingSound() { if (dingSynth) dingSynth.triggerAttackRelease("G5", "16n"); }
+        function playChirpSound() { if (chirpSynth) chirpSynth.triggerAttackRelease("C5", "8n"); }
+        function playRustleSound() { if (rustleSynth) rustleSynth.triggerAttackRelease("8n"); }
+        function playWaterSound() { if (waterSynth) waterSynth.triggerAttackRelease("8n"); }
+
+        // Function to toggle background music
+        async function toggleBackgroundMusic() {
+            musicToggleButton.disabled = true; // Disable button during state change
+            musicIcon.classList.add('hidden');
+            musicLoadingSpinner.classList.remove('hidden');
+
+            try {
+                await setupAudio(); // Ensure audio context is started
+
+                if (backgroundMusic.paused) {
+                    await backgroundMusic.play();
+                    musicIcon.classList.remove('fa-volume-mute');
+                    musicIcon.classList.add('fa-music');
+                    console.log("Background music playing.");
+                } else {
+                    backgroundMusic.pause();
+                    musicIcon.classList.remove('fa-music');
+                    musicIcon.classList.add('fa-volume-mute');
+                    console.log("Background music paused.");
+                }
+            } catch (error) {
+                console.error("Error toggling background music:", error);
+                // If autoplay blocked, set to mute icon and inform user
+                musicIcon.classList.remove('fa-music');
+                musicIcon.classList.add('fa-volume-mute');
+            } finally {
+                musicLoadingSpinner.classList.add('hidden');
+                musicIcon.classList.remove('hidden');
+                musicToggleButton.disabled = false; // Re-enable button
+            }
         }
-
-        function playDingSound() {
-            if (dingSynth) dingSynth.triggerAttackRelease("G5", "16n");
-        }
-
-        function playChirpSound() {
-            if (chirpSynth) chirpSynth.triggerAttackRelease("C5", "8n");
-        }
-
-        function playRustleSound() {
-            if (rustleSynth) rustleSynth.triggerAttackRelease("8n");
-        }
-
-        function playWaterSound() {
-            if (waterSynth) waterSynth.triggerAttackRelease("8n");
-        }
-
-        // --- End Tone.js Setup ---
-
 
         // Function to update progress bar and message
         function updateProgress() {
@@ -1991,11 +2090,32 @@
 
 
         // Initialize effects
-        document.addEventListener('DOMContentLoaded', async function() { // Made async
-            await setupAudio(); // Await audio setup
+        document.addEventListener('DOMContentLoaded', async function() {
             setupIntersectionObserver();
             updateProgress(); // Initialize progress bar and message on load
             
+            // Setup Tone.js audio context immediately
+            await setupAudio();
+
+            // Attempt to play music on load
+            try {
+                await backgroundMusic.play();
+                musicIcon.classList.remove('fa-volume-mute');
+                musicIcon.classList.add('fa-music');
+                console.log("Background music autoplayed successfully.");
+            } catch (error) {
+                console.warn("Background music autoplay blocked:", error);
+                // Autoplay blocked, set to mute icon and enable button for user interaction
+                musicIcon.classList.remove('fa-music');
+                musicIcon.classList.add('fa-volume-mute');
+            } finally {
+                // Ensure button is always enabled and spinner hidden after initial attempt
+                musicLoadingSpinner.classList.add('hidden');
+                musicIcon.classList.remove('hidden');
+                musicToggleButton.disabled = false;
+            }
+
+
             // Add ripple effect to buttons and play click sound
             document.querySelectorAll('.pixel-button').forEach(button => {
                 button.addEventListener('click', function(e) {
@@ -2030,18 +2150,21 @@
 
             if (featuresSection) {
                 featuresSection.addEventListener('mouseenter', () => playChirpSound());
-                featuresSection.addEventListener('mouseleave', () => chirpSynth.triggerRelease());
+                featuresSection.addEventListener('mouseleave', () => { if (chirpSynth) chirpSynth.triggerRelease(); });
             }
 
             if (charactersSection) {
                 charactersSection.addEventListener('mouseenter', () => playRustleSound());
-                charactersSection.addEventListener('mouseleave', () => rustleSynth.triggerRelease());
+                charactersSection.addEventListener('mouseleave', () => { if (rustleSynth) rustleSynth.triggerRelease(); });
             }
 
             if (farmSection) {
                 farmSection.addEventListener('mouseenter', () => playWaterSound());
-                farmSection.addEventListener('mouseleave', () => waterSynth.triggerRelease());
+                farmSection.addEventListener('mouseleave', () => { if (waterSynth) waterSynth.triggerRelease(); });
             }
+
+            // Event listener for the new Music Toggle button
+            musicToggleButton.addEventListener('click', toggleBackgroundMusic);
         });
         
         // Smooth scrolling for anchor links
@@ -2069,14 +2192,14 @@
                 heroParallaxElement.style.backgroundPositionY = `calc(50% + ${scrollPosition * 0.5}px)`;
             }
 
-            // Other parallax-bg elements
+            // Other parallax-bg elements (only apply to elements that still have this class)
+            // The farm images no longer have this class, so they won't be affected.
             document.querySelectorAll('.parallax-bg').forEach(img => {
                 const section = img.closest('section');
                 if (section) {
                     const sectionTop = section.offsetTop;
                     const relativeScroll = scrollPosition - sectionTop;
-                    // Adjust the multiplier for different parallax speeds
-                    img.style.transform = `translateY(${relativeScroll * 0.2}px)`; // Slower than hero, subtle depth
+                    img.style.transform = `translateY(${relativeScroll * 0.2}px)`;
                 }
             });
         });
