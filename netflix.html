@@ -9,6 +9,9 @@
     <style>
         body {
             font-family: "Inter", sans-serif;
+            overflow-x: hidden; /* Prevent horizontal scroll from animations */
+            background-color: #141414; /* Ensure base background is Netflix dark */
+            animation: backgroundPulse 15s infinite alternate ease-in-out; /* Subtle background animation */
         }
         .bg-netflix {
             background-color: #141414;
@@ -32,14 +35,340 @@
         .dropdown:hover .dropdown-menu {
             display: block;
         }
+
+        /* Keyframe Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            70% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes bounceIn {
+            0%, 20%, 40%, 60%, 80%, 100% {
+                transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+            }
+            0% { opacity: 0; transform: scale3d(0.3, 0.3, 0.3); }
+            20% { transform: scale3d(1.1, 1.1, 1.1); }
+            40% { transform: scale3d(0.9, 0.9, 0.9); }
+            60% { opacity: 1; transform: scale3d(1.03, 1.03, 1.03); }
+            80% { transform: scale3d(0.97, 0.97, 0.97); }
+            100% { opacity: 1; transform: scale3d(1, 1, 1); }
+        }
+
+        @keyframes backgroundPulse {
+            0% { background-color: #141414; }
+            50% { background-color: #1a1a1a; }
+            100% { background-color: #141414; }
+        }
+
+        /* Global fade-in for main content */
+        #main-content {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        /* Profile Selection Page Animations */
+        #profile-selection h1 {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
         .profile-item {
-            transition: all 0.2s ease-out;
+            transition: all 0.3s ease-out;
+            transform: scale(1) rotateZ(0deg); /* Ensure initial scale is 1 */
         }
         .profile-item:hover {
-            transform: scale(1.05);
+            transform: scale(1.08) rotateZ(2deg); /* More pronounced lift and slight rotation */
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3); /* Subtle white glow */
+        }
+        .profile-item img {
+            transition: transform 0.3s ease-out;
         }
         .profile-item:hover img {
-            transform: scale(1.1);
+            transform: scale(1.15); /* More zoom on image */
+            filter: brightness(1.1); /* Slightly brighter */
+        }
+        .profile-item:hover p {
+            color: #e50914; /* Change text color on hover */
+        }
+        .profile-item.group:hover .w-40.h-40.rounded-md {
+            border-color: #e50914; /* Netflix red border on hover */
+        }
+
+        /* Manage Profiles Button */
+        #profile-selection button {
+            transition: all 0.3s ease-out;
+        }
+        #profile-selection button:hover {
+            background-color: #e50914;
+            border-color: #e50914;
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(229, 9, 20, 0.5); /* Red glow */
+        }
+        #profile-selection button:active {
+            transform: scale(0.95); /* Press down effect */
+        }
+
+        /* Navigation Bar */
+        nav {
+            background-color: transparent;
+            backdrop-filter: blur(0px);
+            -webkit-backdrop-filter: blur(0px); /* For Safari */
+            transition: background-color 0.3s ease-out, backdrop-filter 0.3s ease-out, box-shadow 0.3s ease-out;
+        }
+        nav.scrolled {
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+        nav a, nav button {
+            transition: all 0.2s ease-out;
+        }
+        nav a:hover, nav button:hover {
+            color: #e50914; /* Netflix red on hover */
+            transform: translateY(-3px); /* Lift effect */
+            text-shadow: 0 0 8px rgba(229, 9, 20, 0.6); /* Subtle red glow */
+        }
+
+        /* Video Player Section */
+        .video-title {
+            animation: fadeInRight 1s ease-out forwards;
+            animation-delay: 0.5s; /* Delay title animation */
+            opacity: 0; /* Hidden initially */
+        }
+        .player-gradient {
+            transform: translateY(100%); /* Start off-screen */
+            opacity: 0;
+            transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+            pointer-events: auto; /* Make the overlay clickable */
+        }
+        section.relative:hover .player-gradient {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Video End Buttons */
+        #video-end-buttons button {
+            animation: bounceIn 0.8s ease-out forwards;
+            animation-delay: 0.2s; /* Stagger if multiple buttons */
+            opacity: 0; /* Hidden initially */
+            transform: scale(0.8);
+            transition: transform 0.2s ease-out, background-color 0.2s ease-out;
+        }
+        #video-end-buttons button:hover {
+            transform: scale(1.05);
+        }
+        #video-end-buttons button:active {
+            transform: scale(0.95);
+        }
+
+        /* Movie Details & Episodes Section Titles */
+        section h3, section h2 {
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        section.in-view h3, section.in-view h2 {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Episode Card Hover */
+        .bg-netflix-secondary > div > div { /* Targeting the episode item directly */
+            transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+        }
+        .bg-netflix-secondary > div > div:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+        }
+        .episode-button {
+            transition: transform 0.2s ease-out, color 0.2s ease-out;
+        }
+        .episode-button:hover {
+            transform: scale(1.2);
+            color: #e50914;
+        }
+
+        /* More Like This Cards (Redesigned) */
+        .movie-card-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .movie-card-container:hover {
+            transform: scale(1.15) translateY(-15px) rotateZ(1deg);
+            z-index: 10;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.8);
+        }
+        .movie-card-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 8px; /* Match container border-radius */
+        }
+
+        .movie-card-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 50%, rgba(0,0,0,0.4) 100%);
+            padding: 1rem;
+            opacity: 0;
+            transform: translateY(100%); /* Start off-screen */
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end; /* Push content to bottom */
+            height: 100%; /* Cover entire card on hover */
+            box-sizing: border-box; /* Include padding in height */
+        }
+        .movie-card-container:hover .movie-card-overlay {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .movie-expanded-content {
+            flex-grow: 1; /* Allow content to take available space */
+            overflow-y: auto; /* Enable scrolling for long descriptions */
+            margin-bottom: 8px; /* Space between description and buttons */
+            padding-right: 5px; /* Space for scrollbar if present */
+        }
+        .movie-expanded-content h4 {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        .movie-expanded-content p {
+            font-size: 0.875rem; /* text-sm */
+            color: #d1d5db; /* text-gray-300 */
+            line-height: 1.4;
+        }
+
+        /* Hide scrollbar for movie-expanded-content */
+        .movie-expanded-content::-webkit-scrollbar {
+            width: 0px;
+            background: transparent; /* make scrollbar transparent */
+        }
+        .movie-expanded-content {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+
+        .movie-card-button {
+            transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, transform 0.2s ease-in-out;
+        }
+        .movie-card-button:hover {
+            transform: scale(1.2); /* More pop on button hover */
+            background-color: #e50914; /* Red background for play button */
+            color: white;
+        }
+        .movie-card-button.border:hover { /* For border buttons */
+            background-color: white;
+            color: black;
+            border-color: white;
+        }
+
+        /* Footer Icons */
+        .footer-icon {
+            transition: transform 0.2s ease-out;
+        }
+        .footer-icon:hover {
+            transform: translateY(-5px) scale(1.1); /* Lift and slight scale */
+            color: #e50914; /* Netflix red */
+            text-shadow: 0 0 10px rgba(229, 9, 20, 0.7); /* Red glow */
+        }
+
+        /* Footer Links */
+        .footer-link {
+            transition: color 0.2s ease-out;
+        }
+        .footer-link:hover {
+            color: white;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); /* White glow */
+        }
+
+        /* Footer Button */
+        .footer-button {
+            transition: all 0.3s ease-out;
+        }
+        .footer-button:hover {
+            background-color: #e50914;
+            border-color: #e50914;
+            color: white;
+            box-shadow: 0 0 10px rgba(229, 9, 20, 0.5);
+        }
+        .footer-button:active {
+            transform: scale(0.95);
+        }
+
+        /* Message Box Styles (Refined) */
+        .message-box-overlay {
+            position: fixed !important; /* Enforce fixed positioning */
+            top: 0 !important;
+            left: 0 !important;
+            width: 100vw !important; /* Use viewport units for absolute certainty */
+            height: 100vh !important; /* Use viewport units for absolute certainty */
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999 !important; /* Maximize z-index */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+
+        .message-box-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .message-box-content {
+            background-color: #181818;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .message-box-overlay.active .message-box-content {
+            animation: bounceIn 0.6s ease-out forwards; /* Apply bounce animation */
+        }
+        .message-box-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.2s ease-out, color 0.2s ease-in-out;
+        }
+        .message-box-close:hover {
+            transform: rotate(90deg); /* Rotate on hover */
+            color: #e50914;
         }
     </style>
 </head>
@@ -95,26 +424,26 @@
             <div class="flex items-center">
                 <a href="#" class="text-netflix-red font-bold text-3xl mr-10">QuackFlix</a>
                 <div class="hidden md:flex space-x-6">
-                    <a href="#" class="hover:text-gray-300">Home</a>
-                    <a href="#" class="hover:text-gray-300">TV Shows</a>
-                    <a href="#" class="hover:text-gray-300">Movies</a>
-                    <a href="#" class="hover:text-gray-300">New & Popular</a>
-                    <a href="#" class="hover:text-gray-300">My List</a>
+                    <a href="#" class="hover:text-gray-300 nav-link" data-message="Oops! That feature is still in beta. Doofy's working on it... maybe.">Home</a>
+                    <a href="#" class="hover:text-gray-300 nav-link" data-message="Oops! That feature is still in beta. Doofy's working on it... maybe.">TV Shows</a>
+                    <a href="#" class="hover:text-gray-300 nav-link" data-message="Oops! That feature is still in beta. Doofy's working on it... maybe.">Movies</a>
+                    <a href="#" class="hover:text-gray-300 nav-link" data-message="Oops! That feature is still in beta. Doofy's working on it... maybe.">New & Popular</a>
+                    <a href="#" class="hover:text-gray-300 nav-link" data-message="Oops! That feature is still in beta. Doofy's working on it... maybe.">My List</a>
                 </div>
             </div>
             <div class="flex items-center space-x-4">
                 <div class="relative">
-                    <button class="text-white hover:text-gray-300">
+                    <button class="text-white hover:text-gray-300 nav-icon" data-message="Searching for answers? So is Doofy! This search bar is currently a deep philosophical void.">
                         <i class="fas fa-search text-xl"></i>
                     </button>
                 </div>
                 <div class="hidden md:block">
-                    <a href="#" class="text-white hover:text-gray-300">Kids</a>
+                    <a href="#" class="text-white hover:text-gray-300 nav-link" data-message="Access Denied! This section is guarded by Quackers' impenetrable cuteness. Only she knows the secret handshake.">Kids</a>
                 </div>
                 <div class="hidden md:block">
-                    <a href="#" class="text-white hover:text-gray-300">
+                    <a href="#" class="text-white hover:text-gray-300 nav-icon" data-message="No new notifications! Doofy's too busy thinking about snacks to send updates right now.">
                         <i class="fas fa-bell text-xl"></i>
-                    </a>
+                    </button>
                 </div>
                 <div class="dropdown relative">
                     <button class="flex items-center space-x-2">
@@ -122,9 +451,9 @@
                         <i class="fas fa-caret-down text-gray-300"></i>
                     </button>
                     <div class="dropdown-menu absolute right-0 mt-2 w-48 bg-black bg-opacity-90 rounded shadow-lg hidden">
-                        <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-800">Account</a>
-                        <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-800">Help Center</a>
-                        <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-800">Sign out of Netflix</a>
+                        <a href="#" class="block px-4 py-2 text-sm dropdown-item" data-message="This part of the site is so secure, even Doofy can't get in to finish coding it. Top-tier security, right?">Account</a>
+                        <a href="#" class="block px-4 py-2 text-sm dropdown-item" data-message="This part of the site is so secure, even Doofy can't get in to finish coding it. Top-tier security, right?">Help Center</a>
+                        <a href="#" class="block px-4 py-2 text-sm dropdown-item" data-message="This part of the site is so secure, even Doofy can't get in to finish coding it. Top-tier security, right?">Sign out of Netflix</a>
                     </div>
                 </div>
             </div>
@@ -134,19 +463,19 @@
     <!-- Mobile Navigation -->
     <div class="md:hidden fixed bottom-0 left-0 right-0 bg-black bg-opacity-90 z-40">
         <div class="flex justify-around py-3">
-            <a href="#" class="text-gray-400 hover:text-white">
+            <a href="#" class="text-gray-400 hover:text-white mobile-nav-item" data-message="Mobile features are currently on a coffee break. Please try again after their espresso shot!">
                 <i class="fas fa-home text-xl"></i>
             </a>
-            <a href="#" class="text-gray-400 hover:text-white">
+            <a href="#" class="text-gray-400 hover:text-white mobile-nav-item" data-message="Mobile features are currently on a coffee break. Please try again after their espresso shot!">
                 <i class="fas fa-search text-xl"></i>
             </a>
-            <a href="#" class="text-gray-400 hover:text-white">
+            <a href="#" class="text-gray-400 hover:text-white mobile-nav-item" data-message="Mobile features are currently on a coffee break. Please try again after their espresso shot!">
                 <i class="fas fa-plus text-xl"></i>
             </a>
-            <a href="#" class="text-gray-400 hover:text-white">
+            <a href="#" class="text-gray-400 hover:text-white mobile-nav-item" data-message="Mobile features are currently on a coffee break. Please try again after their espresso shot!">
                 <i class="fas fa-download text-xl"></i>
             </a>
-            <a href="#" class="text-gray-400 hover:text-white">
+            <a href="#" class="text-gray-400 hover:text-white mobile-nav-item" data-message="Mobile features are currently on a coffee break. Please try again after their espresso shot!">
                 <i class="fas fa-user text-xl"></i>
             </a>
         </div>
@@ -166,10 +495,10 @@
                 <!-- Top Controls -->
                 <div class="flex justify-between items-center px-4 pt-4">
                     <div class="flex items-center space-x-4">
-                        <button class="text-white hover:text-gray-300 pointer-events-auto">
+                        <button class="text-white hover:text-gray-300 nav-icon" data-message="This back button only works in your imagination. Doofy's still figuring out how to teleport you back!">
                             <i class="fas fa-arrow-left text-xl"></i>
                         </button>
-                        <span class="text-xl font-semibold pointer-events-auto">A Quack-Sized Slice of Joy</span>
+                        <span class="text-xl font-semibold video-title">A Quack-Sized Slice of Joy</span>
                     </div>
                 </div>
             </div>
@@ -190,10 +519,10 @@
             <div class="max-w-4xl mx-auto">
                 <div class="flex items-center justify-between mb-6">
                     <h2 class="text-xl font-bold">A Quack-Sized Slice of Joy</h2>
-                    <div class="flex items-center space-x-4">
-                        <span class="text-sm">2016</span>
-                        <span class="text-sm">TV Shows</span>
-                        <span class="text-sm">Wholesome/ Based on True Feelings</span>
+                    <div class="flex items-center space-x-4 text-sm">
+                        <span>2016</span>
+                        <span>TV Shows</span>
+                        <span>Wholesome/ Based on True Feelings</span>
                     </div>
                 </div>
                 <p class="text-gray-300 mb-6">
@@ -218,7 +547,7 @@
                     </div>
                     <div>
                         <p class="text-gray-400">Audio:</p>
-                        <p class="text-gray-300">English<br>Audio: Doofy (Original)<br>Language: Love / Subtitles: None Needed</p>
+                        <p class="text-300">English<br>Audio: Doofy (Original)<br>Language: Love / Subtitles: None Needed</p>
                     </div>
                 </div>
             </div>
@@ -237,9 +566,9 @@
                     <div class="bg-netflix-secondary rounded overflow-hidden">
                         <div class="p-4 border-b border-gray-800 flex items-start">
                             <div class="w-1/3 relative">
-                                <img src="nS1.png" alt="Episode 1" class="w-full rounded" onerror="this.onerror=null;this.src='https://via.placeholder.com/500x281?text=Episode+1'">
+                                <img src="nS1.png" alt="Episode 1" class="w-full rounded" onerror="this.onerror=null;this.src='https://placehold.co/500x281?text=Episode+1'">
                                 <div class="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 bg-black bg-opacity-50 transition-opacity">
-                                    <button class="bg-white text-black rounded-full p-2">
+                                    <button class="bg-white text-black rounded-full p-2 episode-button" data-message="This episode is so good, it's currently on an exclusive fan-only loop for Quackers. You'll have to imagine the awesomeness!">
                                         <i class="fas fa-play"></i>
                                     </button>
                                 </div>
@@ -250,7 +579,7 @@
                                         <h5 class="font-semibold">Mission: Make Quackers Smile</h5>
                                         <p class="text-sm text-gray-400">45m</p>
                                     </div>
-                                    <button class="text-gray-400 hover:text-white">
+                                    <button class="text-gray-400 hover:text-white episode-button" data-message="Can't add this to your list just yet! Doofy's still figuring out how to make a list longer than his grocery shopping list.">
                                         <i class="far fa-plus-square"></i>
                                     </button>
                                 </div>
@@ -273,188 +602,212 @@
             <div class="max-w-6xl mx-auto">
                 <h3 class="text-xl font-bold mb-6">More Like This</h3>
                 <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                    <!-- Movie Card 1 -->
-                    <div class="group relative">
-                        <img src="nM1.png" alt="Movie 1" class="w-full rounded transition-transform group-hover:scale-110" onerror="this.onerror=null;this.src='https://via.placeholder.co/500x750?text=Movie+1'">
-                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-all duration-300 flex flex-col justify-end p-2 opacity-0 group-hover:opacity-100">
+                    <!-- Movie Card 1: Starlight & Duck Feet -->
+                    <div class="movie-card-container" data-message="Doofy ran out of budget for special effects. Turns out, animating duck feet dancing under starlight is surprisingly expensive!">
+                        <img src="nM1.png" alt="Starlight & Duck Feet" onerror="this.onerror=null;this.src='https://placehold.co/500x750?text=Starlight+%26+Duck+Feet'">
+                        <div class="movie-card-overlay">
+                            <div class="movie-expanded-content">
+                                <h4>Starlight & Duck Feet</h4>
+                                <p>A whimsical adventure under the stars, where Doofy and Quackers discover magic in every waddle and shared glance. It's a tale of two hearts dancing to their own sweet rhythm, proving that even duck feet can find grace under the starlight.</p>
+                            </div>
                             <div class="flex justify-between items-center mb-2">
                                 <div class="flex space-x-2">
-                                    <button class="bg-white text-black rounded-full p-1 hover:bg-opacity-80">
+                                    <button class="movie-card-button bg-white text-black rounded-full p-1 hover:bg-opacity-80">
                                         <i class="fas fa-play text-xs"></i>
                                     </button>
-                                    <button class="border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
+                                    <button class="movie-card-button border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
                                         <i class="fas fa-plus text-xs"></i>
                                     </button>
-                                    <button class="border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
+                                    <button class="movie-card-button border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
                                         <i class="far fa-thumbs-up text-xs"></i>
                                     </button>
                                 </div>
-                                <button class="border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
+                                <button class="movie-card-button border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
                                     <i class="fas fa-chevron-down text-xs"></i>
                                 </button>
                             </div>
                             <div class="flex items-center space-x-2 text-xs">
                                 <span class="text-green-500 font-semibold">97% Match</span>
-                                <div class="border border-gray-500 px-1">16+</div>
-                                <span>1 Season</span>
+                                <div class="border border-gray-500 px-1">G</div>
+                                <span>Movie</span>
                             </div>
                             <div class="text-xs mt-1">
-                                <span>Sci-Fi & Fantasy</span>
+                                <span>Whimsical, Romance</span>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Movie Card 2 -->
-                    <div class="group relative">
-                        <img src="nM2.png" alt="Movie 2" class="w-full rounded transition-transform group-hover:scale-110" onerror="this.onerror=null;this.src='https://via.placeholder.co/500x750?text=Movie+2'">
-                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-all duration-300 flex flex-col justify-end p-2 opacity-0 group-hover:opacity-100">
+                    <!-- Movie Card 2: Doofy Interrupted -->
+                    <div class="movie-card-container" data-message="Doofy got lazy while coding this one. He figured the 'interrupted' part was already pretty accurate, so why finish?">
+                        <img src="nM2.png" alt="Doofy Interrupted" onerror="this.onerror=null;this.src='https://placehold.co/500x750?text=Doofy+Interrupted'">
+                        <div class="movie-card-overlay">
+                            <div class="movie-expanded-content">
+                                <h4>Doofy Interrupted</h4>
+                                <p>Just when Doofy thinks he's got a quiet moment, Quackers bursts in with a new, adorable escapade! This heartwarming comedy follows their delightful chaos, proving that love is best when it's wonderfully interrupted.</p>
+                            </div>
                             <div class="flex justify-between items-center mb-2">
                                 <div class="flex space-x-2">
-                                    <button class="bg-white text-black rounded-full p-1 hover:bg-opacity-80">
+                                    <button class="movie-card-button bg-white text-black rounded-full p-1 hover:bg-opacity-80">
                                         <i class="fas fa-play text-xs"></i>
                                     </button>
-                                    <button class="border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
+                                    <button class="movie-card-button border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
                                         <i class="fas fa-plus text-xs"></i>
                                     </button>
-                                    <button class="border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
+                                    <button class="movie-card-button border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
                                         <i class="far fa-thumbs-up text-xs"></i>
                                     </button>
                                 </div>
-                                <button class="border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
+                                <button class="movie-card-button border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
                                     <i class="fas fa-chevron-down text-xs"></i>
                                 </button>
                             </div>
                             <div class="flex items-center space-x-2 text-xs">
                                 <span class="text-green-500 font-semibold">95% Match</span>
-                                <div class="border border-gray-500 px-1">16+</div>
-                                <span>3 Seasons</span>
+                                <div class="border border-gray-500 px-1">PG</div>
+                                <span>Comedy, Romance</span>
                             </div>
                             <div class="text-xs mt-1">
-                                <span>Sci-Fi & Fantasy</span>
+                                <span>Comedy, Romance</span>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Movie Card 3 -->
-                    <div class="group relative">
-                        <img src="nM3.png" alt="Movie 3" class="w-full rounded transition-transform group-hover:scale-110" onerror="this.onerror=null;this.src='https://via.placeholder.co/500x750?text=Movie+3'">
-                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-all duration-300 flex flex-col justify-end p-2 opacity-0 group-hover:opacity-100">
+                    <!-- Movie Card 3: Midnight Snacks -->
+                    <div class="movie-card-container" data-message="Playback failed! Quackers ate all the data (and the popcorn). Try again after a fresh batch of snacks.">
+                        <img src="nM3.png" alt="Midnight Snacks" onerror="this.onerror=null;this.src='https://placehold.co/500x750?text=Midnight+Snacks'">
+                        <div class="movie-card-overlay">
+                            <div class="movie-expanded-content">
+                                <h4>Midnight Snacks</h4>
+                                <p>Join Doofy and Quackers on their secret, giggly quests for the perfect late-night treats. A delicious and cozy film about shared whispers, stolen bites, and the sweet joy of midnight adventures.</p>
+                            </div>
                             <div class="flex justify-between items-center mb-2">
                                 <div class="flex space-x-2">
-                                    <button class="bg-white text-black rounded-full p-1 hover:bg-opacity-80">
+                                    <button class="movie-card-button bg-white text-black rounded-full p-1 hover:bg-opacity-80">
                                         <i class="fas fa-play text-xs"></i>
                                     </button>
-                                    <button class="border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
+                                    <button class="movie-card-button border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
                                         <i class="fas fa-plus text-xs"></i>
                                     </button>
-                                    <button class="border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
+                                    <button class="movie-card-button border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
                                         <i class="far fa-thumbs-up text-xs"></i>
                                     </button>
                                 </div>
-                                <button class="border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
+                                <button class="movie-card-button border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
                                     <i class="fas fa-chevron-down text-xs"></i>
                                 </button>
                             </div>
                             <div class="flex items-center space-x-2 text-xs">
                                 <span class="text-green-500 font-semibold">96% Match</span>
-                                <div class="border border-gray-500 px-1">18+</div>
+                                <div class="border border-gray-500 px-1">G</div>
                                 <span>Movie</span>
                             </div>
                             <div class="text-xs mt-1">
-                                <span>Drama</span>
+                                <span>Slice of Life, Cozy</span>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Movie Card 4 -->
-                    <div class="group relative">
-                        <img src="nM4.png" alt="Movie 4" class="w-full rounded transition-transform group-hover:scale-110" onerror="this.onerror=null;this.src='https://via.placeholder.co/500x750?text=Movie+4'">
-                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-all duration-300 flex flex-col justify-end p-2 opacity-0 group-hover:opacity-100">
+                    <!-- Movie Card 4: Catch Me! Quackers -->
+                    <div class="movie-card-container" data-message="Error 404: Quackers is too fast! Doofy couldn't catch her to finish filming this scene. Please try again when she's napping.">
+                        <img src="nM4.png" alt="Catch Me! Quackers" onerror="this.onerror=null;this.src='https://placehold.co/500x750?text=Catch+Me!+Quackers'">
+                        <div class="movie-card-overlay">
+                            <div class="movie-expanded-content">
+                                <h4>Catch Me! Quackers</h4>
+                                <p>A playful chase filled with laughter and tender moments, as Doofy tries (and adorably fails) to keep up with Quackers' boundless energy. It's a charming reminder that sometimes, the best part of the game is simply being together.</p>
+                            </div>
                             <div class="flex justify-between items-center mb-2">
                                 <div class="flex space-x-2">
-                                    <button class="bg-white text-black rounded-full p-1 hover:bg-opacity-80">
+                                    <button class="movie-card-button bg-white text-black rounded-full p-1 hover:bg-opacity-80">
                                         <i class="fas fa-play text-xs"></i>
                                     </button>
-                                    <button class="border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
+                                    <button class="movie-card-button border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
                                         <i class="fas fa-plus text-xs"></i>
                                     </button>
-                                    <button class="border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
+                                    <button class="movie-card-button border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
                                         <i class="far fa-thumbs-up text-xs"></i>
                                     </button>
                                 </div>
-                                <button class="border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
+                                <button class="movie-card-button border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
                                     <i class="fas fa-chevron-down text-xs"></i>
                                 </button>
                             </div>
                             <div class="flex items-center space-x-2 text-xs">
                                 <span class="text-green-500 font-semibold">98% Match</span>
-                                <div class="border border-gray-500 px-1">16+</div>
+                                <div class="border border-gray-500 px-1">G</div>
                                 <span>Movie</span>
                             </div>
                             <div class="text-xs mt-1">
-                                <span>Drama, Thriller</span>
+                                <span>Playful, Romance</span>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Movie Card 5 -->
-                    <div class="group relative">
-                        <img src="nM5.png" alt="Movie 5" class="w-full rounded transition-transform group-hover:scale-110" onerror="this.onerror=null;this.src='https://via.placeholder.co/500x750?text=Movie+5'">
-                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-all duration-300 flex flex-col justify-end p-2 opacity-0 group-hover:opacity-100">
+                    <!-- Movie Card 5: Quackerverse -->
+                    <div class="movie-card-container" data-message="The Quackerverse is currently experiencing too much cuteness, causing a system overload. Please wait for the adorable chaos to subside.">
+                        <img src="nM5.png" alt="Quackerverse" onerror="this.onerror=null;this.src='https://placehold.co/500x750?text=Quackerverse'">
+                        <div class="movie-card-overlay">
+                            <div class="movie-expanded-content">
+                                <h4>Quackerverse</h4>
+                                <p>Doofy and Quackers explore a multiverse of their own making, where every dimension is filled with their shared silliness, inside jokes, and endless affection. A truly unique journey through the many wonderful facets of their love.</p>
+                            </div>
                             <div class="flex justify-between items-center mb-2">
                                 <div class="flex space-x-2">
-                                    <button class="bg-white text-black rounded-full p-1 hover:bg-opacity-80">
+                                    <button class="movie-card-button bg-white text-black rounded-full p-1 hover:bg-opacity-80">
                                         <i class="fas fa-play text-xs"></i>
                                     </button>
-                                    <button class="border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
+                                    <button class="movie-card-button border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
                                         <i class="fas fa-plus text-xs"></i>
                                     </button>
-                                    <button class="border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
+                                    <button class="movie-card-button border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
                                         <i class="far fa-thumbs-up text-xs"></i>
                                     </button>
                                 </div>
-                                <button class="border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
+                                <button class="movie-card-button border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
                                     <i class="fas fa-chevron-down text-xs"></i>
                                 </button>
                             </div>
                             <div class="flex items-center space-x-2 text-xs">
                                 <span class="text-green-500 font-semibold">97% Match</span>
-                                <div class="border border-gray-500 px-1">16+</div>
-                                <span>Limited Series</span>
+                                <div class="border border-gray-500 px-1">PG</div>
+                                <span>Adventure, Whimsical</span>
                             </div>
                             <div class="text-xs mt-1">
-                                <span>Drama</span>
+                                <span>Adventure, Whimsical</span>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Movie Card 6 -->
-                    <div class="group relative">
-                        <img src="nM6.png" alt="Movie 6" class="w-full rounded transition-transform group-hover:scale-110" onerror="this.onerror=null;this.src='https://via.placeholder.co/500x750?text=Movie+6'">
-                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-all duration-300 flex flex-col justify-end p-2 opacity-0 group-hover:opacity-100">
+                    <!-- Movie Card 6: She Took The Last Fry -->
+                    <div class="movie-card-container" data-message="Movie unavailable. Doofy is still emotionally recovering from Quackers taking the last fry. Viewer discretion advised.">
+                        <img src="nM6.png" alt="She Took The Last Fry" onerror="this.onerror=null;this.src='https://placehold.co/500x750?text=She+Took+The+Last+Fry'">
+                        <div class="movie-card-overlay">
+                            <div class="movie-expanded-content">
+                                <h4>She Took The Last Fry</h4>
+                                <p>The ultimate test of love! Doofy faces his greatest challenge when Quackers snags the very last fry. A hilarious and sweet short about compromise, devotion, and realizing some things are worth sharing... even the last fry.</p>
+                            </div>
                             <div class="flex justify-between items-center mb-2">
                                 <div class="flex space-x-2">
-                                    <button class="bg-white text-black rounded-full p-1 hover:bg-opacity-80">
+                                    <button class="movie-card-button bg-white text-black rounded-full p-1 hover:bg-opacity-80">
                                         <i class="fas fa-play text-xs"></i>
                                     </button>
-                                    <button class="border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
+                                    <button class="movie-card-button border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
                                         <i class="fas fa-plus text-xs"></i>
                                     </button>
-                                    <button class="border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
+                                    <button class="movie-card-button border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
                                         <i class="far fa-thumbs-up text-xs"></i>
                                     </button>
                                 </div>
-                                <button class="border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
+                                <button class="movie-card-button border border-gray-400 text-white rounded-full p-1 hover:bg-white hover:text-black">
                                     <i class="fas fa-chevron-down text-xs"></i>
                                 </button>
                             </div>
                             <div class="flex items-center space-x-2 text-xs">
                                 <span class="text-green-500 font-semibold">94% Match</span>
-                                <div class="border border-gray-500 px-1">16+</div>
-                                <span>5 Seasons</span>
+                                <div class="border border-gray-500 px-1">G</div>
+                                <span>Comedy, Romance</span>
                             </div>
                             <div class="text-xs mt-1">
-                                <span>Crime, Drama</span>
+                                <span>Comedy, Romance</span>
                             </div>
                         </div>
                     </div>
@@ -466,50 +819,50 @@
         <footer class="bg-black py-8 px-4 md:px-8 text-gray-400">
             <div class="max-w-6xl mx-auto">
                 <div class="flex items-center space-x-4 mb-6">
-                    <a href="#" class="hover:text-white">
+                    <a href="#" class="hover:text-white footer-icon" data-message="These links lead to a realm where Doofy and Quackers mostly post pictures of food. Proceed with caution (and a full stomach).">
                         <i class="fab fa-facebook-square text-2xl"></i>
                     </a>
-                    <a href="#" class="hover:text-white">
+                    <a href="#" class="hover:text-white footer-icon" data-message="These links lead to a realm where Doofy and Quackers mostly post pictures of food. Proceed with caution (and a full stomach).">
                         <i class="fab fa-instagram text-2xl"></i>
                     </a>
-                    <a href="#" class="hover:text-white">
+                    <a href="#" class="hover:text-white footer-icon" data-message="These links lead to a realm where Doofy and Quackers mostly post pictures of food. Proceed with caution (and a full stomach).">
                         <i class="fab fa-twitter text-2xl"></i>
                     </a>
-                    <a href="#" class="hover:text-white">
+                    <a href="#" class="hover:text-white footer-icon" data-message="These links lead to a realm where Doofy and Quackers mostly post pictures of food. Proceed with caution (and a full stomach).">
                         <i class="fab fa-youtube text-2xl"></i>
                     </a>
                 </div>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm mb-6">
                     <div>
                         <ul class="space-y-2">
-                            <li><a href="#" class="hover:text-white">Audio Description</a></li>
-                            <li><a href="#" class="hover:text-white">Investor Relations</a></li>
-                            <li><a href="#" class="hover:text-white">Legal Notices</a></li>
+                            <li><a href="#" class="hover:text-white footer-link" data-message="This section is under construction by a very sleepy Doofy. He promises to finish it... eventually.">Audio Description</a></li>
+                            <li><a href="#" class="hover:text-white footer-link" data-message="This section is under construction by a very sleepy Doofy. He promises to finish it... eventually.">Investor Relations</a></li>
+                            <li><a href="#" class="hover:text-white footer-link" data-message="This section is under construction by a very sleepy Doofy. He promises to finish it... eventually.">Legal Notices</a></li>
                         </ul>
                     </div>
                     <div>
                         <ul class="space-y-2">
-                            <li><a href="#" class="hover:text-white">Help Center</a></li>
-                            <li><a href="#" class="hover:text-white">Jobs</a></li>
-                            <li><a href="#" class="hover:text-white">Cookie Preferences</a></li>
+                            <li><a href="#" class="hover:text-white footer-link" data-message="This section is under construction by a very sleepy Doofy. He promises to finish it... eventually.">Help Center</a></li>
+                            <li><a href="#" class="hover:text-white footer-link" data-message="This section is under construction by a very sleepy Doofy. He promises to finish it... eventually.">Jobs</a></li>
+                            <li><a href="#" class="hover:text-white footer-link" data-message="This section is under construction by a very sleepy Doofy. He promises to finish it... eventually.">Cookie Preferences</a></li>
                         </ul>
                     </div>
                     <div>
                         <ul class="space-y-2">
-                            <li><a href="#" class="hover:text-white">Gift Cards</a></li>
-                            <li><a href="#" class="hover:text-white">Terms of Use</a></li>
-                            <li><a href="#" class="hover:text-white">Corporate Information</a></li>
+                            <li><a href="#" class="hover:text-white footer-link" data-message="This section is under construction by a very sleepy Doofy. He promises to finish it... eventually.">Gift Cards</a></li>
+                            <li><a href="#" class="hover:text-white footer-link" data-message="This section is under construction by a very sleepy Doofy. He promises to finish it... eventually.">Terms of Use</a></li>
+                            <li><a href="#" class="hover:text-white footer-link" data-message="This section is under construction by a very sleepy Doofy. He promises to finish it... eventually.">Corporate Information</a></li>
                         </ul>
                     </div>
                     <div>
                         <ul class="space-y-2">
-                            <li><a href="#" class="hover:text-white">Media Center</a></li>
-                            <li><a href="#" class="hover:text-white">Privacy</a></li>
-                            <li><a href="#" class="hover:text-white">Contact Us</a></li>
+                            <li><a href="#" class="hover:text-white footer-link" data-message="This section is under construction by a very sleepy Doofy. He promises to finish it... eventually.">Media Center</a></li>
+                            <li><a href="#" class="hover:text-white footer-link" data-message="This section is under construction by a very sleepy Doofy. He promises to finish it... eventually.">Privacy</a></li>
+                            <li><a href="#" class="hover:text-white footer-link" data-message="This section is under construction by a very sleepy Doofy. He promises to finish it... eventually.">Contact Us</a></li>
                         </ul>
                     </div>
                 </div>
-                <button class="border border-gray-400 px-2 py-1 text-sm mb-6 hover:text-white">
+                <button class="border border-gray-400 px-2 py-1 text-sm mb-6 hover:text-white footer-button" data-message="Service Code: 007 (License to Chill). This button mostly just looks cool.">
                     Service Code
                 </button>
                 <p class="text-xs">
@@ -518,6 +871,15 @@
             </div>
         </footer>
     </main>
+
+    <!-- Message Box Overlay -->
+    <div id="messageBoxOverlay" class="message-box-overlay">
+        <div class="message-box-content">
+            <button id="messageBoxClose" class="message-box-close">&times;</button>
+            <h3 id="messageBoxTitle">Oops!</h3>
+            <p id="messageBoxText"></p>
+        </div>
+    </div>
 
     <script>
         // Profile Selection
@@ -541,6 +903,49 @@
                         mainContent.classList.remove('hidden');
                     }, 300);
                 });
+            });
+
+            // Message Box Logic
+            const messageBoxOverlay = document.getElementById('messageBoxOverlay');
+            const messageBoxTitle = document.getElementById('messageBoxTitle');
+            const messageBoxText = document.getElementById('messageBoxText');
+            const messageBoxClose = document.getElementById('messageBoxClose');
+            
+            // Select all elements that should trigger a message
+            // Using a more specific selector to ensure all intended elements are caught
+            const elementsWithMessage = document.querySelectorAll(
+                '.movie-card-container, ' +
+                'nav a.nav-link, nav button.nav-icon, ' +
+                '.dropdown-menu a.dropdown-item, ' +
+                '.mobile-nav-item, ' +
+                '.episode-button, ' +
+                'footer a.footer-icon, footer a.footer-link, footer button.footer-button'
+            );
+
+            elementsWithMessage.forEach(element => {
+                element.addEventListener('click', (event) => {
+                    // Prevent default behavior for all elements with a data-message attribute
+                    event.preventDefault(); 
+                    // Stop propagation to prevent nested elements from triggering multiple message boxes
+                    event.stopPropagation(); 
+
+                    const message = element.dataset.message;
+                    if (message) { // Only show message if data-message attribute exists
+                        messageBoxText.textContent = message;
+                        messageBoxOverlay.classList.add('active');
+                    }
+                });
+            });
+
+            messageBoxClose.addEventListener('click', () => {
+                messageBoxOverlay.classList.remove('active');
+            });
+
+            // Close message box if clicked outside content
+            messageBoxOverlay.addEventListener('click', (e) => {
+                if (e.target === messageBoxOverlay) {
+                    messageBoxOverlay.classList.remove('active');
+                }
             });
         });
 
@@ -616,6 +1021,32 @@
                     menu.classList.add('hidden');
                 });
             }
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Intersection Observer for section titles
+        const sectionTitles = document.querySelectorAll('section h2, section h3');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in-view');
+                } else {
+                    entry.target.classList.remove('in-view'); // Optional: remove class when out of view
+                }
+            });
+        }, { threshold: 0.1 }); // Trigger when 10% of the element is visible
+
+        sectionTitles.forEach(title => {
+            observer.observe(title);
         });
     </script>
 </body>
