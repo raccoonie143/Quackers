@@ -853,7 +853,7 @@
                     <a href="game.html" class="game-button px-10 py-5 text-lg text-shadow-pixel">
                         PLAY NOW
                     </a>
-                    <button class="game-button px-10 py-5 text-lg text-shadow-pixel">
+                    <button id="watch-trailer-button" class="game-button px-10 py-5 text-lg text-shadow-pixel">
                         WATCH TRAILER
                     </button>
                 </div>
@@ -1457,6 +1457,14 @@
         if (savePointButton) {
             savePointButton.addEventListener('click', () => {
                 showCustomMessage("GAME SAVED! Your progress (and butterscotch pie) is safe!");
+            });
+        }
+
+        // --- Watch Trailer Button Interaction ---
+        const watchTrailerButton = document.getElementById('watch-trailer-button');
+        if (watchTrailerButton) {
+            watchTrailerButton.addEventListener('click', () => {
+                showCustomMessage("DOOFY IS BROKE! THIS FEATURE WILL BE IMPLEMENTED LATER. (MAYBE AFTER HE FINDS MORE GOLD.)");
             });
         }
     </script>
