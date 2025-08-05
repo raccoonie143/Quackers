@@ -16,14 +16,14 @@
         /* Global Styles for Pixel Art Theme with Modern Touch */
         body {
             font-family: 'Press Start 2P', cursive; /* Pixel font for most text */
-            background-color: #0a0a0a; /* Deep black for pixel feel */
-            color: #ffffff; /* Pure white for text */
+            background-color: #0d0d0d; /* Slightly softer black for pixel feel */
+            color: #e0e0e0; /* Off-white for text, softer contrast */
             image-rendering: optimizeSpeed;
             image-rendering: -moz-crisp-edges;
             image-rendering: -webkit-optimize-contrast;
             image-rendering: pixelated;
             -ms-interpolation-mode: nearest-neighbor;
-            line-height: 1.5; /* Improved readability for pixel font */
+            line-height: 1.6; /* Improved readability for pixel font */
             overflow: hidden; /* Hide scrollbars */
             display: flex;
             justify-content: center;
@@ -36,39 +36,39 @@
 
         /* Text shadow for readability on pixel fonts */
         .text-shadow-pixel {
-            text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.8);
+            text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.6); /* Softer shadow */
         }
 
         /* Heart shape for player soul - adjusted for pixelated look */
         .heart {
-            width: 32px; /* Standard pixel size */
-            height: 32px;
+            width: 36px; /* Slightly larger */
+            height: 36px;
             background-color: #ff0000; /* Vibrant red */
             transform: rotate(45deg);
             position: relative;
             animation: pulse-pixel 1.2s infinite steps(2); /* Stepped pulse for pixel feel */
-            box-shadow: 0 0 0 2px #000000, 0 0 0 5px #ff0000; /* Enhanced pixelated glow effect */
+            box-shadow: 0 0 0 1px #000000, 0 0 0 4px #ff0000; /* Enhanced pixelated glow effect, softer borders */
             border-radius: 0; /* Sharp corners */
         }
         
         .heart:before, .heart:after {
             content: "";
-            width: 32px;
-            height: 32px;
+            width: 36px; /* Slightly larger */
+            height: 36px;
             background-color: #ff0000;
             border-radius: 0; /* Sharp corners */
             position: absolute;
-            box-shadow: 0 0 0 2px #000000; /* Pixelated border for heart parts */
+            box-shadow: 0 0 0 1px #000000; /* Pixelated border for heart parts, softer */
         }
         
         .heart:before {
-            top: -16px;
+            top: -18px; /* Adjusted for new size */
             left: 0;
         }
         
         .heart:after {
             top: 0;
-            left: -16px;
+            left: -18px; /* Adjusted for new size */
         }
         
         /* Keyframes for the pixelated heart pulse animation */
@@ -86,63 +86,65 @@
         /* Keyframes for the pixelated floating animation */
         @keyframes float-pixel {
             0% { transform: translateY(0px); }
-            50% { transform: translateY(-12px); } /* Slightly larger vertical movement */
+            50% { transform: translateY(-14px); } /* Slightly larger vertical movement */
             100% { transform: translateY(0px); }
         }
         
         /* Styling for game UI boxes - very blocky and high contrast */
         .game-box {
-            border: 4px solid #ffffff; /* Thick, pixelated border */
-            box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.8); /* Strong, offset pixel shadow */
-            background-color: #000000; /* Pure black */
-            border-radius: 0; /* Sharp corners */
-            padding: 1.5rem; /* Consistent padding */
+            border: 3px solid #b0b0b0; /* Thicker, softer white border */
+            box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.7); /* Softer, less offset pixel shadow */
+            background-color: rgba(10, 10, 10, 0.9); /* Slightly transparent dark background */
+            border-radius: 6px; /* Subtle rounded corners */
+            padding: 1.4rem; /* Consistent padding */
         }
         
         /* Styling for dialogue boxes - pixelated with modern blur */
         .dialogue-box {
-            border: 2px solid #ffffff;
-            background-color: rgba(0,0,0,0.95); /* Slightly less transparent black */
-            padding: 1.5rem;
-            border-radius: 0; /* Sharp corners */
-            box-shadow: 4px 4px 0px rgba(255,255,255,0.2);
+            border: 2px solid #808080; /* Thicker, softer border */
+            background-color: rgba(10,10,10,0.9); /* More subtle transparency */
+            padding: 1.7rem; /* Increased padding */
+            border-radius: 8px; /* Slightly more rounded corners */
+            box-shadow: 4px 4px 0px rgba(0,0,0,0.4); /* Softer shadow */
             z-index: 999;
-            backdrop-filter: blur(4px); /* Modern frosted glass effect */
-            -webkit-backdrop-filter: blur(4px); /* For Safari */
+            backdrop-filter: blur(6px); /* Slightly more blur */
+            -webkit-backdrop-filter: blur(6px); /* For Safari */
             animation: fadeInUp 0.4s ease-out forwards; /* Dialogue box entry animation */
+            cursor: pointer; /* Indicate clickable to skip text */
         }
 
         /* Keyframes for dialogue box fade in from bottom */
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translate(-50%, 20px); }
+            from { opacity: 0; transform: translate(-50%, 25px); } /* Larger initial offset */
             to { opacity: 1; transform: translate(-50%, 0); }
         }
         
         /* Button styling for a retro, clickable feel with smooth transitions */
         .game-button {
-            background-color: #000000;
-            color: #ffffff;
-            border: 2px solid #ffffff;
-            box-shadow: 4px 4px 0px #888888; /* Softer gray for raised effect */
-            transition: all 0.15s ease-out; /* Smoother transition */
-            border-radius: 0; /* Sharp corners */
-            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path fill="white" d="M0 0h16v16H0z"/><path fill="red" d="M2 2h2v2H2zM4 4h2v2H4zM6 6h2v2H6zM8 8h2v2H8zM10 10h2v2h-2zM12 12h2v2h-2z"/></svg>') 8 8, auto; /* Pixelated cursor */
+            background-color: rgba(25, 25, 25, 0.95); /* Darker, slightly transparent background */
+            color: #e8e8e8; /* Off-white text */
+            border: 2px solid #808080; /* Thicker, softer border */
+            box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.5); /* Softer shadow */
+            transition: all 0.1s ease-out; /* Smoother transition */
+            border-radius: 6px; /* Subtle rounded corners */
+            cursor: pointer; /* Standard cursor for modern feel */
             text-transform: uppercase; /* All caps for buttons */
-            padding: 0.75rem 1.5rem; /* Consistent button padding */
+            padding: 0.8rem 1.6rem; /* Increased button padding */
             font-family: 'Press Start 2P', cursive; /* Pixel font for buttons */
+            font-size: 1rem; /* Slightly larger font for subtlety */
         }
 
         .game-button:hover {
-            background-color: #ffffff; /* Invert colors on hover */
-            color: #000000;
-            box-shadow: 2px 2px 0px #000000; /* Pressed pixel button effect */
+            background-color: rgba(40, 40, 40, 0.98); /* Slightly lighter on hover */
+            color: #ffffff; /* Pure white on hover */
+            box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.7); /* Pressed pixel button effect */
             transform: translate(2px, 2px); /* Simulate press */
         }
 
         .game-button:active {
-            background-color: #444444; /* Darker when active */
+            background-color: #555555; /* Darker when active */
             box-shadow: 0 0 0px #000000;
-            transform: translate(4px, 4px);
+            transform: translate(3px, 3px);
         }
         
         /* Responsive adjustments - Mobile First */
@@ -151,9 +153,9 @@
         .text-7xl { font-size: 3.5rem; } /* Character icons */
         .text-8xl { font-size: 4rem; } /* Hero title on larger mobile */
         .text-xl { font-size: 1rem; } /* General headings/larger text */
-        .text-lg { font-size: 0.875rem; } /* Body text */
-        .text-base { font-size: 0.75rem; } /* Smaller body text */
-        .text-sm { font-size: 0.625rem; } /* Smallest text */
+        .text-lg { font-size: 0.9rem; } /* Body text */
+        .text-base { font-size: 0.8rem; } /* Smaller body text */
+        .text-sm { font-size: 0.7rem; } /* Smallest text */
         .text-xs { font-size: 0.5rem; } /* Very small text */
 
         /* Heart size for mobile */
@@ -162,42 +164,42 @@
 
         /* Small devices (sm) - 640px and up */
         @media (min-width: 640px) {
-            .text-5xl { font-size: 3rem; }
-            .text-7xl { font-size: 4rem; }
+            .text-5xl { font-size: 3.2rem; }
+            .text-7xl { font-size: 4.2rem; }
             .text-8xl { font-size: 5rem; }
-            .text-xl { font-size: 1.125rem; }
+            .text-xl { font-size: 1.1rem; }
             .text-lg { font-size: 1rem; }
-            .text-base { font-size: 0.875rem; }
-            .text-sm { font-size: 0.75rem; }
-            .text-xs { font-size: 0.625rem; }
+            .text-base { font-size: 0.9rem; }
+            .text-sm { font-size: 0.8rem; }
+            .text-xs { font-size: 0.6rem; }
             .heart { width: 28px; height: 28px; }
             .heart:before, .heart:after { width: 28px; height: 28px; top: -14px; left: -14px; }
         }
 
         /* Medium devices (md) - 768px and up */
         @media (min-width: 768px) {
-            .text-5xl { font-size: 3.5rem; }
+            .text-5xl { font-size: 3.8rem; }
             .text-7xl { font-size: 5rem; }
             .text-8xl { font-size: 6rem; }
-            .text-xl { font-size: 1.25rem; }
-            .text-lg { font-size: 1.125rem; }
+            .text-xl { font-size: 1.2rem; }
+            .text-lg { font-size: 1.1rem; }
             .text-base { font-size: 1rem; }
-            .text-sm { font-size: 0.875rem; }
-            .text-xs { font-size: 0.75rem; }
+            .text-sm { font-size: 0.9rem; }
+            .text-xs { font-size: 0.7rem; }
             .heart { width: 32px; height: 32px; }
             .heart:before, .heart:after { width: 32px; height: 32px; top: -16px; left: -16px; }
         }
 
         /* Large devices (lg) - 1024px and up */
         @media (min-width: 1024px) {
-            .text-5xl { font-size: 4rem; }
+            .text-5xl { font-size: 4.5rem; }
             .text-7xl { font-size: 6rem; }
             .text-8xl { font-size: 7rem; }
-            .text-xl { font-size: 1.5rem; }
-            .text-lg { font-size: 1.25rem; }
-            .text-base { font-size: 1.125rem; }
+            .text-xl { font-size: 1.3rem; }
+            .text-lg { font-size: 1.2rem; }
+            .text-base { font-size: 1.1rem; }
             .text-sm { font-size: 1rem; }
-            .text-xs { font-size: 0.875rem; }
+            .text-xs { font-size: 0.8rem; }
         }
 
         /* Extra large devices (xl) - 1280px and up */
@@ -216,7 +218,7 @@
             width: 100vw;
             height: 100vh;
             z-index: 100;
-            background-color: #0a0a0a; /* Match body background */
+            background-color: #0d0d0d; /* Match body background */
             flex-direction: column;
             align-items: center;
             justify-content: center;
@@ -227,9 +229,9 @@
             margin: 0 auto;
             background: #000; /* Pure black for canvas */
             image-rendering: pixelated;
-            border: 4px solid white; /* Thick white pixel border */
-            border-radius: 0; /* Sharp corners */
-            box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.8); /* Strong pixel shadow */
+            border: 3px solid #b0b0b0; /* Thicker, softer white pixel border */
+            border-radius: 6px; /* Subtle rounded corners */
+            box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.7); /* Strong pixel shadow */
             overflow: hidden;
             cursor: none; /* Hide default mouse cursor during gameplay */
             animation: dodge-box-glow 2s infinite alternate; /* Subtle glow */
@@ -237,17 +239,17 @@
 
         /* Keyframes for dodge box glow */
         @keyframes dodge-box-glow {
-            from { box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.8), 0 0 5px rgba(255, 255, 255, 0.2); }
-            to { box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.8), 0 0 15px rgba(255, 255, 255, 0.5); }
+            from { box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.7), 0 0 6px rgba(255, 255, 255, 0.15); } /* Softer glow */
+            to { box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.7), 0 0 12px rgba(255, 255, 255, 0.4); } /* Softer glow */
         }
 
         #dialogueBox {
             position: absolute;
-            bottom: 30px; /* More space from bottom */
+            bottom: 25px; /* More space from bottom */
             left: 50%;
             transform: translateX(-50%);
-            width: 100%;
-            max-width: 800px; /* Wider dialogue box */
+            width: 95%; /* Wider dialogue box for better text flow */
+            max-width: 750px; /* Slightly wider max width */
             /* Styles defined in .dialogue-box */
             display: none; /* Handled by JS */
             box-sizing: border-box;
@@ -255,31 +257,49 @@
 
         #dialogueText {
             font-size: 18px; /* Pixel font size for dialogue */
-            margin-bottom: 10px;
+            margin-bottom: 12px; /* Increased margin */
             white-space: pre-line; /* Allows newlines and wraps text */
-            min-height: 54px; /* Ensure space for 3 lines of text */
+            min-height: 54px; /* Ensure space for lines of text */
             text-align: left;
-            padding-left: 10px;
-            color: #ffffff;
+            padding-left: 10px; /* Slightly less padding */
+            color: #e0e0e0; /* Softer text color */
             font-family: 'Press Start 2P', cursive;
+            position: relative; /* For blinking cursor */
+        }
+
+        #dialogueText::after {
+            content: '_'; /* Blinking cursor */
+            animation: blink-caret 0.75s step-end infinite;
+            font-weight: bold;
+            color: #e0e0e0; /* Softer cursor color */
+            position: absolute;
+            bottom: 0;
+            right: -5px; /* Adjust position */
+            display: inline-block; /* Ensure it's visible next to text */
+        }
+
+        @keyframes blink-caret {
+            from, to { opacity: 0; }
+            50% { opacity: 1; }
         }
 
         #options {
             display: flex;
-            justify-content: space-around; /* Distribute space evenly */
+            justify-content: center; /* Center buttons */
             flex-wrap: wrap;
-            gap: 8px; /* Reduced space between buttons for compact look */
+            gap: 12px; /* Increased space between buttons for compact look */
             width: 100%;
-            padding-top: 10px;
-            border-top: 1px solid rgba(255,255,255,0.2); /* Subtle separator */
+            padding-top: 12px; /* Increased padding */
+            border-top: 2px solid rgba(255,255,255,0.15); /* Subtle separator */
         }
 
         #options .optionButton {
             /* Inherits most styles from .game-button */
-            flex-grow: 1; /* Allow buttons to grow */
-            max-width: 150px; /* Max width for buttons */
-            font-size: 14px; /* Smaller font for options */
-            padding: 8px 15px;
+            flex-grow: 0; /* Don't force growth */
+            min-width: 140px; /* Minimum width for buttons */
+            max-width: 200px; /* Max width for buttons, increased for "Determination" */
+            font-size: 14px; /* Slightly smaller font for options, to fit text */
+            padding: 12px 18px; /* Increased padding */
             text-align: center;
         }
 
@@ -287,7 +307,7 @@
             transform: translate(2px, 2px);
         }
         #options .optionButton:active {
-            transform: translate(4px, 4px);
+            transform: translate(3px, 3px);
         }
 
         /* Specific styles for the game's main menu */
@@ -301,7 +321,7 @@
             position: absolute;
             top: 0;
             left: 0;
-            background-color: rgba(0, 0, 0, 0.95); /* Dark overlay */
+            background-color: rgba(10, 10, 10, 0.98); /* Darker, more opaque overlay */
             z-index: 101;
             /* No animation here, controlled by JS */
         }
@@ -310,16 +330,95 @@
             font-family: 'Press Start 2P', cursive; /* Keep pixel font for title */
             font-size: 5rem; /* Larger title */
             color: #ffffff; /* White title */
-            margin-bottom: 50px;
-            text-shadow: 5px 5px 0px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 255, 255, 0.7); /* Stronger pixel shadow with glow */
+            margin-bottom: 50px; /* Increased margin */
+            text-shadow: 4px 4px 0px rgba(0, 0, 0, 0.6), 0 0 18px rgba(255, 255, 255, 0.6); /* Stronger pixel shadow with glow */
         }
 
         #game-main-menu button {
-            margin-bottom: 20px;
-            padding: 15px 30px;
-            font-size: 24px;
+            margin-bottom: 20px; /* Increased margin */
+            padding: 15px 30px; /* Increased padding */
+            font-size: 22px; /* Slightly larger font */
             /* Inherits styles from .game-button */
         }
+
+        /* Floating Text for Hit/Miss Indicators */
+        .floating-text {
+            position: absolute;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 22px; /* Slightly larger */
+            font-weight: bold;
+            color: yellow; /* Default color, can be overridden */
+            opacity: 1;
+            animation: floatUpFadeOut 1.2s forwards; /* Longer float duration */
+            pointer-events: none; /* Do not block clicks */
+            text-shadow: 2px 2px 0px black; /* Softer shadow */
+            z-index: 1000;
+        }
+
+        @keyframes floatUpFadeOut {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-60px); opacity: 0; } /* Longer float */
+        }
+
+        /* Bullet Tutorial Box */
+        #bulletTutorialBox {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 600px; /* Slightly wider */
+            background-color: rgba(10,10,10,0.9); /* Softer background */
+            border: 2px solid #808080; /* Thicker, softer border */
+            padding: 25px; /* Increased padding */
+            border-radius: 8px; /* Rounded corners */
+            box-shadow: 4px 4px 0px rgba(0,0,0,0.4); /* Softer shadow */
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+        }
+
+        #bulletTutorialBox h3 {
+            font-size: 22px; /* Slightly larger */
+            margin-bottom: 20px; /* Increased margin */
+            color: #ffd700; /* Gold color for title */
+        }
+
+        #bulletTutorialBox .tutorial-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px; /* Increased margin */
+            gap: 15px; /* Increased gap */
+        }
+
+        #bulletTutorialBox .tutorial-bullet-example {
+            width: 40px; /* Slightly larger */
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px; /* Slightly larger */
+            border: 2px solid #b0b0b0; /* Softer border */
+            background-color: #282828; /* Softer background */
+            border-radius: 4px; /* Subtle rounded corners */
+        }
+
+        #bulletTutorialBox .tutorial-text {
+            font-size: 16px; /* Slightly larger */
+            text-align: left;
+            flex-grow: 1;
+            color: #e0e0e0; /* Softer text color */
+        }
+
+        #bulletTutorialBox button {
+            margin-top: 20px; /* Increased margin */
+        }
+
     </style>
 </head>
 <body class="bg-black text-white min-h-screen">
@@ -338,28 +437,57 @@
             <div id="dialogueText"></div>
             <div id="options"></div>
         </div>
+
+        <!-- Bullet Tutorial Box -->
+        <div id="bulletTutorialBox">
+            <h3>HOW TO DODGE!</h3>
+            <div class="tutorial-item">
+                <div class="tutorial-bullet-example" style="background-color: #dc2626;">❤️</div>
+                <div class="tutorial-text">
+                    <span style="color: #ef4444;">RED BULLETS:</span> Move your soul to dodge!
+                </div>
+            </div>
+            <div class="tutorial-item">
+                <div class="tutorial-bullet-example" style="background-color: #3b82f6;">💙</div>
+                <div class="tutorial-text">
+                    <span style="color: #60a5fa;">BLUE BULLETS:</span> Stop moving (stay still) to dodge!
+                </div>
+            </div>
+            <div class="tutorial-item">
+                <div class="tutorial-bullet-example" style="background-color: #f97316;">🧡</div>
+                <div class="tutorial-text">
+                    <span style="color: #fb923c;">ORANGE BULLETS:</span> Move your soul to dodge! (They pass through if you're moving!)
+                </div>
+            </div>
+            <button id="tutorialContinueBtn" class="game-button">GOT IT!</button>
+        </div>
     </div>
 
     <script>
         // --- Custom Message Box (replaces alert) ---
         function showCustomMessage(message) {
+            // Pause the game when a custom message appears
+            isGamePausedForPopup = true;
+
             const messageBox = document.createElement('div');
             messageBox.style.cssText = `
                 position: fixed;
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%);
-                background-color: rgba(0, 0, 0, 0.98); /* Darker, more opaque */
-                border: 2px solid white;
-                padding: 20px;
-                color: white;
+                background-color: rgba(10, 10, 10, 0.95); /* Softer, more opaque */
+                border: 2px solid #808080; /* Softer border */
+                padding: 25px; /* Increased padding */
+                color: #e0e0e0; /* Softer text color */
                 font-family: 'Press Start 2P', cursive; /* Pixel font for message box */
                 text-align: center;
                 z-index: 1000;
-                box-shadow: 4px 4px 0px rgba(255,255,255,0.2);
-                border-radius: 0; /* Sharp corners */
-                max-width: 400px;
+                box-shadow: 4px 4px 0px rgba(0,0,0,0.4); /* Softer shadow */
+                border-radius: 8px; /* Rounded corners */
+                max-width: 450px; /* Slightly wider */
                 animation: fadeIn 0.3s ease-out;
+                backdrop-filter: blur(6px);
+                -webkit-backdrop-filter: blur(6px);
             `;
             messageBox.innerHTML = `
                 <p class="text-lg mb-4">${message}</p>
@@ -377,6 +505,7 @@
             // Set up the OK button click handler
             messageBox.querySelector('button').onclick = () => {
                 messageBox.remove(); // Remove the message box
+                isGamePausedForPopup = false; // Resume game when message box is closed
 
                 // Re-enable and unfade menu buttons
                 menuButtons.forEach(button => {
@@ -384,9 +513,6 @@
                     button.style.opacity = '1';
                 });
             };
-
-            // Simple fade-in animation for message box (already defined in CSS)
-            // No need to re-add style element if already present
         }
 
         // --- Game Logic ---
@@ -402,6 +528,8 @@
         const gameDialogueBox = document.getElementById("dialogueBox");
         const gameDialogueText = document.getElementById("dialogueText");
         const gameOptions = document.getElementById("options");
+        const bulletTutorialBox = document.getElementById("bulletTutorialBox");
+        const tutorialContinueBtn = document.getElementById("tutorialContinueBtn");
 
         // Constants for Original Canvas Dimensions (for scaling calculations)
         const ORIGINAL_CANVAS_WIDTH = 1000;
@@ -462,7 +590,10 @@
             isMoving: false, // Track if mouse is moving for Blue/Orange attacks
             lastMouseX: 0,
             lastMouseY: 0,
-            movementTimeout: null // For reliable isMoving detection
+            movementTimeout: null, // For reliable isMoving detection
+            speedMultiplier: 1, // For speed boost item
+            invincible: false, // For invincibility ability
+            invincibilityTimer: 0
         };
 
         // Global Game State Variables
@@ -483,11 +614,31 @@
         let firstEncounter = true; // Flag to show bullet color hint only once
         let firstFightMinigame = true; // Flag to show attack bar hint only once
         let lastActedLabel = null; // Store the label of the last chosen ACT option
+        let floatingTexts = []; // Array for hit/miss indicators
+        let isGamePausedForPopup = false; // NEW: Flag to pause game logic during popups
 
-        // Inventory System
-        const inventory = [
-            { name: "Bandage", type: "heal", value: 10, description: "Heals 10 HP. Smells faintly of friendship." },
-            { name: "Doofy's Cookie", type: "heal", value: 5, description: "A slightly burnt cookie. Heals 5 HP." }
+        // NEW: Variables for multiple attacks per turn
+        let currentAttackRound = 0; // Tracks current attack within an enemy's turn
+        let totalAttacksThisTurn = 0; // Total attacks planned for the current enemy turn
+
+        // Dialogue typing variables
+        let currentDialogueText = "";
+        let currentDialogueIndex = 0;
+        let typingTimer = null;
+        const TYPING_SPEED = 30; // Milliseconds per character
+        let dialogueCallback = null; // Callback after typing finishes
+        let skipTyping = false; // Flag to skip typing animation
+
+        // Inventory System (Now stores objects with count for stacking)
+        const inventory = []; // Initially empty, items will be added with addItemToInventory
+
+        // Possible Item Drops (with their properties and drop chances)
+        const possibleDrops = [
+            { item: { name: "Bandage", type: "heal", value: 10, description: "A slightly used bandage. Smells faintly of friendship and... lint. Heals 10 HP!" }, chance: 0.3 }, // 30% chance
+            { item: { name: "Doofy's Cookie", type: "heal", value: 5, description: "A slightly burnt cookie. Tastes like determination! Heals 5 HP." }, chance: 0.4 }, // 40% chance
+            { item: { name: "Speedy Soda", type: "speed_boost", value: 1.5, duration: 300, description: "A fizzy drink that makes your soul zoom! Temporarily boosts movement speed." }, chance: 0.2 }, // 20% chance
+            { item: { name: "Heartfelt Charm", type: "mercy_boost", value: 3, description: "A tiny charm that radiates kindness. Increases mercy gained from ACTs." }, chance: 0.15 }, // 15% chance
+            { item: { name: "Bullet Eraser", type: "bullet_clear", description: "A mysterious device that makes bad bullets poof! Clears all bullets on screen." }, chance: 0.1 } // 10% chance
         ];
 
         // Enemy Data (Updated with Mercy, Check, Attack Combos, Moving, Flavor Text, HP)
@@ -499,43 +650,45 @@
                 maxHp: 10, 
                 mercyThreshold: 6,
                 currentMercy: 0,
+                baseAttacksPerTurn: 4, // Increased from 1
+                maxAttacksPerTurn: 6,  // Increased from 2
                 dialogue: [
-                    "A fluffy friend appears! It looks like it wants to play. (Hint: Move your MOUSE to dodge its playful barks!)",
-                    "It wags its tail excitedly! (Hint: Stay calm and find the gaps in its wagging tail-whips!)",
-                    "It wants to play! (Hint: Its zoomies are surprisingly dangerous, but predictable!)"
+                    "A fluffy, over-enthusiastic pup bounces into view! It looks like it wants to play... a little too much. (Woof! Your soul turns RED, ready to dodge!)",
+                    "The Floofy Pup wags its tail so hard it creates tiny whirlwinds! It's just trying to be friendly, honest!",
+                    "It lets out a happy 'AWOOO!' and spins in circles. This pup has boundless energy, and it's all aimed at you!"
                 ],
                 actResponses: {
-                    "Compliment 💬": ["It blushes! 💕 'WOOF! You're so kind!'", "It barks happily! 🐶 'AWOO! Best human ever!'", "It spins in joy! 🎉 'SQUEAK! More compliments, please!'"],
-                    "Pet gently 👋": ["It leans into your hand. So soft! 'Purrrrr.'", "A happy whimper escapes it. 'So warm...'", "It licks your hand. Aww! 'You're the best petter!'"],
-                    "Offer treat 🦴": ["It happily munches the imaginary treat! 'NOM NOM NOM!'", "Its eyes sparkle with gratitude! 'Thank you, friend!'", "It does a little dance! 'Treat dance! Treat dance!'"]
+                    "Compliment 💬": ["The pup blushes a deep, adorable red! 💕 'WOOF! You're the kindest human ever!' (It seems a little less bouncy now.)", "It barks happily and does a little wiggle dance! 🐶 'AWOO! More compliments, please!' (You feel a tiny spark of friendship!)", "It spins in joy, then trips over its own paws! 🎉 'SQUEAK! You're too good to me!' (It's definitely warming up!)"],
+                    "Pet gently 👋": ["It leans into your hand, melting like a fluffy marshmallow. So soft! 'Purrrrrr...' (Its barks seem softer, too.)", "A happy whimper escapes it, and it nudges your hand for more pets! 'So warm... you're the best!' (You feel a connection forming.)", "It licks your hand with a sloppy, affectionate lick! Aww! 'You're the best petter in the whole starfield!' (Its eyes sparkle with gratitude.)"],
+                    "Offer treat 🦴": ["It happily munches the imaginary treat with gusto! 'NOM NOM NOM! Is this... a friendship treat?!' (It's practically purring!)", "Its eyes sparkle with gratitude, and it does a little treat dance! 'Thank you, friend! You're the best treat-giver!' (It's practically begging for more kindness!)", "It does a tiny, excited hop and sniffs your hand. 'Treat dance! Treat dance! You're so generous!' (You've definitely made a new friend!)"]
                 },
                 miniAttackDialogue: [
-                    "The pup hesitates... but still sends a playful bark!",
-                    "It's trying to be gentle, but its barks are still a bit strong!",
-                    "A soft woof... it's barely a threat.",
-                    "It looks away, sending a very weak, apologetic bark."
+                    "The pup hesitates, then sends a small, apologetic bark! 'Oops! Did I do that?'",
+                    "It's trying to be gentle, but its barks are getting weaker. 'Just... a little... woof...' ",
+                    "A soft, sleepy woof... it's barely a threat. 'Are we... still playing?'",
+                    "It looks away, sending a very weak, almost shy bark. 'I didn't mean it... much.'"
                 ],
                 // ACT mini-attacks: More challenging and longer
                 miniAttackPatterns: [
                     { type: "randomBullets", bulletType: "red", bulletSprite: "🦴", baseSpeed: 3, baseSpawnFrequency: 8, baseDuration: 200 }, 
                     { type: "targetedBullets", bulletType: "red", bulletSprite: "🍖", baseSpeed: 4, baseSpawnFrequency: 12, baseDuration: 180 }
                 ],
-                checkDescription: "FLOOFY PUP - A very good boy/girl. Loves head pats and compliments. Seems a bit clumsy but means well. HP: ?? ATK: ?? DEF: ??",
-                defeatedDialogue: "The Floofy Pup whimpers softly and curls up, defeated. It looks a little sad, but also relieved. 'Woof... good game.'", 
+                checkDescription: "FLOOFY PUP - A very good boy/girl. Loves head pats and compliments. Seems a bit clumsy but means well. HP: ?? ATK: ?? DEF: ?? (It's got a heart of gold, if a bit energetic!)",
+                defeatedDialogue: "The Floofy Pup whimpers softly and curls up into a tiny, defeated ball. It looks a little sad, but also relieved. 'Woof... good game, friend. I'll nap now.'", 
                 attackPatterns: [
                     // Phase 1: Playful Barks (Red - Standard Dodge)
-                    { type: "randomBullets", bulletType: "red", bulletSprite: "�", bulletSpeed: 4, spawnFrequency: 5, duration: 120, flavor: "The pup sends a flurry of happy woofs!" },
-                    { type: "expandingCircle", bulletType: "red", bulletSprite: "🐾", bulletSpeed: 3, spawnFrequency: 30, duration: 150, flavor: "It barks, sending out a shockwave!" },
-                    { type: "targetedBullets", bulletType: "red", bulletSprite: "🍖", bulletSpeed: 5, spawnFrequency: 10, duration: 100, flavor: "A focused bark comes your way!" },
+                    { type: "randomBullets", bulletType: "red", bulletSprite: "🐶", bulletSpeed: 4, spawnFrequency: 5, duration: 120, flavor: "The pup sends a flurry of happy woofs! Dodge its playful barks!" },
+                    { type: "expandingCircle", bulletType: "red", bulletSprite: "🐾", bulletSpeed: 3, spawnFrequency: 30, duration: 150, flavor: "It barks, sending out a shockwave of paw prints! Watch out!" },
+                    { type: "targetedBullets", bulletType: "red", bulletSprite: "🍖", bulletSpeed: 5, spawnFrequency: 10, duration: 100, flavor: "A focused bark comes your way! It's surprisingly precise!" },
                     
                     // Phase 2: Zoomies! (Red - More intense)
-                    { type: "randomBullets", bulletType: "red", bulletSprite: "🦴", bulletSpeed: 6, spawnFrequency: 3, duration: 180, flavor: "Its zoomies are surprisingly chaotic!" },
-                    { type: "expandingCircle", bulletType: "red", bulletSprite: "🐾", bulletSpeed: 4, spawnFrequency: 20, duration: 200, flavor: "A rapid, expanding bark!" },
-                    { type: "lineBullets", bulletType: "red", bulletSprite: "🦴", bulletSpeed: 5, spawnFrequency: 25, duration: 150, flavor: "It runs in lines, sending out barks!" },
+                    { type: "randomBullets", bulletType: "red", bulletSprite: "🦴", bulletSpeed: 6, spawnFrequency: 3, duration: 180, flavor: "Its zoomies are surprisingly chaotic! Bones everywhere!" },
+                    { type: "expandingCircle", bulletType: "red", bulletSprite: "🐾", bulletSpeed: 4, spawnFrequency: 20, duration: 200, flavor: "A rapid, expanding bark-wave! Don't get caught!" },
+                    { type: "lineBullets", bulletType: "red", bulletSprite: "🦴", bulletSpeed: 5, spawnFrequency: 25, duration: 150, flavor: "It runs in lines, sending out barks! A furry obstacle course!" },
                     
                     // Phase 3: Overjoyed Barrage (Red - Highest intensity)
-                    { type: "randomBullets", bulletType: "red", bulletSprite: "🦴", bulletSpeed: 7, spawnFrequency: 2, duration: 200, flavor: "An overwhelming wave of happy barks!" },
-                    { type: "spiralBullets", bulletType: "red", bulletSprite: "🐾", bulletSpeed: 5, spawnFrequency: 5, duration: 250, flavor: "It spins in joy, creating a bark spiral!" }
+                    { type: "randomBullets", bulletType: "red", bulletSprite: "🦴", bulletSpeed: 7, spawnFrequency: 2, duration: 200, flavor: "An overwhelming wave of happy barks! It's just so excited!" },
+                    { type: "spiralBullets", bulletType: "red", bulletSprite: "🐾", bulletSpeed: 5, spawnFrequency: 5, duration: 250, flavor: "It spins in joy, creating a bark spiral! A dizzying display of affection!" }
                 ],
                 canMove: false,
                 originalX: ORIGINAL_CANVAS_WIDTH / 2,
@@ -548,44 +701,45 @@
                 maxHp: 12, 
                 mercyThreshold: 8,
                 currentMercy: 0,
+                baseAttacksPerTurn: 5, // Increased from 1
+                maxAttacksPerTurn: 7, // Increased from 3
                 dialogue: [
-                    "A wobbly duckling quacks into view! It seems a bit disoriented. (Your soul turns BLUE!)",
-                    "It looks a bit lost, trying to find its way. (Your soul turns BLUE!)",
-                    "It's trying to balance on one leg, then the other. (Your soul turns BLUE!)"
+                    "A wobbly, adorable duckling quacks into view! It seems a bit disoriented, like it just spun around too many times. (Quack! Your soul turns BLUE, so stay still!)",
+                    "It looks a bit lost, trying to find its way with tiny, confused steps. Its quacks are full of innocent bewilderment.",
+                    "It's trying to balance on one leg, then the other, wobbling precariously. This duckling is a master of unintentional chaos!"
                 ],
                 actResponses: {
-                    "Compliment 💬": ["It honks adorably! 🦆 'Quack-tastic compliment!'", "It flaps its wings! 🪽 'You make me feel like I can fly!'", "It winks back! 😉 'You're pretty cool for a human.'"],
-                    "Help balance 🤸": ["It steadies itself with your help! 'Phew, almost fell!'", "It gives a grateful quack! 'Thanks for the assist!'", "You've earned its trust. 'You're a true friend to ducks!'"],
-                    "Tell joke 😂": ["Why did the duck bring soap? It wanted to be a clean-quacker! (The duckling giggles, 'That's a good one!')", "What do you call a magical duck? A Quackgician! (It tries to do a magic trick, and fails adorably)", "Why did Doofy cross the starfield? To reach Quackers! (The duckling nods wisely, 'A noble quest!')"]
+                    "Compliment 💬": ["It honks adorably and puffs out its chest! 🦆 'Quack-tastic compliment! You're so kind to a little duck like me!'", "It flaps its tiny wings excitedly! 🪽 'You make me feel like I can fly! Maybe I'll try that later!'", "It winks back with one eye! 😉 'You're pretty cool for a human. Not as wobbly as some!'"],
+                    "Help balance 🤸": ["It steadies itself with your help, letting out a grateful 'Phew, almost fell!' (It looks much more confident now!)", "It gives a grateful quack and leans against your soul! 'Thanks for the assist! You're a true friend!' (You feel a tiny feather of trust.)", "You've earned its trust! It tries to walk a straight line, mostly succeeding. 'You're a true friend to ducks... and wobbly things!'"]
                 },
                 miniAttackDialogue: [
-                    "The duckling wobbles, sending a tiny splash!",
-                    "It tries to aim, but its quacks are getting weaker.",
-                    "A very confused quack... it's barely a threat.",
-                    "It just stares, then a single, slow drop falls."
+                    "The duckling wobbles, sending a tiny, confused splash! 'Oopsie!'",
+                    "It tries to aim, but its quacks are getting weaker and more off-target. 'Where did it go?'",
+                    "A very confused quack... it's barely a threat. 'Is this... a game?'",
+                    "It just stares, then a single, slow, apologetic drop falls. 'Sorry!'"
                 ],
                 // ACT mini-attacks: More challenging and longer
                 miniAttackPatterns: [
                     { type: "waveBullets", bulletType: "blue", bulletSprite: "💧", baseSpeed: 3.5, baseSpawnFrequency: 15, baseDuration: 220 },
                     { type: "randomBullets", bulletType: "blue", bulletSprite: "💦", baseSpeed: 2.5, baseSpawnFrequency: 10, baseDuration: 200 }
                 ],
-                checkDescription: "DIZZY DUCKLING - A confused but charming little feathered friend. Easily distracted by shiny objects or good jokes. HP: ?? ATK: ?? DEF: ??",
-                defeatedDialogue: "The Dizzy Duckling spins to a halt, looking dizzy but unharmed. 'Quack... you got me! I need a nap.'", 
+                checkDescription: "DIZZY DUCKLING - A confused but charming little feathered friend. Easily distracted by shiny objects or good jokes. HP: ?? ATK: ?? DEF: ?? (It probably thinks you're a giant, friendly pond.)",
+                defeatedDialogue: "The Dizzy Duckling spins to a halt, looking dizzy but unharmed. 'Quack... you got me! I need a nap. Maybe a long one.'", 
                 attackPatterns: [
                     // Phase 1: Wobbly Quacks (Blue - Stop to Dodge) - Slightly faster
-                    { type: "waveBullets", bulletType: "blue", bulletSprite: "💧", bulletSpeed: 5, spawnFrequency: 12, duration: 130, flavor: "The duckling wobbles, sending out BLUE waves!" },
-                    { type: "targetedBullets", bulletType: "blue", bulletSprite: "💦", bulletSpeed: 6, spawnFrequency: 10, duration: 110, flavor: "It tries to pinpoint you with BLUE quacks!" },
-                    { type: "randomBullets", bulletType: "blue", bulletSprite: "💧", bulletSpeed: 4, spawnFrequency: 6, duration: 160, flavor: "Confused BLUE pecks everywhere!" },
+                    { type: "waveBullets", bulletType: "blue", bulletSprite: "💧", bulletSpeed: 5, spawnFrequency: 12, duration: 130, flavor: "The duckling wobbles, sending out BLUE waves! Hold still!" },
+                    { type: "targetedBullets", bulletType: "blue", bulletSprite: "💦", bulletSpeed: 6, spawnFrequency: 10, duration: 110, flavor: "It tries to pinpoint you with BLUE quacks! Don't move a muscle!" },
+                    { type: "randomBullets", bulletType: "blue", bulletSprite: "💧", bulletSpeed: 4, spawnFrequency: 6, duration: 160, flavor: "Confused BLUE pecks everywhere! Stay frosty, or rather, stay still!" },
 
                     // Phase 2: Confused Flurry (Blue/Red Mix - More dynamic and faster)
-                    { type: "spiralBullets", bulletType: "blue", bulletSprite: "🌀", bulletSpeed: 5, spawnFrequency: 7, duration: 190, flavor: "A dizzying BLUE spiral!" },
-                    { type: "lineBullets", bulletType: "red", bulletSprite: "🌊", bulletSpeed: 7, spawnFrequency: 18, duration: 160, flavor: "Sudden red lines appear!" },
-                    { type: "expandingCircle", bulletType: "blue", bulletSprite: "💧", bulletSpeed: 4, spawnFrequency: 22, duration: 180, flavor: "A wobbly BLUE shockwave!" },
+                    { type: "spiralBullets", bulletType: "blue", bulletSprite: "🌀", bulletSpeed: 5, spawnFrequency: 7, duration: 190, flavor: "A dizzying BLUE spiral! It's trying its best, honest!" },
+                    { type: "lineBullets", bulletType: "red", bulletSprite: "🌊", bulletSpeed: 7, spawnFrequency: 18, duration: 160, flavor: "Sudden red lines appear! Quick, move out of the way!" },
+                    { type: "expandingCircle", bulletType: "blue", bulletSprite: "💧", bulletSpeed: 4, spawnFrequency: 22, duration: 180, flavor: "A wobbly BLUE shockwave! Don't let it splash you!" },
 
                     // Phase 3: Panic Quacks (Blue/Red - High intensity, very fast)
-                    { type: "waveBullets", bulletType: "blue", bulletSprite: "💧", bulletSpeed: 7, spawnFrequency: 8, duration: 210, flavor: "Fast, relentless BLUE waves!" },
-                    { type: "targetedBullets", bulletType: "red", bulletSprite: "💦", bulletSpeed: 8, spawnFrequency: 6, duration: 160, flavor: "Rapid red pecks!" },
-                    { type: "randomBullets", bulletType: "blue", bulletSprite: "💧", bulletSpeed: 6, spawnFrequency: 3, duration: 230, flavor: "A chaotic storm of BLUE!" }
+                    { type: "waveBullets", bulletType: "blue", bulletSprite: "💧", bulletSpeed: 7, spawnFrequency: 8, duration: 210, flavor: "Fast, relentless BLUE waves! This duckling is in a panic!" },
+                    { type: "targetedBullets", bulletType: "red", bulletSprite: "💦", bulletSpeed: 8, spawnFrequency: 6, duration: 160, flavor: "Rapid red pecks! It's getting serious... for a duckling!" },
+                    { type: "randomBullets", bulletType: "blue", bulletSprite: "💧", bulletSpeed: 6, spawnFrequency: 3, duration: 230, flavor: "A chaotic storm of BLUE! It's lost its marbles... or quackers!" }
                 ],
                 canMove: true,
                 originalX: ORIGINAL_CANVAS_WIDTH / 2,
@@ -598,44 +752,46 @@
                 maxHp: 15, 
                 mercyThreshold: 7,
                 currentMercy: 0,
+                baseAttacksPerTurn: 6, // Increased from 2
+                maxAttacksPerTurn: 8, // Increased from 4
                 dialogue: [
-                    "A very, very slow sloth yawns. It looks like it just woke up. (Your soul is RED, but attacks are slow!)",
-                    "It's moving at a glacial pace. Don't let its slowness fool you; its attacks can still sting!",
-                    "Another yawn. It seems more interested in napping than fighting. Maybe you can convince it to rest."
+                    "A very, very slow sloth yawns a cavernous yawn. It looks like it just woke up from a century-long nap. (Your soul is RED, but its attacks are like a slow-motion dream!)",
+                    "It's moving at a glacial pace, as if time itself is slowing down around it. Don't let its slowness fool you; its attacks can still sting, eventually!",
+                    "Another yawn, so wide you could drive a spaceship through it. It seems more interested in napping than fighting. Maybe you can convince it to just... go back to sleep."
                 ],
                 actResponses: {
-                    "Tell a bedtime story 😴": ["The sloth's eyes droop. 'Zzz... a good story.' (Mercy increases!)", "It snuggles into an imaginary blanket. 'So cozy...'", "It's almost asleep! 'More... slow tales...'"],
-                    "Offer a leaf 🍃": ["It slowly takes the leaf and munches. 'Mmm... fresh.'", "A contented sigh escapes it. 'Delicious.'", "It looks at you with sleepy gratitude. 'You understand.'"],
-                    "Sing a lullaby 🎶": ["The sloth starts to sway gently. 'Soothing... so very soothing.'", "It closes its eyes, a tiny smile on its face. 'Sweet dreams...'", "It's completely relaxed. 'You have a calming voice.'"]
+                    "Tell a bedtime story 😴": ["The sloth's eyes droop, heavy with sleep. 'Zzz... a good story. Tell me another... slowly.' (Mercy increases! It's almost out cold!)", "It snuggles into an imaginary blanket, a contented sigh escaping its lips. 'So cozy... like a cloud made of leaves.' (You're practically a lullaby maestro!)", "It's almost asleep, swaying gently! 'More... slow tales... of fluffy clouds and soft moss...' (Success! It's practically dreaming!)"],
+                    "Offer a leaf 🍃": ["It slowly, *very* slowly, takes the leaf and munches with profound concentration. 'Mmm... fresh. A true delicacy.' (It seems genuinely pleased!)", "A contented sigh escapes it, like a gentle breeze. 'Delicious. You understand the finer things in life... like leaves.' (You've found the way to its sleepy heart!)", "It looks at you with sleepy gratitude, then slowly blinks. 'You understand. The sacred leaf... thank you.' (A bond of leafy friendship forms!)"],
+                    "Sing a lullaby 🎶": ["The sloth starts to sway gently, its eyelids fluttering. 'Soothing... so very soothing. My dreams are calling.' (It's almost completely relaxed!)", "It closes its eyes, a tiny, peaceful smile on its face. 'Sweet dreams... you have a calming voice, like a gentle forest breeze.' (You're a natural at this!)", "It's completely relaxed, practically melting into the air. 'You are... a master of calm. I shall... rest now.' (It's definitely feeling the good vibes!)"]
                 },
                 miniAttackDialogue: [
-                    "The sloth yawns, and a few slow Z's drift your way.",
-                    "It's too sleepy to aim properly... or move fast.",
-                    "Zzz... just a tiny, slow puff of sleepiness.",
-                    "It's barely awake enough to acknowledge you."
+                    "The sloth yawns again, and a few slow, floaty Z's drift your way. 'Just... a little... stretch...'",
+                    "It's too sleepy to aim properly... or move fast. Its attacks are more like gentle nudges. 'Are we... still doing this?'",
+                    "Zzz... just a tiny, slow puff of sleepiness. It looks like it's fighting to stay awake. 'So... tired...' ",
+                    "It's barely awake enough to acknowledge you, sending out the slowest, most apologetic attack ever. '...zzzz...'"
                 ],
                 // ACT mini-attacks: More challenging and longer
                 miniAttackPatterns: [
                     { type: "randomBullets", bulletType: "red", bulletSprite: "💤", baseSpeed: 2.5, baseSpawnFrequency: 20, baseDuration: 250 }, 
                     { type: "targetedBullets", bulletType: "red", bulletSprite: "🐌", baseSpeed: 3, baseSpawnFrequency: 25, baseDuration: 230 }
                 ],
-                checkDescription: "SNOOZY SLOTH - A large, stony creature. Appears to be in a perpetual bad mood. Might respond to unexpected kindness or very bad puns. HP: ?? ATK: ?? DEF: ??",
-                defeatedDialogue: "The Snoozy Sloth collapses into a heap, instantly falling asleep. 'Too... much... effort... Zzzz.'", 
+                checkDescription: "SNOOZY SLOTH - A magnificent creature of extreme leisure. Its favorite hobbies include napping, slow-motion blinking, and contemplating the existential dread of Mondays. HP: ?? ATK: ?? DEF: ?? (Don't wake it up too fast, it gets grumpy.)",
+                defeatedDialogue: "The Snoozy Sloth collapses into a heap, instantly falling asleep with a loud snore. 'Too... much... effort... Zzzz.' (You've successfully helped it achieve peak relaxation!)", 
                 attackPatterns: [
                     // Phase 1: Slow Wake-Up (Red - Slow but steady, but more bullets)
-                    { type: "targetedBullets", bulletType: "red", bulletSprite: "🌿", bulletSpeed: 3, spawnFrequency: 25, duration: 160, flavor: "Slow, deliberate leaf darts." },
-                    { type: "randomBullets", bulletType: "red", bulletSprite: "💤", bulletSpeed: 2.5, spawnFrequency: 15, duration: 190, flavor: "Sleepy, drifting z's." },
-                    { type: "expandingCircle", bulletType: "red", bulletSprite: "🐌", bulletSpeed: 3.5, spawnFrequency: 35, duration: 170, flavor: "A slow, expanding yawn." },
+                    { type: "targetedBullets", bulletType: "red", bulletSprite: "🌿", bulletSpeed: 3, spawnFrequency: 25, duration: 160, flavor: "Slow, deliberate leaf darts drift your way. Don't get stuck!" },
+                    { type: "randomBullets", bulletType: "red", bulletSprite: "💤", bulletSpeed: 2.5, spawnFrequency: 15, duration: 190, flavor: "Sleepy, drifting z's fill the air. Try not to yawn!" },
+                    { type: "expandingCircle", bulletType: "red", bulletSprite: "🐌", bulletSpeed: 3.5, spawnFrequency: 35, duration: 170, flavor: "A slow, expanding yawn-wave! It's surprisingly wide!" },
 
                     // Phase 2: Gentle Stretch (Blue/Red mix - faster, more complex)
-                    { type: "waveBullets", bulletType: "blue", bulletSprite: "☁️", bulletSpeed: 4, spawnFrequency: 20, duration: 180, flavor: "Wobbly cloud-like attacks. Stop moving!" },
-                    { type: "lineBullets", bulletType: "red", bulletSprite: "🍃", bulletSpeed: 4.5, spawnFrequency: 25, duration: 150, flavor: "Straight lines of leaves." },
-                    { type: "spiralBullets", bulletType: "blue", bulletSprite: "🌀", bulletSpeed: 3.5, spawnFrequency: 12, duration: 210, flavor: "A slow, swirling dream." },
+                    { type: "waveBullets", bulletType: "blue", bulletSprite: "☁️", bulletSpeed: 4, spawnFrequency: 20, duration: 180, flavor: "Wobbly cloud-like attacks float by. Remember to STOP moving for blue!" },
+                    { type: "lineBullets", bulletType: "red", bulletSprite: "🍃", bulletSpeed: 4.5, spawnFrequency: 25, duration: 150, flavor: "Straight lines of leaves! They're sharper than they look!" },
+                    { type: "spiralBullets", bulletType: "blue", bulletSprite: "🌀", bulletSpeed: 3.5, spawnFrequency: 12, duration: 210, flavor: "A slow, swirling dream-cloud! Try not to get caught in its slumber!" },
 
                     // Phase 3: Almost Asleep (Orange/Red - mix of slow and sudden, higher density)
-                    { type: "targetedBullets", bulletType: "orange", bulletSprite: "😴", bulletSpeed: 5, spawnFrequency: 8, duration: 140, flavor: "Sudden sleepy blinks. Keep moving!" },
-                    { type: "randomBullets", bulletType: "orange", bulletSprite: "💤", bulletSpeed: 4, spawnFrequency: 6, duration: 190, flavor: "Drifting sleep particles." },
-                    { type: "expandingCircle", bulletType: "red", bulletSprite: "🐌", bulletSpeed: 4.5, spawnFrequency: 20, duration: 200, flavor: "A final, big yawn." }
+                    { type: "targetedBullets", bulletType: "orange", bulletSprite: "😴", bulletSpeed: 5, spawnFrequency: 8, duration: 140, flavor: "Sudden sleepy blinks! Keep moving to avoid these drowsy attacks!" },
+                    { type: "randomBullets", bulletType: "orange", bulletSprite: "💤", bulletSpeed: 4, spawnFrequency: 6, duration: 190, flavor: "Drifting sleep particles! They're trying to put you to sleep!" },
+                    { type: "expandingCircle", bulletType: "red", bulletSprite: "🐌", bulletSpeed: 4.5, spawnFrequency: 20, duration: 200, flavor: "A final, big yawn-explosion! This sloth is ready for bed!" }
                 ],
                 canMove: true,
                 originalX: ORIGINAL_CANVAS_WIDTH / 2,
@@ -648,49 +804,51 @@
                 maxHp: 30, 
                 mercyThreshold: 12, 
                 currentMercy: 0,
+                baseAttacksPerTurn: 7, // Increased from 3
+                maxAttacksPerTurn: 10, // Increased from 5
                 dialogue: [
-                    "A stony golem grumbles into existence. It looks... unimpressed. (Your soul turns ORANGE!)",
-                    "It seems to be having a bad day, a very, very bad day. (Your soul turns ORANGE!)",
-                    "It sighs, and dust motes become sharp projectiles. (Your soul turns ORANGE!)",
-                    "THE GOLEM'S RAGE INTENSIFIES! ITS STONY GLARE IS UNYIELDING! (It's getting serious!)" 
+                    "A massive, stony golem grumbles into existence, looking like it just lost its favorite rock. It seems... utterly unimpressed by your presence. (Uh oh! Your soul turns ORANGE!)",
+                    "It sighs, and dust motes become sharp, angry projectiles. This golem is definitely having a bad day, and it's taking it out on the starfield... and you!",
+                    "It lets out a low, rumbling growl. 'Hmph. Another... obstacle.' Its stony glare is unyielding, radiating pure grumpiness. You're in for a tough one!",
+                    "THE GOLEM'S RAGE INTENSIFIES! ITS STONY GLARE IS UNYIELDING! (It's getting serious! This is the big one!)" 
                 ],
                 actResponses: {
-                    "Compliment 💬": ["It grumbles, but a tiny smile appears. 'Hmph. Not bad for a human.'", "A faint glow emanates from its eyes. '...Thank you.'", "It actually nods slightly! 'Perhaps not all humans are... loud.'"],
-                    "Tell a pun 🎤": ["Why don't scientists trust atoms? Because they make up everything! (The golem seems to crack a little smile, 'Heh. Solid joke.')", "What do you call a sad strawberry? A blueberry! (It lets out a low rumble of amusement, 'You're... berry funny.')"],
-                    "Offer a flower 🌸": ["It carefully takes the flower, a small rock falls from its face. 'A delicate gesture.'", "The flower seems to brighten its stony demeanor. 'It's smells... less like dust.'", "It places the flower on its head, looking less grumpy. '...This is acceptable.'"]
+                    "Compliment 💬": ["It grumbles, but a tiny, almost imperceptible smile appears on its rocky face. 'Hmph. Not bad for a squishy human.' (A small crack appears on its stony heart!)", "A faint, warm glow emanates from its eyes, like embers in a cave. '...Thank you. Your words are... less annoying than most.' (It seems slightly less grumpy!)", "It actually nods slightly, sending a few pebbles tumbling. 'Perhaps not all humans are... loud and bothersome.' (You've found a tiny chink in its stony armor!)"],
+                    "Tell a pun 🎤": ["Why don't scientists trust atoms? Because they make up everything! (The golem seems to crack a little smile, a deep rumble of amusement escaping it. 'Heh. Solid joke. For a human.')", "What do you call a sad strawberry? A blueberry! (It lets out a low, rumbling chuckle, shaking the ground slightly. 'You're... berry funny. For a fleeting existence.')"],
+                    "Offer a flower 🌸": ["It carefully, almost delicately, takes the flower. A small, loose rock falls from its face. 'A delicate gesture. Unexpected.' (The flower seems to soften its aura!)", "The flower seems to brighten its stony demeanor, and it sniffs it cautiously. 'It smells... less like dust. And more like... hope?' (It's actually contemplating the flower!)", "It places the flower on its head, looking surprisingly less grumpy. '...This is acceptable. A small piece of beauty in this... chaotic existence.' (You've made a grumpy friend!)"]
                 },
                 miniAttackDialogue: [
-                    "The golem grumbles, sending a small, slow pebble.",
-                    "It sighs, and a few dust motes drift lazily.",
-                    "A reluctant shrug... its attacks are half-hearted.",
-                    "It just stares, barely bothering to throw anything."
+                    "The golem grumbles, sending a small, slow pebble your way. 'Just... a warm-up.'",
+                    "It sighs, and a few dust motes drift lazily. It's barely putting effort into this. 'Too much... effort.'",
+                    "A reluctant shrug... its attacks are half-hearted, like it's just going through the motions. 'Are we done yet?'",
+                    "It just stares, barely bothering to throw anything. A single, tiny, sad pebble rolls towards you. '...' "
                 ],
                 // ACT mini-attacks: Most challenging and longest
                 miniAttackPatterns: [
                     { type: "targetedBullets", bulletType: "orange", bulletSprite: "🪨", baseSpeed: 4, baseSpawnFrequency: 18, baseDuration: 280 }, 
                     { type: "expandingCircle", bulletType: "orange", bulletSprite: "🌫️", baseSpeed: 3, baseSpawnFrequency: 25, baseDuration: 260 }
                 ],
-                checkDescription: "GRUMPY GOLEM - A large, stony creature. Appears to be in a perpetual bad mood. Might respond to unexpected kindness or very bad puns. This one is the big boss.",
-                defeatedDialogue: "The Grumpy Golem shudders, cracks appearing across its stony body. It crumples into a pile of harmless pebbles. '...Finally... peace.'", 
+                checkDescription: "GRUMPY GOLEM - A colossal creature of pure rock and bad moods. Its hobbies include brooding, staring intensely, and judging everyone. HP: ?? ATK: ?? DEF: ?? (Rumor has it, it secretly loves glitter.)",
+                defeatedDialogue: "The Grumpy Golem shudders, cracks appearing across its stony body. It crumbles into a pile of harmless, slightly sparkly pebbles. '...Finally... peace. And maybe... a nap.'", 
                 attackPatterns: [
                     // BOSS PHASE 1: Stony Grumbles (Orange - Move to Dodge, increasing intensity)
-                    { type: "spiralBullets", bulletType: "orange", bulletSprite: "🪨", bulletSpeed: 5, spawnFrequency: 5, duration: 160, flavor: "The golem unleashes an ORANGE stony spiral!" },
-                    { type: "lineBullets", bulletType: "orange", bulletSprite: "🧱", bulletSpeed: 6, spawnFrequency: 18, duration: 130, flavor: "It sends ORANGE rock lines across the box!" },
-                    { type: "targetedBullets", bulletType: "orange", bulletSprite: "🪨", bulletSpeed: 7, spawnFrequency: 7, duration: 110, flavor: "Precise ORANGE pebbles!" },
-                    { type: "expandingCircle", bulletType: "orange", bulletSprite: "💥", bulletSpeed: 5.5, spawnFrequency: 22, duration: 190, flavor: "An ORANGE shockwave from its stomp!" },
+                    { type: "spiralBullets", bulletType: "orange", bulletSprite: "🪨", bulletSpeed: 5, spawnFrequency: 5, duration: 160, flavor: "The golem unleashes an ORANGE stony spiral! Keep moving!" },
+                    { type: "lineBullets", bulletType: "orange", bulletSprite: "🧱", bulletSpeed: 6, spawnFrequency: 18, duration: 130, flavor: "It sends ORANGE rock lines across the box! Don't get walled in!" },
+                    { type: "targetedBullets", bulletType: "orange", bulletSprite: "🪨", bulletSpeed: 7, spawnFrequency: 7, duration: 110, flavor: "Precise ORANGE pebbles! They're coming for you!" },
+                    { type: "expandingCircle", bulletType: "orange", bulletSprite: "💥", bulletSpeed: 5.5, spawnFrequency: 22, duration: 190, flavor: "An ORANGE shockwave from its stomp! Move it, move it!" },
 
                     // BOSS PHASE 2: Boulder Barrage (Orange/Red Mix - More intense, faster, higher density)
-                    { type: "randomBullets", bulletType: "red", bulletSprite: "☄️", bulletSpeed: 7, spawnFrequency: 2, duration: 160, flavor: "A shower of red cosmic debris!" },
-                    { type: "lineBullets", bulletType: "orange", bulletSprite: "🧱", bulletSpeed: 8, spawnFrequency: 12, duration: 180, flavor: "Fast, crossing ORANGE lines!" },
-                    { type: "spiralBullets", bulletType: "red", bulletSprite: "🌪️", bulletSpeed: 6.5, spawnFrequency: 3, duration: 210, flavor: "A dizzying red dust devil!" },
-                    { type: "targetedBullets", bulletType: "orange", bulletSprite: "🪨", bulletSpeed: 8.5, spawnFrequency: 5, duration: 140, flavor: "Relentless ORANGE rock throws!" },
+                    { type: "randomBullets", bulletType: "red", bulletSprite: "☄️", bulletSpeed: 7, spawnFrequency: 2, duration: 160, flavor: "A shower of red cosmic debris! It's raining rocks!" },
+                    { type: "lineBullets", bulletType: "orange", bulletSprite: "🧱", bulletSpeed: 8, spawnFrequency: 12, duration: 180, flavor: "Fast, crossing ORANGE lines! Dodge the grid!" },
+                    { type: "spiralBullets", bulletType: "red", bulletSprite: "🌪️", bulletSpeed: 6.5, spawnFrequency: 3, duration: 210, flavor: "A dizzying red dust devil! Don't get sucked in!" },
+                    { type: "targetedBullets", bulletType: "orange", bulletSprite: "🪨", bulletSpeed: 8.5, spawnFrequency: 5, duration: 140, flavor: "Relentless ORANGE rock throws! No time to rest!" },
 
                     // BOSS PHASE 3: Earth Shatter (Orange/Red - Highest intensity, rapid combos, max density)
-                    { type: "expandingCircle", bulletType: "red", bulletSprite: "🌋", bulletSpeed: 6, spawnFrequency: 18, duration: 230, flavor: "Massive red ground shakes!" },
-                    { type: "waveBullets", bulletType: "orange", bulletSprite: "⛰️", bulletSpeed: 7.5, spawnFrequency: 8, duration: 190, flavor: "Crushing ORANGE earth waves!" },
-                    { type: "randomBullets", bulletType: "red", bulletSprite: "☄️", bulletSpeed: 9, spawnFrequency: 1, duration: 210, flavor: "A chaotic storm of red meteors!" },
-                    { type: "spiralBullets", bulletType: "orange", bulletSprite: "🌀", bulletSpeed: 8, spawnFrequency: 2, duration: 260, flavor: "Unstoppable ORANGE vortex!" },
-                    { type: "lineBullets", bulletType: "red", bulletSprite: "⚡", bulletSpeed: 9.5, spawnFrequency: 8, duration: 160, flavor: "Lightning-fast red fissures!" }
+                    { type: "expandingCircle", bulletType: "red", bulletSprite: "🌋", bulletSpeed: 6, spawnFrequency: 18, duration: 230, flavor: "Massive red ground shakes! Feel the rumble!" },
+                    { type: "waveBullets", bulletType: "orange", bulletSprite: "⛰️", bulletSpeed: 7.5, spawnFrequency: 8, duration: 190, flavor: "Crushing ORANGE earth waves! Ride the storm!" },
+                    { type: "randomBullets", bulletType: "red", bulletSprite: "☄️", bulletSpeed: 9, spawnFrequency: 1, duration: 210, flavor: "A chaotic storm of red meteors! This is getting wild!" },
+                    { type: "spiralBullets", bulletType: "orange", bulletSprite: "🌀", bulletSpeed: 8, spawnFrequency: 2, duration: 260, flavor: "Unstoppable ORANGE vortex! Don't get dizzy!" },
+                    { type: "lineBullets", bulletType: "red", bulletSprite: "⚡", bulletSpeed: 9.5, spawnFrequency: 8, duration: 160, flavor: "Lightning-fast red fissures! This is the grand finale!" }
                 ],
                 canMove: true,
                 originalX: ORIGINAL_CANVAS_WIDTH / 2,
@@ -706,7 +864,7 @@
 
         // --- Mouse Control for Player ---
         gameCanvas.addEventListener('mousemove', (e) => {
-            if (gameState === "enemy_attack_phase" || gameState === "enemy_mini_attack_phase") {
+            if (gameState === "enemy_attack_phase" || gameState === "enemy_mini_attack_phase" || gameState === "bullet_tutorial") {
                 const rect = gameCanvas.getBoundingClientRect();
                 // Get mouse coordinates relative to the canvas
                 const mouseX = (e.clientX - rect.left) * (gameCanvas.width / rect.width);
@@ -774,8 +932,9 @@
          * @param {number} x - X coordinate.
          * @param {number} y - Y coordinate.
          * @param {string} emoji - Emoji to use for particles.
+         * @param {string} color - Color for the particle (if not emoji)
          */
-        function spawnParticles(x, y, emoji = "✨") {
+        function spawnParticles(x, y, emoji = "✨", color = "white") {
             for (let i = 0; i < 10; i++) {
                 particles.push({
                     x,
@@ -783,7 +942,8 @@
                     vx: (Math.random() - 0.5) * 3 * currentScale, // Scale particle velocity
                     vy: (Math.random() - 0.5) * 3 * currentScale,
                     life: 60,
-                    emoji
+                    emoji,
+                    color
                 });
             }
         }
@@ -805,7 +965,8 @@
          */
         function drawParticles() {
             particles.forEach(p => {
-                gameCtx.font = `${20 * currentScale}px 'Press Start 2P'`; /* Scale particle font */
+                gameCtx.font = `${24 * currentScale}px 'Press Start 2P'`; /* Scale particle font, slightly larger */
+                gameCtx.fillStyle = p.color;
                 gameCtx.fillText(p.emoji, p.x, p.y);
             });
         }
@@ -820,7 +981,7 @@
          * @param {string} type - Type of bullet ("red", "blue", "orange").
          * @param {string} sprite - Emoji sprite for the bullet.
          */
-        function spawnBullet(x, y, vx, vy, size = 12, type = "red", sprite = "◆") {
+        function spawnBullet(x, y, vx, vy, size = 14, type = "red", sprite = "◆") { /* Slightly larger default bullet size */
             let color;
             if (type === "blue") {
                 color = "blue";
@@ -866,6 +1027,9 @@
          * Checks for collisions between player and bullets, handling blue/orange types.
          */
         function checkCollisions() {
+            if (player.invincible) {
+                return; // Player is invincible, no damage taken
+            }
             if (invincibleFrames > 0) {
                 invincibleFrames--;
                 return; // Player is invincible, no damage taken
@@ -902,6 +1066,7 @@
                             invincibleFrames = 60; // 1 second invincibility (60 frames at 60fps)
                             flashBorder();
                             spawnParticles(player.x, player.y, "💥");
+                            spawnFloatingText(player.x + player.size / 2, player.y - 10, "HIT!", "red");
                             screenShake(5, 10); // Small screen shake on hit
                             playerHitSound.triggerAttackRelease("C3", "8n"); // Play hit sound only once per frame
                             if (playerHP <= 0) {
@@ -920,6 +1085,55 @@
                         spawnParticles(b.x, b.y, "✨"); // Still show sparkle for dodged bullets
                     }
                 }
+            });
+        }
+
+        /**
+         * Spawns a floating text message.
+         * @param {number} x - X coordinate.
+         * @param {number} y - Y coordinate.
+         * @param {string} text - The text to display.
+         * @param {string} color - CSS color for the text.
+         */
+        function spawnFloatingText(x, y, text, color = "white") {
+            const textElement = document.createElement('div');
+            textElement.className = 'floating-text';
+            textElement.textContent = text;
+            textElement.style.left = `${x}px`;
+            textElement.style.top = `${y}px`;
+            textElement.style.color = color;
+            gameContainer.appendChild(textElement);
+
+            // Remove after animation
+            textElement.addEventListener('animationend', () => {
+                textElement.remove();
+            });
+        }
+
+        /**
+         * Updates floating text positions and removes expired ones.
+         */
+        function updateFloatingTexts() {
+            floatingTexts = floatingTexts.filter(t => t.life > 0);
+            floatingTexts.forEach(t => {
+                t.y += t.vy;
+                t.life--;
+                t.opacity = t.life / 60; // Fade out over time
+            });
+        }
+
+        /**
+         * Draws all active floating texts.
+         */
+        function drawFloatingTexts() {
+            floatingTexts.forEach(t => {
+                gameCtx.save();
+                gameCtx.globalAlpha = t.opacity;
+                gameCtx.fillStyle = t.color;
+                gameCtx.font = `${t.size * currentScale}px 'Press Start 2P'`;
+                gameCtx.textAlign = "center";
+                gameCtx.fillText(t.text, t.x, t.y);
+                gameCtx.restore();
             });
         }
 
@@ -958,21 +1172,60 @@
          */
         function flashBorder() {
             gameCanvas.style.boxShadow = "0 0 20px red";
-            setTimeout(() => gameCanvas.style.boxShadow = "8px 8px 0px rgba(0, 0, 0, 0.8)", 150); // Restore original shadow
+            setTimeout(() => gameCanvas.style.boxShadow = "5px 5px 0px rgba(0, 0, 0, 0.7)", 150); // Restore original shadow
         }
 
         /**
-         * Displays dialogue text instantly.
+         * Displays dialogue text character by character.
          * @param {string} text - The text to display.
          * @param {Function} callback - Function to call after text is displayed.
          */
         function typeText(text, callback) {
-            gameDialogueText.textContent = text; // Set text content directly and instantly
-            gameDialogueText.style.borderRight = 'none'; // Ensure no blinking cursor remnants
-            if (callback) {
-                callback(); // Call callback immediately after text is set
+            currentDialogueText = text;
+            currentDialogueIndex = 0;
+            gameDialogueText.textContent = ""; // Clear immediately
+            gameDialogueText.style.borderRight = '3px solid #e0e0e0'; // Blinking cursor
+            dialogueCallback = callback;
+            skipTyping = false; // Reset skip flag
+
+            if (typingTimer) {
+                clearTimeout(typingTimer);
             }
+
+            function typeCharacter() {
+                if (skipTyping) {
+                    gameDialogueText.textContent = currentDialogueText;
+                    gameDialogueText.style.borderRight = 'none'; // Hide cursor
+                    if (dialogueCallback) {
+                        dialogueCallback();
+                    }
+                    return;
+                }
+
+                if (currentDialogueIndex < currentDialogueText.length) {
+                    gameDialogueText.textContent += currentDialogueText.charAt(currentDialogueIndex);
+                    // Schedule sound with a small, increasing offset to avoid "strictly greater" error
+                    // Use Tone.context.currentTime for more reliable scheduling
+                    typingSound.triggerAttackRelease("C4", "32n", Tone.context.currentTime + (currentDialogueIndex * 0.005)); 
+                    currentDialogueIndex++;
+                    typingTimer = setTimeout(typeCharacter, TYPING_SPEED);
+                } else {
+                    gameDialogueText.style.borderRight = 'none'; // Hide cursor
+                    if (dialogueCallback) {
+                        dialogueCallback();
+                    }
+                }
+            }
+            typeCharacter();
         }
+
+        // Event listener to skip typing
+        gameDialogueBox.addEventListener('click', () => {
+            if (gameState.includes("dialogue") || gameState.includes("menu") || isGamePausedForPopup) { // Allow skipping even if technically paused
+                skipTyping = true;
+            }
+        });
+
 
         /**
          * Displays dialogue box with text and optional buttons.
@@ -980,28 +1233,28 @@
          * @param {Array<Object>} buttons - Array of button objects {label, action}.
          */
         function showDialogue(text, buttons = []) {
+            // Pause the game when dialogue appears
+            isGamePausedForPopup = true;
+
             if (!gameOptions) { 
                 console.error("Error: gameOptions element not found!"); 
                 return; 
             }
-            console.log(`showDialogue: Setting dialogueBox display to 'block'. Current display: ${gameDialogueBox.style.display}`);
             gameDialogueBox.style.display = "block";
             gameOptions.innerHTML = ""; // Clear existing options immediately before adding new ones
             gameDialogueText.textContent = ""; // Clear existing text content
             typeText(text, () => { // Use typeText to display the text
-                console.log("showDialogue: Text displayed. Appending buttons to dialogue box. Number of buttons to append:", buttons.length); // NEW LOG
                 buttons.forEach(({ label, action }) => {
                     const btn = document.createElement("button");
                     btn.className = "optionButton game-button"; /* Apply game-button styles */
                     btn.innerText = label;
                     btn.onclick = () => {
                         buttonClickSound.triggerAttackRelease("C5", "16n"); // Play button click sound
+                        isGamePausedForPopup = false; // Resume game when dialogue button is clicked
                         action();
                     };
                     gameOptions.appendChild(btn);
-                    console.log(`showDialogue: Appended button: ${label}`);
                 });
-                console.log(`showDialogue: Final dialogueBox display: ${gameDialogueBox.style.display}`);
             });
         }
 
@@ -1015,40 +1268,57 @@
         }
 
         /**
+         * Adds an item to the inventory, handling stacking.
+         * @param {Object} itemToAdd - The item object to add.
+         */
+        function addItemToInventory(itemToAdd) {
+            const existingItem = inventory.find(item => item.name === itemToAdd.name);
+            if (existingItem) {
+                existingItem.count = (existingItem.count || 1) + 1; // Increment count, default to 1 if not set
+                showCustomMessage(`You found another ${itemToAdd.name}! Now you have ${existingItem.count}! ✨`);
+            } else {
+                inventory.push({ ...itemToAdd, count: 1 }); // Add new item with count 1
+                showCustomMessage(`You found a ${itemToAdd.name}! What a treasure! 🌟`);
+            }
+            itemPickupSound.triggerAttackRelease("G6", "16n"); // Play item pickup sound
+            spawnParticles(player.x, player.y, "✨", "gold");
+        }
+
+        /**
          * Draws the HP bar, HP text, Mercy bar, and Determination bar.
          */
         function drawHUD() {
             // HP Bar
-            const hpBarX = 20 * currentScale;
-            const hpBarY = 20 * currentScale;
-            const barWidth = 180 * currentScale;
-            const barHeight = 25 * currentScale;
+            const hpBarX = 25 * currentScale; /* Increased X position */
+            const hpBarY = 25 * currentScale; /* Increased Y position */
+            const barWidth = 180 * currentScale; /* Wider bar */
+            const barHeight = 25 * currentScale; /* Thicker bar */
 
             // Draw HP bar background
-            gameCtx.fillStyle = "#333";
+            gameCtx.fillStyle = "rgba(50, 50, 50, 0.7)"; /* Softer gray, slightly transparent */
             drawRect(gameCtx, hpBarX, hpBarY, barWidth, barHeight);
             gameCtx.fill();
 
             // Draw HP bar fill with gradient
             const hpFillWidth = (playerHP / playerMaxHP) * barWidth;
             const hpGradient = gameCtx.createLinearGradient(hpBarX, hpBarY, hpBarX + hpFillWidth, hpBarY);
-            hpGradient.addColorStop(0, "#ff0000");
-            hpGradient.addColorStop(1, "#ff6666");
+            hpGradient.addColorStop(0, "#ff3333"); /* Brighter red */
+            hpGradient.addColorStop(1, "#ff8888"); /* Lighter red */
             gameCtx.fillStyle = hpGradient;
             drawRect(gameCtx, hpBarX, hpBarY, hpFillWidth, barHeight);
             gameCtx.fill();
             
-            gameCtx.fillStyle = "white";
-            gameCtx.font = `${20 * currentScale}px 'Press Start 2P'`;
+            gameCtx.fillStyle = "#e0e0e0"; /* Softer text color */
+            gameCtx.font = `${20 * currentScale}px 'Press Start 2P'`; /* Slightly larger font */
             gameCtx.textAlign = "left";
-            gameCtx.fillText(`HP: ${playerHP}/${playerMaxHP}`, hpBarX + barWidth + (15 * currentScale), hpBarY + barHeight / 2 + (8 * currentScale));
+            gameCtx.fillText(`HP: ${playerHP}/${playerMaxHP}`, hpBarX + barWidth + (15 * currentScale), hpBarY + barHeight / 2 + (8 * currentScale)); /* Adjusted spacing */
 
             const mercyBarX = hpBarX;
-            let mercyBarY = hpBarY + barHeight + (10 * currentScale);
+            let mercyBarY = hpBarY + barHeight + (10 * currentScale); /* Increased spacing */
 
             // Mercy Bar (only if an enemy is present)
             if (currentEnemy) {
-                gameCtx.fillStyle = "#333";
+                gameCtx.fillStyle = "rgba(50, 50, 50, 0.7)";
                 drawRect(gameCtx, mercyBarX, mercyBarY, barWidth, barHeight); 
                 gameCtx.fill();
 
@@ -1060,15 +1330,15 @@
                 drawRect(gameCtx, mercyBarX, mercyBarY, mercyFillWidth, barHeight);
                 gameCtx.fill();
 
-                gameCtx.fillStyle = "white";
+                gameCtx.fillStyle = "#e0e0e0";
                 gameCtx.fillText(`MERCY: ${currentEnemy.currentMercy}/${currentEnemy.mercyThreshold}`, mercyBarX + barWidth + (15 * currentScale), mercyBarY + barHeight / 2 + (8 * currentScale));
             }
 
             // Determination Bar (always visible)
             const detBarX = hpBarX; 
-            const detBarY = (currentEnemy ? mercyBarY + barHeight + (10 * currentScale) : hpBarY + barHeight + (10 * currentScale));
+            const detBarY = (currentEnemy ? mercyBarY + barHeight + (10 * currentScale) : hpBarY + barHeight + (10 * currentScale)); /* Increased spacing */
             
-            gameCtx.fillStyle = "#333";
+            gameCtx.fillStyle = "rgba(50, 50, 50, 0.7)";
             drawRect(gameCtx, detBarX, detBarY, barWidth, barHeight);
             gameCtx.fill();
 
@@ -1080,13 +1350,13 @@
             drawRect(gameCtx, detBarX, detBarY, detFillWidth, barHeight); 
             gameCtx.fill();
 
-            gameCtx.fillStyle = "white";
+            gameCtx.fillStyle = "#e0e0e0";
             gameCtx.fillText(`DETER: ${player.determination}/${player.maxDetermination}`, detBarX + barWidth + (15 * currentScale), detBarY + barHeight / 2 + (8 * currentScale));
 
 
             // Dodge Box
-            gameCtx.strokeStyle = "white";
-            gameCtx.lineWidth = 4 * currentScale; // Scale border thickness
+            gameCtx.strokeStyle = "#b0b0b0"; /* Softer white */
+            gameCtx.lineWidth = 3 * currentScale; /* Thicker border */
             gameCtx.strokeRect(DODGE_BOX_X_SCALED, DODGE_BOX_Y_SCALED, DODGE_BOX_WIDTH_SCALED, DODGE_BOX_HEIGHT_SCALED);
         }
 
@@ -1095,28 +1365,40 @@
          */
         function drawEnemy() {
             if (currentEnemy) {
-                gameCtx.fillStyle = "white";
-                gameCtx.font = `${64 * currentScale}px 'Press Start 2P'`;
+                // Apply subtle scale animation for enemy when hit or mercy gained
+                let enemyScale = 1;
+                if (currentEnemy.hitAnimationTimer > 0) {
+                    enemyScale = 1 + Math.sin(currentEnemy.hitAnimationTimer * 0.5) * 0.08; // Pulsate on hit, slightly less intense
+                    currentEnemy.hitAnimationTimer--;
+                } else if (currentEnemy.mercyAnimationTimer > 0) {
+                    enemyScale = 1 + Math.sin(currentEnemy.mercyAnimationTimer * 0.5) * 0.08; // Pulsate on mercy, slightly less intense
+                    currentEnemy.mercyAnimationTimer--;
+                }
+
+                gameCtx.save(); // Save current canvas state
+                gameCtx.translate(currentEnemy.x, currentEnemy.y); // Translate to enemy center
+                gameCtx.scale(enemyScale, enemyScale); // Apply scale
+                
+                gameCtx.fillStyle = "#e0e0e0"; /* Softer text color */
+                gameCtx.font = `${70 * currentScale}px 'Press Start 2P'`; /* Larger icon */
                 gameCtx.textAlign = "center";
                 const offsetX = screenShakeIntensity > 0 ? (Math.random() - 0.5) * screenShakeIntensity : 0;
                 const offsetY = screenShakeIntensity > 0 ? (Math.random() - 0.5) * screenShakeIntensity : 0;
 
-                const idleOffsetY = Math.sin(Date.now() * 0.005) * 5 * currentScale; // Scale idle animation
+                const idleOffsetY = Math.sin(Date.now() * 0.005) * 5 * currentScale; // Scale idle animation, slightly more movement
                 
-                gameCtx.fillText(currentEnemy.sprite, currentEnemy.x + offsetX, currentEnemy.y + offsetY + idleOffsetY);
-                gameCtx.font = `${32 * currentScale}px 'Press Start 2P'`;
-                gameCtx.fillText(currentEnemy.name, currentEnemy.x + offsetX, currentEnemy.y + (60 * currentScale) + offsetY + idleOffsetY);
+                gameCtx.fillText(currentEnemy.sprite, offsetX, offsetY + idleOffsetY);
+                gameCtx.font = `${32 * currentScale}px 'Press Start 2P'`; /* Larger name */
+                gameCtx.fillText(currentEnemy.name, offsetX, (65 * currentScale) + offsetY + idleOffsetY); /* Adjusted spacing */
                 gameCtx.textAlign = "left";
 
-                gameCtx.fillStyle = "red";
-                gameCtx.font = `${24 * currentScale}px 'Press Start 2P'`;
+                gameCtx.fillStyle = "#ff3333"; /* Brighter red for HP */
+                gameCtx.font = `${22 * currentScale}px 'Press Start 2P'`; /* Larger HP text */
                 gameCtx.textAlign = "center";
-                gameCtx.fillText(`HP: ${currentEnemy.hp}/${currentEnemy.maxHp}`, currentEnemy.x + offsetX, currentEnemy.y + (100 * currentScale) + offsetY + idleOffsetY);
+                gameCtx.fillText(`HP: ${currentEnemy.hp}/${currentEnemy.maxHp}`, offsetX, (100 * currentScale) + offsetY + idleOffsetY); /* Adjusted spacing */
                 gameCtx.textAlign = "left";
 
-                if (currentEnemy.currentMercy >= currentEnemy.mercyThreshold) {
-                    spawnParticles(currentEnemy.x + offsetX, currentEnemy.y + offsetY + idleOffsetY, "✨");
-                }
+                gameCtx.restore(); // Restore canvas state
             }
         }
 
@@ -1269,6 +1551,36 @@
             }
         }
 
+        /**
+         * Calculates the number of attacks an enemy will perform in its turn
+         * based on its current HP.
+         * @param {Object} enemy - The current enemy object.
+         * @returns {number} The number of attacks for this turn.
+         */
+        function calculateAttacksForTurn(enemy) {
+            if (!enemy) return 1; // Default to 1 if no enemy
+
+            const hpRatio = enemy.hp / enemy.maxHp;
+            let attacks = enemy.baseAttacksPerTurn;
+
+            // Increase attacks as HP decreases
+            if (hpRatio <= 0.3) { // Below 30% HP
+                attacks = enemy.maxAttacksPerTurn;
+            } else if (hpRatio <= 0.6) { // Below 60% HP
+                attacks = Math.min(enemy.maxAttacksPerTurn, enemy.baseAttacksPerTurn + 1);
+            }
+            // For bosses, maybe add another tier
+            if (enemy.name === "Grumpy Golem") {
+                if (hpRatio <= 0.15) { // Ultra low HP
+                    attacks = Math.min(enemy.maxAttacksPerTurn, enemy.baseAttacksPerTurn + 2);
+                } else if (hpRatio <= 0.4) { // Low HP
+                    attacks = Math.min(enemy.maxAttacksPerTurn, enemy.baseAttacksPerTurn + 1);
+                }
+            }
+
+            return attacks;
+        }
+
 
         // --- Game State Functions ---
 
@@ -1288,6 +1600,7 @@
             setGameState("menu");
             gameMainMenu.style.display = 'flex'; // Ensure menu is visible
             gameDialogueBox.style.display = 'none';
+            bulletTutorialBox.style.display = 'none';
         }
 
         /**
@@ -1324,12 +1637,11 @@
          */
         function startIntroSequence() {
             console.log("Starting intro sequence...");
-            showDialogue("YOU WAKE UP AS DOOFY IN A DREAMY STARFIELD... 💫\n\n(Hint: Move your MOUSE to control your soul. Keep it in the white box!)", [
-                { label: "CONTINUE", action: () => {
-                    showDialogue("TODAY IS QUACKERS' BIRTHDAY!\nYOUR QUEST: SPREAD FRIENDSHIP AND JOY. 🎂\n\n(Hint: You can ACT to befriend monsters, or FIGHT if you must, to subdue them!)", [
-                        { label: "START QUEST!", action: () => {
-                            gameDialogueBox.style.display = "none";
-                            startNextEncounter(); // Start the first encounter
+            showDialogue("You blink awake, your soul glowing softly in a dreamy, endless starfield. ✨ You are Doofy, the most determined little soul in the cosmos! (Psst! Move your MOUSE to guide your soul. Keep it safe inside the glowing white box!)", [
+                { label: "Okay!", action: () => {
+                    showDialogue("Today is a VERY important day! It's Quackers' birthday, and your quest is to spread friendship and joy across the galaxy! 🎂\n\n(Hint: You can choose to ACT kindly to befriend monsters, or FIGHT if they're being super grumpy and need a little 'subduing'!)", [
+                        { label: "Let's Go!", action: () => {
+                            showBulletTutorial(); // Show bullet tutorial before first encounter
                         }}
                     ]);
                 }}
@@ -1337,10 +1649,98 @@
         }
 
         /**
+         * Displays the bullet tutorial.
+         */
+        function showBulletTutorial() {
+            setGameState("bullet_tutorial");
+            gameDialogueBox.style.display = "none";
+            bulletTutorialBox.style.display = "flex";
+            player.color = "red"; // Default to red
+            bullets = []; // Clear any existing bullets
+
+            // Temporarily set up a small animation for the tutorial
+            let tutorialBullet = { x: DODGE_BOX_X_SCALED + DODGE_BOX_WIDTH_SCALED / 2, y: DODGE_BOX_Y_SCALED + DODGE_BOX_HEIGHT_SCALED / 2, vx: 0, vy: 0, size: 20 * currentScale, type: "red", sprite: "❤️" };
+            let tutorialPlayerX = player.x;
+            let tutorialPlayerY = player.y;
+
+            let tutorialPhase = 0; // 0: Red, 1: Blue, 2: Orange
+            let tutorialTimer = 0;
+            const tutorialPhaseDuration = 180; // 3 seconds per phase
+
+            function runTutorialAnimation() {
+                if (gameState !== "bullet_tutorial") return;
+
+                // Update player position for tutorial (fixed to center for demonstration)
+                player.x = DODGE_BOX_X_SCALED + DODGE_BOX_WIDTH_SCALED / 2 - player.size / 2;
+                player.y = DODGE_BOX_Y_SCALED + DODGE_BOX_HEIGHT_SCALED / 2 - player.size / 2;
+
+                gameCtx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+                drawStars();
+                drawCosmicDust();
+                drawHUD();
+                drawHeart(player.x, player.y, player.size, player.color);
+
+                tutorialTimer++;
+
+                if (tutorialTimer > tutorialPhaseDuration) {
+                    tutorialTimer = 0;
+                    tutorialPhase = (tutorialPhase + 1) % 3; // Cycle through phases
+                    bullets = []; // Clear bullets for new phase
+                    player.isMoving = false; // Reset movement status for next phase
+                }
+
+                switch (tutorialPhase) {
+                    case 0: // Red: Move to dodge
+                        player.color = "red";
+                        if (tutorialTimer % 30 === 0) {
+                            const angle = Math.random() * Math.PI * 2;
+                            const speed = 5 * currentScale;
+                            spawnBullet(DODGE_BOX_X_SCALED + DODGE_BOX_WIDTH_SCALED / 2, DODGE_BOX_Y_SCALED + DODGE_BOX_HEIGHT_SCALED / 2,
+                                Math.cos(angle) * speed, Math.sin(angle) * speed, 15, "red", "❤️");
+                        }
+                        break;
+                    case 1: // Blue: Stay still to dodge
+                        player.color = "blue";
+                        if (tutorialTimer % 40 === 0) {
+                            const angle = Math.random() * Math.PI * 2;
+                            const speed = 4 * currentScale;
+                            spawnBullet(DODGE_BOX_X_SCALED + DODGE_BOX_WIDTH_SCALED / 2, DODGE_BOX_Y_SCALED + DODGE_BOX_HEIGHT_SCALED / 2,
+                                Math.cos(angle) * speed, Math.sin(angle) * speed, 15, "blue", "💙");
+                        }
+                        break;
+                    case 2: // Orange: Move to dodge
+                        player.color = "orange";
+                        if (tutorialTimer % 35 === 0) {
+                            const angle = Math.random() * Math.PI * 2;
+                            const speed = 6 * currentScale;
+                            spawnBullet(DODGE_BOX_X_SCALED + DODGE_BOX_WIDTH_SCALED / 2, DODGE_BOX_Y_SCALED + DODGE_BOX_HEIGHT_SCALED / 2,
+                                Math.cos(angle) * speed, Math.sin(angle) * speed, 15, "orange", "🧡");
+                        }
+                        break;
+                }
+                updateBullets();
+                drawBullets();
+
+                requestAnimationFrame(runTutorialAnimation);
+            }
+            runTutorialAnimation();
+
+            tutorialContinueBtn.onclick = () => {
+                buttonClickSound.triggerAttackRelease("C5", "16n");
+                bulletTutorialBox.style.display = "none";
+                gameDialogueBox.style.display = "none"; // Ensure dialogue box is hidden
+                bullets = []; // Clear tutorial bullets
+                player.color = "red"; // Reset player color
+                isGamePausedForPopup = false; // Resume game
+                startNextEncounter(); // Start the first encounter
+            };
+        }
+
+
+        /**
          * Displays the player's turn options (ACT, ITEM, CHECK, FIGHT, SPARE, EXIT).
          */
         function showPlayerTurnOptions() {
-            console.log("showPlayerTurnOptions called. Current enemy:", currentEnemy ? currentEnemy.name : "None");
             setGameState("player_turn_options");
             gameDialogueBox.style.display = "block";
             player.color = "red"; 
@@ -1350,6 +1750,7 @@
                 { label: "ITEM", action: () => showItemMenu() },
                 { label: "CHECK", action: () => showCheckMenu(currentEnemy) },
                 { label: "FIGHT", action: () => startFightMinigame() },
+                { label: "DETERMINATION", action: () => showDeterminationMenu() } // New Determination button
             ];
 
             // Add SPARE option if mercy threshold is met AND currentEnemy exists
@@ -1366,9 +1767,101 @@
 
             optionsButtons.push({ label: "EXIT GAME", action: () => exitGame() });
 
-            console.log("Options buttons prepared:", optionsButtons.map(btn => btn.label));
-            showDialogue(`WHAT WILL YOU DO NOW, DOOFY?`, optionsButtons);
+            showDialogue(`What's your next move, Doofy? The fate of Quackers' birthday party rests on your tiny soul!`, optionsButtons);
         }
+
+        /**
+         * Displays the Determination menu.
+         */
+        function showDeterminationMenu() {
+            setGameState("determination_menu");
+            player.color = "gold"; // Determination color
+            const detButtons = [];
+
+            // Shortened labels to fit better
+            if (player.determination >= 10 && playerHP < playerMaxHP) {
+                detButtons.push({ label: "Heal (10 DETER)", action: () => useDetermination("heal") });
+            } else if (playerHP >= playerMaxHP) {
+                detButtons.push({ label: "Heal (HP Full)", action: () => showCustomMessage("Your HP is already sparkling and full! No need to heal right now, Doofy!") || showDeterminationMenu() });
+            } else {
+                detButtons.push({ label: "Heal (Need 10 DETER)", action: () => showCustomMessage("Not enough Determination to heal! Keep fighting (or befriending) to gather more!") || showDeterminationMenu() });
+            }
+
+            if (player.determination >= 15 && bullets.length > 0) {
+                detButtons.push({ label: "Clear Bullets (15 DETER)", action: () => useDetermination("clear_bullets") });
+            } else if (bullets.length === 0) {
+                detButtons.push({ label: "Clear Bullets (No Bullets)", action: () => showCustomMessage("Phew! No pesky bullets to clear right now, Doofy!") || showDeterminationMenu() });
+            } else {
+                detButtons.push({ label: "Clear Bullets (Need 15 DETER)", action: () => showCustomMessage("You need a little more Determination to make those bullets vanish, Doofy!") || showDeterminationMenu() });
+            }
+
+            if (player.determination >= 20 && !player.invincible) {
+                detButtons.push({ label: "Invincibility (20 DETER)", action: () => useDetermination("invincibility") });
+            } else if (player.invincible) {
+                detButtons.push({ label: "Invincibility (Active)", action: () => showCustomMessage("You're already super invincible, Doofy! Go forth and be a sparkly shield!") || showDeterminationMenu() });
+            } else {
+                detButtons.push({ label: "Invincibility (Need 20 DETER)", action: () => showCustomMessage("Not quite enough Determination for temporary invincibility, Doofy! Keep pushing!") || showDeterminationMenu() });
+            }
+
+            detButtons.push({ label: "BACK", action: () => showPlayerTurnOptions() });
+            showDialogue(`Your Determination shines bright, Doofy! Current: ${player.determination}/${player.maxDetermination}\nWhat powerful move will you unleash?`, detButtons);
+        }
+
+        /**
+         * Uses Determination for a special ability.
+         * @param {string} abilityType - The type of ability to use.
+         */
+        function useDetermination(abilityType) {
+            let cost = 0;
+            let message = "";
+            let success = false;
+
+            switch (abilityType) {
+                case "heal":
+                    cost = 10;
+                    if (player.determination >= cost && playerHP < playerMaxHP) {
+                        player.determination -= cost;
+                        playerHP = Math.min(playerMaxHP, playerHP + 10);
+                        message = "You feel a warm, fuzzy surge of energy! HP +10! You're ready to shine!";
+                        spawnParticles(player.x, player.y, "💖", "pink");
+                        healSound.triggerAttackRelease("C5", "8n");
+                        success = true;
+                    }
+                    break;
+                case "clear_bullets":
+                    cost = 15;
+                    if (player.determination >= cost && bullets.length > 0) {
+                        player.determination -= cost;
+                        bullets = []; // Clear all bullets
+                        message = "POOF! All those pesky bullets just vanished into thin air! You're a bullet-busting hero!";
+                        spawnParticles(DODGE_BOX_X_SCALED + DODGE_BOX_WIDTH_SCALED / 2, DODGE_BOX_Y_SCALED + DODGE_BOX_HEIGHT_SCALED / 2, "�", "cyan");
+                        clearBulletsSound.triggerAttackRelease("C6", "8n");
+                        success = true;
+                    }
+                    break;
+                case "invincibility":
+                    cost = 20;
+                    if (player.determination >= cost && !player.invincible) {
+                        player.determination -= cost;
+                        player.invincible = true;
+                        player.invincibilityTimer = 300; // 5 seconds of invincibility (60 frames/sec)
+                        message = "WHOOSH! You are temporarily invincible! Go forth and defy gravity (and bullets)!";
+                        spawnParticles(player.x, player.y, "🛡️", "yellow");
+                        invincibilitySound.triggerAttackRelease("C7", "8n");
+                        success = true;
+                    }
+                    break;
+            }
+
+            if (success) {
+                showCustomMessage(message);
+                // After using determination, return to player options
+                setTimeout(() => showPlayerTurnOptions(), 1000); // Small delay for message to be read
+            } else {
+                // If not successful, the custom message is already handled by showDeterminationMenu
+            }
+        }
+
 
         /**
          * Starts the enemy's attack phase.
@@ -1378,24 +1871,42 @@
             gameDialogueBox.style.display = "none"; // Hide dialogue during attack
             bullets = []; // Clear any residual bullets
             currentEnemyAttackTimer = 0;
-            currentAttackIndex = 0; // Start with the first attack pattern in the combo
+
+            // NEW: If this is the start of a fresh enemy turn, calculate total attacks
+            if (currentAttackRound === 0) {
+                totalAttacksThisTurn = calculateAttacksForTurn(currentEnemy);
+                console.log(`${currentEnemy.name} will perform ${totalAttacksThisTurn} attacks this turn.`);
+            }
             
-            // Ensure currentEnemy and its attackPatterns are valid
-            if (currentEnemy && currentEnemy.attackPatterns && currentEnemy.attackPatterns.length > 0) {
-                const firstPattern = currentEnemy.attackPatterns[currentAttackIndex];
-                currentAttackDuration = firstPattern.duration;
-                currentAttackFlavorText = firstPattern.flavor;
-                player.color = firstPattern.bulletType; // Set player soul color based on first attack type
+            // Determine the attack phase based on enemy HP
+            let phaseIndex = 0;
+            if (currentEnemy.hp <= currentEnemy.maxHp * 0.3) { // Below 30% HP
+                phaseIndex = 2;
+                if (currentEnemy.name === "Grumpy Golem") triggerGlitch(null); // Golem gets glitchy at low HP
+            } else if (currentEnemy.hp <= currentEnemy.maxHp * 0.6) { // Below 60% HP
+                phaseIndex = 1;
+            }
+
+            // Select a random attack pattern from the determined phase
+            const phasePatterns = currentEnemy.attackPatterns.filter(p => p.phase === phaseIndex);
+            if (phasePatterns.length > 0) {
+                const selectedPattern = randomFrom(phasePatterns);
+                currentAttackDuration = selectedPattern.duration;
+                currentAttackFlavorText = selectedPattern.flavor;
+                player.color = selectedPattern.bulletType; // Set player soul color based on attack type
+                currentEnemy.currentAttackPattern = selectedPattern; // Store the active pattern
             } else {
-                // Fallback to player options if no attacks are defined
-                console.warn("No attack patterns found for current enemy, returning to player turn options.");
+                console.warn(`No attack patterns found for enemy ${currentEnemy.name} in phase ${phaseIndex}. Transitioning to player turn options.`);
+                // If no patterns for this phase, immediately end the enemy's turn
+                currentAttackRound = 0; // Reset for next turn
+                totalAttacksThisTurn = 0; // Reset
                 showPlayerTurnOptions();
                 return;
             }
 
-            // Reset player position to center of scaled dodge box at start of attack phase
-            player.x = DODGE_BOX_X_SCALED + DODGE_BOX_WIDTH_SCALED / 2 - player.size / 2;
-            player.y = DODGE_BOX_Y_SCALED + DODGE_BOX_HEIGHT_SCALED / 2 - player.size / 2;
+            // Removed: Reset player position to center of scaled dodge box at start of attack phase
+            // player.x = DODGE_BOX_X_SCALED + DODGE_BOX_WIDTH_SCALED / 2 - player.size / 2;
+            // player.y = DODGE_BOX_Y_SCALED + DODGE_BOX_HEIGHT_SCALED / 2 - player.size / 2;
         }
 
         /**
@@ -1424,8 +1935,8 @@
          */
         function startFightMinigame() {
             if (firstFightMinigame) {
-                showDialogue("TO ATTACK: Click the bar when the YELLOW heart marker is in the MAGENTA 'sweet spot' for a good hit, or the LIME GREEN 'critical spot' for massive damage! Timing is key!", [
-                    { label: "GOT IT!", action: () => {
+                showDialogue("Time to show 'em what you're made of, Doofy! To ATTACK: Click the bar when your YELLOW heart marker is in the MAGENTA 'sweet spot' for a good hit, or the super tiny LIME GREEN 'critical spot' for massive damage! Timing is EVERYTHING! Don't miss!", [
+                    { label: "Got It!", action: () => {
                         firstFightMinigame = false; // Set flag to false after first hint
                         proceedToFightMinigameLogic();
                     }}
@@ -1447,7 +1958,7 @@
 
             // Calculate current sweet spot and critical spot positions based on random offsets
             const sweetSpotStart = FIGHT_BAR_X_SCALED + currentSweetSpotOffset;
-            const sweetSpotEnd = sweetSpotStart + SWEET_SPOT_WIDTH_SCALED;
+            const sweetSpotEnd = sweetSpotStart + SWEET_SPOT_WIDTH_SCALED; 
             const criticalSpotStart = sweetSpotStart + currentCriticalSpotOffset;
             const criticalSpotEnd = criticalSpotStart + CRITICAL_SPOT_WIDTH_SCALED;
 
@@ -1458,6 +1969,7 @@
 
             let damageDealt = 0;
             let hitMessage = "";
+            let hitColor = "white";
 
             // Check for overlap between heart marker and hit zones
             if (
@@ -1466,6 +1978,7 @@
             ) {
                 damageDealt = Math.floor(Math.random() * 2) + 5; // Critical hit: 5 or 6 damage
                 hitMessage = "CRITICAL HIT! 💥";
+                hitColor = "lime";
                 screenShake(10, 15);
                 attackHitSound.triggerAttackRelease("G5", "16n"); // High pitch for critical
             } else if (
@@ -1474,6 +1987,7 @@
             ) { 
                 damageDealt = Math.floor(Math.random() * 2) + 3; // Sweet spot hit: 3 or 4 damage
                 hitMessage = "GREAT HIT! ✨";
+                hitColor = "magenta";
                 screenShake(7, 12);
                 attackHitSound.triggerAttackRelease("E5", "16n"); // Medium pitch for sweet
             } else if (
@@ -1481,23 +1995,37 @@
             ) {
                 damageDealt = Math.floor(Math.random() * 2) + 1; // Normal hit: 1 or 2 damage
                 hitMessage = "HIT! 👍";
+                hitColor = "yellow";
                 screenShake(3, 8);
                 attackHitSound.triggerAttackRelease("C5", "16n"); // Low pitch for normal hit
             } else {
                 damageDealt = 0; // Miss
                 hitMessage = "MISS! ❌";
+                hitColor = "gray";
                 attackHitSound.triggerAttackRelease("C3", "32n"); // Very low pitch for miss
             }
 
+            // Spawn floating text for hit/miss
+            spawnFloatingText(hitMarkerX, FIGHT_BAR_Y_SCALED - 20, hitMessage, hitColor);
+
             if (currentEnemy) {
                 currentEnemy.hp = Math.max(0, currentEnemy.hp - damageDealt);
-                showCustomMessage(`${hitMessage} You dealt ${damageDealt} damage to ${currentEnemy.name}!`);
-
+                currentEnemy.hitAnimationTimer = 30; // Start hit animation for enemy
+                if (damageDealt > 0) {
+                    player.determination = Math.min(player.maxDetermination, player.determination + Math.floor(damageDealt / 2) + 1); // Gain determination
+                    // Chance to drop item on successful hit
+                    if (Math.random() < 0.15) { // 15% chance to drop item on hit
+                        const drop = randomFrom(possibleDrops);
+                        addItemToInventory(drop.item);
+                    }
+                }
+                
                 if (currentEnemy.hp <= 0) {
                     setTimeout(() => {
                         endEncounter("defeated"); // Directly end encounter if defeated
                     }, 1000);
                 } else {
+                    // After a successful hit in the fight minigame, the enemy attacks back
                     setTimeout(() => {
                         startEnemyAttackPhase(); // Enemy attacks back
                     }, 1000); // Short delay to show message
@@ -1518,7 +2046,10 @@
             // Reset enemy HP and mercy for new encounter
             currentEnemy.hp = currentEnemy.hp || currentEnemy.maxHp; // Ensure HP is set, default to max if undefined
             currentEnemy.currentMercy = 0; 
+            currentEnemy.hitAnimationTimer = 0; // Reset animation timer
+            currentEnemy.mercyAnimationTimer = 0; // Reset animation timer
             bullets = []; // Clear bullets from previous encounter
+            particles = []; // Clear particles
             currentEnemyAttackTimer = 0;
             currentAttackIndex = 0;
             player.color = "red"; // Ensure player color is red at start of new encounter
@@ -1530,25 +2061,11 @@
             // Dialogue before attack phase
             setGameState("encounter_dialogue");
             
-            // Show bullet color hint for the very first encounter
-            if (firstEncounter) {
-                showDialogue("PAY ATTENTION TO BULLET COLORS:\n\n❤️ RED: Dodge by moving!\n💙 BLUE: Dodge by staying still!\n🧡 ORANGE: Dodge by moving! (These pass through you if you're moving!)", [
-                    { label: "GOT IT!", action: () => {
-                        firstEncounter = false; // Set flag to false after first hint
-                        triggerGlitch(() => {
-                            showDialogue(randomFrom(currentEnemy.dialogue), [
-                                { label: "CONTINUE", action: () => showPlayerTurnOptions() } // Corrected: Go to player options
-                            ]);
-                        });
-                    }}
+            triggerGlitch(() => {
+                showDialogue(randomFrom(currentEnemy.dialogue), [
+                    { label: "Continue", action: () => showPlayerTurnOptions() } 
                 ]);
-            } else {
-                triggerGlitch(() => {
-                    showDialogue(randomFrom(currentEnemy.dialogue), [
-                        { label: "CONTINUE", action: () => showPlayerTurnOptions() } // Corrected: Go to player options
-                    ]);
-                });
-            }
+            });
         }
 
         /**
@@ -1561,17 +2078,25 @@
             const actButtons = Object.keys(enemy.actResponses).map(label => ({
                 label: label,
                 action: () => {
-                    spawnParticles(player.x, player.y, "💖");
-                    // Increase mercy
-                    enemy.currentMercy = Math.min(enemy.mercyThreshold, enemy.currentMercy + 2);
+                    // Increase mercy, applying mercy charm bonus if active
+                    const mercyGain = 2 + (player.mercyBoostActive ? player.mercyBoostValue : 0);
+                    enemy.currentMercy = Math.min(enemy.mercyThreshold, enemy.currentMercy + mercyGain);
                     player.determination = Math.min(player.maxDetermination, player.determination + 5); // Gain determination
+                    enemy.mercyAnimationTimer = 30; // Start mercy animation for enemy
+                    spawnParticles(enemy.x, enemy.y, "💖"); // Particles from enemy
+
+                    // Chance to drop item on ACT
+                    if (Math.random() < 0.2) { // 20% chance to drop item on ACT
+                        const drop = randomFrom(possibleDrops);
+                        addItemToInventory(drop.item);
+                    }
                     
                     lastActedLabel = label; // Store the label for post-mini-attack dialogue
                     startMiniAttackPhaseForAct(); // Trigger mini-attack after ACT
                 }
             }));
             actButtons.push({ label: "BACK", action: () => showPlayerTurnOptions() }); // Option to go back to main options
-            showDialogue(`HOW WILL YOU ACT TOWARD ${enemy.name.toUpperCase()}?`, actButtons);
+            showDialogue(`How will you ACT towards the ${enemy.name.toUpperCase()}? Maybe a kind word will do the trick!`, actButtons);
         }
 
         /**
@@ -1617,9 +2142,9 @@
                 return;
             }
 
-            // Reset player position to center of scaled dodge box at start of attack phase
-            player.x = DODGE_BOX_X_SCALED + DODGE_BOX_WIDTH_SCALED / 2 - player.size / 2;
-            player.y = DODGE_BOX_Y_SCALED + DODGE_BOX_HEIGHT_SCALED / 2 - player.size / 2;
+            // Removed: Reset player position to center of scaled dodge box at start of attack phase
+            // player.x = DODGE_BOX_X_SCALED + DODGE_BOX_WIDTH_SCALED / 2 - player.size / 2;
+            // player.y = DODGE_BOX_Y_SCALED + DODGE_BOX_HEIGHT_SCALED / 2 - player.size / 2;
         }
 
         /**
@@ -1628,12 +2153,21 @@
         function showItemMenu() {
             setGameState("item_menu");
             player.color = "red"; // Soul is red in ITEM menu
-            const itemButtons = inventory.map((item, index) => ({
-                label: `${item.name} (${item.type === 'heal' ? item.value + ' HP' : ''})`,
-                action: () => useItem(index)
+            
+            // Filter to only show items with count > 0
+            const availableItems = inventory.filter(item => item.count > 0);
+
+            const itemButtons = availableItems.map((item, index) => ({
+                label: `${item.name} x${item.count} (${item.type === 'heal' ? item.value + ' HP' : item.description})`,
+                action: () => useItem(inventory.indexOf(item)) // Pass original index for removal
             }));
+
+            if (availableItems.length === 0) {
+                itemButtons.push({ label: "No Items! 😔", action: () => showCustomMessage("Your backpack is a bit empty right now, Doofy! Keep adventuring to find more goodies!") || showPlayerTurnOptions() });
+            }
+
             itemButtons.push({ label: "BACK", action: () => showPlayerTurnOptions() });
-            showDialogue("WHAT ITEM WILL YOU USE?", itemButtons);
+            showDialogue("What magical item will you use to help you on your quest?", itemButtons);
         }
 
         /**
@@ -1642,23 +2176,71 @@
          */
         function useItem(index) {
             const item = inventory[index];
-            if (!item) {
-                showCustomMessage("NO ITEM SELECTED.");
+            if (!item || item.count <= 0) {
+                showCustomMessage("Oops! That item seems to have vanished or you don't have any left!");
                 showPlayerTurnOptions();
                 return;
             }
 
-            if (item.type === "heal") {
-                if (playerHP < playerMaxHP) {
-                    playerHP = Math.min(playerMaxHP, playerHP + item.value);
-                    showCustomMessage(`YOU USED ${item.name}! HEALED ${item.value} HP!`);
-                    inventory.splice(index, 1); // Remove item after use
-                } else {
-                    showCustomMessage("YOUR HP IS ALREADY FULL!");
+            let message = "";
+            let itemUsed = false;
+
+            switch (item.type) {
+                case "heal":
+                    if (playerHP < playerMaxHP) {
+                        playerHP = Math.min(playerMaxHP, playerHP + item.value);
+                        message = `POOF! You used a ${item.name}! You feel all warm and fuzzy. Healed ${item.value} HP!`;
+                        spawnParticles(player.x, player.y, "💖", "pink");
+                        healSound.triggerAttackRelease("C5", "8n");
+                        success = true;
+                    } else {
+                        message = "Your HP is already sparkling and full! Save that for when you really need it, Doofy!";
+                    }
+                    break;
+                case "speed_boost":
+                    if (player.speedMultiplier === 1) { // Only apply if not already boosted
+                        player.speedMultiplier = item.value;
+                        player.speedBoostTimer = item.duration;
+                        message = `ZOOM! You chugged a ${item.name}! You're super speedy now!`;
+                        spawnParticles(player.x, player.y, "💨", "cyan");
+                        speedBoostSound.triggerAttackRelease("G5", "8n");
+                        itemUsed = true;
+                    } else {
+                        message = "You're already zipping around like a tiny comet! Speed boost is still active!";
+                    }
+                    break;
+                case "mercy_boost":
+                    if (!player.mercyBoostActive) {
+                        player.mercyBoostActive = true;
+                        player.mercyBoostValue = item.value;
+                        message = `Your ${item.name} glows softly! You feel extra compassionate. Mercy gain increased for this encounter!`;
+                        spawnParticles(player.x, player.y, "✨", "green");
+                        mercyBoostSound.triggerAttackRelease("A5", "8n");
+                        itemUsed = true;
+                    } else {
+                        message = "Your Heartfelt Charm is already radiating kindness! No need for another one right now!";
+                    }
+                    break;
+                case "bullet_clear":
+                    if (bullets.length > 0) {
+                        bullets = [];
+                        message = `WHOOSH! You activated the ${item.name}! All those nasty bullets just vanished!`;
+                        spawnParticles(DODGE_BOX_X_SCALED + DODGE_BOX_WIDTH_SCALED / 2, DODGE_BOX_Y_SCALED + DODGE_BOX_HEIGHT_SCALED / 2, "🌀", "cyan");
+                        clearBulletsSound.triggerAttackRelease("C6", "8n");
+                        itemUsed = true;
+                    } else {
+                        message = "Phew! No bullets to erase right now, Doofy! Save that power for a real bullet-storm!";
+                    }
+                    break;
+            }
+
+            if (itemUsed) {
+                item.count--; // Decrement count
+                if (item.count <= 0) {
+                    inventory.splice(index, 1); // Remove item if count is 0 or less
                 }
             }
-            // Add other item types here (e.g., buff, bullet clear)
-
+            showCustomMessage(message);
             showPlayerTurnOptions(); // Return to main options after using item
         }
 
@@ -1671,7 +2253,7 @@
             player.color = "red"; // Soul is red in CHECK menu
             // Update check description to show actual HP
             const updatedCheckDescription = enemy.checkDescription.replace("HP: ??", `HP: ${enemy.hp}`).replace("ATK: ??", "ATK: ??").replace("DEF: ??", "DEF: ??");
-            showDialogue(updatedCheckDescription, [
+            showDialogue(`You check on the ${enemy.name.toUpperCase()}.\n\n${updatedCheckDescription}`, [
                 { label: "BACK", action: () => showPlayerTurnOptions() }
             ]);
         }
@@ -1700,7 +2282,7 @@
                 // Enemy is not yet pacified, show response and offer to go back to ACT menu
                 const responseText = randomFrom(currentEnemy.actResponses[lastActedLabel]);
                 showDialogue(responseText, [
-                    { label: "OK", action: () => showActMenu(currentEnemy) } // Single "OK" button to return to ACT menu
+                    { label: "Okay!", action: () => showActMenu(currentEnemy) } // Single "OK" button to return to ACT menu
                 ]);
             }
         }
@@ -1714,6 +2296,12 @@
             bullets = []; // Clear any remaining bullets
             particles = []; // Clear any remaining particles
             player.color = "red"; // Reset soul color to red
+            player.speedMultiplier = 1; // Reset speed multiplier
+            player.mercyBoostActive = false; // Reset mercy boost
+            player.mercyBoostValue = 0;
+            player.invincible = false; // Reset invincibility
+            player.invincibilityTimer = 0;
+
             // Remove the fight click listener if it was active
             gameCanvas.removeEventListener('mousedown', handleFightClick);
 
@@ -1722,12 +2310,18 @@
             const endedEnemy = currentEnemy;
             currentEnemy = null; // Set to null immediately to prevent further access issues
 
+            // Chance to drop item when encounter ends (regardless of spared/defeated)
+            if (Math.random() < 0.25) { // 25% chance to drop item on encounter end
+                const drop = randomFrom(possibleDrops);
+                addItemToInventory(drop.item);
+            }
+
             if (howEnded === "spared") {
                 enemiesSpared++;
                 pacifistScore++; // Increment pacifist score
                 mercySound.triggerAttackRelease("C6", "8n"); // Play mercy sound
-                showDialogue(`${endedEnemy.name.toUpperCase()} IS PACIFIED BY YOUR KINDNESS! ❤️\n\n(ANOTHER FRIEND MADE! Press CONTINUE to move on.)`, [
-                    { label: "CONTINUE", action: () => {
+                showDialogue(`${endedEnemy.name.toUpperCase()} IS PACIFIED BY YOUR KINDNESS! ❤️\n\n(Another friend made! You're a true friendship hero! Press CONTINUE to move on.)`, [
+                    { label: "Continue", action: () => {
                         if (enemiesSpared + enemiesDefeated >= totalEnemies) {
                             showWinScreen(); // Go to win screen if all enemies cleared
                         } else {
@@ -1737,9 +2331,9 @@
                 ]);
             } else if (howEnded === "defeated") {
                 enemiesDefeated++;
-                enemyDefeatSound.triggerAttackRelease("C3", "4n"); // Play defeat sound
-                showDialogue(endedEnemy.defeatedDialogue, [
-                    { label: "CONTINUE", action: () => {
+                enemyDefeatSound.triggerAttackRelease("C3", "4n"); // Fixed typo here
+                showDialogue(endedEnemy.defeatedDialogue + "\n\n(The party is safe... for now. Press CONTINUE to move on.)", [
+                    { label: "Continue", action: () => {
                         if (enemiesSpared + enemiesDefeated >= totalEnemies) {
                             showWinScreen(); // Go to win screen if all enemies cleared
                         } else {
@@ -1761,16 +2355,16 @@
             player.color = "red"; // Reset soul color to red
             let endingMessage = "";
             if (pacifistScore === totalEnemies) {
-                endingMessage = "🌟 TRUE PACIFIST ENDING! 🌟\nYOU'VE BEFRIENDED EVERYONE! QUACKERS IS SO PROUD! HAPPY BIRTHDAY, FRIENDSHIP HERO! 🎉";
+                endingMessage = "🌟 TRUE PACIFIST ENDING! 🌟\nYOU'VE BEFRIENDED EVERY SINGLE MONSTER! QUACKERS IS SO PROUD, AND THE BIRTHDAY PARTY IS FULL OF NEW, HAPPY FACES! YOU'RE THE ULTIMATE FRIENDSHIP HERO! 🎉";
             } else if (enemiesDefeated === totalEnemies) {
-                endingMessage = "💀 CONQUEROR ENDING! 💀\nYOU'VE SUBDUED EVERYONE! QUACKERS IS A BIT SCARED, BUT THE PARTY IS SAFE... FOR NOW. 🎂";
+                endingMessage = "💀 CONQUEROR ENDING! 💀\nYOU'VE SUBDUED EVERY SINGLE MONSTER! QUACKERS IS A BIT SCARED, HIDING BEHIND THE CAKE, BUT THE PARTY IS SAFE... FOR NOW. YOU'RE A TOUGH COOKIE, DOOFY!";
             }
             else {
-                endingMessage = "YOU'VE REACHED QUACKERS! HAPPY BIRTHDAY! 🎉\n\n(YOUR QUEST FOR FRIENDSHIP IS COMPLETE! Some monsters are your pals, others... well, they're fine.)";
+                endingMessage = "✨ NEUTRAL ENDING! ✨\nYOU'VE REACHED QUACKERS! HAPPY BIRTHDAY! 🎉\n\n(Your quest for friendship is complete! Some monsters are your pals, others... well, they're just taking a very long nap. A balanced approach, Doofy!)";
             }
             showDialogue(endingMessage, [
-                { label: "PLAY AGAIN?", action: () => location.reload() },
-                { label: "EXIT TO WEBSITE", action: () => exitGame() }
+                { label: "Play Again?", action: () => location.reload() },
+                { label: "Exit to Website", action: () => exitGame() }
             ]);
         }
 
@@ -1781,9 +2375,9 @@
             setGameState("game_over");
             gameDialogueBox.style.display = "block";
             player.color = "red"; // Reset soul color to red
-            showDialogue("YOU FAINTED FROM TOO MUCH CUTENESS! 💀💫\n\n(DON'T WORRY, YOU CAN ALWAYS TRY AGAIN! Your determination lives on!)", [
-                { label: "RETRY", action: () => location.reload() },
-                { label: "EXIT TO WEBSITE", action: () => exitGame() }
+            showDialogue("OH NO! Your soul flickered out! You fainted from too much cuteness (or maybe just too many bullets)! 💀💫\n\n(Don't worry, Doofy! Your determination lives on! You can always try again!)", [
+                { label: "Retry", action: () => location.reload() },
+                { label: "Exit to Website", action: () => exitGame() }
             ]);
         }
 
@@ -1814,128 +2408,170 @@
             updateCosmicDust(); // Update and draw cosmic dust
             drawCosmicDust();
 
-            // Update game logic and draw game elements based on current state
-            switch (gameState) {
-                case "menu":
-                    // Main menu is active, no game logic update on canvas beyond stars
-                    break;
-                case "intro":
-                case "encounter_dialogue":
-                case "player_turn_options":
-                case "act_menu":
-                case "item_menu":
-                case "check_menu":
-                case "dialogue_after_encounter": // Added new state to handle post-encounter dialogue
-                    // In dialogue/menu states, draw enemy and player (stationary)
-                    drawEnemy();
-                    updateParticles();
-                    drawParticles();
-                    drawHeart(player.x, player.y, player.size, player.color);
-                    drawHUD(); // Ensure HUD is drawn in these states
-                    break;
-                case "enemy_attack_phase":
-                case "enemy_mini_attack_phase": // Handle mini-attack phase here too
-                    // Enemy movement (if applicable)
-                    if (currentEnemy && currentEnemy.canMove) {
-                        currentEnemy.x += Math.sin(currentEnemyAttackTimer * 0.05) * 0.5 * currentScale; // Scale movement
-                        currentEnemy.y += Math.cos(currentEnemyAttackTimer * 0.03) * 0.3 * currentScale; // Scale movement
-                        // Clamp enemy position to prevent going off screen
-                        currentEnemy.x = Math.max(100 * currentScale, Math.min(gameCanvas.width - (100 * currentScale), currentEnemy.x));
-                        currentEnemy.y = Math.max(50 * currentScale, Math.min(DODGE_BOX_Y_SCALED - (150 * currentScale), currentEnemy.y));
-                    }
+            // Update player effects
+            if (player.speedBoostTimer > 0) {
+                player.speedBoostTimer--;
+                if (player.speedBoostTimer === 0) {
+                    player.speedMultiplier = 1; // Reset speed
+                    spawnParticles(player.x, player.y, "💨", "gray"); // Visual cue for end of boost
+                }
+            }
+            if (player.invincibilityTimer > 0) {
+                player.invincibilityTimer--;
+                player.invincible = true; // Ensure invincibility is true
+                if (player.invincibilityTimer % 10 < 5) { // Simple flicker effect
+                    gameCtx.globalAlpha = 0.5;
+                } else {
+                    gameCtx.globalAlpha = 1;
+                }
+                if (player.invincibilityTimer === 0) {
+                    player.invincible = false;
+                    gameCtx.globalAlpha = 1; // Reset alpha
+                    spawnParticles(player.x, player.y, "✨", "white"); // Visual cue for end of invincibility
+                }
+            }
 
-                    drawHeart(player.x, player.y, player.size, player.color);
-                    updateParticles();
-                    drawParticles();
-                    drawEnemy(); // Draw enemy during attack
-                    
-                    // Display flavor text during attack
-                    gameCtx.fillStyle = "white";
-                    gameCtx.font = `${18 * currentScale}px 'Press Start 2P'`; // Scale font
-                    gameCtx.textAlign = "center";
-                    gameCtx.fillText(currentAttackFlavorText, gameCanvas.width / 2, DODGE_BOX_Y_SCALED - (15 * currentScale)); // Above dodge box
-                    gameCtx.textAlign = "left";
-
-                    let activePattern;
-                    if (gameState === "enemy_attack_phase") {
-                        // Ensure currentEnemy and its attackPatterns exist before trying to access
-                        if (currentEnemy && currentEnemy.attackPatterns && currentEnemy.attackPatterns.length > 0) {
-                            activePattern = currentEnemy.attackPatterns[currentAttackIndex];
-                        } else {
-                            activePattern = null; // No active pattern if enemy or patterns are missing
+            // Only update game logic if not paused for a popup
+            if (!isGamePausedForPopup) {
+                // Update game logic and draw game elements based on current state
+                switch (gameState) {
+                    case "menu":
+                        // Main menu is active, no game logic update on canvas beyond stars
+                        break;
+                    case "intro":
+                    case "encounter_dialogue":
+                    case "player_turn_options":
+                    case "act_menu":
+                    case "item_menu":
+                    case "check_menu":
+                    case "determination_menu": // New state
+                    case "dialogue_after_encounter": // Added new state to handle post-encounter dialogue
+                        // In dialogue/menu states, draw enemy and player (stationary)
+                        drawEnemy();
+                        updateParticles();
+                        drawParticles();
+                        drawHeart(player.x, player.y, player.size, player.color);
+                        drawHUD(); // Ensure HUD is drawn in these states
+                        break;
+                    case "enemy_attack_phase":
+                    case "enemy_mini_attack_phase": // Handle mini-attack phase here too
+                        // Enemy movement (if applicable)
+                        if (currentEnemy && currentEnemy.canMove) {
+                            currentEnemy.x += Math.sin(currentEnemyAttackTimer * 0.05) * 0.5 * currentScale; // Scale movement
+                            currentEnemy.y += Math.cos(currentEnemyAttackTimer * 0.03) * 0.3 * currentScale; // Scale movement
+                            // Clamp enemy position to prevent going off screen
+                            currentEnemy.x = Math.max(100 * currentScale, Math.min(gameCanvas.width - (100 * currentScale), currentEnemy.x));
+                            currentEnemy.y = Math.max(50 * currentScale, Math.min(DODGE_BOX_Y_SCALED - (150 * currentScale), currentEnemy.y));
                         }
-                    } else if (gameState === "enemy_mini_attack_phase") {
-                        activePattern = currentEnemy && currentEnemy.currentMiniAttackPattern ? currentEnemy.currentMiniAttackPattern : null;
-                    } else {
-                        activePattern = null; // Default to null if state is not attack or mini-attack
-                    }
 
-                    if (activePattern && currentEnemyAttackTimer < activePattern.duration) {
-                        const attackFunctionName = activePattern.type + 'Attack';
-                        if (typeof window[attackFunctionName] === 'function') {
-                            window[attackFunctionName](activePattern);
-                        } else {
-                            console.warn(`Attack function '${attackFunctionName}' not found.`);
-                        }
+                        drawHeart(player.x, player.y, player.size, player.color);
+                        updateParticles();
+                        drawParticles();
+                        drawEnemy(); // Draw enemy during attack
                         
-                        updateBullets();
-                        drawBullets();
-                        checkCollisions();
-                        currentEnemyAttackTimer++;
-                    } else {
-                        // Attack (or mini-attack) is over
-                        bullets = []; // Clear bullets
-                        currentEnemyAttackTimer = 0; // Reset timer for next attack/phase
+                        // Display flavor text during attack
+                        gameCtx.fillStyle = "#e0e0e0"; /* Softer text color */
+                        gameCtx.font = `${18 * currentScale}px 'Press Start 2P'`; /* Scale font, slightly larger */
+                        gameCtx.textAlign = "center";
+                        gameCtx.fillText(currentAttackFlavorText, gameCanvas.width / 2, DODGE_BOX_Y_SCALED - (15 * currentScale)); /* Adjusted spacing */
+                        gameCtx.textAlign = "left";
 
+                        let activePattern;
                         if (gameState === "enemy_attack_phase") {
-                            // This path is for main enemy attacks
-                            currentAttackIndex++; // Move to the next attack pattern in the sequence
-                            if (currentEnemy && currentEnemy.attackPatterns && currentAttackIndex < currentEnemy.attackPatterns.length) {
-                                // Load the next attack pattern
-                                const nextPattern = currentEnemy.attackPatterns[currentAttackIndex];
-                                currentAttackDuration = nextPattern.duration;
-                                currentAttackFlavorText = nextPattern.flavor;
-                                player.color = nextPattern.bulletType; // Update player soul color for the next attack
+                            // Ensure currentEnemy and its attackPatterns exist before trying to access
+                            if (currentEnemy && currentEnemy.currentAttackPattern) {
+                                activePattern = currentEnemy.currentAttackPattern;
                             } else {
-                                // All main attack patterns are done, return to player options
-                                currentAttackIndex = 0; // Reset for next time startEnemyAttackPhase is called
-                                setGameState("player_turn_options");
-                                showPlayerTurnOptions();
+                                activePattern = null; // No active pattern if enemy or patterns are missing
                             }
-                        } else { // enemy_mini_attack_phase is over
-                            // After mini-attack, show the ACT response and options
-                            currentAttackIndex = 0; // Reset for next time startMiniAttackPhaseForAct is called
-                            showActResponseAndOptions();
+                        } else if (gameState === "enemy_mini_attack_phase") {
+                            activePattern = currentEnemy && currentEnemy.currentMiniAttackPattern ? currentEnemy.currentMiniAttackPattern : null;
+                        } else {
+                            activePattern = null; // Default to null if state is not attack or mini-attack
                         }
-                    }
-                    drawHUD();
-                    break;
-                case "fight_minigame":
-                    drawEnemy();
-                    drawHUD();
-                    drawFightMinigame();
-                    updateFightMinigame();
-                    gameCtx.fillStyle = "white";
-                    gameCtx.font = `${24 * currentScale}px 'Press Start 2P'`; // Scale font
-                    gameCtx.textAlign = "left";
-                    gameCtx.fillText("FIGHTING!", 40 * currentScale, 100 * currentScale); // Scaled position
-                    break;
-                case "game_over":
-                case "win":
-                    break;
-            }
 
-            if (playerHP <= 0 && gameState !== "game_over") {
-                setGameState("game_over");
-                bullets = [];
-                particles = [];
-                setTimeout(() => {
-                    showGameOverScreen();
-                }, 200);
-                return;
+                        if (activePattern && currentEnemyAttackTimer < activePattern.duration) {
+                            const attackFunctionName = activePattern.type + 'Attack';
+                            if (typeof window[attackFunctionName] === 'function') {
+                                window[attackFunctionName](activePattern);
+                            } else {
+                                console.warn(`Attack function '${attackFunctionName}' not found.`);
+                            }
+                            
+                            updateBullets();
+                            drawBullets();
+                            checkCollisions();
+                            currentEnemyAttackTimer++;
+                        } else { // Attack (or mini-attack) is over
+                            bullets = []; // Clear bullets
+                            currentEnemyAttackTimer = 0; // Reset timer for next attack/phase
+
+                            if (gameState === "enemy_attack_phase") {
+                                currentAttackRound++; // Increment for main attacks
+                                if (currentAttackRound < totalAttacksThisTurn) {
+                                    // If more attacks are planned for this turn, start the next one
+                                    startEnemyAttackPhase(); // This will pick a new random pattern for the current phase
+                                } else {
+                                    // All attacks for this turn are done, return to player options
+                                    currentAttackRound = 0; // Reset for next enemy turn
+                                    totalAttacksThisTurn = 0; // Reset
+                                    setGameState("player_turn_options");
+                                    showPlayerTurnOptions();
+                                }
+                            } else { // enemy_mini_attack_phase is over (from ACT)
+                                // After mini-attack, show the ACT response and options
+                                currentAttackIndex = 0; // Reset for next time startMiniAttackPhaseForAct is called
+                                showActResponseAndOptions();
+                            }
+                        }
+                        drawHUD();
+                        break;
+                    case "bullet_tutorial": // This state is handled by its own animation loop, which pauses gameLoop updates
+                        // This case should ideally not be reached if isGamePausedForPopup is true when in bullet_tutorial
+                        // But if it is, we still want to draw the static elements
+                        drawHeart(player.x, player.y, player.size, player.color);
+                        drawHUD();
+                        // Bullets and particles for tutorial are updated/drawn by runTutorialAnimation
+                        break;
+                    case "fight_minigame":
+                        drawEnemy();
+                        drawHUD();
+                        drawFightMinigame();
+                        updateFightMinigame();
+                        gameCtx.fillStyle = "#e0e0e0"; /* Softer text color */
+                        gameCtx.font = `${22 * currentScale}px 'Press Start 2P'`; /* Slightly larger font */
+                        gameCtx.textAlign = "left";
+                        gameCtx.fillText("FIGHTING!", 35 * currentScale, 100 * currentScale); /* Adjusted position */
+                        break;
+                    case "game_over":
+                    case "win":
+                        break;
+                }
+
+                if (playerHP <= 0 && gameState !== "game_over") {
+                    setGameState("game_over");
+                    bullets = [];
+                    particles = [];
+                    setTimeout(() => {
+                        showGameOverScreen();
+                    }, 200);
+                    return;
+                }
+                
+                drawGlitch();
+                updateFloatingTexts();
+                drawFloatingTexts();
+            } else {
+                // If paused, still draw the current state but don't update game logic
+                drawStars();
+                drawCosmicDust();
+                drawHUD();
+                if (currentEnemy) { // Only draw enemy if one is active, even if paused
+                    drawEnemy();
+                }
+                drawHeart(player.x, player.y, player.size, player.color);
+                // No update for bullets/particles/floating texts if paused
             }
-            
-            drawGlitch();
 
             gameCtx.translate(-shakeX, -shakeY);
             requestAnimationFrame(gameLoop);
@@ -1944,7 +2580,7 @@
         // === Fight Mini-game Drawing and Updating ===
         function drawFightMinigame() {
             // Draw the main bar
-            gameCtx.fillStyle = "#333"; // Darker background for the bar
+            gameCtx.fillStyle = "rgba(50, 50, 50, 0.7)"; /* Softer gray, slightly transparent */
             gameCtx.fillRect(FIGHT_BAR_X_SCALED, FIGHT_BAR_Y_SCALED, FIGHT_BAR_WIDTH_SCALED, FIGHT_BAR_HEIGHT_SCALED);
 
             // Calculate current sweet spot and critical spot positions based on random offsets
@@ -1952,11 +2588,11 @@
             const criticalSpotX = sweetSpotX + currentCriticalSpotOffset;
 
             // Draw the sweet spot (magenta)
-            gameCtx.fillStyle = "magenta";
+            gameCtx.fillStyle = "#ff00ff"; /* Brighter magenta */
             gameCtx.fillRect(sweetSpotX, FIGHT_BAR_Y_SCALED, SWEET_SPOT_WIDTH_SCALED, FIGHT_BAR_HEIGHT_SCALED);
             
             // Draw the critical hit spot (lime green)
-            gameCtx.fillStyle = "lime";
+            gameCtx.fillStyle = "#00ff00"; /* Brighter lime green */
             gameCtx.fillRect(criticalSpotX, FIGHT_BAR_Y_SCALED, CRITICAL_SPOT_WIDTH_SCALED, FIGHT_BAR_HEIGHT_SCALED);
 
             // Draw the moving player soul (heart) as the marker
@@ -1967,7 +2603,7 @@
             drawHeart(heartX, heartY, heartSize, "yellow"); // Draw heart in yellow for the marker
 
             // Add a pulsating glow effect around the heart marker
-            gameCtx.shadowBlur = Math.sin(Date.now() * 0.01) * 5 + 5; // Pulsating blur
+            gameCtx.shadowBlur = Math.sin(Date.now() * 0.01) * 4 + 4; // Pulsating blur, slightly less intense
             gameCtx.shadowColor = "yellow"; // Heart's color
             // Re-draw the heart with shadow
             drawHeart(heartX, heartY, heartSize, "yellow");
@@ -2029,7 +2665,7 @@
             gameCtx.fillRect(0, 0, gameCanvas.width, gameCanvas.height); // Use scaled canvas dimensions
 
             stars.forEach(star => {
-                gameCtx.fillStyle = "white";
+                gameCtx.fillStyle = "#e0e0e0"; /* Softer white for stars */
                 gameCtx.beginPath();
                 gameCtx.arc(star.x * currentScale, star.y * currentScale, star.size * currentScale, 0, Math.PI * 2); // Scale position and size
                 gameCtx.fill();
@@ -2064,7 +2700,7 @@
 
         function drawCosmicDust() {
             cosmicDustParticles.forEach(p => {
-                gameCtx.fillStyle = `rgba(255, 255, 255, ${p.opacity * (gameState === 'enemy_attack_phase' || gameState === 'enemy_mini_attack_phase' ? 1.5 : 1)})`;
+                gameCtx.fillStyle = `rgba(255, 255, 255, ${p.opacity * (gameState === 'enemy_attack_phase' || gameState === 'enemy_mini_attack_phase' ? 1.2 : 0.8)})`; /* Slightly less opaque for subtlety */
                 gameCtx.beginPath();
                 gameCtx.arc(p.x * currentScale, p.y * currentScale, p.size * currentScale, 0, Math.PI * 2); // Scale position and size
                 gameCtx.fill();
@@ -2148,6 +2784,58 @@
             volume: -10
         }).toDestination();
 
+        // Typing sound
+        const typingSound = new Tone.Synth({
+            oscillator: {
+                type: "sine"
+            },
+            envelope: {
+                attack: 0.001,
+                decay: 0.05,
+                sustain: 0.01,
+                release: 0.05
+            },
+            volume: -20
+        }).toDestination();
+
+        // New sounds for Determination abilities
+        const healSound = new Tone.Synth({
+            oscillator: { type: "sine" },
+            envelope: { attack: 0.01, decay: 0.2, sustain: 0.1, release: 0.3 },
+            volume: -10
+        }).toDestination();
+
+        const clearBulletsSound = new Tone.NoiseSynth({
+            noise: { type: "white" },
+            envelope: { attack: 0.001, decay: 0.1, sustain: 0.01, release: 0.2 },
+            volume: -10
+        }).toDestination();
+
+        const invincibilitySound = new Tone.Synth({
+            oscillator: { type: "triangle" },
+            envelope: { attack: 0.01, decay: 0.3, sustain: 0.1, release: 0.5 },
+            volume: -8
+        }).toDestination();
+
+        // New sounds for Inventory items
+        const speedBoostSound = new Tone.Synth({
+            oscillator: { type: "sawtooth" },
+            envelope: { attack: 0.005, decay: 0.1, sustain: 0.05, release: 0.2 },
+            volume: -12
+        }).toDestination();
+
+        const mercyBoostSound = new Tone.Synth({
+            oscillator: { type: "square" },
+            envelope: { attack: 0.005, decay: 0.15, sustain: 0.05, release: 0.25 },
+            volume: -12
+        }).toDestination();
+
+        const itemPickupSound = new Tone.Synth({
+            oscillator: { type: "fmsine", modulationIndex: 5 },
+            envelope: { attack: 0.001, decay: 0.2, sustain: 0.05, release: 0.1 },
+            volume: -10
+        }).toDestination();
+
 
         // --- Canvas Resizing Logic ---
         function resizeCanvas() {
@@ -2187,6 +2875,21 @@
             enemies.forEach(enemy => {
                 enemy.x = enemy.originalX * currentScale;
                 enemy.y = enemy.originalY * currentScale;
+                // Add new properties for animation timers
+                enemy.hitAnimationTimer = 0; 
+                enemy.mercyAnimationTimer = 0;
+                // Add phase property to attack patterns
+                enemy.attackPatterns.forEach((pattern, index) => {
+                    if (enemy.name === "Grumpy Golem") { // Boss phases
+                        if (index < 4) pattern.phase = 0; // First 4 attacks are phase 0
+                        else if (index < 8) pattern.phase = 1; // Next 4 are phase 1
+                        else pattern.phase = 2; // Remaining are phase 2
+                    } else { // Regular enemy has 3 phases, split evenly
+                        if (index < enemy.attackPatterns.length / 3) pattern.phase = 0;
+                        else if (index < (enemy.attackPatterns.length / 3) * 2) pattern.phase = 1;
+                        else pattern.phase = 2;
+                    }
+                });
             });
 
             // Adjust hit marker position for fight minigame
@@ -2198,11 +2901,9 @@
 
         // --- Event Listeners for Game Menu ---
         menuPlayButton.addEventListener('click', () => {
-            console.log("Play button clicked.");
             buttonClickSound.triggerAttackRelease("C5", "16n"); // Play sound on menu button click
             // Start Tone.js AudioContext on user gesture
             Tone.start().then(() => {
-                console.log("Tone.js AudioContext started successfully.");
                 startGameLogic(); // Proceed with game start logic
             }).catch(e => {
                 console.error("Failed to start Tone.js AudioContext:", e);
@@ -2212,11 +2913,11 @@
         });
         menuOptionsButton.addEventListener('click', () => {
             buttonClickSound.triggerAttackRelease("C5", "16n");
-            showCustomMessage("OPTIONS ARE NOT YET IMPLEMENTED, BUT YOU'RE ALREADY OPTIMIZED FOR FUN!");
+            showCustomMessage("Oops! Doofy was so excited about making the game playable, he totally forgot to add options! Maybe next update? Or maybe his game is just perfect as is! 😉");
         });
         menuCreditsButton.addEventListener('click', () => {
             buttonClickSound.triggerAttackRelease("C5", "16n");
-            showCustomMessage("CREDITS:\nGAME BY DOOFY FOR QUACKERS!\nINSPIRED BY UNDERTALE BY TOBY FOX.\nTHANK YOU FOR PLAYING!");
+            showCustomMessage("CREDITS:\nGame Concept & Code: Doofy (with a little help from a friendly AI!)\nInspiration: The legendary UNDERTALE by Toby Fox (thank you for the magic!)\nSpecial Thanks: Quackers (for being the best birthday duck ever!)\nAnd YOU, for playing! You're awesome! 🎉");
         });
         menuExitButton.addEventListener('click', () => {
             buttonClickSound.triggerAttackRelease("C5", "16n");
@@ -2225,7 +2926,6 @@
 
         // --- Initial Setup on Page Load ---
         window.onload = function() {
-            console.log("Window loaded. Initializing game setup.");
             resizeCanvas(); // Initial sizing of the canvas and game elements
             initStars(); // Initialize stars for the menu background
             
